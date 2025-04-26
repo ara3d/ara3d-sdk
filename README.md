@@ -1,10 +1,18 @@
 # Ara3D.SDK
 
-This is a set of easy to use and high-performance open-source MIT Licensed libraries from Ara3D which can be used to extend Ara3D.Studio or in standalone projects on any platform. 
+Ara3D.SDK is a collection of high-performance libraries which can be used individually or together, to extend Ara3D.Studio or in standalone projects on any platform. 
 
-Ara3D.SDK is optimized for use in real-time 3D applications and for extremely large data sets. 
+Ara3D.SDK is optimized for use in real-time 3D applications and for the extremely large 3D data sets used in construction and architecture.   
 
 It comes with a free build of Ara3D.Studio for testing purposes.  
+
+# License 
+
+**Ara3D.SDK** is licensed under the commerically friendly MIT license.
+
+# Support Platforms 
+
+Ara3D, 
 
 ## Ara3D.Studio
 
@@ -14,14 +22,13 @@ Ara3D.Studio is a free Windows application for viewing, importing, creating, man
 
 The repository has the following structure 
 
-```
-core - C# libraries with no dependencies and compatible with .NET 8.  
-extras - libraries with 3rd party dependencies, or that are platform specific (e.g., WPF, Win32)
-samples - demonstrations of how 
-tests - NUnit test projects for unit testing, regression testing, and 
-bin - external libraries and tools 
-data - test-data   
-```
+`core` - C# libraries with no dependencies and compatible with .NET 8.  
+`extras` - libraries with 3rd party dependencies, or that are platform specific (e.g., WPF, Win32)
+`samples` - demonstrations of how to use the various  
+`docs` - documentation  
+`tests` - NUnit test projects for unit testing, regression testing, and 
+`external` - pre-built libraries, executables, and tools 
+`data` - test-data   
 
 ## Contributing 
 
