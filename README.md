@@ -22,13 +22,13 @@ Ara3D.Studio is a free Windows application for viewing, importing, creating, man
 
 The repository has the following structure 
 
-`core` - C# libraries with no dependencies and compatible with .NET 8.  
-`extras` - libraries with 3rd party dependencies, or that are platform specific (e.g., WPF, Win32)
-`samples` - demonstrations of how to use the various  
-`docs` - documentation  
-`tests` - NUnit test projects for unit testing, regression testing, and 
-`external` - pre-built libraries, executables, and tools 
-`data` - test-data   
+* `core` - C# libraries with no dependencies and compatible with .NET 8.  
+* `extras` - libraries with 3rd party dependencies, or that are platform specific (e.g., WPF, Win32)
+* `samples` - demonstrations and examples  
+* `docs` - documentation  
+* `tests` - NUnit test projects for unit testing, regression testing, and 
+* `external` - pre-built libraries, executables, and tools 
+* `data` - test-data   
 
 ## Contributing 
 
