@@ -1,0 +1,98 @@
+﻿# BFAST Specification Proposal
+## June 23rd, 2020
+
+## Summary
+
+BFAST is a simple high-performance general purpose method of packing and unpacking named
+arrays of binary data for serialization, deserialization, and transport in a cross-platform
+and language agnostic manner.
+
+## Introduction
+
+Of the myriad standardized formats for binary representation of structured data most
+are very general and support nested data and schemas. 
+
+One of the most common use case for structured binary data are collections of key/value
+pairs where each key is a string and the value is an array of bytes. 
+An example of this are archive file formats like TAR and ZIP. Many 3D and image formats 
+data also follow this format. 
+
+When data conforms to this kind of schema, then most binary formats (e.g CBOR, FlatBuffers,
+ProtoBuf, Capnproto, etc.) introduce more overhead than is required, in terms of
+memory, performance, and code.
+
+Often developers encountering this scenario will write an ad-hoc serialization/deserialization
+protocol, which can lead to some problems:
+
+    * Endianness may or may not be considered
+    * When memory mapping the structure, O(1) random access to buffers might not possible
+    * Programs written by other developers cannot easily deduce the layout of the format
+    * Alignment of the buffers might not be suitable for fast processing of the data arrays
+    * Testing and validation of the protocol might not be suitably robust 
+
+The BFAST format is intended to provide a simple open standard that developers can use instead of
+rolling their own. We have used in production code in a multitude of scenarios on a wide range of
+devices and languages, and found it to be quite satsifactory in terms of efficiency and simplicity. 
+
+Like TAR, BFAST is explicitly not a compression format, and can be easily compressed using
+any compression algorithm. It is appropriate for use as an archive format, or as a container
+format for other more complex file formats that provide additional semantic requirements
+on the usage and naming of specific buffers. 
+
+## Features
+
+    * The file format can be quickly detected reading the first 8 bytes
+    * Endianness of the writer can be detected from first 8 bytes, and compensated for by a reader 
+    * Buffers names are stored in the first buffer, and can be quickly retrieved
+    * Each data-buffer is aligned on 64 bytes (for easy SIMD register alignment)
+    * Buffer begin/end positions are stored in the beginning of the file for fast seeking to data
+    * Buffer names can be arbitrarily long sequences of Utf-8 characters
+    * Buffers can be over 2GB in length
+
+# Format
+
+The format consists of a header and the data buffers. The header 
+
+
+### Header - Preamble
+
+The preamble is a fixed size structure that contains the magic number, the start and end of the data buffers, and the number of buffers. 
+The preamble is followed by a series of range structures that define the start and end of each data buffer.
+The pramble is 32 bytes long.
+
+```
+    Preamble (bytes 0..32)
+        int64_t Magic;      // The first Magic number is 0xBFA5      
+        int64_t DataStart;  // The beginning position of the first data buffer, 64 byte aligned
+        int64_t DataEnd;    // The end position of the last data buffer 
+        int64_t Count;      // Number of all buffers, including name buffer. There should always be at least 1 buffer.
+```
+
+### Header - Range Buffer 
+
+```    Ranges (bytes 32..32 + NumArray*16)
+        int64_t Begin;
+        int64_t End;  
+```
+
+Each range struct is 16 bytes long.
+Header.DataStart is equivalent to Range[0].Begin
+Header.DataEnd is equivalent to Range[N-1].End
+
+### Data Buffers 
+
+There should be N-1 names, where N is the number of buffers. The names are stored in the first buffer, and the data buffers follow
+The first data buffer contains the concatenated names of the other buffers separated by the `NUL` character (0x00). 
+It is possible for data buffers to have a zero-length name. Multiple data buffers may have the same name.
+Names are Utf-8 encoded strings, and can contain any character except for the `NUL` character.
+
+### Data Layout 
+
+The first byte of the data can be found at the `DataStart` position in the file. 
+The `DataStart`` can be computed by `align(64, sizeof(Header) + sizeof(Range) * Header.NumArrays)`.
+    
+The data buffers are specified by the `Begin` and `End` fields of the range structures. 
+The data buffers are assumed to appear in the same order as their associated range structures.
+Each buffer is aligned on a 64 byte boundary.
+A data buffer may be zero-length. 
+

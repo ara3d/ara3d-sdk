@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A library of immutable collections.</Description>
+    <PackageProjectUrl>https://github.com/ara3d/collections</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ara3d/collections</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Link="README.md" >
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\LICENSE" Link="LICENSE" />
+  </ItemGroup>
+</Project>
+  

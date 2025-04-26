@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Description>A simple, efficient, generic binary format for storing and transmitting geometry.</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Serialization.G3D</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Ara3D.Serialization.BFAST" Version="*" />
+    <PackageReference Include="Ara3D.Collections" Version="*" />
+    <PackageReference Include="Ara3D.Mathematics" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
+    <ProjectReference Include="..\..\Collections\Ara3D.Collections\Ara3D.Collections.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

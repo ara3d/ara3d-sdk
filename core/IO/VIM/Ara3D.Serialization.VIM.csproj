@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A library for reading and writing architectural BIM models in the VIM format.</Description>
+    <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Serialization.VIM</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Ara3D.Buffers" Version="*" />
+    <PackageReference Include="Ara3D.Serialization.BFAST" Version="*" />
+    <PackageReference Include="Ara3D.Serialization.G3D" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.Buffers\Ara3D.Buffers.csproj" />
+    <ProjectReference Include="..\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
+    <ProjectReference Include="..\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>Infrastructure for creating well architected software. </Description>
+    <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Services</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\domo\Ara3D.Domo\Ara3D.Domo.csproj" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

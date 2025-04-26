@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ara3D.Buffers" Version="1.4.5" />
+    <PackageReference Include="Ara3D.Logging" Version="1.4.5" />
+    <PackageReference Include="Ara3D.Utils" Version="1.4.5" />
+  </ItemGroup>
+
+</Project>
