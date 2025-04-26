@@ -1,6 +1,6 @@
 # Ara3D.SDK
 
-Ara3D.SDK is a collection of high-performance libraries which can be used individually or together, to extend Ara3D.Studio or in standalone projects on any platform. 
+Ara3D.SDK is a collection of C# libraries which can be used to extend Ara3D.Studio or in standalone projects. 
 
 Ara3D.SDK is optimized for use in real-time 3D applications and for the extremely large 3D data sets used in construction and architecture.   
 
@@ -8,11 +8,13 @@ It comes with a free build of Ara3D.Studio for testing purposes.
 
 # License 
 
-**Ara3D.SDK** is licensed under the commerically friendly MIT license.
+**Ara3D.SDK** is licensed under the MIT license 1.0.
 
 # Support Platforms 
 
-Ara3D, 
+* Ara3D.SDK is written in .NET 8 
+* The `core` libraries are all cross-platform
+* Libraries and applications, in `extras`, `samples`, and `tests`, are a mix between cross-platform and Windows specific   
 
 ## Ara3D.Studio
 
