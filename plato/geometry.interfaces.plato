@@ -1,0 +1,355 @@
+﻿//==
+// # Geometry 
+// 
+// The Geometry library provides a set of interface for defining a wide range of geometric forms whether they are 
+// discrete geometric forms (like point clouds, line sets, meshes, etc.) or continuous geometric forms (like curves, surfaces, volumes, etc.). 
+// Continuous geometric forms are defined as procedurals, which are functions that map a domain to a range. 
+
+// The set of all geometric objects, such as figures, shapes, points, fields, lines, volumes, meshes, etc.  
+interface IGeometry 
+{ }
+
+// The set of all 2D geometric objects
+interface IGeometry2D
+    inherits IGeometry
+{ }
+
+// The set of all 3D geometric objects
+interface IGeometry3D
+    inherits IGeometry
+{ }
+
+//==
+// ## Bounded 
+
+// This type provides a 2D bounding-box
+interface IBounded2D
+{
+    // Returns a 2D axis aligned bounding box.
+    Bounds(x: Self): Bounds2D;
+}
+
+// This type provides a 3D bounding-box
+interface IBounded3D
+{
+    // Returns a 3D axis aligned bounding box.
+    Bounds(x: Self): Bounds3D;
+}
+
+// Most geometric forms that can be primitive
+interface IDeformable2D 
+{
+    Deform(x: Self, f: Function1<Point2D, Point2D>): Self;
+}
+
+interface IDeformable3D 
+{
+    Deform(x: Self, f: Function1<Point3D, Point3D>): Self;
+}
+
+//==
+// # Shapes 
+// 
+// Shapes in this library are defined as geometric forms with a topological space of 1 dimension.
+// This includes lines, curves, and line sets. The formal name for this is a 1-dimensional simplicial complex.
+
+// A geometric form with 1 dimension (e.g., a line, curve, line set) that is defined in any Number of dimensions
+interface IShape
+    inherits IGeometry
+{ }
+
+// A geometric form with 1 dimension (e.g., a line, curve, line set) that is defined in 2D space
+interface IShape2D 
+    inherits IShape, IGeometry2D 
+{ } 
+
+// A geometric form with 1 dimension (e.g., a line, curve, line set) that is defined in 3D space
+interface IShape3D
+    inherits IShape, IGeometry3D
+{ }
+
+// If Closed is true, the first point is also the last point, otherwise it isn't
+interface IOpenClosedShape 
+    inherits IShape
+{ 
+    Closed(x: Self): Boolean;
+}
+
+// A shape that is open (e.g., a line, curve, line set)
+interface IOpenShape inherits IOpenClosedShape { }
+
+// A shape that is closed (e.g., a circle, polygon, closed curve)
+interface IClosedShape inherits IOpenClosedShape { }
+
+// A 2D shape that is open 
+interface IOpenShape2D inherits IGeometry2D, IOpenShape { }
+
+// A 2D shape that is closed
+interface IClosedShape2D inherits IGeometry2D, IClosedShape { }
+
+// A 3D shape that is open
+interface IOpenShape3D inherits IGeometry3D, IOpenShape { }
+
+// A 3D shape that is closed
+interface IClosedShape3D inherits IGeometry3D, IClosedShape { }
+
+// Curves map a single Number to a point in 1D, 2D, 3D, or higher space.
+// They are effectively functions. 
+interface ICurve<TRange> 
+    inherits IProcedural<Number, TRange>, IOpenClosedShape
+{ }
+
+// Given a point in space (p), the distance field returns the distance to the curve.
+interface IDistanceField2D 
+    inherits IProcedural<Vector2, Number>
+{ 
+    Distance(x: Self, p: Point2D): Number;
+}
+
+// Given a point in space (p), the distance field returns the distance to a surface .
+interface IDistanceField3D
+    inherits IProcedural<Vector3, Number>
+{ 
+    Distance(x: Self, p: Point3D): Number;
+}
+
+// A 1 dimensional shape with a topological space of 1 dimensions
+// Basically a simple function 
+interface ICurve1D 
+    inherits ICurve<Number>
+{ }
+
+// A 2 dimensional shape with a topological space of 1 dimensions
+interface ICurve2D
+    inherits IGeometry2D, ICurve<Point2D>
+{ }
+
+// A 2D curve which is known to be closed
+interface IClosedCurve2D
+	inherits ICurve2D, IClosedShape2D
+{ }
+
+// A 2D curve which is known to be open
+interface IOpenCurve2D
+	inherits ICurve2D, IOpenShape2D
+{ }
+
+// A 3 dimensional shape with a topological space of 1 dimensions
+interface ICurve3D
+    inherits IGeometry3D, ICurve<Point3D> 
+{ }
+
+// A 3D curve which is known to be closed
+interface IClosedCurve3D
+	inherits ICurve3D, IClosedShape3D
+{ }
+
+// A 3D curve which is known to be open
+interface IOpenCurve3D
+	inherits ICurve3D, IOpenShape3D
+{ }
+
+// Surfaces are 3 dimensional shapes with a topological space of 2 dimensions
+interface ISurface
+    inherits IGeometry3D
+{ }
+
+// Parametric surfaces are shapes defined from two variables (U and V)
+// They may be periodic in 0 (e.g., plane), 1 (e.g., tube), or 2 dimensions (e.g., torus). 
+// https://en.wikipedia.org/wiki/Surface_(mathematics)
+// They are effectively Bivariate functions. You can also think of them as curves that have 
+// two parameters. 
+interface IProceduralSurface
+    inherits IProcedural<Vector2, Point3D>, ISurface 
+{
+    ClosedX(x: Self): Boolean;
+    ClosedY(x: Self): Boolean;
+}
+
+// Explicit surfaces are defined as functions from UV space to a z value (height)
+interface IExplicitSurface 
+    inherits IProcedural<Vector2, Number>, ISurface
+{ }
+
+// An implicit procedural could represent a curve in 2D, a surface, solid, or volume in 3D. 
+interface IImplicitProcedural<TDomain>  
+    inherits IProcedural<TDomain, Boolean>
+{ }
+
+// An implicit surface, where we are either on the surface or not. 
+interface IImplicitSurface
+    inherits ISurface, IImplicitProcedural<Point3D>
+{ }
+
+// An implicitly defined curve
+interface IImplicitCurve2D
+    inherits IGeometry2D, IImplicitProcedural<Point2D>
+{ }
+
+// An implicit solid/volume, where we are either inside (true) or outside (false).
+interface IImplicitVolume
+    inherits IGeometry3D, IImplicitProcedural<Point3D>
+{ }
+
+// https://en.wikipedia.org/wiki/Polygonal_chain
+// Also known as a PolygonalChain
+interface IPolyLine2D
+    inherits IPointGeometry2D, IOpenClosedShape, ICurve2D
+{ }
+
+// https://en.wikipedia.org/wiki/Polygonal_chain
+// Also known as a PolygonalChain
+interface IPolyLine3D
+    inherits IPointGeometry3D, IOpenClosedShape, ICurve3D
+{ }
+
+// 2D Poly-lines that are known to always be closed
+interface IPolygon2D inherits IPolyLine2D, IClosedShape2D { }
+
+// 3D Poly-lines that are known to alwaybe be closed 
+interface IPolygon3D inherits IPolyLine3D, IClosedShape3D { }
+
+// A surface that fully encapsulates a volume 
+interface ISolid
+    inherits IProceduralSurface
+{ }
+
+//==
+// # Primitive Geometry
+//
+
+// Any geometry that can be described as a series of 2D points 
+interface IPointGeometry2D
+    inherits IGeometry2D, IDeformable2D, IBounded2D
+{
+    Points(x: Self): IArray<Point2D>;
+}
+
+// Any geometry that can be described as a series of 3D points 
+interface IPointGeometry3D 
+    inherits IGeometry3D, IDeformable3D, IBounded3D
+{
+    Points(x: Self): IArray<Point3D>;
+}
+
+// A primitive geometry has a fixed number of primitives each with a fixed size 
+// Examples of primitives include lines, triangles, and quads
+interface IPrimitiveGeometry 
+{
+	PrimitiveSize(x: Self): Integer;
+    NumPrimitives(x: Self): Integer;
+}
+
+// Primitive geometry with primitives of size 2
+interface ILineGeometry inherits IPrimitiveGeometry { }
+
+// Primitive geometry with primitives of size 3
+interface ITriangleGeometry inherits IPrimitiveGeometry { }
+
+// Primitive geometry with primitives of size 4
+interface IQuadGeometry inherits IPrimitiveGeometry { }
+
+// A basic 2D primitive geometry that is a collection of a fixed number of 2D points
+interface IGeometricPrimitive2D
+    inherits IPointGeometry2D, IDeformable2D
+{ }
+
+// A basic 3D primitive geometry that is a collection of a fixed number of 3D points
+interface IGeometricPrimitive3D
+    inherits IPointGeometry3D, IDeformable3D 
+{ }
+
+// 2D Primitive geometry 
+interface IPrimitiveGeometry2D<T> 
+    where T: IGeometricPrimitive2D
+    inherits IPrimitiveGeometry, IDeformable2D 
+{ 
+    Primitives(x: Self): IArray<T>;
+}
+
+// 3D Primitive geometry 
+interface IPrimitiveGeometry3D<T> 
+    where T: IGeometricPrimitive3D
+    inherits IPrimitiveGeometry, IDeformable3D 
+{ 
+    Primitives(x: Self): IArray<T>;
+}
+
+// Collection of 2D line-segments 
+interface ILineGeometry2D 
+    inherits IPrimitiveGeometry2D<Line2D>, ILineGeometry 
+{ }
+
+// Collection of 3D line-segments
+interface ILineGeometry3D 
+    inherits IPrimitiveGeometry3D<Line3D>, ILineGeometry 
+{ }
+
+// Collection of 2D triangles 
+interface ITriangleGeometry2D 
+    inherits IPrimitiveGeometry2D<Triangle2D>, ITriangleGeometry 
+{ }
+
+// Collection of 3D triangles 
+interface ITriangleGeometry3D 
+    inherits IPrimitiveGeometry3D<Triangle3D>, ITriangleGeometry 
+{ }
+
+// Collection of 2D quadrilaterals
+interface IQuadGeometry2D 
+    inherits IPrimitiveGeometry2D<Quad2D>, IQuadGeometry 
+{ }
+
+// Collection of 3D quadrilaterals
+interface IQuadGeometry3D 
+    inherits IPrimitiveGeometry3D<Quad3D>, IQuadGeometry 
+{ }
+
+//==
+// # Indexed Geometry 
+
+// Indexed geometry has a set of points and indexes into those points 
+// This is commonly how triangle or quad meshes are defined in most geometry libraries 
+interface IIndexedGeometry inherits IPrimitiveGeometry 
+{ 
+    Indices(x: Self): IArray<Integer>; 
+}
+
+interface IPointArray2D inherits IPointGeometry2D { }
+interface IPointArray3D inherits IPointGeometry3D { }
+
+interface IIndexedGeometry2D inherits IIndexedGeometry, IPointGeometry2D { }
+interface IIndexedGeometry3D inherits IIndexedGeometry, IPointGeometry3D { }
+
+interface ILineMesh2D inherits IIndexedGeometry2D, ILineGeometry2D { }
+interface ILineMesh3D inherits IIndexedGeometry3D, ILineGeometry3D { }
+
+interface ILineArray2D inherits ILineGeometry2D { }
+interface ILineArray3D inherits ILineGeometry3D { }
+
+interface ITriangleMesh2D inherits IIndexedGeometry2D, ITriangleGeometry2D { }
+interface ITriangleMesh3D inherits IIndexedGeometry3D, ITriangleGeometry3D { }
+
+interface ITriangleArray2D inherits ITriangleGeometry2D { }
+interface ITriangleArray3D inherits ITriangleGeometry3D { }
+
+interface IQuadMesh2D inherits IIndexedGeometry2D, IQuadGeometry2D { }
+interface IQuadMesh3D inherits IIndexedGeometry3D, IQuadGeometry3D { }
+
+interface IQuadArray2D inherits IQuadGeometry2D { }
+interface IQuadArray3D inherits IQuadGeometry3D { }
+
+// Represents a grid of quadrilaterals. 
+interface IQuadGrid2D inherits IQuadMesh2D
+{ 
+    PointGrid(x: Self): IArray2D<Point2D>;
+}
+
+// Represents a grid of quadrilaterals. This is commonly produced when sampling a parameterized surface. 
+interface IQuadGrid3D
+    inherits IQuadMesh3D
+{ 
+    PointGrid(x: Self): IArray2D<Point3D>;
+    ClosedX(x: Self): Boolean;
+    ClosedY(x: Self): Boolean;
+}

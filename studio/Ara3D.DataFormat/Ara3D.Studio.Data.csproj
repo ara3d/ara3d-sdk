@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ara3d\IFC-toolkit\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
+    <ProjectReference Include="..\..\..\..\ara3d\Plato.Geometry\Plato.Core\Plato.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\ara3d\src\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
+    <ProjectReference Include="..\..\..\..\ara3d\src\Ara3D.Serialization.G3D\Ara3D.Serialization.G3D.csproj" />
+    <ProjectReference Include="..\..\..\..\ara3d\src\Ara3D.Serialization.VIM\Ara3D.Serialization.VIM.csproj" />
+    <ProjectReference Include="..\..\..\..\ara3d\utils\Ara3D.Utils\Ara3D.Utils.csproj" />  
+  </ItemGroup>
+
+</Project>
