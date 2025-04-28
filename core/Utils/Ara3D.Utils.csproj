@@ -2,19 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>A C# library of general purpose utility classes and functions.</Description>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/ara3d/utils</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ara3d/utils</RepositoryUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\README.md" Link="README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\LICENSE" Link="LICENSE" />
-  </ItemGroup>
-
 
 </Project>

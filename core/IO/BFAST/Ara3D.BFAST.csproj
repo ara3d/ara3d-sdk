@@ -1,15 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
-
-
   <ItemGroup>
     <ProjectReference Include="..\..\Buffers\Ara3D.Buffers.csproj" />
-    <ProjectReference Include="..\..\Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\..\Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
-
 </Project>

@@ -2,17 +2,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>Domo is a state management library for C# inspired by domain driven design.</Description>
-    <PackageProjectUrl>https://github.com/ara3d/domo</PackageProjectUrl>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <RepositoryUrl>https://github.com/ara3d/domo</RepositoryUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
 </Project>

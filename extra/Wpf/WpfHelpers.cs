@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Ara3D.Mathematics;
-using static System.Net.Mime.MediaTypeNames;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using ListBox = System.Windows.Controls.ListBox;
 using TabControl = System.Windows.Controls.TabControl;
@@ -190,7 +189,7 @@ namespace Ara3D.Utils.Wpf
         }
 
         public static Vector2 ToVector(this Point pt)
-            => ((float)pt.X, (float)pt.Y);
+            => new((float)pt.X, (float)pt.Y);
 
         public static Vector2 GetMouseVector(this Control control)
             => Mouse.GetPosition(control).ToVector();

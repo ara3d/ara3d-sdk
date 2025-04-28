@@ -1,6 +1,6 @@
-﻿using System.Windows.Controls.Primitives;
+﻿using System.Numerics;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using Ara3D.Mathematics;
 
 namespace Ara3D.Utils.Wpf
 {
@@ -20,10 +20,10 @@ namespace Ara3D.Utils.Wpf
             Content = grid;
         }
 
-        public float X { get => Value.X; set => Value = Value.SetX(value); }
-        public float Y { get => Value.Y; set => Value = Value.SetY(value); }
-        public float Z { get => Value.Z; set => Value = Value.SetZ(value); }
-        public float W { get => Value.W; set => Value = Value.SetW(value); }
+        public float X { get => Value.X; set => Value = new(value, Y, Z, W); }
+        public float Y { get => Value.Y; set => Value = new(X, value, Z, W); }
+        public float Z { get => Value.Z; set => Value = new(X, Y, value, W); }
+        public float W { get => Value.W; set => Value = new(X, Y, Z, value); }
 
         public static QuaternionControl CreateBound(object source, string propName, BindingMode mode = BindingMode.TwoWay)
             => BindTo(new QuaternionControl(), source, propName, mode);

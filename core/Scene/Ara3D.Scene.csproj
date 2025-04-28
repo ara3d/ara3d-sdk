@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Plato.Geometry\Plato.Core\Plato.Core.csproj" />
-    <ProjectReference Include="..\Ara3D.Buffers\Ara3D.Buffers.csproj" />
+    <ProjectReference Include="..\Buffers\Ara3D.Buffers.csproj" />
+    <ProjectReference Include="..\Mathematics\Core\Plato.Core.csproj" />
   </ItemGroup>
 
 </Project>

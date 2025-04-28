@@ -2,14 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>    
   </PropertyGroup>
-
 
   <ItemGroup>
     <ProjectReference Include="..\..\Buffers\Ara3D.Buffers.csproj" />
-    <ProjectReference Include="..\..\Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\..\Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\BFAST\Ara3D.BFAST.csproj" />
+    <ProjectReference Include="..\G3D\Ara3D.G3D.csproj" />
   </ItemGroup>
-
 </Project>

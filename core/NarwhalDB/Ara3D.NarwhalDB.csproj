@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Collections\Ara3D.Collections\Ara3D.Collections.csproj" />
-    <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj" />
-    <ProjectReference Include="..\Ara3D.Buffers\Ara3D.Buffers.csproj" />
-    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\Ara3D.Serialization.BFAST\Ara3D.Serialization.BFAST.csproj" />
+    <ProjectReference Include="..\Buffers\Ara3D.Buffers.csproj" />
+    <ProjectReference Include="..\Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\IO\BFAST\Ara3D.BFAST.csproj" />
+    <ProjectReference Include="..\Logging\Ara3D.Logging.csproj" />
+    <ProjectReference Include="..\Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 </Project>
