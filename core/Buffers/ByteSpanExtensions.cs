@@ -27,5 +27,13 @@ namespace Ara3D.Buffers
             fixed (byte* p = &bytes[0])
                 return func(new ByteSpan(p, bytes.Length));
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ToDouble(this ByteSpan self)
+            => double.Parse(self.ToSpan());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ToInt(this ByteSpan self)
+            => int.Parse(self.ToSpan());
     }
 }
