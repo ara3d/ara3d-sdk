@@ -1,6 +1,4 @@
-﻿using Plato;
-
-namespace Ara3D.Data
+﻿namespace Ara3D.Data
 {
     public class RenderScene : IRenderScene
     {

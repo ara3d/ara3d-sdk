@@ -89,7 +89,7 @@ namespace Ara3D.Buffers
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashHelpers.Hash(Ptr, Length);
+            => ToSpan().GetHashCode();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(ByteSpan other)

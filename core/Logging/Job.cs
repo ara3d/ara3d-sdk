@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Ara3D.Logging
+﻿namespace Ara3D.Logging
 {
     // TODO: complete this job thing. Figure out the exact interface I want. 
     /*

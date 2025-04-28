@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Ara3D.Buffers;
 using Ara3D.Serialization.BFAST;
-using Ara3D.Serialization.G3D;
 
 namespace Ara3D.Serialization.VIM
 {

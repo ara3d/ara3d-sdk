@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using Ara3D.Buffers;
-using Ara3D.Serialization.VIM;
 
 namespace Ara3D.Serialization.VIM
 {

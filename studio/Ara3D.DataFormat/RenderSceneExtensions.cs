@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Ara3D.Utils;
+﻿using Ara3D.Utils;
 using Plato;
 
 namespace Ara3D.Data;
