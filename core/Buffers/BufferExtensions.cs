@@ -1,79 +1,76 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System;
+using System.Runtime.InteropServices;
 
-namespace Ara3D.Buffers
+namespace Ara3D.Memory
 {
     /// <summary>
     /// Helper functions for working with buffers 
     /// </summary>
-    public static class BufferExtensions
+    public static unsafe class BufferExtensions
     {
-        public static Buffer<T> ToBuffer<T>(this T[] xs) where T : unmanaged
-            => new Buffer<T>(xs);
+        public static long Length(this IBuffer buffer)
+            => buffer.Bytes.Count;
 
-        public static INamedBuffer<T> Rename<T>(this INamedBuffer<T> xs, string name) where T : unmanaged
-            => new NamedBuffer<T>(xs, name);
+        public static byte* GetPointer(this IBuffer buffer)
+            => buffer.Bytes.Begin;
 
-        public static INamedBuffer Rename(this INamedBuffer xs, string name) 
-            => new NamedBuffer(xs, name);
+        public static T* GetPointer<T>(this IBuffer buffer) where T: unmanaged
+            => buffer.Bytes.GetPointer<T>();
 
-        public static ReinterpretBuffer<T> Reinterpret<T>(this IBuffer xs) where T : unmanaged
-            => new ReinterpretBuffer<T>(xs);
+        public static Buffer<byte> ToBuffer(this ByteSlice self)
+            => new(self);
 
-        public static INamedBuffer<T> Reinterpret<T>(this INamedBuffer xs) where T : unmanaged
-            => (new ReinterpretBuffer<T>(xs)).ToNamedBuffer(xs.Name);
+        public static Buffer<T> ToBuffer<T>(this ByteSlice self)
+            where T : unmanaged
+            => new(self);
 
-        public static SlicedBuffer<T> Slice<T>(this IBuffer<T> xs, int start, int count) where T : unmanaged
-            => new SlicedBuffer<T>(xs, start, count);
+        public static NamedBuffer<T> Rename<T>(this IBuffer<T> xs, string name) where T : unmanaged
+            => new(xs, name);
 
-        public static SlicedBuffer<T> Skip<T>(this IBuffer<T> xs, int start) where T : unmanaged
+        public static NamedBuffer Rename(this INamedBuffer xs, string name) 
+            => new(xs, name);
+
+        public static Buffer<T> Reinterpret<T>(this IBuffer xs) where T : unmanaged
+            => new(xs.Bytes);
+
+        public static NamedBuffer<T> Reinterpret<T>(this INamedBuffer xs) where T : unmanaged
+            => ((IBuffer)xs).Reinterpret<T>().Rename(xs.Name);
+
+        public static Buffer<T> Slice<T>(this IBuffer<T> xs, int start, int count) where T : unmanaged
+            => xs.Bytes.Slice(start * Marshal.SizeOf<T>(), count * Marshal.SizeOf<T>()).ToBuffer<T>();
+
+        public static Buffer<T> Skip<T>(this IBuffer<T> xs, int start) where T : unmanaged
             => xs.Slice(start, xs.Count - start);
 
-        public static SlicedBuffer<T> Take<T>(this IBuffer<T> xs, int count) where T : unmanaged
+        public static Buffer<T> Take<T>(this IBuffer<T> xs, int count) where T : unmanaged
             => xs.Slice(0, count);
 
-        public static NamedBuffer<T> ToNamedBuffer<T>(this T[] xs, string name = "") where T : unmanaged
-            => new NamedBuffer<T>(xs, name);
+        public static NamedBuffer ToNamedBuffer(this IBuffer buffer, string name = "") 
+            => new(buffer, name);
 
-        public static NamedBuffer<T> ToNamedBuffer<T>(this IEnumerable<T> xs, string name = "") where T : unmanaged
-            => xs.ToArray().ToNamedBuffer(name);
+        public static NamedBuffer<T> ToNamedBuffer<T>(this IBuffer<T> buffer, string name = "") where T : unmanaged =>
+            new(buffer, name);
 
-        public static NamedBuffer ToNamedBuffer(this IBuffer buffer, string name = "")
-            => new NamedBuffer(buffer, name);
+        public static NamedBuffer<T> ToNamedBuffer<T>(this IBuffer buffer, string name = "") where T : unmanaged =>
+            new(buffer.Reinterpret<T>(), name);
 
-        public static NamedBuffer<T> ToNamedBuffer<T>(this IBuffer<T> buffer, string name = "") where T: unmanaged
-            => new NamedBuffer<T>(buffer, name);
+        public static FixedArray<T> Fix<T>(this T[] self) where T : unmanaged
+            => new(self);
 
-        public static IEnumerable<INamedBuffer> ToNamedBuffers(this IEnumerable<IBuffer> buffers,
-            IEnumerable<string> names = null)
-            => names == null ? buffers.Select(b => ToNamedBuffer(b, "")) : buffers.Zip(names, ToNamedBuffer);
+        public static MemoryOwner<T> Reinterpret<T>(this IMemoryOwner self) where T : unmanaged
+            => new(self);
 
-        public static IDictionary<string, INamedBuffer> ToDictionary(this IEnumerable<INamedBuffer> buffers)
-            => buffers.ToDictionary(b => b.Name, b => b);
+        public static int ElementSize(this ITypedBuffer buffer)
+            => Marshal.SizeOf(buffer.Type);
 
-        public static IEnumerable<INamedBuffer> ToNamedBuffers(this IDictionary<string, IBuffer> d)
-            => d.Select(kv => kv.Value.ToNamedBuffer(kv.Key));
+        public static int ElementCount(this ITypedBuffer buffer)
+            => buffer.Bytes.Count / buffer.ElementSize();
 
-        public static IEnumerable<INamedBuffer> ToNamedBuffers(this IDictionary<string, byte[]> d)
-            => d.Select(kv => (INamedBuffer)kv.Value.ToNamedBuffer(kv.Key));
+        public static IntPtr ElementPointer(this ITypedBuffer buffer, int n)
+            => new(buffer.GetPointer() + n * buffer.ElementSize());
 
-        public static long GetNumBytes(this IBuffer buffer)
-            => (long)buffer.ElementCount * buffer.ElementSize;
+        public static object GetElement(this ITypedBuffer buffer, int n)
+            => Marshal.PtrToStructure(buffer.ElementPointer(n), buffer.Type);
 
-        public static Buffer<T> ReadBufferFromNumberOfBytes<T>(this Stream stream, long numBytes) where T : unmanaged
-            => stream.ReadArrayFromNumberOfBytes<T>(numBytes).ToBuffer();
-
-        public static Buffer<T> ReadBuffer<T>(this Stream stream, int numElements) where T : unmanaged
-            => stream.ReadArray<T>(numElements).ToBuffer();
-
-        public static Buffer<byte> ReadBuffer(this Stream stream, int numBytes)
-            => stream.ReadBuffer<byte>(numBytes);
-
-        public static void Write(this Stream stream, IBuffer buffer)
-            => stream.Write(buffer.Span<byte>());
-
-        public static byte[] ToBytes(this INamedBuffer buffer)
-            => buffer.Span<byte>().ToArray();
     }
 }

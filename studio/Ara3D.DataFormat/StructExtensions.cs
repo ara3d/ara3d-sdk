@@ -7,12 +7,12 @@
             var r = new List<InstancedMeshStruct>();
             for (var i=0; i < self.Groups.Count; i++)
             {
-                var group = self.Groups.Pointer[i];
-                var mesh = self.Meshes.Pointer[group.MeshIndex];
+                var group = self.Groups[i];
+                var mesh = self.Meshes[(int)group.MeshIndex];
 
                 for (var j = 0; j < group.InstanceCount; j++)
                 {
-                    var instance = self.Instances.Pointer[group.BaseInstance + j];
+                    var instance = self.Instances[(int)group.BaseInstance + j];
                     r.Add(new InstancedMeshStruct(instance, mesh));
                 }
             }
@@ -27,7 +27,7 @@
             => self.InstancedMeshes().Sum(x => x.Mesh.NumTriangles());
 
         public static Bounds TotalBounds(this IRenderScene self)
-            => self.Instances.Enumerate().Select(x => x.Bounds)
+            => self.Instances.Select(x => x.Bounds)
                 .Aggregate((a, b) => a.Union(b));
     }
 }

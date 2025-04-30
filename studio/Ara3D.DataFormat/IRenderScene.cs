@@ -1,4 +1,6 @@
-﻿namespace Ara3D.Data
+﻿using Ara3D.Memory;
+
+namespace Ara3D.Data
 {
     public interface IRenderScene
         : IDisposable

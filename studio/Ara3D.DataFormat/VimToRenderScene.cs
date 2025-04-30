@@ -2,6 +2,7 @@
 using Ara3D.Logging;
 using Ara3D.Serialization.G3D;
 using System.Numerics;
+using Ara3D.Memory;
 using Ara3D.Serialization.VIM;
 using Matrix4x4 = System.Numerics.Matrix4x4;
 using Quaternion = System.Numerics.Quaternion;
@@ -18,11 +19,11 @@ namespace Ara3D.Data
             var gb = new RenderSceneBuilder();
 
             logger?.Log("Computing normals");
-            var normals = RenderSceneBuilder.ToNormals(g.Vertices.Span(), g.Indices.Span());
+            var normals = RenderSceneBuilder.ToNormals(g.Vertices, g.Indices);
 
             logger?.Log("Adding vertex structures");
 
-            var n = (uint)g.Vertices.Count;
+            var n = g.Vertices.Count;
             gb.VertexList = new UnmanagedList<VertexStruct>(n, n);
             for (var i = 0; i < n; ++i)
             {
@@ -31,13 +32,13 @@ namespace Ara3D.Data
             }
 
             logger?.Log("Adding indices");
-            n = (uint)g.Indices.Count;
+            n = g.Indices.Count;
             gb.IndexList = new UnmanagedList<uint>(n, n);
             for (var i = 0; i < n; ++i)
                 gb.IndexList[i] = (uint)g.Indices[i];
 
             logger?.Log("Adding meshes, and computing bounds");
-            gb.MeshList = new UnmanagedList<MeshSliceStruct>((uint)g.NumSubMeshes);
+            gb.MeshList = new UnmanagedList<MeshSliceStruct>(g.NumSubMeshes);
 
             for (var i = 0; i < g.NumSubMeshes; ++i)
             {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using Ara3D.Memory;
 
 namespace Ara3D.Serialization.VIM
 {
@@ -16,8 +17,8 @@ namespace Ara3D.Serialization.VIM
         {
             (Document, Table) = (document, table);
             var buffers = table.DataColumns.Concat(table.StringColumns).Concat(table.IndexColumns).ToArray();
-            Count = buffers.FirstOrDefault()?.ElementCount ?? 0;
-            if (buffers.Any(b => b.ElementCount != Count))
+            Count = buffers.FirstOrDefault()?.ElementCount() ?? 0;
+            if (buffers.Any(b => b.ElementCount() != Count))
                 throw new Exception("Not all columns are the same length");
             Columns = buffers.Select((c, i) => new VimColumn(this, c, i)).ToArray();
             ColumnLookup = Columns.Select((column, index) => (column, index)).ToDictionary(pair => pair.column.Name, pair => pair.index);

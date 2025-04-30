@@ -56,7 +56,7 @@ namespace Ara3D.NarwhalDB
         public static DB ReadFile(FilePath fp, IReadOnlyList<Type> types, ILogger logger)
         {
             logger.Log($"Loading file from {fp}");
-            var buffers = BFastReader2.Read(fp, logger);
+            var buffers = BFastReader.Read(fp, logger);
             logger.Log($"Read {buffers.Count} buffers");
             return Create(buffers, types, logger);
         }

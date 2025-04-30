@@ -1,49 +1,47 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
-namespace Ara3D.Buffers
+namespace Ara3D.Memory
 {
-    /// <summary>
-    /// A concrete implementation of IBuffer
-    /// </summary>
     public unsafe class Buffer<T> : IBuffer<T>
         where T : unmanaged
     {
-        public Buffer(T[] data) => _data = data;
-        public int ElementSize => sizeof(T);
-        private readonly T[] _data;
-        public int ElementCount => _data.Length;
-        public int Count => _data.Length;
+        public ByteSlice Bytes { get; }
+        public int Count { get; }
 
-        public T this[int i]
+        private readonly T* _pointer;
+
+        public Buffer(ByteSlice bytes)
         {
-            get => _data[i];
-            set => _data[i] = value;
+            Bytes = bytes;
+            _pointer = bytes.GetPointer<T>();
+            Count = (int)(bytes.Length / sizeof(T));
         }
 
-        public Span<T> Span()
-            => Span<T>();
-
-        public Span<T0> Span<T0>() where T0 : unmanaged
-            => MemoryMarshal.Cast<T, T0>(_data);
-
-        public Type ElementType => typeof(T);
-        
-        object IBuffer.this[int i]
+        public ref T this[int index]
         {
-            get => this[i];
-            set => this[i] = (T)value;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _pointer[index];
+        }
+
+        T IReadOnlyList<T>.this[int index]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => this[index];
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (var i= 0; i < ElementCount; i++)
+            for (var i=0; i < Count; i++)
                 yield return this[i];
         }
 
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
+
+        public Type Type => typeof(T);
+
     }
 }

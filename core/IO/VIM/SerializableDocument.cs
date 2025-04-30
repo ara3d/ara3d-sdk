@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ara3D.Buffers;
+using Ara3D.Memory;
 
 namespace Ara3D.Serialization.VIM
 {
@@ -21,17 +21,17 @@ namespace Ara3D.Serialization.VIM
         /// <summary>
         /// Relation to another entity table. For example surface to element. 
         /// </summary>
-        public List<NamedBuffer<int>> IndexColumns = new List<NamedBuffer<int>>();
+        public List<NamedBuffer<int>> IndexColumns = new();
 
         /// <summary>
         /// Data encoded as strings in the global string table
         /// </summary>
-        public List<NamedBuffer<int>> StringColumns = new List<NamedBuffer<int>>();
+        public List<NamedBuffer<int>> StringColumns = new();
 
         /// <summary>
         /// Numeric data encoded as byte, int, float, or doubles 
         /// </summary>
-        public List<INamedBuffer> DataColumns = new List<INamedBuffer>();
+        public List<ITypedNamedBuffer> DataColumns = new();
 
         public IEnumerable<string> ColumnNames
             => IndexColumns.Select(c => c.Name)
@@ -56,7 +56,7 @@ namespace Ara3D.Serialization.VIM
         /// <summary>
         /// Controls how the file is read and loaded into memory
         /// </summary>
-        public LoadOptions Options = new LoadOptions();
+        public LoadOptions Options = new();
 
         /// <summary>
         /// A collection of endline terminated <key>=<value> pairs information about the file
@@ -66,7 +66,7 @@ namespace Ara3D.Serialization.VIM
         /// <summary>
         /// A an array of tables, one for each entity 
         /// </summary>
-        public List<SerializableEntityTable> EntityTables = new List<SerializableEntityTable>();
+        public List<SerializableEntityTable> EntityTables = new();
 
         /// <summary>
         /// Used for looking up property strings and entity string fields by Id

@@ -1,4 +1,4 @@
-﻿using Ara3D.Buffers;
+﻿using Ara3D.Memory;
 using Ara3D.StepParser;
 using System;
 using System.Collections.Generic;
@@ -45,8 +45,8 @@ namespace Ara3D.IfcParser
 
         // Uses Latin1 encoding (aka ISO-8859-1)
         // Extended characters converted using an IFC specific system 
-        public static string AsString(this ByteSpan span)
-            => Encoding.Latin1.GetString(span.ToSpan()).IfcToUnicode();
+        public static string AsString(this ByteSlice slice)
+            => Encoding.Latin1.GetString(slice.AsSpan()).IfcToUnicode();
 
         // https://technical.buildingsmart.org/resources/ifcimplementationguidance/string-encoding/
         public static string IfcToUnicode(this string input)

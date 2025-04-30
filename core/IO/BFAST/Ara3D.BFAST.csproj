@@ -4,7 +4,8 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Buffers\Ara3D.Buffers.csproj" />
+    <ProjectReference Include="..\..\Buffers\Ara3D.Memory.csproj" />
     <ProjectReference Include="..\..\Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\Ara3D.MemoryMappedFiles\Ara3D.MemoryMappedFiles.csproj" />
   </ItemGroup>
 </Project>

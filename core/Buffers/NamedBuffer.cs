@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
 
-namespace Ara3D.Buffers
+namespace Ara3D.Memory
 {
     /// <summary>
     /// A concrete implementation of INamedBuffer with a specific type.
     /// </summary>
-    public class NamedBuffer<T> : Buffer<T>, INamedBuffer<T> where T : unmanaged
+    public class NamedBuffer<T> : Buffer<T>, ITypedNamedBuffer, INamedBuffer<T> where T : unmanaged
     {
-        public NamedBuffer(IBuffer<T> data, string name) : base(data.ToArray()) => Name = name;
-        public NamedBuffer(T[] data, string name) : base(data) => Name = name;
+        public NamedBuffer(IBuffer<T> data, string name) : base(data.Bytes) => Name = name;
         public string Name { get; }
     }
 
@@ -21,16 +20,6 @@ namespace Ara3D.Buffers
         public NamedBuffer(IBuffer buffer, string name) => (Buffer, Name) = (buffer, name);
         public IBuffer Buffer { get; }
         public string Name { get; }
-        public int ElementSize => Buffer.ElementSize;
-        public int ElementCount => Buffer.ElementCount;
-        public Span<T> Span<T>() where T : unmanaged => Buffer.Span<T>();
-
-        public Type ElementType => Buffer.ElementType;
-
-        object IBuffer.this[int i]
-        {
-            get => Buffer[i];
-            set => Buffer[i] = value;
-        }
+        public ByteSlice Bytes => Buffer.Bytes;
     }
 }

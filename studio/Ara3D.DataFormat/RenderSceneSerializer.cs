@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
-using Ara3D.Serialization.BFAST;
+using Ara3D.BFAST;
+using Ara3D.Memory;
+using Ara3D.MemoryMappedFiles;
 using Ara3D.Utils;
 
 namespace Ara3D.Data
@@ -59,47 +61,35 @@ namespace Ara3D.Data
                 return bytesToWrite;
             }
 
-            BFast.Write(filePath, BufferNames, sizes, OnBuffer);
+            BFast.Write((string)filePath, (IEnumerable<string>)BufferNames, (IEnumerable<long>)sizes, OnBuffer);
         }
 
         public static unsafe IRenderScene Load(FilePath fp)
         {
-            MemoryBlock<VertexStruct> vertices = null;
-            MemoryBlock<uint> indices = null;
-            MemoryBlock<MeshSliceStruct> meshes = null;
-            MemoryBlock<InstanceStruct> instances = null;
-            MemoryBlock<InstanceGroupStruct> groups = null;
+            AlignedMemory<VertexStruct> vertices = null;
+            AlignedMemory<uint> indices = null;
+            AlignedMemory<MeshSliceStruct> meshes = null;
+            AlignedMemory<InstanceStruct> instances = null;
+            AlignedMemory<InstanceGroupStruct> groups = null;
             
             void OnView(string name, MemoryMappedView view, int index)
             {
                 byte* srcPointer = null;
                 view.Accessor.SafeMemoryMappedViewHandle.AcquirePointer(ref srcPointer);
-                IntPtr ptr = IntPtr.Zero;
                 try
                 {
-                    switch (index)
+                    IBuffer buffer = index switch
                     {
-                        case 0: 
-                            ptr = vertices = new MemoryBlock<VertexStruct>(view.Size / VertexStruct.Size);
-                            break;
-                        case 1: 
-                            ptr = indices = new MemoryBlock<uint>(view.Size / sizeof(uint)); 
-                            break;
-                        case 2:
-                            ptr = meshes = new MemoryBlock<MeshSliceStruct>(view.Size / MeshSliceStruct.Size); 
-                            break;
-                        case 3:
-                            ptr = instances = new MemoryBlock<InstanceStruct>(view.Size / InstanceStruct.Size); 
-                            break;
-                        case 4:
-                            ptr = groups = new MemoryBlock<InstanceGroupStruct>(view.Size / InstanceGroupStruct.Size); 
-                            break;
-                        default:
-                            throw new Exception("Unrecognized memory buffer");
-                    }
+                        0 => vertices = new AlignedMemory<VertexStruct>(view.Size / VertexStruct.Size),
+                        1 => indices = new AlignedMemory<uint>(view.Size / sizeof(uint)),
+                        2 => meshes = new AlignedMemory<MeshSliceStruct>(view.Size / MeshSliceStruct.Size),
+                        3 => instances = new AlignedMemory<InstanceStruct>(view.Size / InstanceStruct.Size),
+                        4 => groups = new AlignedMemory<InstanceGroupStruct>(view.Size / InstanceGroupStruct.Size),
+                        _ => throw new Exception("Unrecognized memory buffer")
+                    };
 
                     srcPointer += view.Accessor.PointerOffset;
-                    Buffer.MemoryCopy(srcPointer, ptr.ToPointer(), view.Size, view.Size);
+                    Buffer.MemoryCopy(srcPointer, buffer.GetPointer(), view.Size, view.Size);
                 }
                 finally
                 {

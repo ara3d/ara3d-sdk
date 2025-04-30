@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
-using Ara3D.Serialization.BFAST;
+using Ara3D.Memory;
+using Ara3D.MemoryMappedFiles;
 
 namespace Ara3D.Serialization.G3D
 {
@@ -34,13 +35,13 @@ namespace Ara3D.Serialization.G3D
         /// the number of primitives times the arity. All mesh attributes associated
         /// with the same mesh component (e.g. vertices) must have the same element count.
         /// </summary>
-        public int ElementCount { get; }
+        public abstract int ElementCount { get; }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected GeometryAttribute(AttributeDescriptor descriptor, int count)
-            => (Descriptor, ElementCount) = (descriptor, count);
+        protected GeometryAttribute(AttributeDescriptor descriptor)
+            => (Descriptor) = (descriptor);
 
         /// <summary>
         /// Convenience function to check if this object is a mesh attribute of the given type.
@@ -73,20 +74,17 @@ namespace Ara3D.Serialization.G3D
 
     /// <summary>
     /// This is a typed attribute associated with some part of the mesh.
-    /// The underlying data is an IArray which means that it can be
-    /// computed on demand. 
     /// </summary>
     public class GeometryAttribute<T> : GeometryAttribute where T : unmanaged
     {
-        public T[] Data;
+        public IMemoryOwner<T> Data;
 
-        public GeometryAttribute(T[] data, AttributeDescriptor descriptor)
-            : base(descriptor, data.Length)
+        public GeometryAttribute(IMemoryOwner<T> data, AttributeDescriptor descriptor)
+            : base(descriptor)
         {
             Data = data;
             int arity;
             DataType dataType;
-            // TODO: TECH DEBT - Support unsigned tuples in Math3d
             if (typeof(T) == typeof(byte))
                 (arity, dataType) = (1, DataType.dt_uint8);
             else if (typeof(T) == typeof(sbyte))
@@ -128,10 +126,10 @@ namespace Ara3D.Serialization.G3D
         }
 
         public override GeometryAttribute Read(MemoryMappedView view)
-        {
-            var data = view.ReadArray<T>();
-            return new GeometryAttribute<T>(data, Descriptor);
-        }
+            => new GeometryAttribute<T>(view.ReadBytes().Reinterpret<T>(), Descriptor);
+
+        public override int ElementCount
+            => Data.Count;
 
         public override GeometryAttribute SetIndex(int index)
             => index == Descriptor.Index ? this : new GeometryAttribute<T>(Data, Descriptor.SetIndex(index));

@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Ara3D.Buffers;
+using Ara3D.Memory;
 
-namespace Ara3D.Serialization.BFAST
+namespace Ara3D.BFAST
 {
     /// <summary>
     /// Anything that can be added to a BFAST must have a size and write to a stream.
@@ -23,8 +23,8 @@ namespace Ara3D.Serialization.BFAST
         public BufferAsBFastComponent(IBuffer buffer)
             => Buffer = buffer;
         public IBuffer Buffer { get; }
-        public void Write(Stream stream) => stream.Write(Buffer);
-        public long GetSize() => Buffer.GetNumBytes();
+        public void Write(Stream stream) => stream.WriteBuffer(Buffer);
+        public long GetSize() => Buffer.Length();
     }
 
     /// <summary>

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using Ara3D.Buffers;
+using Ara3D.Memory;
 using Ara3D.Utils;
 
 namespace Ara3D.StepParser
@@ -19,12 +19,12 @@ namespace Ara3D.StepParser
 
     public class StepEntity : StepValue
     {
-        public readonly ByteSpan EntityType;
+        public readonly ByteSlice EntityType;
         public readonly StepList Attributes;
 
-        public StepEntity(ByteSpan entityType, StepList attributes)
+        public StepEntity(ByteSlice entityType, StepList attributes)
         {
-            Debug.Assert(!entityType.IsNull());
+            Debug.Assert(!entityType.IsEmpty);
             EntityType = entityType;
             Attributes = attributes;
         }
@@ -48,11 +48,11 @@ namespace Ara3D.StepParser
 
     public class StepString : StepValue
     {
-        public readonly ByteSpan Value;
+        public readonly ByteSlice Value;
 
         public static StepString Create(StepToken token)
         {
-            var span = token.Span;
+            var span = token.Slice;
             Debug.Assert(token.Type == StepTokenType.String);
             Debug.Assert(span.Length >= 2);
             Debug.Assert(span.First() == '\'' || span.First() == '"');
@@ -60,7 +60,7 @@ namespace Ara3D.StepParser
             return new StepString(span.Trim(1, 1));
         }
 
-        public StepString(ByteSpan value)
+        public StepString(ByteSlice value)
             => Value = value;
 
         public override string ToString()
@@ -69,9 +69,9 @@ namespace Ara3D.StepParser
 
     public class StepSymbol : StepValue
     {
-        public readonly ByteSpan Name;
+        public readonly ByteSlice Name;
 
-        public StepSymbol(ByteSpan name)
+        public StepSymbol(ByteSlice name)
             => Name = name;
 
         public override string ToString()
@@ -80,7 +80,7 @@ namespace Ara3D.StepParser
         public static StepSymbol Create(StepToken token)
         {
             Debug.Assert(token.Type == StepTokenType.Symbol);
-            var span = token.Span;
+            var span = token.Slice;
             Debug.Assert(span.Length >= 2);
             Debug.Assert(span.First() == '.');
             Debug.Assert(span.Last() == '.');
@@ -90,11 +90,11 @@ namespace Ara3D.StepParser
 
     public class StepNumber : StepValue
     {
-        public readonly ByteSpan Span;
-        public double Value => Span.ToDouble();
+        public readonly ByteSlice Slice;
+        public double Value => Slice.ToDouble();
 
-        public StepNumber(ByteSpan span)
-            => Span = span;
+        public StepNumber(ByteSlice slice)
+            => Slice = slice;
 
         public override string ToString()
             => $"{Value}";
@@ -102,7 +102,7 @@ namespace Ara3D.StepParser
         public static StepNumber Create(StepToken token)
         {
             Debug.Assert(token.Type == StepTokenType.Number);
-            var span = token.Span;
+            var span = token.Slice;
             return new(span);
         }
     }
@@ -120,7 +120,7 @@ namespace Ara3D.StepParser
         public static unsafe StepId Create(StepToken token)
         {
             Debug.Assert(token.Type == StepTokenType.Id);
-            var span = token.Span;
+            var span = token.Slice;
             Debug.Assert(span.Length >= 2);
             Debug.Assert(span.First() == '#');
             var id = 0u;
@@ -143,7 +143,7 @@ namespace Ara3D.StepParser
         public static StepUnassigned Create(StepToken token)
         {
             Debug.Assert(token.Type == StepTokenType.Unassigned);
-            var span = token.Span;
+            var span = token.Slice;
             Debug.Assert(span.Length == 1);
             Debug.Assert(span.First() == '$');
             return Default;
@@ -160,7 +160,7 @@ namespace Ara3D.StepParser
         public static StepRedeclared Create(StepToken token)
         {
             Debug.Assert(token.Type == StepTokenType.Redeclared);
-            var span = token.Span;
+            var span = token.Slice;
             Debug.Assert(span.Length == 1);
             Debug.Assert(span.First() == '*');
             return Default;

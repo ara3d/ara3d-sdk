@@ -104,12 +104,8 @@ namespace Ara3D.Serialization.G3D
 
             if (NumVertices < 0) NumVertices = 0;
 
-            // If the index attribute is missing we will have to add it. 
             if (!Lookup.ContainsKey(CommonAttributes.Index))
-            {
-                if (NumCorners < 0) NumCorners = NumVertices;
-                Lookup.Add(CommonAttributes.Index, NumCorners.Range().ToIndexAttribute());
-            }
+                throw new Exception($"The attribute {CommonAttributes.Index} is missing. This attribute is required for all meshes.");
 
             // Now we create the public ordered list of attributes 
             Attributes = Lookup.Values.OrderBy(attr => attr.Name).ToIArray();

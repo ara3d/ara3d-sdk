@@ -12,8 +12,7 @@ namespace Ara3D.Serialization.VIM
         public List<string> CategoryNames = new();
         public List<int> NodeElements = new();
 
-        public static VimDocument Load(FilePath filePath)
-            => new VimDocument(VimSerializer.Deserialize(filePath));
+        public static VimDocument Load(FilePath filePath) => new(VimSerializer.Deserialize(filePath));
 
         public VimDocument(SerializableDocument doc)
         {

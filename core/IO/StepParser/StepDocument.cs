@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Intrinsics;
-using Ara3D.Buffers;
 using Ara3D.Logging;
+using Ara3D.Memory;
 using Ara3D.Utils;
 
 namespace Ara3D.StepParser
@@ -42,23 +42,23 @@ namespace Ara3D.StepParser
             logger = logger ?? Logger.Null;
 
             logger.Log($"Loading {filePath.GetFileSizeAsString()} of data from {filePath.GetFileName()}");
-            Data = AlignedMemoryReader.ReadAllBytes(filePath);
-            DataStart = Data.BytePtr;
-            DataEnd = DataStart + Data.NumBytes;
+            Data = Serializer.ReadAllBytesAligned(filePath, 256);
+            DataStart = Data.GetPointer();
+            DataEnd = DataStart + Data.Length();
 
             logger.Log($"Computing the start of each line");
             // NOTE: this estimates that the average line length is at least 32 characters. 
             // This minimize the number of allocations that happen
-            var cap = Data.NumBytes / 32;
-            LineOffsets = new List<int>(cap);
+            var cap = Data.Length() / 32;
+            LineOffsets = new List<int>(checked((int)cap));
 
             // We are going to report the beginning of the lines, while the "ComputeLines" function
             // will compute the ends of lines.
             var currentLine = 1;
-            for (var i = 0; i < Data.NumVectors; i++)
+            for (var i = 0; i < Data.NumBytes / 256; i++)
             {
                 StepLineParser.ComputeOffsets(
-                    ((Vector256<byte>*)Data.BytePtr)[i], ref currentLine, LineOffsets);
+                    (Data.Bytes.GetPointer<Vector256<byte>>())[i], ref currentLine, LineOffsets);
             }
 
             logger.Log($"Found {LineOffsets.Count} lines");

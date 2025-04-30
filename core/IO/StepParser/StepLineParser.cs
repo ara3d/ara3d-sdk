@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
-using Ara3D.Buffers;
+using Ara3D.Memory;
 
 namespace Ara3D.StepParser
 {
@@ -114,8 +114,8 @@ namespace Ara3D.StepParser
             if (ptr == entityStart)
                 return default;
 
-            var entityType = new ByteSpan(entityStart, ptr);
-            return new(id, entityType, start);
+            var entityType = new ByteSlice(entityStart, ptr);
+            return new StepRawInstance(id, entityType, start);
         }
     }
 }

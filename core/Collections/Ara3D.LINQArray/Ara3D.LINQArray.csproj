@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Buffers\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\Mathematics\Core\Plato.Core.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,4 +1,4 @@
-﻿using Ara3D.Buffers;
+﻿using Ara3D.Memory;
 
 namespace Ara3D.Serialization.VIM
 {

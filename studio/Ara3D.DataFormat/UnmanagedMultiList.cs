@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Ara3D.Memory;
 
 namespace Ara3D.Data
 {

@@ -1,10 +1,12 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
+using Ara3D.Memory;
 using Ara3D.Utils;
 
 namespace Ara3D.Data
 {
   
-    public class RenderSceneBuilder : IDisposable, IRenderScene
+    public class RenderSceneBuilder :  IRenderScene
     {
         public UnmanagedList<VertexStruct> VertexList = new();
         public UnmanagedList<uint> IndexList = new();
@@ -34,18 +36,15 @@ namespace Ara3D.Data
             };
 
         public void AddMesh(IEnumerable<Vector3> positions, IEnumerable<int> indices, bool addInstance)
-            => AddMesh((ReadOnlySpan<Vector3>)positions.ToArray(), (ReadOnlySpan<int>)indices.ToArray(), addInstance);
+            => AddMesh(positions.ToList(), indices.ToList(), addInstance);
 
         public void AddMesh(IEnumerable<Vector3> positions, IEnumerable<Vector3> normals, IEnumerable<int> indices, bool addInstance)
-            => AddMesh(
-                (ReadOnlySpan<Vector3>)positions.ToArray(),
-                (ReadOnlySpan<Vector3>)normals.ToArray(),
-                (ReadOnlySpan<int>)indices.ToArray(), addInstance);
+            => AddMesh(positions.ToList(), normals.ToList(), indices.ToList(), addInstance);
 
         public void AddMesh(Vector3[] positions, int[] indices, bool addInstance)
-            => AddMesh((ReadOnlySpan<Vector3>)positions, (ReadOnlySpan<int>)indices, addInstance);
+            => AddMesh(positions, indices, addInstance);
 
-        public void AddMesh(ReadOnlySpan<Vector3> positions, ReadOnlySpan<int> indices, bool addInstance)
+        public void AddMesh(IReadOnlyList<Vector3> positions, IReadOnlyList<int> indices, bool addInstance)
             => AddMesh(positions, ToNormals(positions, indices), indices, addInstance);
 
         public void AddMesh(ReadOnlySpan<Vector3> positions, ReadOnlySpan<Vector3> normals, ReadOnlySpan<int> indices, bool addInstance)
@@ -141,11 +140,11 @@ namespace Ara3D.Data
             }
         }
 
-        public static Vector3[] ToNormals(ReadOnlySpan<Vector3> positions, ReadOnlySpan<int> indices)
+        public static Vector3[] ToNormals(IReadOnlyList<Vector3> positions, IReadOnlyList<int> indices)
         {
             // TODO: this ia a naive normal computation algorithm .... Normals should be angle based for best accuracy. 
-            var normals = new Vector3[positions.Length];
-            for (var i = 0; i < indices.Length; i += 3)
+            var normals = new Vector3[positions.Count];
+            for (var i = 0; i < indices.Count; i += 3)
             {
                 var a = indices[i];
                 var b = indices[i + 1];
@@ -181,8 +180,8 @@ namespace Ara3D.Data
             var max = new Vector3(float.MinValue);
             for (var i = mesh.FirstIndex; i < mesh.FirstIndex + mesh.IndexCount; i++)
             {
-                var index = IndexList[i];
-                var vertex = VertexList[index];
+                var index = IndexList[(int)i];
+                var vertex = VertexList[(int)index];
                 min = Vector3.Min(min, vertex.Position);
                 max = Vector3.Max(max, vertex.Position);
             } 
@@ -202,7 +201,7 @@ namespace Ara3D.Data
         {
             ref var mesh = ref Meshes[(int)group.MeshIndex];
             for (var i=group.BaseInstance; i < group.BaseInstance + group.InstanceCount; i++)
-                ComputeBounds(ref Instances[i], mesh.Bounds);
+                ComputeBounds(ref Instances[(int)i], mesh.Bounds);
         }
 
         public void ComputeAllInstanceBounds()

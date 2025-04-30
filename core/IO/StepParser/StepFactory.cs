@@ -10,7 +10,7 @@ namespace Ara3D.StepParser
         {
             if (!inst.IsValid())
                 return default;
-            var ptr = inst.Type.End();
+            var ptr = inst.Type.End;
             var token = StepTokenizer.ParseToken(ptr, lineEnd);
             // TODO: there is a potential bug here when the line is split across multiple line
             return CreateAggregate(ref token, lineEnd);
@@ -39,7 +39,7 @@ namespace Ara3D.StepParser
                     return StepNumber.Create(token);
 
                 case StepTokenType.Ident:
-                    var span = token.Span;
+                    var span = token.Slice;
                     StepTokenizer.ParseNextToken(ref token, end);
                     var attr = CreateAggregate(ref token, end);
                     return new StepEntity(span, attr);

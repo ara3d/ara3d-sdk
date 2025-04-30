@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using Ara3D.Memory;
+using Ara3D.MemoryMappedFiles;
 
-namespace Ara3D.Serialization.BFAST
+namespace Ara3D.BFAST
 {
     public class BFastReader
     {
         public BFastPreamble Preamble { get; }
         public BFastRange[] Ranges { get; }
-        public string[] BufferNames { get; } = Array.Empty<string>();
+        public string[] BufferNames { get; } = [];
         public MemoryMappedView View { get; }
         
         public static void Read(MemoryMappedView view, Action<string, MemoryMappedView, int> onBuffer)
@@ -14,13 +17,24 @@ namespace Ara3D.Serialization.BFAST
             new BFastReader(view).Read(onBuffer);
         }
 
+        public static IReadOnlyList<(AlignedMemory, string)> ReadBuffers(string filePath)
+        {
+            var r = new List<(AlignedMemory, string)>();
+            Read(filePath, (name, view, index) =>
+            {
+                var memory = view.ReadBytes();
+                r.Add((memory, name));
+            });
+            return r;
+        }
+
         public void Read(Action<string, MemoryMappedView, int> onBuffer)
         {
             for (var i = 0; i < BufferNames.Length; ++i)
             {
                 var (name, range) = GetNameAndRange(i);
-                using (var subView = View.CreateSubView(range.Begin, range.Count))
-                    onBuffer(name, subView, i);
+                using var subView = View.CreateSubView(range.Begin, range.Count);
+                onBuffer(name, subView, i);
             }
         }
 

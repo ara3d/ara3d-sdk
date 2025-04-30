@@ -1,17 +1,17 @@
 ﻿using System.Diagnostics;
-using Ara3D.Buffers;
+using Ara3D.Memory;
 
 namespace Ara3D.StepParser
 {
     public readonly struct StepToken
     {
-        public readonly ByteSpan Span;
+        public readonly ByteSlice Slice;
         public readonly StepTokenType Type;
 
-        public StepToken(ByteSpan span, StepTokenType type)
+        public StepToken(ByteSlice slice, StepTokenType type)
         {
-            Span = span;
-            Debug.Assert(span.Length > 0);
+            Slice = slice;
+            Debug.Assert(slice.Length > 0);
             Type = type;
         }
     }

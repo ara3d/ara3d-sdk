@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Ara3D.Buffers;
+using Ara3D.Memory;
 
 namespace Ara3D.StepParser
 {
@@ -9,10 +9,10 @@ namespace Ara3D.StepParser
     /// </summary>  
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly unsafe struct StepRawInstance(uint id, ByteSpan type, byte* ptr)
+    public readonly unsafe struct StepRawInstance(uint id, ByteSlice type, byte* ptr)
     {
         public readonly uint Id = id;
-        public readonly ByteSpan Type = type;
+        public readonly ByteSlice Type = type;
         public readonly byte* Ptr = ptr;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

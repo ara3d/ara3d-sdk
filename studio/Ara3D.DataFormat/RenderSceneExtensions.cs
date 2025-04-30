@@ -1,4 +1,5 @@
-﻿using Ara3D.Utils;
+﻿using Ara3D.Memory;
+using Ara3D.Utils;
 using Plato;
 
 namespace Ara3D.Data;
@@ -9,15 +10,7 @@ public static unsafe class RenderSceneExtensions
         => self.Count * sizeof(T);
 
     public static IntPtr GetIntPtr<T>(this IBuffer<T> self) where T : unmanaged
-        => new IntPtr(self.Pointer);
-
-    public static IRenderScene Copy(this IRenderScene other)
-        => new RenderScene(
-            other.Vertices.Copy(), 
-            other.Indices.Copy(), 
-            other.Meshes.Copy(), 
-            other.Instances.Copy(), 
-            other.Groups.Copy());
+        => new(self.GetPointer());
 
     public static IArray<T> ToIArray<T>(this IReadOnlyList<T> self)
         => new Array<T>(self.Count, i => self[i]);
@@ -32,7 +25,7 @@ public static unsafe class RenderSceneExtensions
         for (var i=0; i < slice.IndexCount; i++)
         {
             var index = slice.FirstIndex + i;
-            var vertexIndex = scene.Indices[index];
+            var vertexIndex = scene.Indices[(int)index];
             indices.Add((int)vertexIndex);
             minVertex = Math.Min(minVertex, vertexIndex);
             maxVertex = Math.Max(maxVertex, vertexIndex);
@@ -40,7 +33,7 @@ public static unsafe class RenderSceneExtensions
 
         for (var i=minVertex; i <= maxVertex; i++)
         {
-            var vertex = scene.Vertices[i];
+            var vertex = scene.Vertices[(int)i];
             points.Add(new Point3D(vertex.Position.X, vertex.Position.Y, vertex.Position.Z));
         }
 

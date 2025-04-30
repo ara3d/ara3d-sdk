@@ -1,37 +1,152 @@
-using System;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Ara3D.Buffers
+namespace Ara3D.Memory
 {
     /// <summary>
-    /// Allocates fixed and aligned memory appropriate
-    /// for usage with data structures up to "Width" bytes wide.  
+    /// Represents a block of unmanaged memory with a specified alignment.
     /// </summary>
-    public unsafe class AlignedMemory : IDisposable
+    [SkipLocalsInit]
+    public unsafe class AlignedMemory : IMemoryOwner, IDisposable
     {
-        public readonly byte* BytePtr;
-        public readonly IntPtr AllocPtr;
-        public readonly int NumBytes;
-        public readonly int NumVectors;
-        public const int Width = 32;
-        public byte* End => BytePtr + NumBytes;
+        public ByteSlice Bytes { get; private set; }
+        public nuint Alignment { get; }
 
-        public AlignedMemory(int numBytes)
+        /// <summary>
+        /// Initializes a new instance of the with the specified size and alignment.
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public AlignedMemory(long count, uint alignment = 512)
         {
-            NumBytes = numBytes;
-            NumVectors = (numBytes / Width) + (numBytes % Width == 0 ? 0 : 1);
-
-            // This is the amount of space we need for the vectors
-            // We add 1 to number of vectors to account for alignment 
-            var space = (NumVectors + 1) * Width;
-            AllocPtr = Marshal.AllocHGlobal(space + Width);
-
-            BytePtr = (byte*)(((long)AllocPtr + Width - 1) & ~(Width - 1));
+            Alignment = alignment;
+            var paddedCount = (count / alignment) * alignment;
+            Debug.Assert(count <= paddedCount);
+            Debug.Assert(paddedCount % alignment == 0);
+            Bytes = new ByteSlice((byte*)NativeMemory.AlignedAlloc((nuint)paddedCount, alignment), count);
+            if (Bytes.IsNull)
+                throw new OutOfMemoryException();
+            Alignment = alignment;
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Releases the unmanaged memory.
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public virtual void Dispose()
         {
-            Marshal.FreeHGlobal(AllocPtr);
+            if (!Bytes.IsEmpty)
+                NativeMemory.AlignedFree(this.GetPointer());
+            Bytes = ByteSlice.Empty;
+        }
+
+        ~AlignedMemory()
+        {
+            Dispose();
+        }
+
+        /// <summary>
+        /// Reallocates the block of managed memory
+        /// </summary>
+        /// <param name="size"></param>
+        public void Reallocate(long size)
+        {
+            if (Bytes.IsNull)
+                throw new InvalidOperationException();
+            Bytes = new ByteSlice((byte*)NativeMemory.AlignedRealloc(Bytes.Begin, (nuint)size, Alignment), size);
+            if (Bytes.IsNull)
+                throw new OutOfMemoryException();
+        }
+
+        /// <summary>
+        /// Implicit cast to a ByteSlice.
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static implicit operator ByteSlice(AlignedMemory memory)
+            => memory.Bytes;
+
+        /// <summary>
+        /// Implicit cast to a ByteSlice.
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static implicit operator ReadOnlySpan<byte>(AlignedMemory memory)
+            => memory.Bytes;
+
+        /// <summary>
+        /// Implicit cast to a ByteSlice.
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static implicit operator Span<byte>(AlignedMemory memory)
+            => memory.Bytes;
+
+        /// <summary>
+        /// The number of bytes in the buffer.
+        /// </summary>
+        public long NumBytes
+        {
+            [MethodImpl(AggressiveInlining)] get => Bytes.Length;
+        }
+    }
+
+    /// <summary>
+    /// Represents a block of unmanaged memory with a specified alignment.
+    /// Initially allocated with a specific type.
+    /// There can only be up to int.MaxValue elements in the buffer (approx. 2 Billion)
+    /// </summary>
+    [SkipLocalsInit]
+    public unsafe class AlignedMemory<T> : AlignedMemory, IMemoryOwner<T>
+        where T : unmanaged
+    {
+        private T* _pointer;
+
+        [MethodImpl(AggressiveInlining)]
+        public AlignedMemory(long count, uint alignment = 512)
+            : base(count * Marshal.SizeOf<T>(), alignment)
+        {
+            Count = checked((int)count);
+            _pointer = Bytes.GetPointer<T>();
+        }
+
+        public Type Type
+        {
+            [MethodImpl(AggressiveInlining)] 
+            get => typeof(T);
+        }
+
+        [MethodImpl(AggressiveInlining)]
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (var i = 0; i < Count; ++i)
+                yield return this[i];
+        }
+
+        [MethodImpl(AggressiveInlining)]
+        IEnumerator IEnumerable.GetEnumerator()
+            => GetEnumerator();
+
+        public int Count { get; }
+
+        public ref T this[int index]
+        {
+            [MethodImpl(AggressiveInlining)] 
+            get => ref _pointer[index];
+        }
+
+        T IReadOnlyList<T>.this[int index]
+        {
+            [MethodImpl(AggressiveInlining)]
+            get => this[index];
+        }
+
+        [MethodImpl(AggressiveInlining)]
+        public override void Dispose()
+        {
+            base.Dispose();
+            _pointer = null;
         }
     }
 }

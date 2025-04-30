@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Ara3D.Buffers;
+using Ara3D.Memory;
 using Ara3D.Utils;
 
 namespace Ara3D.NarwhalDB
@@ -35,14 +36,14 @@ namespace Ara3D.NarwhalDB
             return data.ToNamedBuffer(TableSchema.Name);
         }
 
-        public static Table Create(ByteSpan span, Type type, IReadOnlyList<string> strings)
-            => Create(span, new TableSchema(type), strings);
+        public static Table Create(ByteSlice slice, Type type, IReadOnlyList<string> strings)
+            => Create(slice, new TableSchema(type), strings);
 
-        public static unsafe Table Create(ByteSpan span, TableSchema schema, IReadOnlyList<string> strings)
+        public static unsafe Table Create(ByteSlice slice, TableSchema schema, IReadOnlyList<string> strings)
         {
             var t = new Table(schema);
-            var ptr = new IntPtr(span.Ptr);
-            var end = span.End();
+            var ptr = new IntPtr(slice.Ptr);
+            var end = slice.End();
             while (ptr.ToPointer() < end)
             {
                 var obj = schema.ReadObject(ref ptr, strings);

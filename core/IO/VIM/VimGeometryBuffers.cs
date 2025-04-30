@@ -1,7 +1,7 @@
-﻿using Ara3D.Buffers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Ara3D.Memory;
 
 namespace Ara3D.Serialization.VIM
 {
@@ -22,9 +22,9 @@ namespace Ara3D.Serialization.VIM
         public static Vector3BufferGroup Create(string name, IReadOnlyList<Vector3> vectors)
             => new()
             {
-                X = vectors.Select(v => v.X).ToArray().ToNamedBuffer(name + "." + nameof(X)),
-                Y = vectors.Select(v => v.Y).ToArray().ToNamedBuffer(name + "." + nameof(Y)),
-                Z = vectors.Select(v => v.Z).ToArray().ToNamedBuffer(name + "." + nameof(Z)),
+                X = vectors.Select(v => v.X).ToArray().Fix().ToNamedBuffer(name + "." + nameof(X)),
+                Y = vectors.Select(v => v.Y).ToArray().Fix().ToNamedBuffer(name + "." + nameof(Y)),
+                Z = vectors.Select(v => v.Z).ToArray().Fix().ToNamedBuffer(name + "." + nameof(Z)),
             };
 
         public Vector3[] ToVector3s()
@@ -49,19 +49,19 @@ namespace Ara3D.Serialization.VIM
         public static Vector4BufferGroup Create(string name, IReadOnlyList<Vector4> vectors)
             => new()
             {
-                X = vectors.Select(v => v.X).ToArray().ToNamedBuffer(name + "." + nameof(X)),
-                Y = vectors.Select(v => v.Y).ToArray().ToNamedBuffer(name + "." + nameof(Y)),
-                Z = vectors.Select(v => v.Z).ToArray().ToNamedBuffer(name + "." + nameof(Z)),
-                W = vectors.Select(v => v.W).ToArray().ToNamedBuffer(name + "." + nameof(W)),
+                X = vectors.Select(v => v.X).ToArray().Fix().ToNamedBuffer(name + "." + nameof(X)),
+                Y = vectors.Select(v => v.Y).ToArray().Fix().ToNamedBuffer(name + "." + nameof(Y)),
+                Z = vectors.Select(v => v.Z).ToArray().Fix().ToNamedBuffer(name + "." + nameof(Z)),
+                W = vectors.Select(v => v.W).ToArray().Fix().ToNamedBuffer(name + "." + nameof(W)),
             };
 
         public static Vector4BufferGroup Create(string name, IReadOnlyList<Quaternion> vectors)
             => new()
             {
-                X = vectors.Select(v => v.X).ToArray().ToNamedBuffer(name + "." + nameof(X)),
-                Y = vectors.Select(v => v.Y).ToArray().ToNamedBuffer(name + "." + nameof(Y)),
-                Z = vectors.Select(v => v.Z).ToArray().ToNamedBuffer(name + "." + nameof(Z)),
-                W = vectors.Select(v => v.W).ToArray().ToNamedBuffer(name + "." + nameof(W)),
+                X = vectors.Select(v => v.X).ToArray().Fix().ToNamedBuffer(name + "." + nameof(X)),
+                Y = vectors.Select(v => v.Y).ToArray().Fix().ToNamedBuffer(name + "." + nameof(Y)),
+                Z = vectors.Select(v => v.Z).ToArray().Fix().ToNamedBuffer(name + "." + nameof(Z)),
+                W = vectors.Select(v => v.W).ToArray().Fix().ToNamedBuffer(name + "." + nameof(W)),
             };
 
         public Vector4[] ToVector4s()
@@ -300,9 +300,9 @@ namespace Ara3D.Serialization.VIM
                 MeshSubMeshOffset = MeshSubMeshOffset,
                 SubMeshIndexOffsets = SubMeshIndexOffsets,
                 SubMeshMaterials = SubMeshMaterials,
-                Vertices = Vertices.ToVector3s().ToNamedBuffer(nameof(Vertices)),
-                MaterialColors = MaterialColors.ToVector4s().ToNamedBuffer(nameof(MaterialColors)),
-                InstanceTransforms = InstanceTransforms.ToMatrices().ToNamedBuffer(nameof(InstanceTransforms))
+                Vertices = Vertices.ToVector3s().Fix().ToNamedBuffer(nameof(Vertices)),
+                MaterialColors = MaterialColors.ToVector4s().Fix().ToNamedBuffer(nameof(MaterialColors)),
+                InstanceTransforms = InstanceTransforms.ToMatrices().Fix().ToNamedBuffer(nameof(InstanceTransforms))
             };
     }
 }

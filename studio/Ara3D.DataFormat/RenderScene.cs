@@ -1,32 +1,26 @@
-﻿namespace Ara3D.Data
+﻿using Ara3D.Memory;
+
+namespace Ara3D.Data
 {
-    public class RenderScene : IRenderScene
+    public class RenderScene(
+        IMemoryOwner<VertexStruct> vertexBlock,
+        IMemoryOwner<uint> indexBlock,
+        IMemoryOwner<MeshSliceStruct> meshBlock,
+        IMemoryOwner<InstanceStruct> instanceBlock,
+        IMemoryOwner<InstanceGroupStruct> groupBlock)
+        : IRenderScene
     {
-        public MemoryBlock<VertexStruct> VertexBlock { get; }
-        public MemoryBlock<uint> IndexBlock { get; }
-        public MemoryBlock<MeshSliceStruct> MeshBlock { get; }
-        public MemoryBlock<InstanceStruct> InstanceBlock { get; }
-        public MemoryBlock<InstanceGroupStruct> GroupBlock { get; }
+        public IMemoryOwner<VertexStruct> VertexBlock { get; } = vertexBlock;
+        public IMemoryOwner<uint> IndexBlock { get; } = indexBlock;
+        public IMemoryOwner<MeshSliceStruct> MeshBlock { get; } = meshBlock;
+        public IMemoryOwner<InstanceStruct> InstanceBlock { get; } = instanceBlock;
+        public IMemoryOwner<InstanceGroupStruct> GroupBlock { get; } = groupBlock;
 
         public IBuffer<VertexStruct> Vertices => VertexBlock;
         public IBuffer<uint> Indices => IndexBlock;
         public IBuffer<MeshSliceStruct> Meshes => MeshBlock;
         public IBuffer<InstanceStruct> Instances => InstanceBlock;
         public IBuffer<InstanceGroupStruct> Groups => GroupBlock;
-
-        public RenderScene(
-            MemoryBlock<VertexStruct> vertexBlock,
-            MemoryBlock<uint> indexBlock,
-            MemoryBlock<MeshSliceStruct> meshBlock,
-            MemoryBlock<InstanceStruct> instanceBlock,
-            MemoryBlock<InstanceGroupStruct> groupBlock)
-        {
-            VertexBlock = vertexBlock;
-            IndexBlock = indexBlock;
-            MeshBlock = meshBlock;
-            InstanceBlock = instanceBlock;
-            GroupBlock = groupBlock;
-        }
 
         public void Dispose()
         {

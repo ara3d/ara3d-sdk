@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Buffers\Ara3D.Buffers.csproj" />
+    <ProjectReference Include="..\..\core\Buffers\Ara3D.Memory.csproj" />
     <ProjectReference Include="..\..\core\IO\BFAST\Ara3D.BFAST.csproj" />
     <ProjectReference Include="..\..\core\IO\G3D\Ara3D.G3D.csproj" />
     <ProjectReference Include="..\..\core\IO\VIM\Ara3D.VIM.csproj" />

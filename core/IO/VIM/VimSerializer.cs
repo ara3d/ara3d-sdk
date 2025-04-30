@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Ara3D.Buffers;
-using Ara3D.Serialization.BFAST;
+using Ara3D.BFAST;
+using Ara3D.Memory;
+using Ara3D.MemoryMappedFiles;
+using INamedBuffer = Ara3D.Memory.INamedBuffer;
 
 namespace Ara3D.Serialization.VIM
 {
@@ -17,7 +19,7 @@ namespace Ara3D.Serialization.VIM
             return r;
         }
 
-        public static readonly Regex TypePrefixRegex = new Regex(@"(\w+:).*");
+        public static readonly Regex TypePrefixRegex = new(@"(\w+:).*");
 
         public static string GetTypePrefix(this string name)
         {
@@ -36,7 +38,7 @@ namespace Ara3D.Serialization.VIM
         /// </summary>
         public static NamedBuffer<T> ReadEntityTableColumn<T>(
             string name, MemoryMappedView view) where T : unmanaged
-            => view.ReadArray<T>().ToNamedBuffer(name);
+            => view.ReadBytes().ToNamedBuffer<T>(name);
 
         /// <summary>
         /// Returns a SerializableEntityTable based on the given buffer reader.
@@ -109,7 +111,7 @@ namespace Ara3D.Serialization.VIM
         }
 
         public static string[] ReadStrings(MemoryMappedView view)
-            => view.ReadString().Split('\0');
+            => view.ReadBytes().Bytes.ToUtf8String().Split('\0');
 
         public static SerializableDocument Deserialize(string filePath, LoadOptions loadOptions = null)
         {

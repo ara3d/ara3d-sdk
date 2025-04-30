@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>    
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Buffers\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\BFAST\Ara3D.BFAST.csproj" />
-    <ProjectReference Include="..\G3D\Ara3D.G3D.csproj" />
   </ItemGroup>
+
 </Project>

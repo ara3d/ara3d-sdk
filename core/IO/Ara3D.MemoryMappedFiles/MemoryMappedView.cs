@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
-using System.IO.MemoryMappedFiles;
+﻿using System.IO.MemoryMappedFiles;
 
-namespace Ara3D.Serialization.BFAST
+namespace Ara3D.MemoryMappedFiles
 {
     /// <summary>
     /// This address a limitation of memory mapped view accessor,

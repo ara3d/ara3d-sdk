@@ -128,16 +128,6 @@ namespace Ara3D.Serialization.G3D
         public static IGeometryAttributes SetAttribute(this IGeometryAttributes self, GeometryAttribute attr)
             => self.Attributes.Where(a => !a.Descriptor.Equals(attr.Descriptor)).Append(attr).ToGeometryAttributes();
 
-        public static IGeometryAttributes SetAttribute<ValueT>(this IGeometryAttributes self, IArray<ValueT> values, AttributeDescriptor desc) where ValueT : unmanaged
-            => self.SetAttribute(values.ToAttribute(desc));
-
-        public static IEnumerable<GeometryAttribute> SetFaceSizeAttribute(this IEnumerable<GeometryAttribute> attributes, int numCornersPerFaces)
-            => (numCornersPerFaces <= 0)
-                   ? attributes
-                   : attributes
-                        .Where(attr => attr.Descriptor.Semantic != Semantic.FaceSize)
-                        .Append(new[] { numCornersPerFaces }.ToObjectFaceSizeAttribute());
-
         public static G3D ToG3d(this IEnumerable<GeometryAttribute> attributes, G3dHeader? header = null)
             => new G3D(attributes, header);
 

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Ara3D.Buffers;
+using Ara3D.Memory;
 
 namespace Ara3D.StepParser
 {
@@ -227,7 +227,7 @@ namespace Ara3D.StepParser
             var cur = begin;
             var tt = InternalParseToken(ref cur, end);
             Debug.Assert(cur < end);
-            var span = new ByteSpan(begin, cur);
+            var span = new ByteSlice(begin, cur);
             return new StepToken(span, tt);
         }
 
@@ -247,7 +247,7 @@ namespace Ara3D.StepParser
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe bool ParseNextToken(ref StepToken prev, byte* end)
         {
-            var cur = prev.Span.End();
+            var cur = prev.Slice.End;
             if (cur >= end) return false;
             prev = ParseToken(cur, end);
             return true;

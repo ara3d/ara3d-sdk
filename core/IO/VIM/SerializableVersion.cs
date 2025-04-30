@@ -73,7 +73,7 @@ namespace Ara3D.Serialization.VIM
         public const int UnknownValue = -1;
 
         public static SerializableVersion Unknown
-            => new SerializableVersion { Major = UnknownValue, Minor = UnknownValue, Patch = UnknownValue };
+            => new() { Major = UnknownValue, Minor = UnknownValue, Patch = UnknownValue };
 
         public bool IsEqualTo(SerializableVersion other)
             => Major == other.Major && Minor == other.Minor && Patch == other.Patch && Qualifier == other.Qualifier;
@@ -107,10 +107,10 @@ namespace Ara3D.Serialization.VIM
 
     public static class SerializableVersionExtensions
     {
-        public static System.Version ToVersion(this SerializableVersion version)
-            => new System.Version(version.Major, version.Minor, version.Patch);
+        public static System.Version ToVersion(this SerializableVersion version) =>
+            new(version.Major, version.Minor, version.Patch);
 
         public static SerializableVersion ToSerializableVersion(this System.Version version)
-            => new SerializableVersion { Major = version.Major, Minor = version.Minor, Patch = version.Build };
+            => new() { Major = version.Major, Minor = version.Minor, Patch = version.Build };
     }
 }

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.ComponentModel;
-using Ara3D.Buffers;
+using Ara3D.Memory;
 
 namespace Ara3D.Serialization.VIM
 {
     public class VimColumn : PropertyDescriptor
     {
         public VimTable Table { get; }
-        public INamedBuffer Buffer { get; }
+        public ITypedNamedBuffer Buffer { get; }
         public int ColumnIndex { get; }
         public Type ColumnType { get; }
         public string RelatedTableName { get; }
 
-        public VimColumn(VimTable table, INamedBuffer buffer, int index)
+        public VimColumn(VimTable table, ITypedNamedBuffer buffer, int index)
             : base(buffer.Name.GetColumnNameFromBufferName(), null)
         {
             Table = table;
@@ -48,12 +48,12 @@ namespace Ara3D.Serialization.VIM
                     throw new Exception("Row index out of range");
                 if (ColumnType == typeof(string))
                 {
-                    var span = Buffer.Span<int>();
+                    var span = Buffer.Bytes.AsSpan<int>();
                     var stringIndex = span[vtr.RowIndex];
                     return Table.GetString(stringIndex);
                 }
 
-                return Buffer[vtr.RowIndex];
+                return Buffer.GetElement(vtr.RowIndex);
             }
             throw new ArgumentException("Incorrect component type", nameof(component));
         }
@@ -77,9 +77,9 @@ namespace Ara3D.Serialization.VIM
             => ColumnType;
 
         public int Count 
-            => Buffer.ElementCount;
+            => Buffer.ElementCount();
 
         public object this[int n]
-            => Buffer[n];
+            => Buffer.GetElement(n);
     }
 }

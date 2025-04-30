@@ -1,13 +1,15 @@
-﻿using Ara3D.Buffers;
-using Ara3D.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using Ara3D.Memory;
+using Ara3D.MemoryMappedFiles;
+using Ara3D.Utils;
 
-namespace Ara3D.Serialization.BFAST
+namespace Ara3D.BFAST
 {
     /// <summary>
     /// Callback function allows clients to control writing the data to the output stream
@@ -328,7 +330,6 @@ namespace Ara3D.Serialization.BFAST
         /// </summary>
         public static IEnumerable<INamedBuffer> ReadBFast(this Stream stream)
         {
-            var current = stream.Position;
             var header = stream.ReadBFastHeader();
             var start = header.Preamble.DataStart;
             stream.Seek(start, SeekOrigin.Begin);
@@ -337,8 +338,10 @@ namespace Ara3D.Serialization.BFAST
                 var range = header.Ranges[i];
                 var name = header.Names[i];
                 var cnt = range.Count;
+                if (cnt > int.MaxValue)
+                    throw new Exception($"Buffer {name} is too large: {cnt} bytes");
                 stream.Seek(start + range.Begin, SeekOrigin.Begin);
-                var buffer = stream.ReadBuffer((int)cnt);
+                var buffer = stream.ReadBuffer(checked((int)cnt));
                 yield return buffer.ToNamedBuffer(name);
             }
         }
@@ -376,6 +379,15 @@ namespace Ara3D.Serialization.BFAST
             CheckAlignment(br.BaseStream);
 
             return r.Validate();
+        }
+
+        public static T[] ReadArray<T>(this Stream self, int count)
+            where T: unmanaged
+        {
+            var r = new T[count];
+            var bytes = MemoryMarshal.AsBytes(r.AsSpan());              
+            self.ReadExactly(bytes);                                       
+            return r;
         }
 
         /// <summary>
@@ -479,13 +491,10 @@ namespace Ara3D.Serialization.BFAST
                 writerFn);
         }
 
-        public static void WriteBuffer(this Stream stream, INamedBuffer buffer)
-            => stream.Write(buffer.Span<byte>());
-
         public static void WriteBFast(this FilePath filePath, IEnumerable<INamedBuffer> buffers)
         {
             var bs = buffers.ToList();
-            var sizes = bs.Select(b => b.GetNumBytes()).ToArray();
+            var sizes = bs.Select(b => b.Length()).ToArray();
             var names = bs.Select(b => b.Name).ToArray();
 
             long OnBuffer(Stream stream, int index, string name, long bytesToWrite)
@@ -494,13 +503,13 @@ namespace Ara3D.Serialization.BFAST
                 Debug.Assert(bytesToWrite == sizes[index]);
                 var buffer = bs[index];
                 Debug.Assert(buffer.Name == name);
-                Debug.Assert(buffer.GetNumBytes() == bytesToWrite);
-                WriteBuffer(stream, buffer);
+                Debug.Assert(buffer.Length() == bytesToWrite);
+                stream.WriteBuffer(buffer);
                 stream.Flush();
                 return bytesToWrite;
             }
 
-            Write(filePath, names, sizes, OnBuffer);
+            Write((string)filePath, (IEnumerable<string>)names, (IEnumerable<long>)sizes, OnBuffer);
         }
 
         public static void Write(this Stream stream, IEnumerable<string> bufferNames, IEnumerable<long> bufferSizes, BFastWriterFn onBuffer)
