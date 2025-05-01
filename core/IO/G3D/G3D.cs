@@ -276,8 +276,7 @@ namespace Ara3D.Serialization.G3D
                     throw new Exception("Failed to parse attribute");
 
                 // Populate a default attribute with the parsed attribute descriptor.
-                var defaultAttribute = attributeDescriptor.ToDefaultAttribute(0);
-                var geometryAttribute = defaultAttribute.Read(subView);
+                var geometryAttribute = GeometryAttribute.Read(subView, attributeDescriptor);
                 attributes.Add(geometryAttribute);
             }
 

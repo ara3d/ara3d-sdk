@@ -39,10 +39,6 @@ namespace Ara3D.Serialization.G3D
             return null;
         }
 
-        public static GeometryAttribute ToDefaultAttribute(this AttributeDescriptor desc, int count)
-        {
-            throw new Exception($"Could not create a default attribute for {desc}");
-        }
 
         public static long GetByteSize(this GeometryAttribute attribute)
             => (long)attribute.ElementCount * attribute.Descriptor.DataElementSize;

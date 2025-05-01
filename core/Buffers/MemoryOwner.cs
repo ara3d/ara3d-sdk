@@ -14,13 +14,13 @@ public class MemoryOwner<T> : IMemoryOwner<T>
     where T : unmanaged
 {
     public IMemoryOwner Memory { get; private set; }
-    public IBuffer<T> Buffer { get; private set; }
+    public Buffer<T> Buffer { get; private set; }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public MemoryOwner(IMemoryOwner memory)
     {
         Memory = memory;
-        Buffer = memory.Reinterpret<T>();
+        Buffer = new Buffer<T>(memory.Bytes);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

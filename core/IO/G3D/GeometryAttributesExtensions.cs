@@ -42,15 +42,6 @@ namespace Ara3D.Serialization.G3D
         public static GeometryAttribute<T> GetAttribute<T>(this IGeometryAttributes g, string attributeName) where T : unmanaged
             => g.GetAttribute(attributeName)?.AsType<T>();
 
-        public static GeometryAttribute DefaultAttribute(this IGeometryAttributes self, string name)
-            => self.DefaultAttribute(AttributeDescriptor.Parse(name));
-
-        public static GeometryAttribute DefaultAttribute(this IGeometryAttributes self, AttributeDescriptor desc)
-            => desc.ToDefaultAttribute(self.ExpectedElementCount(desc));
-
-        public static GeometryAttribute GetOrDefaultAttribute(this IGeometryAttributes self, AttributeDescriptor desc)
-            => self.GetAttribute(desc.ToString()) ?? desc.ToDefaultAttribute(self.ExpectedElementCount(desc));
-
         public static IEnumerable<GeometryAttribute> NoneAttributes(this IGeometryAttributes g)
             => g.Attributes.Where(a => a.Descriptor.Association == Association.assoc_none);
 
@@ -121,10 +112,6 @@ namespace Ara3D.Serialization.G3D
         public static IGeometryAttributes AddAttributes(this IGeometryAttributes attributes, params GeometryAttribute[] newAttributes)
             => attributes.Attributes.ToEnumerable().Concat(newAttributes).ToGeometryAttributes();
 
-        public static GeometryAttribute GetAttributeOrDefault(this IGeometryAttributes g, string name)
-            => g.GetAttribute(name) ?? g.DefaultAttribute(name);
-
-     
         public static IGeometryAttributes SetAttribute(this IGeometryAttributes self, GeometryAttribute attr)
             => self.Attributes.Where(a => !a.Descriptor.Equals(attr.Descriptor)).Append(attr).ToGeometryAttributes();
 

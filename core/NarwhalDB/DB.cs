@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Ara3D.BFAST;
 using Ara3D.Buffers;
 using Ara3D.Logging;
 using Ara3D.Serialization.BFAST;

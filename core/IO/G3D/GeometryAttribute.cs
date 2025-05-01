@@ -62,14 +62,40 @@ namespace Ara3D.Serialization.G3D
             => this as GeometryAttribute<T> ?? throw new Exception($"The type of the attribute is {GetType()} not MeshAttribute<{typeof(T)}>");
 
         /// <summary>
-        /// Loads the correct typed data from a Stream.
-        /// </summary>
-        public abstract GeometryAttribute Read(MemoryMappedView view);
-
-        /// <summary>
         /// Creates a new GeometryAttribute with the same data, but with a different index. Useful when constructing attributes 
         /// </summary>
         public abstract GeometryAttribute SetIndex(int index);
+
+        public static GeometryAttribute Read(MemoryMappedView view, AttributeDescriptor desc)
+        {
+            var bytes = view.ReadBytes();
+            switch (desc.DataType)
+            {
+                case DataType.dt_uint8: return new GeometryAttribute<byte>(bytes.Reinterpret<byte>(), desc);
+                case DataType.dt_int8: return new GeometryAttribute<sbyte>(bytes.Reinterpret<sbyte>(), desc);
+                case DataType.dt_uint16: return new GeometryAttribute<ushort>(bytes.Reinterpret<ushort>(), desc);
+                case DataType.dt_int16: return new GeometryAttribute<short>(bytes.Reinterpret<short>(), desc);
+                case DataType.dt_uint32: return new GeometryAttribute<uint>(bytes.Reinterpret<uint>(), desc);
+                case DataType.dt_int32: return new GeometryAttribute<int>(bytes.Reinterpret<int>(), desc);
+                case DataType.dt_uint64: return new GeometryAttribute<ulong>(bytes.Reinterpret<ulong>(), desc);
+                case DataType.dt_int64: return new GeometryAttribute<long>(bytes.Reinterpret<long>(), desc);
+                case DataType.dt_float32:
+                    switch (desc.DataArity)
+                    {
+                        case 1: return new GeometryAttribute<float>(bytes.Reinterpret<float>(), desc);
+                        case 2: return new GeometryAttribute<Vector2>(bytes.Reinterpret<Vector2>(), desc);
+                        case 3: return new GeometryAttribute<Vector3>(bytes.Reinterpret<Vector3>(), desc);
+                        case 4: return new GeometryAttribute<Vector4>(bytes.Reinterpret<Vector4>(), desc);
+                        case 16: return new GeometryAttribute<Matrix4x4>(bytes.Reinterpret<Matrix4x4>(), desc);
+                        default: throw new ArgumentOutOfRangeException();
+                    }
+                case DataType.dt_float64: return new GeometryAttribute<double>(bytes.Reinterpret<double>(), desc);
+
+                case DataType.dt_string:
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 
     /// <summary>
@@ -124,9 +150,6 @@ namespace Ara3D.Serialization.G3D
             if (arity != Descriptor.DataArity)
                 throw new Exception($"DatArity was {arity} but expected {Descriptor.DataArity}");
         }
-
-        public override GeometryAttribute Read(MemoryMappedView view)
-            => new GeometryAttribute<T>(view.ReadBytes().Reinterpret<T>(), Descriptor);
 
         public override int ElementCount
             => Data.Count;

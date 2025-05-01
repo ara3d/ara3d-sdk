@@ -17,14 +17,20 @@ namespace Ara3D.Memory
         public ByteSlice Bytes { get; private set; }
         public nuint Alignment { get; }
 
+        public static long NextMultiple(long value, long divisor)
+        {
+            var remainder = value % divisor;
+            return remainder == 0 ? value : value + (divisor - remainder);
+        }
+
         /// <summary>
         /// Initializes a new instance of the with the specified size and alignment.
         /// </summary>
         [MethodImpl(AggressiveInlining)]
         public AlignedMemory(long count, uint alignment = 512)
         {
-            Alignment = alignment;
-            var paddedCount = (count / alignment) * alignment;
+            Alignment = Math.Max(alignment, 1);
+            var paddedCount = NextMultiple(count, alignment);
             Debug.Assert(count <= paddedCount);
             Debug.Assert(paddedCount % alignment == 0);
             Bytes = new ByteSlice((byte*)NativeMemory.AlignedAlloc((nuint)paddedCount, alignment), count);

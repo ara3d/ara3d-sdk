@@ -14,6 +14,9 @@ namespace Ara3D.Memory
         public static byte* GetPointer(this IBuffer buffer)
             => buffer.Bytes.Begin;
 
+        public static T* GetPointer<T>(this IBuffer<T> buffer) where T : unmanaged
+            => buffer.Bytes.GetPointer<T>();
+
         public static T* GetPointer<T>(this IBuffer buffer) where T: unmanaged
             => buffer.Bytes.GetPointer<T>();
 
