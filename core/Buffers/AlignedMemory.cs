@@ -9,34 +9,24 @@ using static System.Runtime.CompilerServices.MethodImplOptions;
 namespace Ara3D.Memory
 {
     /// <summary>
-    /// Represents a block of unmanaged memory with a specified alignment.
+    /// Represents a block of unmanaged memory with 64-byte alignment.
     /// </summary>
     [SkipLocalsInit]
     public unsafe class AlignedMemory : IMemoryOwner, IDisposable
     {
         public ByteSlice Bytes { get; private set; }
-        public nuint Alignment { get; }
 
-        public static long NextMultiple(long value, long divisor)
-        {
-            var remainder = value % divisor;
-            return remainder == 0 ? value : value + (divisor - remainder);
-        }
+        public const int Alignment = 64;
 
         /// <summary>
         /// Initializes a new instance of the with the specified size and alignment.
         /// </summary>
         [MethodImpl(AggressiveInlining)]
-        public AlignedMemory(long count, uint alignment = 512)
+        public AlignedMemory(long count)
         {
-            Alignment = Math.Max(alignment, 1);
-            var paddedCount = NextMultiple(count, alignment);
-            Debug.Assert(count <= paddedCount);
-            Debug.Assert(paddedCount % alignment == 0);
-            Bytes = new ByteSlice((byte*)NativeMemory.AlignedAlloc((nuint)paddedCount, alignment), count);
+            Bytes = new ByteSlice((byte*)NativeMemory.AlignedAlloc((nuint)count, Alignment), count);
             if (Bytes.IsNull)
                 throw new OutOfMemoryException();
-            Alignment = alignment;
         }
 
         /// <summary>
@@ -99,7 +89,7 @@ namespace Ara3D.Memory
     }
 
     /// <summary>
-    /// Represents a block of unmanaged memory with a specified alignment.
+    /// Represents a block of unmanaged memory with a 64-byte alignment.
     /// Initially allocated with a specific type.
     /// There can only be up to int.MaxValue elements in the buffer (approx. 2 Billion)
     /// </summary>
@@ -110,8 +100,8 @@ namespace Ara3D.Memory
         private T* _pointer;
 
         [MethodImpl(AggressiveInlining)]
-        public AlignedMemory(long count, uint alignment = 512)
-            : base(count * Marshal.SizeOf<T>(), alignment)
+        public AlignedMemory(long count)
+            : base(count * Marshal.SizeOf<T>())
         {
             Count = checked((int)count);
             _pointer = Bytes.GetPointer<T>();

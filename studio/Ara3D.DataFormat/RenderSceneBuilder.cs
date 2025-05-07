@@ -1,11 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Numerics;
+using System.Runtime.InteropServices;
 using Ara3D.Memory;
+using Ara3D.Scenes;
 using Ara3D.Utils;
+using Plato;
+using Quaternion = System.Numerics.Quaternion;
+using Vector3 = System.Numerics.Vector3;
+using Vector4 = System.Numerics.Vector4;
 
 namespace Ara3D.Data
 {
-  
+    // TODO: this could be SO much better.
+    // Store positions. Store indices. Compute normals at the end. 
+    // Do the grouping of the instances at the end. 
+    // Do all of the bounds computation at the end. 
+    // Use different structures for building the scene.
+    // Make this VERY fast. 
+    // All for the data to be manipulated!
+    // ComputeNormals()
+    // ComputeBounds()
     public class RenderSceneBuilder :  IRenderScene
     {
         public UnmanagedList<VertexStruct> VertexList = new();
@@ -35,70 +48,26 @@ namespace Ara3D.Data
                 Roughness = 0.5f,
             };
 
-        public void AddMesh(IEnumerable<Vector3> positions, IEnumerable<int> indices, bool addInstance)
-            => AddMesh(positions.ToList(), indices.ToList(), addInstance);
+        public void AddMesh(IEnumerable<Vector3> positions, IEnumerable<int> indices)
+            => AddMesh(positions.ToArray().AsSpan(), indices.ToArray().AsSpan());
 
-        public void AddMesh(IEnumerable<Vector3> positions, IEnumerable<Vector3> normals, IEnumerable<int> indices, bool addInstance)
-            => AddMesh(positions.ToList(), normals.ToList(), indices.ToList(), addInstance);
-
-        public void AddMesh(Vector3[] positions, int[] indices, bool addInstance)
-            => AddMesh(positions, indices, addInstance);
-
-        public void AddMesh(IReadOnlyList<Vector3> positions, IReadOnlyList<int> indices, bool addInstance)
-            => AddMesh(positions, ToNormals(positions, indices), indices, addInstance);
-
-        public void AddMesh(ReadOnlySpan<Vector3> positions, ReadOnlySpan<Vector3> normals, ReadOnlySpan<int> indices, bool addInstance)
+        public static IEnumerable<int> GetIndices(TriangleMesh3D self)
         {
-            // Create a new mesh slice 
-            var meshSlice = new MeshSliceStruct()
+            foreach (var fi in self.FaceIndices)
             {
-                FirstIndex = (uint)IndexList.Count,
-                IndexCount = (uint)indices.Length,
-                BaseVertex = (int)VertexList.Count,
-            };
-
-            // Get the index of this mesh 
-            var meshIndex = MeshList.Count;
-            MeshList.Add(meshSlice);
-
-            // Add the instance group 
-            var group = new InstanceGroupStruct()
-            {
-                BaseInstance = (uint)InstanceList.Count,
-                InstanceCount = 1,
-                MeshIndex = (uint)meshIndex
-            };
-            InstanceGroupList.Add(group);
-
-            // Add the vertices (i.e., positions and normals)
-            for (var i = 0; i < positions.Length; i++)
-                AddVertex(positions[i], normals[i]);
-
-            // Add the indices 
-            foreach (var index in indices)
-                IndexList.Add((uint)index);
-
-            ComputeBounds(ref meshSlice);
-
-            if (addInstance)
-            {
-                InstanceList.Add(ToInstance(meshSlice));
+                yield return fi.A;
+                yield return fi.B;
+                yield return fi.C;
             }
         }
 
+        // TODO: ideally we would use reinterpret casts 
+        public void AddMesh(TriangleMesh3D mesh)
+            => AddMesh(
+                Enumerable.Select(mesh.Points, p => new Vector3(p.X, p.Y, p.Z)), 
+                GetIndices(mesh));
         public void AddVertex(Vector3 pos, Vector3 normal)
             => VertexList.Add(new VertexStruct(pos, normal));
-
-        public void AddTriangle(Vector3 a, Vector3 b, Vector3 c)
-        {
-            var normal = Vector3.Normalize(Vector3.Cross(b - a, c - a));
-            IndexList.Add((uint)VertexList.Count);
-            AddVertex(a, normal);
-            IndexList.Add((uint)VertexList.Count);
-            AddVertex(b, normal);
-            IndexList.Add((uint)VertexList.Count);
-            AddVertex(c, normal);
-        }
 
         public static InstanceStruct CreateInstance(MeshSliceStruct mesh)
             => new InstanceStruct
@@ -115,7 +84,7 @@ namespace Ara3D.Data
                 Roughness = 0.5f,
             };
 
-        public void AddInstancesAndGroups(UnmanagedList<InstanceStruct> instances)
+        public void AddInstancesAndGroups(IReadOnlyList<InstanceStruct> instances)
         {
             // TODO: a more efficient multi-dictionary would be nice.             
             var multiDict = new MultiDictionary<int, InstanceStruct>();
@@ -142,7 +111,6 @@ namespace Ara3D.Data
 
         public static Vector3[] ToNormals(IReadOnlyList<Vector3> positions, IReadOnlyList<int> indices)
         {
-            // TODO: this ia a naive normal computation algorithm .... Normals should be angle based for best accuracy. 
             var normals = new Vector3[positions.Count];
             for (var i = 0; i < indices.Count; i += 3)
             {
@@ -159,6 +127,128 @@ namespace Ara3D.Data
             }
 
             return normals;
+        }
+
+        public static void ComputeVertices(ReadOnlySpan<Vector3> positions, ReadOnlySpan<int> indices, Span<VertexStruct> vertices)
+        {
+            var cnt = positions.Length;
+            var normals = new Vector3[cnt];
+            ComputeNormals(positions, indices, normals.AsSpan());
+            var encNormals = new uint[cnt];
+            NormalEncoder.EncodeNormals(normals, encNormals);
+            for (var i = 0; i < cnt; i++)
+            {
+                vertices[i] = new VertexStruct(positions[i], encNormals[i]);
+            }
+        }
+
+        public void AddScene(Scene scene)
+        {
+            var meshes = new Dictionary<TriangleMesh3D, int>();
+
+            foreach (var node in scene.Nodes)
+            {
+                if (!meshes.ContainsKey(node.Mesh))
+                {
+                    var n = MeshList.Count;
+                    meshes.Add(node.Mesh, n);
+                    AddMesh(node.Mesh);
+                }
+            }
+
+            var instances = new List<InstanceStruct>();
+            foreach (var node in scene.Nodes)
+            {
+                var meshIndex = meshes[node.Mesh];
+                var (translation, quaternion, scale, success) = node.Transform.Decompose;
+                var color = node.Material.Color;
+                var instance = new InstanceStruct()
+                {
+                    MeshIndex = meshIndex,
+                    Color = new Vector4(color.R, color.G, color.B, color.A),
+                    Roughness = node.Material.Roughness,
+                    Metallic = node.Material.Metallic,
+                    Orientation = quaternion,
+                    Scale = scale,
+                    Position = translation
+                };
+                instances.Add(instance);
+            }
+            AddInstancesAndGroups(instances);
+        }
+
+        public void AddMesh(ReadOnlySpan<Vector3> positions, ReadOnlySpan<int> indices)
+        {
+#if DEBUG
+            foreach (var index in indices)
+            {
+                if (index < 0 || index >= positions.Length)
+                    throw new Exception($"Index out of range is {index} expected max {positions.Length}");
+            }
+#endif 
+
+            // Create a new mesh slice 
+            var meshSlice = new MeshSliceStruct()
+            {
+                FirstIndex = (uint)IndexList.Count,
+                IndexCount = (uint)indices.Length,
+                BaseVertex = (int)VertexList.Count,
+            };
+
+            MeshList.Add(meshSlice);
+
+            var vertexStructs = VertexList.AllocateSpan(positions.Length);
+            ComputeVertices(positions, indices, vertexStructs);
+                
+            IndexList.AddRange(MemoryMarshal.Cast<int, uint>(indices));
+
+            ComputeBounds(ref meshSlice);
+        }
+
+        public static void ComputeNormals(ReadOnlySpan<Vector3> positions, ReadOnlySpan<int> indices, Span<Vector3> normals)
+        {
+            var vCount = positions.Length;
+            var triCount = indices.Length / 3;
+
+            // Accumulate angle-weighted face normals per corner
+            for (var t = 0; t < triCount; t++)
+            {
+                var i0 = indices[3 * t];
+                var i1 = indices[3 * t + 1];
+                var i2 = indices[3 * t + 2];
+
+                var p0 = positions[i0];
+                var p1 = positions[i1];
+                var p2 = positions[i2];
+
+                // Compute and normalize the face normal
+                var faceNorm = Vector3.Cross(p1 - p0, p2 - p0);
+                faceNorm = Vector3.Normalize(faceNorm);
+
+                // Compute unit edge directions for corner angles
+                var e0 = Vector3.Normalize(p1 - p0);
+                var e1 = Vector3.Normalize(p2 - p1);
+                var e2 = Vector3.Normalize(p0 - p2);
+
+                // Compute the three interior angles
+                var angle0 = MathF.Acos(Math.Clamp(Vector3.Dot(e0, Vector3.Normalize(p2 - p0)), -1, 1));
+                var angle1 = MathF.Acos(Math.Clamp(Vector3.Dot(e1, Vector3.Normalize(p0 - p1)), -1, 1));
+                var angle2 = MathF.Acos(Math.Clamp(Vector3.Dot(e2, Vector3.Normalize(p1 - p2)), -1, 1));
+
+                // Accumulate
+                normals[i0] += faceNorm * angle0;
+                normals[i1] += faceNorm * angle1;
+                normals[i2] += faceNorm * angle2;
+            }
+
+            // Normalize per‐vertex
+            for (var i = 0; i < vCount; i++)
+            {
+                normals[i] = Vector3.Normalize(normals[i]);
+            }
+
+            var encodedNormals = new uint[positions.Length];
+            NormalEncoder.EncodeNormals(normals, encodedNormals);
         }
 
         public void Dispose()

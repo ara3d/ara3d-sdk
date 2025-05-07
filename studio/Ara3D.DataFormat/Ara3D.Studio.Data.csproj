@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\core\IO\VIM\Ara3D.VIM.csproj" />
     <ProjectReference Include="..\..\core\Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\..\core\Mathematics\Core\Plato.Core.csproj" />
+    <ProjectReference Include="..\..\core\Scene\Ara3D.Scene.csproj" />
     <ProjectReference Include="..\..\core\Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 

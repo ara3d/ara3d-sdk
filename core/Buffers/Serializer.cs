@@ -5,16 +5,16 @@ namespace Ara3D.Memory
 {
     public static unsafe class Serializer
     {
-        public static AlignedMemory ReadAllBytesAligned(string path, uint alignment)
-            => File.OpenRead(path).ReadAllBytesAligned(alignment);
+        public static AlignedMemory ReadAllBytesAligned(string path)
+            => File.OpenRead(path).ReadAllBytesAligned();
 
         public const int DefaultBufferSize = 1024 * 1024; 
 
-        public static AlignedMemory ReadAllBytesAligned(this Stream stream, uint alignment)
+        public static AlignedMemory ReadAllBytesAligned(this Stream stream)
         {
             if (!stream.CanSeek)
                 throw new NotSupportedException("Stream must support seeking");
-            var r = new AlignedMemory(stream.Length, alignment);
+            var r = new AlignedMemory(stream.Length);
             var dest = r.Bytes.Begin;
             var remaining = r.Bytes.Length;
             while (remaining > 0)

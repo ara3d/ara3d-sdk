@@ -24,7 +24,8 @@ namespace Ara3D.Memory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ByteSlice(byte* begin, byte* end)
             : this(begin, (int)(end - begin))
-        { }
+        {
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         // ReSharper disable once ConvertToPrimaryConstructor
@@ -133,7 +134,7 @@ namespace Ara3D.Memory
         public bool IsEmpty
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Count == 0; 
+            get => Count == 0;
         }
 
         public bool IsNull
@@ -217,23 +218,9 @@ namespace Ara3D.Memory
 
         public static readonly ByteSlice Empty = new(null, 0);
 
-        /// <summary>True if <see cref="Ptr"/> is aligned for <typeparamref name="T"/>.</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsAligned<T>() where T : unmanaged
-        {
-            // sizeof(T) is always a power-of-two for unmanaged structs in the CLR.
-            var mask = (nuint)Marshal.SizeOf<T>() - 1;
-            return ((nuint)Ptr & mask) == 0;
-        }
-
-        /// <summary>True when the slice can be re-interpreted as a contiguous array of <typeparamref name="T"/>.</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool CanCast<T>() where T : unmanaged
-            => IsAligned<T>() && Length % Unsafe.SizeOf<T>() == 0;
-
         /// <summary>Safely view the slice as a <see cref="Span{T}"/>; throws if mis-aligned or mis-sized.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Span<T> AsSpan<T>() where T : unmanaged 
+        public Span<T> AsSpan<T>() where T : unmanaged
             => new(GetPointer<T>(), checked((int)(Length / Marshal.SizeOf<T>())));
 
         /// <summary>Read-only counterpart to <see cref="AsSpan{T}"/>.</summary>
@@ -241,11 +228,19 @@ namespace Ara3D.Memory
         public ReadOnlySpan<T> AsReadOnlySpan<T>() where T : unmanaged
             => AsSpan<T>();
 
+        /// <summary>
+        /// Safely cast the underlying pointer to an unmanaged type.
+        /// Throws an <see cref="InvalidOperationException"/> if the length is not divisible by the size of T or is misaligned.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T* GetPointer<T>() where T : unmanaged
-            => !CanCast<T>()
-                ? throw new InvalidOperationException(
-                    $"Slice is not aligned ({sizeof(T)}-byte) or length-compatible with {typeof(T).Name}.")
-                : (T*)(Ptr);
+        {
+            if (Length % Unsafe.SizeOf<T>() != 0)
+                throw new InvalidOperationException($"Length of bytes is not divisible by {sizeof(T)}-byte");
+            var r = (T*)Ptr;
+            if (r != Ptr)
+                throw new InvalidOperationException($"Pointer is not aligned to {sizeof(T)}-byte");
+            return r;
+        }
     }
 }

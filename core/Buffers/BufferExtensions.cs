@@ -17,6 +17,12 @@ namespace Ara3D.Memory
         public static T* GetPointer<T>(this IBuffer<T> buffer) where T : unmanaged
             => buffer.Bytes.GetPointer<T>();
 
+        public static Span<T> AsSpan<T>(this IBuffer<T> buffer) where T : unmanaged
+            => buffer.Bytes.AsSpan<T>();
+
+        public static ReadOnlySpan<T> AsReadOnlySpan<T>(this IBuffer<T> buffer) where T : unmanaged
+            => buffer.AsSpan();
+
         public static T* GetPointer<T>(this IBuffer buffer) where T: unmanaged
             => buffer.Bytes.GetPointer<T>();
 

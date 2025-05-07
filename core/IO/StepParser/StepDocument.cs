@@ -42,7 +42,7 @@ namespace Ara3D.StepParser
             logger = logger ?? Logger.Null;
 
             logger.Log($"Loading {filePath.GetFileSizeAsString()} of data from {filePath.GetFileName()}");
-            Data = Serializer.ReadAllBytesAligned(filePath, 256);
+            Data = Serializer.ReadAllBytesAligned(filePath);
             DataStart = Data.GetPointer();
             DataEnd = DataStart + Data.Length();
 

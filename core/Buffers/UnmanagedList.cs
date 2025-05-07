@@ -19,7 +19,7 @@ namespace Ara3D.Memory
         private T* _pointer;
 
         // Constructor to allocate initial capacity in unmanaged memory
-        public UnmanagedList(int capacity = 1024, int count = 0, uint alignment = 256)
+        public UnmanagedList(int capacity = 0, int count = 0)
         {
             Count = count;
             if (capacity < 0)
@@ -28,7 +28,7 @@ namespace Ara3D.Memory
                 throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative.");
             if (count > capacity)
                 throw new ArgumentOutOfRangeException(nameof(count), "Count must be less than or equal to capacity.");
-            Memory = new AlignedMemory(capacity * ElementTypeSize, alignment <= 0 ? (uint)sizeof(T) : alignment);
+            Memory = new AlignedMemory(capacity * ElementTypeSize);
             _pointer = Memory.Bytes.GetPointer<T>();
         }
 
@@ -42,7 +42,7 @@ namespace Ara3D.Memory
         public void Add(T item)
         {
             if (Count == Capacity)
-                Grow();
+                Accomodate(Count + 1);
             this[Count++] = item;
         }
 
@@ -54,9 +54,38 @@ namespace Ara3D.Memory
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Grow()
+        public void AddRange(T[] items)
+            => AddRange(items.AsSpan());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void AddRange(ReadOnlySpan<T> items)
+            => items.CopyTo(AllocateSpan(items.Length));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Span<T> AllocateSpan(int n)
         {
-            Memory.Reallocate(Capacity * 2 * ElementTypeSize);
+            Accomodate(Count + n);
+            var ptr = Bytes.GetPointer<T>() + Count;
+            var span = new Span<T>(ptr, n);
+            Count += n;
+            return span;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void AddRange(IBuffer<T> items)
+            => AddRange(items.AsSpan());
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Accomodate(int count)
+        {
+            if (Capacity > count)
+                return;
+            var newCapacity = Capacity;
+            if (newCapacity < 64)
+                newCapacity = 64;
+            while (newCapacity < count)
+                newCapacity *= 2;   
+            Memory.Reallocate(newCapacity * ElementTypeSize);
             _pointer = Memory.Bytes.GetPointer<T>();
         }
 
@@ -72,7 +101,6 @@ namespace Ara3D.Memory
             _pointer = null;
             Count = 0;
         }
-
 
         public ref T this[int index]
         {
@@ -95,7 +123,7 @@ namespace Ara3D.Memory
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
 
-        public ByteSlice Bytes => Memory.Bytes;
+        public ByteSlice Bytes => Memory.Bytes.Take(Count * ElementTypeSize);
 
         public Type Type => typeof(T);
 
