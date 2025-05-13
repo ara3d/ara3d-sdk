@@ -11,6 +11,8 @@ namespace Ara3D.Data
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Bounds(Vector3 min, Vector3 max) => (Min, Max) = (min, max);
 
+        public static Bounds Empty => new(Vector3.Zero, Vector3.Zero);
+
         /// <summary>
         /// Returns an array of the eight corners of this bounding box.
         /// </summary>

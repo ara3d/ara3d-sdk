@@ -141,4 +141,45 @@ public static unsafe class RenderSceneExtensions
             Verifier.Assert(group.InstanceCount > 0, "Instance has no meshes");
         }
     }
+
+    public static void AddScene(this RenderSceneBuilder rsb, IRenderScene model)
+    {
+        var vertexOffset = rsb.VertexList.Count;
+        var indexOffset = rsb.IndexList.Count;
+        var meshOffset = rsb.MeshList.Count;
+        var instOffset = rsb.Instances.Count;
+
+        foreach (var vertex in model.Vertices)
+        {
+            rsb.VertexList.Add(vertex);
+        }
+
+        foreach (var index in model.Indices)
+        {
+            rsb.IndexList.Add((uint)(index + vertexOffset));
+        }
+
+        foreach (var mesh in model.Meshes)
+        {
+            var tmp = mesh;
+            tmp.BaseVertex += vertexOffset;
+            tmp.FirstIndex += (uint)indexOffset;
+            rsb.MeshList.Add(tmp);
+        }
+
+        foreach (var instance in model.Instances)
+        {
+            var tmp = instance;
+            tmp.MeshIndex += meshOffset;
+            rsb.InstanceList.Add(tmp);
+        }
+
+        foreach (var group in model.Groups)
+        {
+            var tmp = group;
+            tmp.MeshIndex += (uint)meshOffset;
+            tmp.BaseInstance += (uint)instOffset;
+            rsb.GroupList.Add(tmp);
+        }
+    }
 }

@@ -25,13 +25,13 @@ namespace Ara3D.Data
         public UnmanagedList<uint> IndexList = new();
         public UnmanagedList<MeshSliceStruct> MeshList = new();
         public UnmanagedList<InstanceStruct> InstanceList = new();
-        public UnmanagedList<InstanceGroupStruct> InstanceGroupList = new();
+        public UnmanagedList<InstanceGroupStruct> GroupList = new();
         
         public IBuffer<VertexStruct> Vertices => VertexList;
         public IBuffer<uint> Indices => IndexList;
         public IBuffer<MeshSliceStruct> Meshes => MeshList;
         public IBuffer<InstanceStruct> Instances => InstanceList;
-        public IBuffer<InstanceGroupStruct> Groups => InstanceGroupList;
+        public IBuffer<InstanceGroupStruct> Groups => GroupList;
 
         public static InstanceStruct ToInstance(MeshSliceStruct mesh)
             => new InstanceStruct
@@ -101,7 +101,7 @@ namespace Ara3D.Data
                     InstanceCount = (uint)instanceStructs.Count,
                     MeshIndex = (uint)meshIndex
                 };
-                InstanceGroupList.Add(group);
+                GroupList.Add(group);
                 foreach (var instanceStruct in instanceStructs)
                 {
                     InstanceList.Add(instanceStruct);
@@ -142,11 +142,11 @@ namespace Ara3D.Data
             }
         }
 
-        public void AddScene(Scene scene)
+        public void AddScene(Model model)
         {
             var meshes = new Dictionary<TriangleMesh3D, int>();
 
-            foreach (var node in scene.Nodes)
+            foreach (var node in model.Nodes)
             {
                 if (!meshes.ContainsKey(node.Mesh))
                 {
@@ -157,7 +157,7 @@ namespace Ara3D.Data
             }
 
             var instances = new List<InstanceStruct>();
-            foreach (var node in scene.Nodes)
+            foreach (var node in model.Nodes)
             {
                 var meshIndex = meshes[node.Mesh];
                 var (translation, quaternion, scale, success) = node.Transform.Decompose;
@@ -257,7 +257,7 @@ namespace Ara3D.Data
             IndexList.Dispose();
             VertexList.Dispose();
             InstanceList.Dispose();
-            InstanceGroupList.Dispose();
+            GroupList.Dispose();
         }
 
         //=======================================================================================================
@@ -296,8 +296,8 @@ namespace Ara3D.Data
 
         public void ComputeAllInstanceBounds()
         {
-            for (var i=0; i < InstanceGroupList.Count; i++)
-                ComputeAllInstanceBounds(ref InstanceGroupList[i]);
+            for (var i=0; i < GroupList.Count; i++)
+                ComputeAllInstanceBounds(ref GroupList[i]);
         }
 
         public void ComputeAllMeshAndInstanceBounds()

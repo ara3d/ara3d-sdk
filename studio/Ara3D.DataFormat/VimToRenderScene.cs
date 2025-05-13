@@ -164,7 +164,7 @@ namespace Ara3D.Data
                     MeshIndex = (uint)subMesh
                 };
 
-                gb.InstanceGroupList.Add(group);
+                gb.GroupList.Add(group);
             }
 
             // NOTE: we already computed the per-mesh bounds 

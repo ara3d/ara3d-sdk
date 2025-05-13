@@ -7,11 +7,11 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit.Analyzers" Version="3.9.0" />
@@ -19,19 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Ara3D.PropKit\Ara3D.PropKit.csproj" />
-    <ProjectReference Include="..\..\core\IO\VIM\Ara3D.VIM.csproj" />
-    <ProjectReference Include="..\..\core\Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\..\core\Utils\Ara3D.Utils.csproj" />
-    <ProjectReference Include="..\..\studio\Ara3D.DataFormat\Ara3D.Studio.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="NUnit.Framework" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="PropertyDescriptors\" />
   </ItemGroup>
 
 </Project>
