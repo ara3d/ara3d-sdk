@@ -2,15 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" />
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
     <ProjectReference Include="..\Buffers\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\IO\BFAST\Ara3D.BFAST.csproj" />
-    <ProjectReference Include="..\Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\Mathematics\Core\Plato.Core.csproj" />
+    <ProjectReference Include="..\NarwhalDB\Ara3D.NarwhalDB.csproj" />
   </ItemGroup>
 
 </Project>

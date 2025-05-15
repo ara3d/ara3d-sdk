@@ -6,7 +6,7 @@ namespace Ara3D.NarwhalDB
     /// <summary>
     /// Stores information about the name of the table, and the types of each
     /// column. This is always created from a type, the type name is the
-    /// name of table, and the fields of the type type make up the columns. 
+    /// name of table, and the fields of the type make up the columns. 
     /// </summary>
     public class TableSchema
     {

@@ -1,28 +1,23 @@
-﻿using Plato;
+﻿using Ara3D.DataTable;
 
 namespace Ara3D.Scenes
 {
-    public class Model 
+    public class Model : IModel
     {
-        public Model(ReadOnlySpan<ModelNode> nodes)
+        public Model(IEnumerable<ModelNode> nodes, IDataTable dataTable = null)
         {
-            foreach (var node in nodes)
-                Nodes.Add(node);
+            Nodes = nodes.Cast<IModelNode>().ToList();
+            DataTable = dataTable;
         }
 
-        public Model(IEnumerable<ModelNode> nodes)
-            => Nodes.AddRange(nodes);
+        public IReadOnlyList<IModelNode> Nodes { get; }
 
-        public List<ModelNode> Nodes { get; } 
-            = new();
+        public IDataTable DataTable { get; }
 
         public static implicit operator Model(List<ModelNode> nodes)
             => new(nodes);
 
         public static implicit operator Model(ModelNode[] nodes)
-            => new(nodes.AsSpan());
-
-        public static implicit operator Model(ReadOnlySpan<ModelNode> nodes)
             => new(nodes);
     }
 }

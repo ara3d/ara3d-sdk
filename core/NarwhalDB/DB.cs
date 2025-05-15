@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Ara3D.BFAST;
-using Ara3D.Buffers;
+using Ara3D.Memory; 
 using Ara3D.Logging;
-using Ara3D.Serialization.BFAST;
 using Ara3D.Utils;
 
 namespace Ara3D.NarwhalDB
@@ -62,7 +61,7 @@ namespace Ara3D.NarwhalDB
             return Create(buffers, types, logger);
         }
 
-        public static DB Create(IReadOnlyList<ByteSpanBuffer> buffers, IReadOnlyList<Type> types, ILogger logger)
+        public static DB Create(IReadOnlyList<IBuffer> buffers, IReadOnlyList<Type> types, ILogger logger)
         {
             logger.Log($"Creating database from {buffers.Count} buffers, and {types.Count} types");
             if (buffers.Count != types.Count + 1)
