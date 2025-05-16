@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ara3d-sdk\core\Mathematics\Core\Plato.Core.csproj" />
+    <ProjectReference Include="..\ara3d-sdk\core\Mathematics\Plato.Geometry\Plato.Geometry.csproj" />
+    <ProjectReference Include="..\ara3d-sdk\core\Scene\Ara3D.Scenes.csproj" />
+    <ProjectReference Include="..\ara3d-sdk\studio\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
+  </ItemGroup>
+
+</Project>

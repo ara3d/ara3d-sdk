@@ -1,11 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using Ara3D.NarwhalDB;
 using Plato;
 
 namespace Ara3D.Scenes
 {
     public record ModelNode(
-        IModel Model, 
         Guid Id,
         string Name,
         TriangleMesh3D Mesh,

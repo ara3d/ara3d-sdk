@@ -5,7 +5,6 @@ namespace Ara3D.Scenes;
 public interface IModelNode
 {
     Guid Id { get; }
-    IModel Model { get; }
     string Name { get; }
     Material Material { get; }
     TriangleMesh3D Mesh { get; }
