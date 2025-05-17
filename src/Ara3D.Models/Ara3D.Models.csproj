@@ -9,9 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" />
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
-    <ProjectReference Include="..\Buffers\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\Mathematics\Core\Plato.Core.csproj" />
-    <ProjectReference Include="..\NarwhalDB\Ara3D.NarwhalDB.csproj" />
+    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
+    <ProjectReference Include="..\Plato.Core\Plato.Core.csproj" />
   </ItemGroup>
 
 </Project>

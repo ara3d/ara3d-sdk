@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using Ara3D.IfcLoader;
 using Ara3D.IfcParser.Test;
+using Ara3D.Logging;
 using Ara3D.StepParser;
 using Ara3D.Utils;
 
@@ -268,10 +270,11 @@ namespace Ara3D.IfcGeometry
         }
     }
 
+
     public static class Tests
     {
-
-        public static FilePath InputFile = Config.AC20Haus;
+        public static FilePath InputFile =
+            PathUtil.GetCallerSourceFolder().RelativeFile("..", "..", "data", "AC20-FZK-Haus.ifc");
 
         public static HashSet<string> GetLocalTypes()
         {
@@ -279,12 +282,25 @@ namespace Ara3D.IfcGeometry
                 .Where(n => n.StartsWith("IFC")).ToHashSet();
         }
 
+        public static void OutputDetails(IfcFile file, ILogger logger)
+        {
+            logger.Log($"Loaded {file.FilePath.GetFileName()}");
+            logger.Log($"Graph nodes: {file.Graph.Nodes.Count}");
+            logger.Log($"Graph relations: {file.Graph.Relations.Count}");
+            logger.Log($"Graph roots: {file.Graph.RootIds.Count}");
+            logger.Log($"Property sets: {file.Graph.GetPropSets().Count()}");
+            logger.Log($"Property values: {file.Graph.GetProps().Count()}");
+            logger.Log($"Express ids: {file.Document.NumRawInstances}");
+            logger.Log($"Geometry loaded: {file.GeometryDataLoaded}");
+            logger.Log($"Num geometries loaded: {file.Model?.GetNumGeometries()}");
+            logger.Log($"Num meshes loaded: {file.Model?.GetGeometries().Select(g => g.GetNumMeshes()).Sum()}");
+        }
         [Test]
         public static void Test1()
         {
-            var logger = Config.CreateLogger();
+            var logger = Logger.Console;
             var (rd, file) = RunDetails.LoadGraph(InputFile, false, logger);
-            IfcLoadTests.OutputDetails(file, logger);
+            OutputDetails(file, logger);
             Console.WriteLine(rd.Header());
             Console.WriteLine(rd.RowData());
             var localTypes = GetLocalTypes();
@@ -295,7 +311,7 @@ namespace Ara3D.IfcGeometry
             var cnt = 0;
             foreach (var rawInstance in file.Document.RawInstances)
             {
-                if (rawInstance.Type.IsNull())
+                if (rawInstance.Type.IsNull)
                     continue;
 
                 var str = rawInstance.Type.ToString().ToUpperInvariant();

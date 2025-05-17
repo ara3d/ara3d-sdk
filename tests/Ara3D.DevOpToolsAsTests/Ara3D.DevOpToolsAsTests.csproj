@@ -19,9 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Ara3D.Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\..\src\Ara3D.Parsing.Json\Ara3D.Parsing.Json.csproj" />
-    <ProjectReference Include="..\..\src\Ara3D.Parsing.Markdown\Ara3D.Parsing.Markdown.csproj" />
-    <ProjectReference Include="..\..\Utils\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 </Project>

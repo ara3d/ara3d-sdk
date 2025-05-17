@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ara3d-sdk\core\Mathematics\Core\Plato.Core.csproj" />
-    <ProjectReference Include="..\ara3d-sdk\core\Mathematics\Plato.Geometry\Plato.Geometry.csproj" />
-    <ProjectReference Include="..\ara3d-sdk\core\Scene\Ara3D.Scenes.csproj" />
-    <ProjectReference Include="..\ara3d-sdk\studio\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
+    <ProjectReference Include="..\..\src\Plato.Core\Plato.Core.csproj" />
+    <ProjectReference Include="..\..\src\Plato.Geometry\Plato.Geometry.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,6 +8,6 @@
     <PackageReference Include="Microsoft.DiaSymReader.Native" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Logging\Ara3D.Logging.csproj" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
   </ItemGroup>
 </Project>

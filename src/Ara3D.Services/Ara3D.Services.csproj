@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domo\Ara3D.Domo.csproj" />
-    <ProjectReference Include="..\Logging\Ara3D.Logging.csproj" />
+    <ProjectReference Include="..\Ara3D.Domo\Ara3D.Domo.csproj" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
   </ItemGroup>
 
 </Project>

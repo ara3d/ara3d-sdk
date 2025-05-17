@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\..\core\Scene\Ara3D.Scenes.csproj" />
-    <ProjectReference Include="..\Ara3D.DataFormat\Ara3D.Studio.Data.csproj" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
+    <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\Ara3D.Studio.Data\Ara3D.Studio.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -12,14 +12,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Buffers\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\..\core\IO\BFAST\Ara3D.BFAST.csproj" />
-    <ProjectReference Include="..\..\core\IO\G3D\Ara3D.G3D.csproj" />
-    <ProjectReference Include="..\..\core\IO\VIM\Ara3D.VIM.csproj" />
-    <ProjectReference Include="..\..\core\Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\..\core\Mathematics\Core\Plato.Core.csproj" />
-    <ProjectReference Include="..\..\core\Scene\Ara3D.Scenes.csproj" />
-    <ProjectReference Include="..\..\core\Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.BFAST.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.G3D\Ara3D.G3D.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.VIM\Ara3D.VIM.csproj" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
+    <ProjectReference Include="..\Plato.Core\Plato.Core.csproj" />
+    <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 

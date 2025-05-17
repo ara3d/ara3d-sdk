@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Buffers\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\BFAST\Ara3D.BFAST.csproj" />
-    <ProjectReference Include="..\G3D\Ara3D.G3D.csproj" />
+    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.BFAST.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.G3D\Ara3D.G3D.csproj" />
   </ItemGroup>
 </Project>

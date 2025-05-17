@@ -7,9 +7,9 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Buffers\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\..\Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\..\Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 </Project>

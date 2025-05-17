@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\Ara3D.Services.csproj" />
-    <ProjectReference Include="..\RoslynUtils\Ara3D.Utils.Roslyn.csproj" />
+    <ProjectReference Include="..\Ara3D.Services\Ara3D.Services.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
   </ItemGroup>
 </Project>

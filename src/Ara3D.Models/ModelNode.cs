@@ -12,7 +12,7 @@ namespace Ara3D.Scenes
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator ModelNode(TriangleMesh3D mesh)
-            => new(Guid.NewGuid(), mesh, Matrix4x4.Identity, Material.Default);
+            => new(Guid.NewGuid(), "", mesh, Matrix4x4.Identity, Material.Default);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ModelNode Translate(Vector3 v)

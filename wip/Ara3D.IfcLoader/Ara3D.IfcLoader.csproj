@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="libs/web-ifc-dll.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>web-ifc-dll.dll</Link>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.IO.IfcParser\Ara3D.IfcParser.csproj" />
+  </ItemGroup>
+</Project>
