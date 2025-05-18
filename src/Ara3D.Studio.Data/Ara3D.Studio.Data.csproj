@@ -13,9 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.BFAST.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.G3D\Ara3D.G3D.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.VIM\Ara3D.VIM.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.IO.BFAST.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.G3D\Ara3D.IO.G3D.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.VIM\Ara3D.IO.VIM.csproj" />
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\Plato.Core\Plato.Core.csproj" />
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />

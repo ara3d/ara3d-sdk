@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ara3D.ScriptService;
 using Ara3D.Utils;
 
 namespace Ara3D.Bowerbird.Interfaces
 {
-    public class BowerbirdDataModel
+    public class ScriptingDataModel
     {
         public IReadOnlyList<string> TypeNames = Array.Empty<string>();
         public IReadOnlyList<FilePath> Files = Array.Empty<FilePath>();
@@ -13,7 +14,7 @@ namespace Ara3D.Bowerbird.Interfaces
         public IReadOnlyList<string> Commands = Array.Empty<string>();
         public FilePath Dll = "";
         public DirectoryPath Directory = "";
-        public BowerbirdOptions Options = new BowerbirdOptions();
+        public ScriptingOptions Options = new ScriptingOptions();
         public bool ParseSuccess;
         public bool EmitSuccess;
         public bool LoadSuccess;

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ara3D.IO.StepParser\Ara3D.StepParser.csproj" />
+    <ProjectReference Include="..\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" />
   </ItemGroup>
 
 </Project>

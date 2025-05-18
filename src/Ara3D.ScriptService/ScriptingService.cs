@@ -5,25 +5,26 @@ using System.Reflection;
 using System.Threading;
 using Ara3D.Bowerbird.Interfaces;
 using Ara3D.Logging;
+using Ara3D.ScriptService;
 using Ara3D.Services;
 using Ara3D.Utils;
 using Ara3D.Utils.Roslyn;
 
 namespace Ara3D.Bowerbird.Core
 {
-    public class BowerbirdService : 
-        SingletonModelBackedService<BowerbirdDataModel>, 
-        IBowerbirdService
+    public class ScriptingService : 
+        SingletonModelBackedService<ScriptingDataModel>, 
+        IScriptingService
     {
         public Compiler Compiler => WatchingCompiler?.Compiler;
         public DirectoryWatchingCompiler WatchingCompiler { get; }
         public ILogger Logger { get; set; }
-        public BowerbirdOptions Options { get; }
+        public ScriptingOptions Options { get; }
         public Assembly Assembly => WatchingCompiler?.Compiler?.Assembly;
-        public IBowerbirdHost Host { get; }
-        public new IReadOnlyList<IBowerbirdCommand> Commands { get; private set; }
+        public IScriptingHost Host { get; }
+        public new IReadOnlyList<IScriptingCommand> Commands { get; private set; }
 
-        public BowerbirdService(IBowerbirdHost host, IServiceManager app, ILogger logger, BowerbirdOptions options)
+        public ScriptingService(IScriptingHost host, IServiceManager app, ILogger logger, ScriptingOptions options)
             : base(app)
         {
             Host = host;
@@ -33,10 +34,10 @@ namespace Ara3D.Bowerbird.Core
             WatchingCompiler = new DirectoryWatchingCompiler(Logger, Options.ScriptsFolder, Options.LibrariesFolder);
             WatchingCompiler.RecompileEvent += WatchingCompilerRecompileEvent;
             UpdateDataModel();
-            Commands = new List<IBowerbirdCommand>();
+            Commands = new List<IScriptingCommand>();
         }
 
-        public void ExecuteCommand(IBowerbirdCommand command)
+        public void ExecuteCommand(IScriptingCommand command)
         {
             try
             {
@@ -82,10 +83,10 @@ namespace Ara3D.Bowerbird.Core
         public void UpdateDataModel()
         {
             var types = Compiler?.ExportedTypes ?? Array.Empty<Type>();
-            var cmds = new List<IBowerbirdCommand>();
+            var cmds = new List<IScriptingCommand>();
             foreach (var type in types)
             {
-                if (!typeof(IBowerbirdCommand).IsAssignableFrom(type))
+                if (!typeof(IScriptingCommand).IsAssignableFrom(type))
                     continue;
 
                 try
@@ -96,7 +97,7 @@ namespace Ara3D.Bowerbird.Core
                         Logger.LogError($"Failed to create instance of type {type}");
                         continue;
                     }
-                    var bbCmd = cmd as IBowerbirdCommand;
+                    var bbCmd = cmd as IScriptingCommand;
                     if (bbCmd == null)
                     {
                         Logger.LogError($"Failed to cast instance of type {type} to IBowerbirdCommand");
@@ -112,7 +113,7 @@ namespace Ara3D.Bowerbird.Core
 
             Commands = cmds;
 
-            Repository.Value = new BowerbirdDataModel()
+            Repository.Value = new ScriptingDataModel()
             {
                 Dll = Assembly?.Location ?? "",
                 Directory = WatchingCompiler?.Directory,
@@ -128,7 +129,7 @@ namespace Ara3D.Bowerbird.Core
             };
         }
 
-        public IBowerbirdCommand CompileSingleCommand(FilePath file)
+        public IScriptingCommand CompileSingleCommand(FilePath file)
         {
             Logger?.Log($"Requested compilation of single command {file}");
 
@@ -149,7 +150,7 @@ namespace Ara3D.Bowerbird.Core
                 return null;
             }
 
-            var commandTypes = localCompiler.ExportedTypes.Where(t => t.ImplementsInterface(typeof(IBowerbirdCommand))).ToList();
+            var commandTypes = localCompiler.ExportedTypes.Where(t => t.ImplementsInterface(typeof(IScriptingCommand))).ToList();
             if (commandTypes.Count == 0)
             {
                 Logger?.Log("Failed: could not find exported type implementing IBowerbirdCommand");
@@ -170,7 +171,7 @@ namespace Ara3D.Bowerbird.Core
                 return null;
             }
 
-            return instance as IBowerbirdCommand;
+            return instance as IScriptingCommand;
         }
     }
 }

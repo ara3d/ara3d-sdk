@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.IO.BFAST.csproj" />
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
     <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
     <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.BFAST.csproj" />

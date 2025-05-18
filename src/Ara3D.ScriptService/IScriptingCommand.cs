@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Bowerbird.Interfaces
 {
-    public interface IBowerbirdCommand 
+    public interface IScriptingCommand 
     {
         string Name { get; }
         void Execute(object argument);

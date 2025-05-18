@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Ara3D.IO.StepParser\Ara3D.StepParser.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" />
     <ProjectReference Include="..\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
   </ItemGroup>
 
