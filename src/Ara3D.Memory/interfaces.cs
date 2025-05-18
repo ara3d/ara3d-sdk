@@ -46,8 +46,7 @@ namespace Ara3D.Memory
     /// Represents a buffer associated with a string name. 
     /// </summary>
     public interface INamedBuffer<T> : IBuffer<T>, INamedBuffer
-    {
-    }
+    { }
 
     /// <summary>
     /// A block of memory is a buffer that owns the actual memory and is responsible for cleaning it up 
@@ -58,6 +57,13 @@ namespace Ara3D.Memory
     /// <summary>
     /// A block of memory is a buffer that owns the actual memory and is responsible for cleaning it up 
     /// </summary>
-    public interface IMemoryOwner<T> : IBuffer<T>, IDisposable
+    public interface IMemoryOwner<T> : IBuffer<T>, IMemoryOwner
+    { }
+
+    /// <summary>
+    /// A named block of memory is a buffer
+    /// that owns the actual memory and is responsible for cleaning it up 
+    /// </summary>
+    public interface INamedMemoryOwner : INamedBuffer, IMemoryOwner
     { }
 }

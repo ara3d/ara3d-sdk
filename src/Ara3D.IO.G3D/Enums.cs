@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     /// <summary>
     /// The different types of data types that can be used as elements.

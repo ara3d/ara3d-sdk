@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Data
+﻿namespace Ara3D.Studio.Data
 {
     public struct InstancedMeshStruct
     {

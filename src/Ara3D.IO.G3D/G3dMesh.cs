@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     /// <summary>
     /// A G3dMesh is a section of the G3D data that defines a collection of meshes.

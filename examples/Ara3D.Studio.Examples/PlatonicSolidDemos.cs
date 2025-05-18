@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Ara3D.Scenes;
+using Ara3D.Models;
 using Ara3D.Studio.API;
 using Plato.Geometry;
 

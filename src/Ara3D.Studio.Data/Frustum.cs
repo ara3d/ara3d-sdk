@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
     public readonly struct Frustum
     {

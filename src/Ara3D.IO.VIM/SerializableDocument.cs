@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ara3D.Memory;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.IO.VIM
 {
     /// <summary>
     /// Tracks all of the data for a particular entity type in a conceptual table.

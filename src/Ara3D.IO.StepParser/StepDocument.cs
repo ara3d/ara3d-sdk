@@ -6,7 +6,7 @@ using Ara3D.Logging;
 using Ara3D.Memory;
 using Ara3D.Utils;
 
-namespace Ara3D.StepParser
+namespace Ara3D.IO.StepParser
 {
     public unsafe class StepDocument : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.IO.VIM
 {
     // We've defined a serializable version since the System.Version type is not readily serializable by Newtonsoft.Json
     [Serializable]

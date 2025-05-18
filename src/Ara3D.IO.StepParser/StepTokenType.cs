@@ -1,4 +1,4 @@
-﻿namespace Ara3D.StepParser
+﻿namespace Ara3D.IO.StepParser
 {
 
     public enum StepTokenType : byte

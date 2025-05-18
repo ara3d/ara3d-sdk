@@ -1,6 +1,6 @@
-﻿using Ara3D.StepParser;
+﻿using Ara3D.IO.StepParser;
 
-namespace Ara3D.IfcParser
+namespace Ara3D.IO.IfcParser
 {
     // https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/ifckernel/lexical/ifcreldefinesbyproperties.htm
     public class IfcPropSetRelation : IfcRelation

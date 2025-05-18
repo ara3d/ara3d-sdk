@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Bowerbird.Interfaces
+﻿namespace Ara3D.ScriptService
 {
     public interface IScriptingHost
     {

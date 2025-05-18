@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Numerics;
-using Ara3D.Collections;
 using Ara3D.Memory;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     public static class AttributeExtensions
     {

@@ -3,7 +3,7 @@ using System.Numerics;
 using Ara3D.Memory;
 using Ara3D.MemoryMappedFiles;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     /// <summary>
     /// A mesh attribute is an array of data associated with some component of a mesh.

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Ara3D.BFAST;
+using Ara3D.IO.BFAST;
 using Ara3D.Memory; 
 using Ara3D.Logging;
 using Ara3D.Utils;
@@ -44,7 +44,7 @@ namespace Ara3D.NarwhalDB
             logger.Log($"Creating buffers");
             var buffers = GetTables().Select(t => t.ToBuffer(stringTable)).ToList();
             logger.Log($"Creating string table buffers");
-            var st = stringTable.OrderedMembers().PackStrings().ToNamedBuffer(_STRINGS_);
+            using var st = stringTable.OrderedMembers().PackStrings().ToNamedMemoryOwner(_STRINGS_);
             buffers.Add(st);
             var bldr = new BFastBuilder();
             bldr.Add(buffers);
@@ -56,12 +56,12 @@ namespace Ara3D.NarwhalDB
         public static DB ReadFile(FilePath fp, IReadOnlyList<Type> types, ILogger logger)
         {
             logger.Log($"Loading file from {fp}");
-            var buffers = BFastReader.Read(fp, logger);
-            logger.Log($"Read {buffers.Count} buffers");
-            return Create(buffers, types, logger);
+            var buffers = BFastReader.Read(fp);
+            logger.Log($"Read {buffers.Buffers.Count} buffers");
+            return Create(buffers.Buffers, types, logger);
         }
 
-        public static DB Create(IReadOnlyList<IBuffer> buffers, IReadOnlyList<Type> types, ILogger logger)
+        public static DB Create(IReadOnlyList<INamedMemoryOwner> buffers, IReadOnlyList<Type> types, ILogger logger)
         {
             logger.Log($"Creating database from {buffers.Count} buffers, and {types.Count} types");
             if (buffers.Count != types.Count + 1)
@@ -69,8 +69,7 @@ namespace Ara3D.NarwhalDB
             var db = new DB();
             var stringsBuffer = buffers.Single(b => b.Name == _STRINGS_);
                 
-            // TODO: 
-            var strings = stringsBuffer.ByteSpan.UnpackStrings().Select(bs => bs.ToString()).ToList();
+            var strings = stringsBuffer.Bytes.ToArray().UnpackStrings().Select(bs => bs.ToString()).ToList();
             
             logger.Log($"Found {strings.Count} strings");
             foreach (var t in types)
@@ -78,7 +77,7 @@ namespace Ara3D.NarwhalDB
                 logger.Log($"Searching for buffer {t.Name}");
                 var buffer = buffers.Single(b => b.Name == t.Name);
                 logger.Log($"Creating table from buffer {buffer.Name}");
-                var table = Table.Create(buffer.ByteSpan, t, strings);
+                var table = Table.Create(buffer.Bytes, t, strings);
                 db.AddTable(table);
                 logger.Log($"Created table {table.Name} with {table.Objects.Count} objects");
             }

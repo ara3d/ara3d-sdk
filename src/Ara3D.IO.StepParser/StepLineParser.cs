@@ -4,7 +4,7 @@ using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 using Ara3D.Memory;
 
-namespace Ara3D.StepParser
+namespace Ara3D.IO.StepParser
 {
 
     public class StepLineParser

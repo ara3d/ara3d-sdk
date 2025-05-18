@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
-using Ara3D.Logging;
-using Ara3D.Serialization.G3D;
 using System.Numerics;
+using Ara3D.IO.G3D;
+using Ara3D.IO.VIM;
+using Ara3D.Logging;
 using Ara3D.Memory;
-using Ara3D.Serialization.VIM;
 using Matrix4x4 = System.Numerics.Matrix4x4;
 using Quaternion = System.Numerics.Quaternion;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
     public static class VimToRenderScene
     {

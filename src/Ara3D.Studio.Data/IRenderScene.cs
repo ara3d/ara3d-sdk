@@ -1,6 +1,6 @@
 ﻿using Ara3D.Memory;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
     public interface IRenderScene
         : IDisposable

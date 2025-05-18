@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct MeshSliceStruct

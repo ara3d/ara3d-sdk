@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Plato;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Ara3D.Scenes
+namespace Ara3D.Models
 {
     [method: MethodImpl(AggressiveInlining)]
     public class ReadOnlyList<T>(Integer count, Func<Integer, T> func) : IReadOnlyList<T>

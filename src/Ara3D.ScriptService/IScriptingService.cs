@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ara3D.Logging;
-using Ara3D.ScriptService;
 using Ara3D.Services;
 
-namespace Ara3D.Bowerbird.Interfaces
+namespace Ara3D.ScriptService
 {
     public interface IScriptingService 
         : IScriptingHost, ISingletonModelBackedService<ScriptingDataModel>, IDisposable

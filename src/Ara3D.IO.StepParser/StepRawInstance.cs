@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Ara3D.Memory;
 
-namespace Ara3D.StepParser
+namespace Ara3D.IO.StepParser
 {
     /// <summary>
     /// Contains information about where an instance is within a file.

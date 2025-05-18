@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
@@ -12,7 +11,7 @@ namespace Ara3D.Memory
     /// Represents a block of unmanaged memory with 64-byte alignment.
     /// </summary>
     [SkipLocalsInit]
-    public unsafe class AlignedMemory : IMemoryOwner, IDisposable
+    public unsafe class AlignedMemory : IMemoryOwner
     {
         public ByteSlice Bytes { get; private set; }
 

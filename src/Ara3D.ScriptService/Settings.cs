@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ara3D.Utils;
 
-namespace Ara3D.Bowerbird.Core
+namespace Ara3D.ScriptService
 {
     public class Settings
     {

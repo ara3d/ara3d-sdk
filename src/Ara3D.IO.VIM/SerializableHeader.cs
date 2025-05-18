@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.IO.VIM
 {
     public struct SerializableHeader
     {

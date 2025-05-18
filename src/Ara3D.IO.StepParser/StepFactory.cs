@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Ara3D.StepParser
+namespace Ara3D.IO.StepParser
 {
 
     public static unsafe class StepFactory

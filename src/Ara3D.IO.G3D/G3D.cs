@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Ara3D.BFAST;
 using Ara3D.Collections;
+using Ara3D.IO.BFAST;
 using Ara3D.Memory;
 using Ara3D.MemoryMappedFiles;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     /// <summary>
     /// This is the geometry layout within a VIM file

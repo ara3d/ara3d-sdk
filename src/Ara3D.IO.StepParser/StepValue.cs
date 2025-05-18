@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Ara3D.Memory;
 using Ara3D.Utils;
 
-namespace Ara3D.StepParser
+namespace Ara3D.IO.StepParser
 {
     /// <summary>
     /// The base class of the different type of value items that can be found in a STEP file.

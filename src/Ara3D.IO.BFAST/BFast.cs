@@ -9,7 +9,7 @@ using Ara3D.Memory;
 using Ara3D.MemoryMappedFiles;
 using Ara3D.Utils;
 
-namespace Ara3D.BFAST
+namespace Ara3D.IO.BFAST
 {
     /// <summary>
     /// Callback function allows clients to control writing the data to the output stream

@@ -1,6 +1,6 @@
 ﻿using Ara3D.DataTable;
 
-namespace Ara3D.Scenes
+namespace Ara3D.Models
 {
     public class Model : IModel
     {

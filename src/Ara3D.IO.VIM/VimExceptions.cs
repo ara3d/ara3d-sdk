@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.IO.VIM
 {
     public class ParsingException : Exception
     {

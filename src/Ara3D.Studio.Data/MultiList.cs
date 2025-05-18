@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
 
 

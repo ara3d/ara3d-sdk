@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 
-namespace Ara3D.Scenes
+namespace Ara3D.Models
 {
     [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
     public struct ReadOnlyListEnumerator<T>(IReadOnlyList<T> array) : IEnumerator<T>

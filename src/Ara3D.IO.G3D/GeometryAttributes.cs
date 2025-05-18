@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ara3D.Collections;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     /// <summary>
     /// This is the most generic representation of a G3D, which is a bag of attributes, and the observed size of each component. 

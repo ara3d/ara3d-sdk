@@ -2,7 +2,7 @@
 using Ara3D.Utils;
 using Plato;
 
-namespace Ara3D.Data;
+namespace Ara3D.Studio.Data;
 
 public static unsafe class RenderSceneExtensions
 {

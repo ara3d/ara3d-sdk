@@ -1,6 +1,6 @@
 ﻿using Plato;
 
-namespace Ara3D.Scenes
+namespace Ara3D.Models
 {
     public record Material(Color Color, float Metallic, float Roughness)
     {

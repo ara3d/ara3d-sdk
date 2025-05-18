@@ -1,6 +1,6 @@
 ﻿using Ara3D.Collections;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     /// <summary>
     /// This is a read-only collection of G3D attributes. 

@@ -1,7 +1,6 @@
 ﻿using System;
-using Ara3D.Bowerbird.Interfaces;
 
-namespace Ara3D.Bowerbird.Core
+namespace Ara3D.ScriptService
 {
     public class ScriptingHost : IScriptingHost
     {

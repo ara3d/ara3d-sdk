@@ -4,7 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Ara3D.Collections;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     public static class GeometryAttributesExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using Plato;
 
-namespace Ara3D.Scenes
+namespace Ara3D.Models
 {
     public static class ModelExtensions
     {

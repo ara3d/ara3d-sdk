@@ -1,6 +1,6 @@
 ﻿using Ara3D.Memory;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.IO.VIM
 {
     public static class Extensions
     {

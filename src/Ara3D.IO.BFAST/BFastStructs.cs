@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Ara3D.BFAST
+namespace Ara3D.IO.BFAST
 {
     /// <summary>
     /// This contains the BFAST data loaded or written from disk. 

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Ara3D.Memory;
-using Ara3D.PropKit;
 using Ara3D.Utils;
 
 namespace Ara3D.NarwhalDB
@@ -26,14 +25,14 @@ namespace Ara3D.NarwhalDB
             return Objects.Count - 1;
         }
 
-        public INamedBuffer ToBuffer(IndexedSet<string> stringTable)
+        public INamedMemoryOwner ToBuffer(IndexedSet<string> stringTable)
         {
             var data = new byte[Objects.Count * TableSchema.Size];
             var offset = 0;
             foreach (IBinarySerializable obj in Objects)
                 obj.Write(data, ref offset, stringTable);
             Debug.Assert(offset == data.Length);
-            return data.ToNamedBuffer(TableSchema.Name);
+            return data.ToNamedMemoryOwner(TableSchema.Name);
         }
 
         public static Table Create(ByteSlice slice, Type type, IReadOnlyList<string> strings)
@@ -43,7 +42,7 @@ namespace Ara3D.NarwhalDB
         {
             var t = new Table(schema);
             var ptr = new IntPtr(slice.Ptr);
-            var end = slice.End();
+            var end = slice.End;
             while (ptr.ToPointer() < end)
             {
                 var obj = schema.ReadObject(ref ptr, strings);

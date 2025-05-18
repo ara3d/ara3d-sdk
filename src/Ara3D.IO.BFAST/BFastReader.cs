@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Ara3D.Memory;
 using Ara3D.MemoryMappedFiles;
 
-namespace Ara3D.BFAST
+namespace Ara3D.IO.BFAST
 {
     public class BFastReader
     {
@@ -17,15 +17,15 @@ namespace Ara3D.BFAST
             new BFastReader(view).Read(onBuffer);
         }
 
-        public static IReadOnlyList<(AlignedMemory, string)> ReadBuffers(string filePath)
+        public static BFastBuffers Read(string filePath)
         {
-            var r = new List<(AlignedMemory, string)>();
+            var r = new List<NamedAlignedMemory>();
             Read(filePath, (name, view, index) =>
             {
                 var memory = view.ReadBytes();
-                r.Add((memory, name));
+                r.Add(new(memory, name));
             });
-            return r;
+            return new BFastBuffers(r);
         }
 
         public void Read(Action<string, MemoryMappedView, int> onBuffer)

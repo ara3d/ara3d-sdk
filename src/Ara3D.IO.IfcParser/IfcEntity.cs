@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ara3D.StepParser;
+using Ara3D.IO.StepParser;
 
-namespace Ara3D.IfcParser
+namespace Ara3D.IO.IfcParser
 {
     /// <summary>
     /// It represents an entity definition. It is usually a single line in a STEP file.

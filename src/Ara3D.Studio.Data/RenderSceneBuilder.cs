@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Ara3D.Memory;
-using Ara3D.Scenes;
+using Ara3D.Models;
 using Ara3D.Utils;
 using Plato;
 using Quaternion = System.Numerics.Quaternion;
 using Vector3 = System.Numerics.Vector3;
 using Vector4 = System.Numerics.Vector4;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
     // TODO: this could be SO much better.
     // Store positions. Store indices. Compute normals at the end. 

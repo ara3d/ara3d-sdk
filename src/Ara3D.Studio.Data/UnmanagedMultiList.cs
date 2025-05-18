@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Ara3D.Memory;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
     public class UnmanagedMultiList<T0, T1>
         where T0 : unmanaged

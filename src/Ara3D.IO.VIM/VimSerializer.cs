@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Ara3D.BFAST;
+using Ara3D.IO.BFAST;
 using Ara3D.Memory;
 using Ara3D.MemoryMappedFiles;
 using INamedBuffer = Ara3D.Memory.INamedBuffer;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.IO.VIM
 {
     public static class VimSerializer
     {

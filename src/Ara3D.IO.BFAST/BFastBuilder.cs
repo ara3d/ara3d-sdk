@@ -4,29 +4,8 @@ using System.IO;
 using System.Linq;
 using Ara3D.Memory;
 
-namespace Ara3D.BFAST
+namespace Ara3D.IO.BFAST
 {
-    /// <summary>
-    /// Anything that can be added to a BFAST must have a size and write to a stream.
-    /// </summary>
-    public interface IBFastComponent
-    {
-        long GetSize();
-        void Write(Stream stream);
-    }
-
-    /// <summary>
-    /// A wrapper around a buffer so that it can be used as a BFAST component 
-    /// </summary>
-    public class BufferAsBFastComponent : IBFastComponent
-    {
-        public BufferAsBFastComponent(IBuffer buffer)
-            => Buffer = buffer;
-        public IBuffer Buffer { get; }
-        public void Write(Stream stream) => stream.WriteBuffer(Buffer);
-        public long GetSize() => Buffer.Length();
-    }
-
     /// <summary>
     /// Used to build BFASTs incrementally that contain named buffers and/or other BFASTs. 
     /// </summary>

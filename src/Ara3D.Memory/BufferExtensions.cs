@@ -81,5 +81,7 @@ namespace Ara3D.Memory
         public static object GetElement(this ITypedBuffer buffer, int n)
             => Marshal.PtrToStructure(buffer.ElementPointer(n), buffer.Type);
 
+        public static INamedMemoryOwner ToNamedMemoryOwner(this byte[] bytes, string name)
+            => new NamedAlignedMemory(bytes.Fix(), name);
     }
 }

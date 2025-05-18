@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Ara3D.Memory;
 
-namespace Ara3D.StepParser
+namespace Ara3D.IO.StepParser
 {
     public readonly struct StepToken
     {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Data;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.IO.VIM
 {
     // For reference see:
     // https://referencesource.microsoft.com/#system.data/system/data/DataRowView.cs

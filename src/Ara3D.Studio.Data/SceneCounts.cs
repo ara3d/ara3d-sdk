@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
     public unsafe class SceneCounts
     {

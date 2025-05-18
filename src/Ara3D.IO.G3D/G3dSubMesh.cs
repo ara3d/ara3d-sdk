@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Serialization.G3D
+﻿namespace Ara3D.IO.G3D
 {
     /// <summary>
     /// A G3dSubMesh is a section of a G3dMesh.

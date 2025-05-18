@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
 using Ara3D.IfcLoader;
-using Ara3D.IfcParser.Test;
+using Ara3D.IO.StepParser;
 using Ara3D.Logging;
-using Ara3D.StepParser;
 using Ara3D.Utils;
 
 namespace Ara3D.IfcGeometry

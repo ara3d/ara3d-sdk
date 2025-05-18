@@ -1,11 +1,11 @@
-﻿using Ara3D.Memory;
-using Ara3D.StepParser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Ara3D.IO.StepParser;
+using Ara3D.Memory;
 
-namespace Ara3D.IfcParser
+namespace Ara3D.IO.IfcParser
 {
     public static class Extensions
     {

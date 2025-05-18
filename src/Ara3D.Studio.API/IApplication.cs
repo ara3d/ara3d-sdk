@@ -1,6 +1,4 @@
-﻿using Ara3D.Data;
-
-namespace Ara3D.Studio.API;
+﻿namespace Ara3D.Studio.API;
 
 public interface IApplication
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     /// <summary>
     /// Provides information about identifying the role and parsing the data within an attribute data buffer.

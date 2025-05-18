@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Plato;
 
-namespace Ara3D.Scenes
+namespace Ara3D.Models
 {
     public record ModelNode(
         Guid Id,

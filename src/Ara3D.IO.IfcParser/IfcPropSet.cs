@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using Ara3D.StepParser;
+using Ara3D.IO.StepParser;
 
-namespace Ara3D.IfcParser
+namespace Ara3D.IO.IfcParser
 {
     // This merges two separate entity types: IfcPropertySet and IfcElementQuantity.
     // Both of which are derived from IfcPropertySetDefinition. 

@@ -3,7 +3,7 @@ using Ara3D.IfcLoader;
 using Ara3D.Logging;
 using Ara3D.Utils;
 
-namespace Ara3D.IfcParser.Test
+namespace Ara3D.IfcGeometry
 {
     public class RunDetails
     {

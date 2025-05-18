@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Ara3D.StepParser
+namespace Ara3D.IO.StepParser
 {
     public class StepInstance
     {

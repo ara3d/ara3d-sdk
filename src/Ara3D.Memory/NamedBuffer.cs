@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Ara3D.Memory
+﻿namespace Ara3D.Memory
 {
     /// <summary>
     /// A concrete implementation of INamedBuffer with a specific type.

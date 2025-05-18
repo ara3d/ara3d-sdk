@@ -1,6 +1,6 @@
-using Ara3D.BFAST;
+using Ara3D.IO.BFAST;
+using Ara3D.IO.VIM;
 using Ara3D.Logging;
-using Ara3D.Serialization.VIM;
 using Ara3D.Utils;
 
 namespace Ara3D.SDK.Tests
@@ -53,11 +53,11 @@ namespace Ara3D.SDK.Tests
             var f = Residence;
             var logger = Logger.Console;
             logger.Log($"Opening {f}");
-            var buffers = BFastReader.ReadBuffers(f);
+            var buffers = BFastReader.Read(f);
             logger.Log("Loaded BFAST");
-            foreach (var (buffer, name) in buffers)
+            foreach (var buffer in buffers.Buffers)
             {
-                logger.Log($"Buffer {name} has {buffer.NumBytes} bytes");
+                logger.Log($"Buffer {buffer.Name} has {buffer.Bytes.Count} bytes");
             }
         }
     }

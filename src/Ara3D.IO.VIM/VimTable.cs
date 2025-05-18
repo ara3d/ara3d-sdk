@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using Ara3D.Memory;
 
-namespace Ara3D.Serialization.VIM
+namespace Ara3D.IO.VIM
 {
     public class VimTable : 
         IBindingListView,

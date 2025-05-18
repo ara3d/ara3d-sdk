@@ -1,12 +1,12 @@
-﻿using Ara3D.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
-using Ara3D.StepParser;
+using System.Linq;
+using Ara3D.IO.StepParser;
+using Ara3D.Logging;
 using Ara3D.Utils;
 
-namespace Ara3D.IfcParser
+namespace Ara3D.IO.IfcParser
 {
     /// <summary>
     /// This is a high-level representation of an IFC model as a graph of nodes and relations.

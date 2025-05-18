@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Ara3D.Memory;
 
-namespace Ara3D.StepParser
+namespace Ara3D.IO.StepParser
 {
 
     public static class StepTokenizer

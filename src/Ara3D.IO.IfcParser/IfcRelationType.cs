@@ -1,6 +1,6 @@
-﻿using Ara3D.StepParser;
+﻿using Ara3D.IO.StepParser;
 
-namespace Ara3D.IfcParser
+namespace Ara3D.IO.IfcParser
 {
     public class IfcRelationType : IfcRelation
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     public enum G3dErrors
     {

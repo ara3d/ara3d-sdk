@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Ara3D.Serialization.G3D
+namespace Ara3D.IO.G3D
 {
     public class G3dMaterial
     {

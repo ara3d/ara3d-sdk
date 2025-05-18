@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ara3D.ScriptService;
 using Ara3D.Utils;
 
-namespace Ara3D.Bowerbird.Interfaces
+namespace Ara3D.ScriptService
 {
     public class ScriptingDataModel
     {

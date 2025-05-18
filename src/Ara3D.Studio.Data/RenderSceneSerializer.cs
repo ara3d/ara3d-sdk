@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
-using Ara3D.BFAST;
+using Ara3D.IO.BFAST;
 using Ara3D.Memory;
 using Ara3D.MemoryMappedFiles;
 using Ara3D.Utils;
 
-namespace Ara3D.Data
+namespace Ara3D.Studio.Data
 {
     public static class RenderSceneSerializer
     {

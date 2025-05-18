@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Ara3D.Bowerbird.Interfaces;
 using Ara3D.Logging;
-using Ara3D.ScriptService;
 using Ara3D.Services;
 using Ara3D.Utils;
 using Ara3D.Utils.Roslyn;
 
-namespace Ara3D.Bowerbird.Core
+namespace Ara3D.ScriptService
 {
     public class ScriptingService : 
         SingletonModelBackedService<ScriptingDataModel>, 
