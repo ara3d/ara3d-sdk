@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>
+      Ara3D.SDK is a collection of C# libraries 
+      optimized for use in real-time 3D applications and for large 3D data sets 
+      used in the AEC (Architecture, Engineering, and Construction) industry.
+      You can use Ara3D.SDK in your own applications, or to extend Ara3D.Studio.
+    </Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/ara3d/ara3d-sdk</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ara3d/ara3d-sdk</RepositoryUrl>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <AssemblyFileVersion>1.0.0</AssemblyFileVersion>
+    <Authors>Ara 3D Inc.</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) Ara 3D Inc 2025, Licensed under MIT License</Copyright>
+
+    <!-- https://devblogs.microsoft.com/dotnet/producing-packages-with-source-link/ -->
+    <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!-- Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
+    <DebugType>embedded</DebugType>
+    <IncludeSymbols>true</IncludeSymbols>
+  </PropertyGroup>
+
+</Project>

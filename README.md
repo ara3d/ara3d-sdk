@@ -1,53 +1,71 @@
-# Ara3D.SDK
+# 📚 Ara3D-SDK
 
-Ara3D.SDK is a collection of C# libraries which can be used to extend Ara3D.Studio or in standalone projects. 
+**Ara3D-SDK** is a powerful collection of open-source C# libraries for processing, transforming, and visualizing large-scale 3D models—especially tailored for AEC (Architecture, Engineering, and Construction) workflows.
 
-Ara3D.SDK is optimized for use in real-time 3D applications and for the extremely large 3D data sets used in construction and architecture.   
+Use it standalone, or extend and customize the **Ara 3D Studio** desktop application.
 
-It comes with a free build of Ara3D.Studio for testing purposes.  
+Designed for high performance and scalability, the libraries handle massive 3D data sets in real-time. They're cross-platform and compatible with .NET 8.
 
-## Ara3D.Studio
+---
 
-Ara3D.Studio is a free Windows application for viewing, importing, creating, manipulating, and exporting large 3D BIM models. 
-Large portions of the code are open-source, and are hosted in this repository. This repository contains the SDK for 
-extending it. 
+## 🖥️ Ara 3D Studio
 
-## License 
+**Ara 3D Studio** is a Windows desktop application included in this repository as a pre-built binary (`Ara3D.Studio.exe`). It allows you to:
 
-**Ara3D.SDK** is licensed under the MIT license 1.0.
+- View, import, and export large-scale 3D models
+- Create and manipulate geometry interactively
+- Extend functionality via plugins and scripting
 
-## Status
+Once registered, the software is free to use for any purpose, including commercial work.
 
-**2025-05-01** - Code in this repository is being pulled together from other sources to make it easier to use and maintain.   
+➡️ To get started, download and run `Ara3D.Studio.exe` from the `external/` folder.
 
-## Supported Platforms 
+---
 
-* Ara3D.SDK is written in C# version 12 and compatible with .NET 8.0 
-* The `core` libraries are all cross-platform
-* Libraries and applications, in `extras`, `samples`, and `tests`, are a mix between cross-platform and Windows specific   
+## 📁 Repository Structure
 
-## Repository Structure
+- `data/` – Sample and test 3D models
+- `examples/` – Sample applications and usage examples
+- `src/` – Core cross-platform C# libraries
+- `plato/` – [Plato](https://github.com/ara3d/plato): a scripting language and toolchain
+- `tests/` – NUnit projects for unit, regression, and developer testing
+- `external/` – Pre-built binaries and tools, including `Ara3D.Studio.exe`
 
-The repository has the following structure 
+---
 
-* `core` - C# libraries with no dependencies and compatible with .NET 8.  
-* `extras` - libraries with 3rd party dependencies, or that are platform specific (e.g., WPF, Win32)
-* `labs` - experiments and investigations 
-* `samples` - demonstrations and examples  
-* `docs` - documentation  
-* `tests` - NUnit test projects for unit testing, regression testing, and 
-* `external` - pre-built libraries, executables, and tools 
-* `data` - test-data   
+## 📜 License
 
-# Contributing 
+**Ara3D-SDK** is licensed under the [MIT License](LICENSE).
 
-We welcome your contribution!
+---
 
-Please propose larger changes as an [issue](https://github.com/ara3d/ara3d-sdk/issues) before making a Pull Request (PR).
+## 🤝 Contributing
 
-We ask that you familiarize with the code-base and follow the style and principles implied by the pre-existing code in any submitted code.
+We welcome contributions of all kinds—bug fixes, features, documentation, and more!
 
-If you find a bug, have a question, or want to request a feature you can also submit an [issue](https://github.com/ara3d/ara3d-sdk/issues).
+Before submitting a pull request:
+- Familiarize yourself with the code base
+- Follow the existing style and architecture
+- For significant changes, please open an [issue](https://github.com/ara3d/ara3d-sdk/issues) first
+
+Let's build something amazing together 🚀
+
+---
+
+## 🐞 Issues and Feature Requests
+
+Found a bug? Have a question? Want to suggest a feature for either the SDK or **Ara 3D Studio**?
+
+👉 [Open an issue](https://github.com/ara3d/ara3d-sdk/issues) and let us know!
+
+---
+
+## 🔗 Related Projects
+
+- [Ara3D.Plato](https://github.com/ara3d/plato) – Lightweight scripting language for geometry
+- [Ara3D.IO](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.IO) – Import/export logic for various 3D formats
+
+<!--
 
 # Libraries
 
@@ -175,3 +193,4 @@ A library for efficiently working with very large files as [memory mapped files]
 ### Ara3D.Studio.Data
 
 This library defines the classes that define the internal representation of rendering and scene data used by Ara3D.Studio. 
+-->

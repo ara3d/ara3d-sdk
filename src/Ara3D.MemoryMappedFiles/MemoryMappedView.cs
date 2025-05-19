@@ -28,9 +28,9 @@ namespace Ara3D.MemoryMappedFiles
         public static void ReadFile(string filePath, Action<MemoryMappedView> action)
         {
             var fi = new FileInfo(filePath);
-            using (var mmf = MemoryMappedFile.CreateFromFile(filePath))
-                using (var view = new MemoryMappedView(mmf, 0, fi.Length))
-                    action(view);
+            using var mmf = MemoryMappedFile.CreateFromFile(filePath);
+            using var view = new MemoryMappedView(mmf, 0, fi.Length);
+            action(view);
         }
     }
 }
