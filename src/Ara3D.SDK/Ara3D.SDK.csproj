@@ -4,12 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>
-      Ara3D.SDK is a collection of C# libraries 
-      optimized for use in real-time 3D applications and for large 3D data sets 
-      used in the AEC (Architecture, Engineering, and Construction) industry.
-      You can use Ara3D.SDK in your own applications, or to extend Ara3D.Studio.
-    </Description>
+    <Description>📚 Various C# libraries for efficient data driven applications.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/ara3d/ara3d-sdk</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ara3d/ara3d-sdk</RepositoryUrl>
@@ -30,6 +25,64 @@
     <!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
     <DebugType>embedded</DebugType>
     <IncludeSymbols>true</IncludeSymbols>
-  </PropertyGroup>
 
+    <IncludeReferencedProjects>true</IncludeReferencedProjects>
+    <PackageIcon>ara3d-128x128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Hook our target into the packaging pipeline https://github.com/novotnyllc/MSBuildSdkExtras/issues/227?utm_source=chatgpt.com 
+      
+      https://josef.codes/dotnet-pack-include-referenced-projects/
+      https://github.com/NuGet/Home/issues/3891#issuecomment-569491001
+      -->
+    <TargetsForTfmSpecificBuildOutput>
+      $(TargetsForTfmSpecificBuildOutput);
+      CopyProjectReferencesToPackage
+    </TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <!-- All ReferenceCopyLocalPaths that came from ProjectReference -->
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths&#xD;&#xA;                    -&gt;WithMetadataValue('ReferenceSourceTarget','ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <None Include="ara3d-128x128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+    <PackageReference Include="Microsoft.DiaSymReader.Native" Version="1.7.0" />
+    <PackageReference Include="System.Memory" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Domo\Ara3D.Domo.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.IO.A3D\Ara3D.IO.A3D.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.IO.BFAST.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.IO.G3D\Ara3D.IO.G3D.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.IO.IfcParser\Ara3D.IO.IfcParser.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.IO.VIM\Ara3D.IO.VIM.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.MemoryMappedFiles\Ara3D.MemoryMappedFiles.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.NarwhalDB\Ara3D.NarwhalDB.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.ScriptService\Ara3D.ScriptService.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Services\Ara3D.Services.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Studio.API\Ara3D.Studio.API.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Studio.Data\Ara3D.Studio.Data.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Plato.Core\Plato.Core.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Plato.Geometry\Plato.Geometry.csproj" PrivateAssets="All" />
+  </ItemGroup>
 </Project>
