@@ -2,21 +2,22 @@
 {
     public class Stack<T> : IStack<T>
     {
-        private readonly ISequence<T> _seq;
+        public T Value;
+        public IStack<T> Next;
 
-        public Stack(ISequence<T> seq = null)
-            => _seq = seq ?? EmptySequence<T>.Default;
+        public Stack(T value, IStack<T> next)
+            => (Value, Next) = (value, next);
 
         public IStack<T> Push(T x)
-            => new Stack<T>(_seq.Prepend(x));
+            => new Stack<T>(x, this);
 
         public IStack<T> Pop()
-            => new Stack<T>(_seq.GetRest());
+            => Next;
 
         public T Peek()
-            => _seq.First();
+            => Value;
 
-        public bool IsEmpty
-            => _seq.IsEmpty();
+        public bool IsEmpty 
+            => false;
     }
 }

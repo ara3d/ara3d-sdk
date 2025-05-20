@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Ara3D.Collections
 {
     public interface IStack<T>
@@ -36,28 +38,10 @@ namespace Ara3D.Collections
         bool IsEmpty { get; }
     }
 
-    public interface IIterator<T>
-    {
-        T Value { get; }
-        bool HasValue { get; }
-        IIterator<T> Next { get; }
-    }
-
-    public interface ISequence<T>
-    {
-        IIterator<T> Iterator { get; }
-    }
-
-    public interface ITree<T, TNode>
-    {
-        T GetValue(TNode node);
-        ISequence<TNode> GetChildren(TNode node);
-    }
-
     public interface ITree<T>
     {
         T Value { get; }
-        ISequence<ITree<T>> Subtrees { get; }
+        IReadOnlyList<ITree<T>> Subtrees { get; }
     }
 
     public interface IBinaryTree<T> : ITree<T>
@@ -66,27 +50,6 @@ namespace Ara3D.Collections
         IBinaryTree<T> Right { get; }
     }
     
-    public interface IMap<TKey, TValue>
-    {
-        TValue this[TKey key] { get; }
-    }
-
-    public interface IMultiMap<TKey, TValue> 
-        : IMap<TKey, ISequence<TValue>>
-    { }
-
-    public interface IBiMap<TKey, TValue>
-        : IMap<TKey, TValue>
-    {
-        IMap<TValue, TKey> Keys { get; }
-    }
-
-    public interface IBiMultiMap<TKey, TValue>
-        : IMultiMap<TKey, TValue>
-    {
-        IMultiMap<TValue, TKey> Keys { get; }
-    }
-
     public interface ISet<T>
     {
         bool Contains(T x);
@@ -133,7 +96,7 @@ namespace Ara3D.Collections
     /// <summary>
     /// An sequence with a specific fixed ordering. 
     /// </summary>
-    public interface IOrderedSequence<T> : ISequence<T>, IOrdered<T>
+    public interface IOrderedSequence<T> : IReadOnlyList<T>, IOrdered<T>
     {
     }
 

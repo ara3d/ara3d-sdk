@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Ara3D.Collections
 {
@@ -18,9 +20,7 @@ namespace Ara3D.Collections
         public IArray<T> Data { get; }
         public T this[int index] => Data[index];
         public int Count => Data.Count;
-
-        public IIterator<T> Iterator => Data.Iterator;
-
+        
         public Array2D(IArray<T> data, int columns, int rows)
         {
             if (rows * columns != data.Count)
@@ -29,6 +29,12 @@ namespace Ara3D.Collections
             Columns = columns;
             Data = data;
         }
+
+        public IEnumerator<T> GetEnumerator()
+            => Data.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => GetEnumerator();
     }
 
     public static class Array2D

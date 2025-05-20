@@ -1,4 +1,4 @@
-﻿namespace Plato.Geometry
+﻿namespace Plato
 {
     /// <summary>
     /// This are the five unit-sized platonic-solids.
@@ -12,9 +12,6 @@
 
         public static IArray<Vector3> Normalize(this IReadOnlyList<Vector3> self)
             => self.ToIArray().Map(x => x.Normalize);
-
-        public static IArray<T> ToIArray<T>(this IReadOnlyList<T> self)
-            => new Array<T>(self.Count, i => self[i]);
 
         public static TriangleMesh3D ToTriangleMesh(this IArray<Vector3> self, params (int, int, int)[] faces)
             => new(self.Map(v => (Point3D)v), faces.ToIArray().Map(xs => (Integer3)xs));

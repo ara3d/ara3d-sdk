@@ -30,7 +30,6 @@ namespace Ara3D.Collections
         public LookupFromDictionary(IDictionary<TKey, TValue> d = null, TValue defaultValue = default)
         {
             Dictionary = d ?? new Dictionary<TKey, TValue>();
-            // TODO: sort?
             _default = defaultValue;
             Keys = d.Keys.ToIArray();
             Values = d.Values.ToIArray();

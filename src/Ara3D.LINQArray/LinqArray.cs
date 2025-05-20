@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +12,35 @@ namespace Ara3D.Collections
     /// Represents an immutable array with expected O(1) complexity when
     /// retrieving the number of items and random element access.
     /// </summary>
-    public interface IArray<T> : IReadOnlyList<T>
+    public interface IArray<T> : ISequence<T>
     {
+        T this[int n] { get; }
+        int Count { get; }
+    }
+
+    /// <summary>
+    /// Implements an IArray via a function and a count.
+    /// </summary>
+    public class FunctionalArray<T> : IArray<T>
+    {
+        public readonly Func<int, T> Function;
+
+        public IIterator<T> Iterator => new ArrayIterator<T>(this, 0);
+
+        public int Count
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get;
+        }
+
+        public T this[int n]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Function(n);
+        }
+
+        public FunctionalArray(int count, Func<int, T> function)
+            => (Count, Function) = (count, function);
     }
 
     /// <summary>
@@ -22,31 +48,22 @@ namespace Ara3D.Collections
     /// </summary>
     public class ArrayAdapter<T> : IArray<T>
     {
-        private readonly IReadOnlyList<T> _list;
+        public readonly T[] Array;
+
+        public IIterator<T> Iterator => new ArrayIterator<T>(this, 0);
 
         public int Count
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _list.Count;
+            get;
         }
 
         public T this[int n]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _list[n];
+            get => Array[n];
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ArrayAdapter(IReadOnlyList<T> xs)
-            => _list = xs;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<T> GetEnumerator()
-            => new ReadOnlyListEnumerator<T>(_list);
-       
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-            => GetEnumerator();
+        public ArrayAdapter(T[] xs) { Count = xs.Length; Array = xs; }
     }
 
     /// <summary>
@@ -611,7 +628,7 @@ namespace Ara3D.Collections
         /// Returns an array of the same type with no elements.
         /// </summary>
         public static IArray<T> Empty<T>()
-            => EmptyList<T>.Default;
+            => EmptySequence<T>.Default;
 
         /// <summary>
         /// Returns a sequence of integers from 0 to 1 less than the number of items in the array, representing indicies of the array.
@@ -973,7 +990,7 @@ namespace Ara3D.Collections
         public static IArray<U> Scan<T,U>(this IArray<T> self, U init, Func<U, T, U> scanFunc)
         {
             if (self.Count == 0)
-                return EmptyList<U>.Default;
+                return Empty<U>();
             var r = new U[self.Count];
             for (var i = 0; i < self.Count; ++i)
                 init = r[i] = scanFunc(init, self[i]);
@@ -1037,8 +1054,5 @@ namespace Ara3D.Collections
                 return self.BinarySearchIndex(compare, min, mid - 1);
             return self.BinarySearchIndex(compare, mid + 1, max);
         }
-
-        public static IArray<T> Repeat<T>(this T value, int count)
-            => count.Select(_ => value);
     }
 }

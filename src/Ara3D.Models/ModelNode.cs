@@ -5,7 +5,7 @@ namespace Ara3D.Models
 {
     public record ModelNode(
         Guid Id,
-        string Name,
+        string Name,    
         TriangleMesh3D Mesh,
         Matrix4x4 Transform,
         Material Material) : IModelNode

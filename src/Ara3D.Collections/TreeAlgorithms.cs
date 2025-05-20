@@ -83,7 +83,7 @@ namespace Ara3D.Collections
         }
 
         public static int Count<T>(this ITree<T> self)
-            => self == null ? 0 : self.Subtrees.Enumerate().Sum(Count) + 1;
+            => self == null ? 0 : self.Subtrees.Sum(Count) + 1;
 
         /*
         public static IBinaryTree<T> Filter<T>(this IBinaryTree<T> root, Func<T, bool> predicate)
@@ -127,7 +127,7 @@ namespace Ara3D.Collections
             int depth = 0)
         {
             visitAction(self, depth);
-            foreach (var c in self.Subtrees.Enumerate())
+            foreach (var c in self.Subtrees)
                 if (c != null)
                     Visit(c, visitAction, depth + 1);
         }
@@ -257,29 +257,12 @@ namespace Ara3D.Collections
                 root.Left,
                 root.Right.ExtractHeap(compare));
         }
-
-        public static IEnumerable<T> BreadthFirstSearch<T>(
-            T root,
-            Func<T, IEnumerable<T>> getChildren)
-        {
-            IQueue<T> q = new Queue<T>();
-            q.Enqueue(root);
-            while (!q.IsEmpty)
-            {
-                var current = q.Peek();
-                q = q.Dequeue();
-                yield return current;
-                foreach (var child in getChildren(current))
-                    q = q.Enqueue(child);
-            }
-        }
     
         public static IEnumerable<T> DepthFirstSearch<T>(
             T root,
             Func<T, IEnumerable<T>> getChildren)
         {
-            IStack<T> s = new Stack<T>();
-            s.Push(root);
+            var s = EmptyList<T>.Default.Push(root);
             while (!s.IsEmpty)
             {
                 var current = s.Peek();

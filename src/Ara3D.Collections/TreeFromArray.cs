@@ -1,4 +1,6 @@
-﻿namespace Ara3D.Collections
+﻿using System.Collections.Generic;
+
+namespace Ara3D.Collections
 {
 
     public class TreeFromArray<T> : IBinaryTree<T>
@@ -11,8 +13,8 @@
 
         public T Value => Values[RootIndex];
 
-        public ISequence<ITree<T>> Subtrees
-            => new ITree<T>[] { Left, Right }.ToIArray();
+        public IReadOnlyList<ITree<T>> Subtrees
+            => new [] { Left, Right };
 
         public IBinaryTree<T> GetSubtree(int index)
             => index >= Values.Length

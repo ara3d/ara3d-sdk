@@ -11,6 +11,7 @@
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
     <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
     <ProjectReference Include="..\Plato.Core\Plato.Core.csproj" />
+    <ProjectReference Include="..\Plato.Geometry\Plato.Geometry.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Plato.Geometry
+namespace Plato
 {
     public class ReadOnlyListAdapter<T> : IArray<T> 
     {
@@ -10,9 +10,7 @@ namespace Plato.Geometry
 
         [MethodImpl(AggressiveInlining)]
         public ReadOnlyListAdapter(IReadOnlyList<T> list)
-        {
-            List = list;
-        }
+            => List = list;
 
         [MethodImpl(AggressiveInlining)]
         public T At(Integer index)

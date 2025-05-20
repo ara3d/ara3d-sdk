@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Ara3D.Models;
 using Ara3D.Studio.API;
-using Plato.Geometry;
+using Plato;
 
 namespace Ara3D.Studio.Samples;
 

@@ -1,14 +1,17 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Ara3D.Models
+namespace Ara3D.Collections
 {
-    [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public struct ReadOnlyListEnumerator<T>(IReadOnlyList<T> array) : IEnumerator<T>
+    public class ReadOnlyListEnumerator<T> : IEnumerator<T>
     {
-        public readonly IReadOnlyList<T> Array = array;
+        public readonly IReadOnlyList<T> Array;
         public int Index = -1;
-        public readonly int Count = array.Count;
+
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ReadOnlyListEnumerator(IReadOnlyList<T> array)
+            => Array = array;
 
         public T Current
         {
@@ -26,7 +29,7 @@ namespace Ara3D.Models
         public void Dispose() { }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool MoveNext() => ++Index < Count;
+        public bool MoveNext() => ++Index < Array.Count;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Reset() => Index = -1;

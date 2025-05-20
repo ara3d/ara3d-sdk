@@ -6,9 +6,10 @@ using System.Runtime.InteropServices;
 
 namespace Ara3D.Memory;
 
-public unsafe class FixedArray<T> : IMemoryOwner<T>
+public unsafe sealed class FixedArray<T> : IMemoryOwner<T>
     where T: unmanaged
 {
+    private bool _disposed;
     public T[] Array { get; private set; }
     public GCHandle Handle { get; private set; }
     public ByteSlice Bytes { get; }
@@ -34,7 +35,6 @@ public unsafe class FixedArray<T> : IMemoryOwner<T>
     public int Count 
         => Array.Length;
 
-
     public ref T this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -49,9 +49,15 @@ public unsafe class FixedArray<T> : IMemoryOwner<T>
 
     public void Dispose()
     {
+        if (_disposed)
+            return;
+        _disposed = true;
+        if (Handle.IsAllocated)
+            Handle.Free();
         Handle.Free();
         Handle = default;
         Array = null;
+        GC.SuppressFinalize(this);
     }
 
     ~FixedArray()

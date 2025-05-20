@@ -13,6 +13,7 @@ namespace Ara3D.Memory
     [SkipLocalsInit]
     public unsafe class AlignedMemory : IMemoryOwner
     {
+        private bool _disposed;
         public ByteSlice Bytes { get; private set; }
 
         public const int Alignment = 64;
@@ -28,12 +29,17 @@ namespace Ara3D.Memory
                 throw new OutOfMemoryException();
         }
 
-        /// <summary>
-        /// Releases the unmanaged memory.
-        /// </summary>
-        [MethodImpl(AggressiveInlining)]
-        public virtual void Dispose()
+        public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+            _disposed = true;
             if (!Bytes.IsEmpty)
                 NativeMemory.AlignedFree(this.GetPointer());
             Bytes = ByteSlice.Empty;
@@ -41,7 +47,7 @@ namespace Ara3D.Memory
 
         ~AlignedMemory()
         {
-            Dispose();
+            Dispose(false);
         }
 
         /// <summary>
@@ -137,11 +143,10 @@ namespace Ara3D.Memory
             get => this[index];
         }
 
-        [MethodImpl(AggressiveInlining)]
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            base.Dispose();
             _pointer = null;
+            base.Dispose(disposing);
         }
     }
 }
