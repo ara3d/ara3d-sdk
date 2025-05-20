@@ -14,7 +14,7 @@ namespace Ara3D.Collections
     /// </summary>
     public class ReadOnlyListAdapter<T> : IReadOnlyList<T>
     {
-        private readonly System.Collections.Generic.IReadOnlyList<T> _list;
+        private readonly IReadOnlyList<T> _list;
 
         public int Count
         {
@@ -29,7 +29,7 @@ namespace Ara3D.Collections
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ReadOnlyListAdapter(System.Collections.Generic.IReadOnlyList<T> xs)
+        public ReadOnlyListAdapter(IReadOnlyList<T> xs)
             => _list = xs;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -76,7 +76,7 @@ namespace Ara3D.Collections
         /// <summary>
         /// Converts any implementation of IList (e.g. Array/List) to an IArray.
         /// </summary>
-        public static IReadOnlyList<T> ToIArray<T>(this System.Collections.Generic.IReadOnlyList<T> self)
+        public static IReadOnlyList<T> ToIArray<T>(this IReadOnlyList<T> self)
             => self.Count.Select(i => self[i]);
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Ara3D.Collections
         /// Converts any implementation of IEnumerable to an IArray
         /// </summary>
         public static IReadOnlyList<T> ToIArray<T>(this IEnumerable<T> self)
-            => self is System.Collections.Generic.IReadOnlyList<T> xs ? xs.ToIArray() : self.ToArray().ToIArray();
+            => self is IReadOnlyList<T> xs ? xs.ToIArray() : self.ToArray().ToIArray();
         
         /// <summary>
         /// Creates an IArray by repeating each item in the source a number of times.
@@ -929,16 +929,16 @@ namespace Ara3D.Collections
         public static bool Contains<T>(this IReadOnlyList<T> xs, T value)
             => xs.Any(x => x.Equals(value));
 
-        public static Ara3D.Collections.ILookup<TKey, TValue> ToLookup<TSource, TKey, TValue>(this IEnumerable<TSource> input, Func<TSource, TKey> keyFunc, Func<TSource, TValue> valueFunc)
+        public static ILookup<TKey, TValue> ToLookup<TSource, TKey, TValue>(this IEnumerable<TSource> input, Func<TSource, TKey> keyFunc, Func<TSource, TValue> valueFunc)
             => input.ToDictionary(keyFunc, valueFunc).ToLookup();
 
-        public static Ara3D.Collections.ILookup<TKey, TValue> ToLookup<TSource, TKey, TValue>(this IReadOnlyList<TSource> input, Func<TSource, TKey> keyFunc, Func<TSource, TValue> valueFunc)
+        public static ILookup<TKey, TValue> ToLookup<TSource, TKey, TValue>(this IReadOnlyList<TSource> input, Func<TSource, TKey> keyFunc, Func<TSource, TValue> valueFunc)
             => input.ToEnumerable().ToLookup(keyFunc, valueFunc);
 
-        public static Ara3D.Collections.ILookup<TKey, TSource> ToLookup<TSource, TKey>(this IEnumerable<TSource> input, Func<TSource, TKey> keyFunc)
+        public static ILookup<TKey, TSource> ToLookup<TSource, TKey>(this IEnumerable<TSource> input, Func<TSource, TKey> keyFunc)
             => input.ToDictionary(keyFunc, x => x).ToLookup();
 
-        public static Ara3D.Collections.ILookup<TKey, TSource> ToLookup<TSource, TKey>(this IReadOnlyList<TSource> input, Func<TSource, TKey> keyFunc)
+        public static ILookup<TKey, TSource> ToLookup<TSource, TKey>(this IReadOnlyList<TSource> input, Func<TSource, TKey> keyFunc)
             => input.ToEnumerable().ToLookup(keyFunc, x => x);
 
         public static T FirstOrDefault<T>(this IReadOnlyList<T> xs)

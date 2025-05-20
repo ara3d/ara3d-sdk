@@ -6,11 +6,11 @@ namespace Ara3D.Collections
 {
     public class ReadOnlyListEnumerator<T> : IEnumerator<T>
     {
-        public readonly System.Collections.Generic.IReadOnlyList<T> Array;
+        public readonly IReadOnlyList<T> Array;
         public int Index = -1;
 
         [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ReadOnlyListEnumerator(System.Collections.Generic.IReadOnlyList<T> array)
+        public ReadOnlyListEnumerator(IReadOnlyList<T> array)
             => Array = array;
 
         public T Current
