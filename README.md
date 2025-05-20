@@ -18,7 +18,7 @@ Designed for high performance and scalability, the libraries handle massive 3D d
 
 Once registered, the software is free to use for any purpose, including commercial work.
 
-➡️ To get started, download and run `Ara3D.Studio.exe` from the `external/` folder.
+➡️ To get started, download and run `Ara3D.Studio.exe` from the `dist/` folder.
 
 ---
 
