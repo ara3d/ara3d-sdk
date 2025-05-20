@@ -1,6 +1,6 @@
 # 📚 Ara3D-SDK
 
-![NuGet Version](https://img.shields.io/nuget/v/Ara3D.SDK?link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FAra3D.SDK)
+[![NuGet Version](https://img.shields.io/nuget/v/Ara3D.SDK)](https://www.nuget.org/packages/Ara3D.SDK)
 
 **Ara3D-SDK** is a powerful collection of open-source C# libraries for processing, transforming, and visualizing large-scale 3D models—especially tailored for AEC (Architecture, Engineering, and Construction) workflows.
 
