@@ -1,0 +1,295 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Ara3D.IO/1.0.0": {
+        "dependencies": {
+          "Ara3D.Logging": "1.0.0",
+          "Ara3D.Studio.API": "1.0.0",
+          "Ara3D.Studio.Data": "1.0.0",
+          "SharpGLTF.Core": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.IO.dll": {}
+        }
+      },
+      "System.Memory/4.6.0": {},
+      "Ara3D.Collections/1.0.0": {
+        "runtime": {
+          "Ara3D.Collections.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.DataTable/1.0.0": {
+        "dependencies": {
+          "Ara3D.Memory": "1.0.0",
+          "Ara3D.PropKit": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.DataTable.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.IO.BFAST/1.0.0": {
+        "dependencies": {
+          "Ara3D.Memory": "1.0.0",
+          "Ara3D.MemoryMappedFiles": "1.0.0",
+          "Ara3D.Utils": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.IO.BFAST.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.IO.G3D/1.0.0": {
+        "dependencies": {
+          "Ara3D.Collections": "1.0.0",
+          "Ara3D.IO.BFAST": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.IO.G3D.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.IO.VIM/1.0.0": {
+        "dependencies": {
+          "Ara3D.IO.BFAST": "1.0.0",
+          "Ara3D.IO.G3D": "1.0.0",
+          "Ara3D.Memory": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.IO.VIM.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.Logging/1.0.0": {
+        "dependencies": {
+          "Ara3D.Utils": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.Logging.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.Memory/1.0.0": {
+        "runtime": {
+          "Ara3D.Memory.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.MemoryMappedFiles/1.0.0": {
+        "dependencies": {
+          "Ara3D.Memory": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.MemoryMappedFiles.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.Models/1.0.0": {
+        "dependencies": {
+          "Ara3D.DataTable": "1.0.0",
+          "Ara3D.Memory": "1.0.0",
+          "Ara3D.PropKit": "1.0.0",
+          "Plato.Core": "1.0.0",
+          "Plato.Geometry": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.Models.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.PropKit/1.0.0": {
+        "runtime": {
+          "Ara3D.PropKit.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.Studio.API/1.0.0": {
+        "dependencies": {
+          "Ara3D.Logging": "1.0.0",
+          "Ara3D.Models": "1.0.0",
+          "Ara3D.Studio.Data": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.Studio.API.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.Studio.Data/1.0.0": {
+        "dependencies": {
+          "Ara3D.IO.BFAST": "1.0.0",
+          "Ara3D.IO.G3D": "1.0.0",
+          "Ara3D.IO.VIM": "1.0.0",
+          "Ara3D.Logging": "1.0.0",
+          "Ara3D.Memory": "1.0.0",
+          "Ara3D.Models": "1.0.0",
+          "Ara3D.Utils": "1.0.0",
+          "Plato.Core": "1.0.0",
+          "System.Memory": "4.6.0"
+        },
+        "runtime": {
+          "Ara3D.Studio.Data.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.Utils/1.0.0": {
+        "runtime": {
+          "Ara3D.Utils.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Plato.Core/1.0.0": {
+        "runtime": {
+          "Plato.Core.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Plato.Geometry/1.0.0": {
+        "dependencies": {
+          "Plato.Core": "1.0.0"
+        },
+        "runtime": {
+          "Plato.Geometry.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "SharpGLTF.Core/1.0.0": {
+        "runtime": {
+          "SharpGLTF.Core.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Ara3D.IO/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Memory/4.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OEkbBQoklHngJ8UD8ez2AERSk2g+/qpAaSWWCBFbpH727HxDq5ydVkuncBaKcKfwRqXGWx64dS6G1SUScMsitg==",
+      "path": "system.memory/4.6.0",
+      "hashPath": "system.memory.4.6.0.nupkg.sha512"
+    },
+    "Ara3D.Collections/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.DataTable/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.IO.BFAST/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.IO.G3D/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.IO.VIM/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.Logging/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.Memory/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.MemoryMappedFiles/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.PropKit/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.Studio.API/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.Studio.Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.Utils/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Plato.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Plato.Geometry/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SharpGLTF.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
