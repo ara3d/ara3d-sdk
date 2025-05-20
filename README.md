@@ -8,6 +8,7 @@ Use it standalone, or extend and customize the **Ara 3D Studio** desktop applica
 
 Designed for high performance and scalability, the libraries handle massive 3D data sets in real-time. They're cross-platform and compatible with .NET 8.
 
+<!--
 ---
 
 ## 🖥️ Ara 3D Studio
@@ -21,6 +22,7 @@ Designed for high performance and scalability, the libraries handle massive 3D d
 Once registered, the software is free to use for any purpose, including commercial work.
 
 ➡️ To get started, download and run `Ara3D.Studio.exe` from the `dist/` folder.
+-->
 
 ---
 
