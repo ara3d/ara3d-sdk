@@ -13,7 +13,7 @@ namespace Ara3D.Collections
 
         public T Value => Values[RootIndex];
 
-        public IReadOnlyList<ITree<T>> Subtrees
+        public System.Collections.Generic.IReadOnlyList<ITree<T>> Subtrees
             => new [] { Left, Right };
 
         public IBinaryTree<T> GetSubtree(int index)

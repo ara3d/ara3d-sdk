@@ -8,7 +8,7 @@ namespace Ara3D.Collections
     /// <summary>
     /// Implements an IArray via a function and a count.
     /// </summary>
-    public class FunctionalArray<T> : IArray<T>
+    public class FunctionalReadOnlyList<T> : IReadOnlyList<T>
     {
         public readonly Func<int, T> Function;
 
@@ -25,7 +25,7 @@ namespace Ara3D.Collections
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FunctionalArray(int count, Func<int, T> function)
+        public FunctionalReadOnlyList(int count, Func<int, T> function)
             => (Count, Function) = (count, function);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

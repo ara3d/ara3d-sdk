@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ara3D.Collections
 {
-    public class IntegerRange : IReadOnlyList<int>
+    public class IntegerRange : System.Collections.Generic.IReadOnlyList<int>
     {
         public int From { get; }
         public int this[int n] => From + n;

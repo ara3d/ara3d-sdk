@@ -8,16 +8,16 @@ namespace Ara3D.Collections
     /// </summary>
     public interface ILookup<TKey, TValue>
     {
-        IArray<TKey> Keys { get; }
-        IArray<TValue> Values { get; }
+        IReadOnlyList<TKey> Keys { get; }
+        IReadOnlyList<TValue> Values { get; }
         bool Contains(TKey key);
         TValue this[TKey key] { get; }
     }
 
     public class EmptyLookup<TKey, TValue> : ILookup<TKey, TValue>
     {
-        public IArray<TKey> Keys => LinqArray.Empty<TKey>();
-        public IArray<TValue> Values => LinqArray.Empty<TValue>();
+        public IReadOnlyList<TKey> Keys => LinqArray.Empty<TKey>();
+        public IReadOnlyList<TValue> Values => LinqArray.Empty<TValue>();
         public bool Contains(TKey key) => false;
         public TValue this[TKey key] => default;
     }
@@ -35,27 +35,27 @@ namespace Ara3D.Collections
             Values = d.Values.ToIArray();
         }
 
-        public IArray<TKey> Keys { get; }
-        public IArray<TValue> Values { get; }
+        public IReadOnlyList<TKey> Keys { get; }
+        public IReadOnlyList<TValue> Values { get; }
         public TValue this[TKey key] => Contains(key) ? Dictionary[key] : _default;
         public bool Contains(TKey key) => Dictionary.ContainsKey(key);
     }
 
     public class LookupFromArray<TValue> : ILookup<int, TValue>
     {
-        private IArray<TValue> array;
+        private IReadOnlyList<TValue> _readOnlyList;
 
-        public LookupFromArray(IArray<TValue> xs)
+        public LookupFromArray(IReadOnlyList<TValue> xs)
         {
-            array = xs;
-            Keys = array.Indices();
-            Values = array;
+            _readOnlyList = xs;
+            Keys = _readOnlyList.Indices();
+            Values = _readOnlyList;
         }
 
-        public IArray<int> Keys { get; }
-        public IArray<TValue> Values { get; }
-        public TValue this[int key] => array[key];
-        public bool Contains(int key) => key >= 0 && key <= array.Count;
+        public IReadOnlyList<int> Keys { get; }
+        public IReadOnlyList<TValue> Values { get; }
+        public TValue this[int key] => _readOnlyList[key];
+        public bool Contains(int key) => key >= 0 && key <= _readOnlyList.Count;
     }
 
     public static class LookupExtensions

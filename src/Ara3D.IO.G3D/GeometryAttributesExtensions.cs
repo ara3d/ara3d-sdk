@@ -36,7 +36,7 @@ namespace Ara3D.IO.G3D
             return -1;
         }
 
-        public static IArray<string> AttributeNames(this IGeometryAttributes g)
+        public static IReadOnlyList<string> AttributeNames(this IGeometryAttributes g)
             => g.Attributes.Select(attr => attr.Name);
 
         public static GeometryAttribute<T> GetAttribute<T>(this IGeometryAttributes g, string attributeName) where T : unmanaged
@@ -84,20 +84,20 @@ namespace Ara3D.IO.G3D
         /// <summary>
         /// Given a set of face indices, creates an array of corner indices
         /// </summary>
-        public static IArray<int> FaceIndicesToCornerIndices(this IGeometryAttributes g, IArray<int> faceIndices)
+        public static IReadOnlyList<int> FaceIndicesToCornerIndices(this IGeometryAttributes g, IReadOnlyList<int> faceIndices)
             => (faceIndices.Count * g.NumCornersPerFace)
                 .Select(i => g.FaceToCorner(faceIndices[i / g.NumCornersPerFace]) + i % g.NumCornersPerFace);
 
         /// <summary>
         /// Given a set of face indices, creates an array of indices of the first corner in each face
         /// </summary>
-        public static IArray<int> FaceIndicesToFirstCornerIndices(this IGeometryAttributes g, IArray<int> faceIndices)
+        public static IReadOnlyList<int> FaceIndicesToFirstCornerIndices(this IGeometryAttributes g, IReadOnlyList<int> faceIndices)
             => faceIndices.Select(f => f * g.NumCornersPerFace);
 
         public static int CornerToFace(this IGeometryAttributes g, int c)
             => c / g.NumCornersPerFace;
 
-        public static IArray<int> CornersToFaces(this IGeometryAttributes g)
+        public static IReadOnlyList<int> CornersToFaces(this IGeometryAttributes g)
             => g.NumCorners.Select(g.CornerToFace);
 
         public static int CornerNumber(this IGeometryAttributes g, int c)
@@ -106,7 +106,7 @@ namespace Ara3D.IO.G3D
         public static IGeometryAttributes ToGeometryAttributes(this IEnumerable<GeometryAttribute> attributes)
             => new GeometryAttributes(attributes);
 
-        public static IGeometryAttributes ToGeometryAttributes(this IArray<GeometryAttribute> attributes)
+        public static IGeometryAttributes ToGeometryAttributes(this IReadOnlyList<GeometryAttribute> attributes)
             => attributes.ToEnumerable().ToGeometryAttributes();
 
         public static IGeometryAttributes AddAttributes(this IGeometryAttributes attributes, params GeometryAttribute[] newAttributes)
@@ -118,22 +118,22 @@ namespace Ara3D.IO.G3D
         public static G3D ToG3d(this IEnumerable<GeometryAttribute> attributes, G3dHeader? header = null)
             => new G3D(attributes, header);
 
-        public static G3D ToG3d(this IArray<GeometryAttribute> attributes, G3dHeader? header = null)
+        public static G3D ToG3d(this IReadOnlyList<GeometryAttribute> attributes, G3dHeader? header = null)
             => attributes.ToEnumerable().ToG3d(header);
 
-        public static IArray<int> IndexFlippedRemapping(this IGeometryAttributes g)
+        public static IReadOnlyList<int> IndexFlippedRemapping(this IGeometryAttributes g)
             => g.NumCorners.Select(c => ((c / g.NumCornersPerFace) + 1) * g.NumCornersPerFace - 1 - c % g.NumCornersPerFace);
 
         public static bool IsNormalAttribute(this GeometryAttribute attr)
             => attr.IsType<Vector3>() && attr.Descriptor.Semantic == "normal";
 
-        public static IArray<int> DefaultMaterials(this IGeometryAttributes self)
+        public static IReadOnlyList<int> DefaultMaterials(this IGeometryAttributes self)
             => (-1).Repeat(self.NumFaces);
 
-        public static IArray<Vector4> DefaultColors(this IGeometryAttributes self)
+        public static IReadOnlyList<Vector4> DefaultColors(this IGeometryAttributes self)
             => Vector4.Zero.Repeat(self.NumVertices);
 
-        public static IArray<Vector2> DefaultUvs(this IGeometryAttributes self)
+        public static IReadOnlyList<Vector2> DefaultUvs(this IGeometryAttributes self)
             => Vector2.Zero.Repeat(self.NumVertices);
 
         public static IGeometryAttributes Replace(this IGeometryAttributes self, Func<AttributeDescriptor, bool> selector, GeometryAttribute attribute)

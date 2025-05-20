@@ -1,4 +1,5 @@
-﻿using Ara3D.Collections;
+﻿using System.Collections.Generic;
+using Ara3D.Collections;
 
 namespace Ara3D.IO.G3D
 {
@@ -16,7 +17,7 @@ namespace Ara3D.IO.G3D
         int NumShapeVertices { get; }
         int NumShapes { get; }
 
-        IArray<GeometryAttribute> Attributes { get; }
+        IReadOnlyList<GeometryAttribute> Attributes { get; }
         GeometryAttribute GetAttribute(string name);
     }
 }

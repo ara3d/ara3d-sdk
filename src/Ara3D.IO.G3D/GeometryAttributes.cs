@@ -23,7 +23,7 @@ namespace Ara3D.IO.G3D
         public int NumShapeVertices { get; } = -1;
         public int NumShapes { get; } = -1;
 
-        public IArray<GeometryAttribute> Attributes { get; }
+        public IReadOnlyList<GeometryAttribute> Attributes { get; }
 
         public GeometryAttribute GetAttribute(string name)
             => Lookup.TryGetValue(name, out var val) ? val : null;

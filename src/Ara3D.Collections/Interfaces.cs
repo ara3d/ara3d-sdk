@@ -41,7 +41,7 @@ namespace Ara3D.Collections
     public interface ITree<T>
     {
         T Value { get; }
-        IReadOnlyList<ITree<T>> Subtrees { get; }
+        System.Collections.Generic.IReadOnlyList<ITree<T>> Subtrees { get; }
     }
 
     public interface IBinaryTree<T> : ITree<T>
@@ -89,21 +89,21 @@ namespace Ara3D.Collections
     /// <summary>
     /// An ordered array enables much faster finding of items.
     /// </summary>
-    public interface IOrderedArray<T> : IArray<T>, IOrdered<T>, ISearchable<T, int>
+    public interface IOrderedReadOnlyList<T> : IReadOnlyList<T>, IOrdered<T>, ISearchable<T, int>
     {
     }
 
     /// <summary>
     /// An sequence with a specific fixed ordering. 
     /// </summary>
-    public interface IOrderedSequence<T> : IReadOnlyList<T>, IOrdered<T>
+    public interface IOrderedSequence<T> : System.Collections.Generic.IReadOnlyList<T>, IOrdered<T>
     {
     }
 
     /// <summary>
     /// A monotonically increasing sequence of integers 
     /// </summary>
-    public interface IRange : IOrderedArray<int>, ISet<int>
+    public interface IRange : IOrderedReadOnlyList<int>, ISet<int>
     {
         int From { get; }
     }

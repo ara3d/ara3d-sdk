@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Ara3D.Collections
 {
-    public class EmptyList<T> : IStack<T>, IReadOnlyList<T>, IEnumerator<T>, IArray<T>
+    public class EmptyList<T> : IStack<T>, IEnumerator<T>, IReadOnlyList<T>
     {
         public IStack<T> Push(T x) => new Stack<T>(x, this);
         public IStack<T> Pop() => throw new InvalidOperationException();

@@ -223,7 +223,7 @@ namespace Ara3D.IO.G3D
                 InstanceFlags = ((ushort) 0).Repeat(NumInstances).ToArray().Fix();
         }
 
-        private static int[] GetSubArrayCounts(int numItems, IReadOnlyList<int> offsets, int totalCount)
+        private static int[] GetSubArrayCounts(int numItems, System.Collections.Generic.IReadOnlyList<int> offsets, int totalCount)
             => numItems.Select(i => i < (numItems - 1)
                 ? offsets[i + 1] - offsets[i]
                 : totalCount - offsets[i]).ToArray();
