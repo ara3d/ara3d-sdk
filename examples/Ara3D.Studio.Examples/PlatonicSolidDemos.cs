@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ara3D.Models;
 using Ara3D.Studio.API;
@@ -32,7 +33,7 @@ public class PlatonicSolidDemos : IModelGenerator
     [Range(0f, 1f)]
     public float Alpha { get; set; } = 1f;
 
-    public Model Evaluate()
+    public IModel Evaluate()
     {
         var mesh = PlatonicSolids.Tetrahedron.ToNode();
         var nodes = new List<ModelNode>();
@@ -53,6 +54,6 @@ public class PlatonicSolidDemos : IModelGenerator
             }
         }
 
-        return nodes;
+        return new Model(nodes);
     }
 }

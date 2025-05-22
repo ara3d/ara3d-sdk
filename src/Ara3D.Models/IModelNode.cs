@@ -6,7 +6,7 @@ public interface IModelNode
 {
     Guid Id { get; }
     string Name { get; }
-    Material Material { get; }
+    ModelMaterial Material { get; }
     TriangleMesh3D Mesh { get; }
     Matrix4x4 Transform { get; }
 }

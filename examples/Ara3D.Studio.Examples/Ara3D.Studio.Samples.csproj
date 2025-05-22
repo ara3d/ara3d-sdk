@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.ScriptService\Ara3D.ScriptService.csproj" />
     <ProjectReference Include="..\..\src\Plato.Core\Plato.Core.csproj" />
     <ProjectReference Include="..\..\src\Plato.Geometry\Plato.Geometry.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Models\Ara3D.Models.csproj" />

@@ -346,10 +346,10 @@ namespace Ara3D.Utils
         }
 
         /// <summary>
-        /// Get the base name of the specified directory 
+        /// Get the simple name of the specified directory 
         /// </summary>
         public static string GetFolderName(this DirectoryPath dirPath)
-            => Path.GetDirectoryName(dirPath);
+            => Path.GetFileName(dirPath);
         
         /// <summary>
         /// Useful quick test to assure that we can create a file in the folder and write to it.

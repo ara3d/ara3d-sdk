@@ -19,7 +19,7 @@ namespace Ara3D.Utils.Roslyn
             => OutputFile.GetFileNameWithoutExtension();
 
         public LanguageVersion Language
-            => LanguageVersion.CSharp7_3;
+            => LanguageVersion.CSharp12;
 
         public CSharpParseOptions ParseOptions
             => new CSharpParseOptions(Language);

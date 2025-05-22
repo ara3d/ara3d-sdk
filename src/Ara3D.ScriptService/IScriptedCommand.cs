@@ -1,8 +1,8 @@
 ﻿namespace Ara3D.ScriptService
 {
-    public interface IScriptingCommand 
+    public interface IScriptedCommand 
     {
         string Name { get; }
-        void Execute(object argument);
+        void Execute();
     }
 }    

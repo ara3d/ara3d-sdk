@@ -15,7 +15,7 @@ namespace Ara3D.Utils
         void NotifyCanExecuteChanged();
     }
 
-    public interface INamedCommand<T> : INamedCommand
+    public interface INamedCommand<in T> : INamedCommand
     {
         bool CanExecute(T parameter);
         void Execute(T parameter);

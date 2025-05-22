@@ -1,8 +1,8 @@
-﻿using Ara3D.Studio.Data;
+﻿using Ara3D.Models;
 
 namespace Ara3D.Studio.API;
 
 public interface IModelAsset : IAsset
 {
-    IRenderScene Import();  
+    IModel Import();  
 }

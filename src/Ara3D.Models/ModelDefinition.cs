@@ -14,12 +14,12 @@ public class ModelDefinition
     }
 
     public IReadOnlyList<TriangleMesh3D> Meshes { get; }
-    public IReadOnlyList<Material> Materials { get; }
+    public IReadOnlyList<ModelMaterial> Materials { get; }
     public IReadOnlyList<Node> Nodes { get; }
 
     public ModelDefinition(
         IReadOnlyList<TriangleMesh3D> meshes,
-        IReadOnlyList<Material> materials,
+        IReadOnlyList<ModelMaterial> materials,
         IReadOnlyList<Node> nodes)
     {
         Meshes = meshes;

@@ -141,7 +141,7 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        public void AddScene(Model model)
+        public void AddModel(IModel model)
         {
             var meshes = new Dictionary<TriangleMesh3D, int>();
 

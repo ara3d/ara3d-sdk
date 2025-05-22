@@ -8,11 +8,11 @@ namespace Ara3D.Models
         string Name,    
         TriangleMesh3D Mesh,
         Matrix4x4 Transform,
-        Material Material) : IModelNode
+        ModelMaterial Material) : IModelNode
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator ModelNode(TriangleMesh3D mesh)
-            => new(Guid.NewGuid(), "", mesh, Matrix4x4.Identity, Material.Default);
+            => new(Guid.NewGuid(), "", mesh, Matrix4x4.Identity, ModelMaterial.Default);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ModelNode Translate(Vector3 v)

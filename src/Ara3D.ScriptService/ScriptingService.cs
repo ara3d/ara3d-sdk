@@ -19,28 +19,26 @@ namespace Ara3D.ScriptService
         public ILogger Logger { get; set; }
         public ScriptingOptions Options { get; }
         public Assembly Assembly => WatchingCompiler?.Compiler?.Assembly;
-        public IScriptingHost Host { get; }
-        public new IReadOnlyList<IScriptingCommand> Commands { get; private set; }
+        public new IReadOnlyList<IScriptedCommand> Commands { get; private set; }
 
-        public ScriptingService(IScriptingHost host, IServiceManager app, ILogger logger, ScriptingOptions options)
+        public ScriptingService(IServiceManager app, ILogger logger, ScriptingOptions options)
             : base(app)
         {
-            Host = host;
-            Logger = logger ?? new Logger(LogWriter.DebugWriter, "Bowerbird");
+            Logger = logger ?? new Logger(LogWriter.DebugWriter, "Scripting Service");
             Options = options;
             CreateInitialFolders();
             WatchingCompiler = new DirectoryWatchingCompiler(Logger, Options.ScriptsFolder, Options.LibrariesFolder);
             WatchingCompiler.RecompileEvent += WatchingCompilerRecompileEvent;
             UpdateDataModel();
-            Commands = new List<IScriptingCommand>();
+            Commands = new List<IScriptedCommand>();
         }
 
-        public void ExecuteCommand(IScriptingCommand command)
+        public void ExecuteCommand(IScriptedCommand command)
         {
             try
             {
                 Logger.Log($"Starting command execution: {command.Name}");
-                Host.ExecuteCommand(command);
+                command.Execute();
                 Logger.Log($"Finished command execution: {command.Name}");
             }
             catch (Exception e)
@@ -81,10 +79,10 @@ namespace Ara3D.ScriptService
         public void UpdateDataModel()
         {
             var types = Compiler?.ExportedTypes ?? Array.Empty<Type>();
-            var cmds = new List<IScriptingCommand>();
+            var cmds = new List<IScriptedCommand>();
             foreach (var type in types)
             {
-                if (!typeof(IScriptingCommand).IsAssignableFrom(type))
+                if (!typeof(IScriptedCommand).IsAssignableFrom(type))
                     continue;
 
                 try
@@ -95,10 +93,10 @@ namespace Ara3D.ScriptService
                         Logger.LogError($"Failed to create instance of type {type}");
                         continue;
                     }
-                    var bbCmd = cmd as IScriptingCommand;
+                    var bbCmd = cmd as IScriptedCommand;
                     if (bbCmd == null)
                     {
-                        Logger.LogError($"Failed to cast instance of type {type} to IBowerbirdCommand");
+                        Logger.LogError($"Failed to cast instance of type {type} to IScriptedCommand");
                         continue;
                     }
                     cmds.Add(bbCmd);
@@ -127,7 +125,7 @@ namespace Ara3D.ScriptService
             };
         }
 
-        public IScriptingCommand CompileSingleCommand(FilePath file)
+        public IScriptedCommand CompileSingleCommand(FilePath file)
         {
             Logger?.Log($"Requested compilation of single command {file}");
 
@@ -148,16 +146,16 @@ namespace Ara3D.ScriptService
                 return null;
             }
 
-            var commandTypes = localCompiler.ExportedTypes.Where(t => t.ImplementsInterface(typeof(IScriptingCommand))).ToList();
+            var commandTypes = localCompiler.ExportedTypes.Where(t => t.ImplementsInterface(typeof(IScriptedCommand))).ToList();
             if (commandTypes.Count == 0)
             {
-                Logger?.Log("Failed: could not find exported type implementing IBowerbirdCommand");
+                Logger?.Log("Failed: could not find exported type implementing IScriptedCommand");
                 return null;
             }
             
             if (commandTypes.Count > 1)
             {
-                Logger?.Log("Failed: ambiguous ... found multiple exported types implementing IBowerbirdCommand.");
+                Logger?.Log("Failed: ambiguous ... found multiple exported types implementing IScriptedCommand.");
                 return null;
             }
 
@@ -169,7 +167,7 @@ namespace Ara3D.ScriptService
                 return null;
             }
 
-            return instance as IScriptingCommand;
+            return instance as IScriptedCommand;
         }
     }
 }
