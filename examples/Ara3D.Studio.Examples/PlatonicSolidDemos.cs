@@ -33,7 +33,7 @@ public class PlatonicSolidDemos : IModelGenerator
     [Range(0f, 1f)]
     public float Alpha { get; set; } = 1f;
 
-    public IModel Evaluate()
+    public Model Evaluate()
     {
         var mesh = PlatonicSolids.Tetrahedron.ToNode();
         var nodes = new List<ModelNode>();
@@ -47,13 +47,13 @@ public class PlatonicSolidDemos : IModelGenerator
                     var y = j * Spacing;
                     var z = k * Spacing;
                     var node = mesh
-                        .TranslateTo((x, y, z))
+                        .Translate((x, y, z))
                         .WithColor((Red, Green, Blue, Alpha));
                     nodes.Add(node);
                 }
             }
         }
 
-        return new Model(nodes);
+        return nodes;
     }
 }

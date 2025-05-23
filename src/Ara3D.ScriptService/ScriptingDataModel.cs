@@ -10,7 +10,6 @@ namespace Ara3D.ScriptService
         public IReadOnlyList<FilePath> Files = Array.Empty<FilePath>();
         public IReadOnlyList<string> Assemblies = Array.Empty<string>();
         public IReadOnlyList<string> Diagnostics = Array.Empty<string>();
-        public IReadOnlyList<string> Commands = Array.Empty<string>();
         public FilePath Dll = "";
         public DirectoryPath Directory = "";
         public ScriptingOptions Options = new ScriptingOptions();

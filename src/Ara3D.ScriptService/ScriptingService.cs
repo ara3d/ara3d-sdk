@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using Ara3D.Logging;
 using Ara3D.Services;
 using Ara3D.Utils;
@@ -19,7 +18,8 @@ namespace Ara3D.ScriptService
         public ILogger Logger { get; set; }
         public ScriptingOptions Options { get; }
         public Assembly Assembly => WatchingCompiler?.Compiler?.Assembly;
-        public new IReadOnlyList<IScriptedCommand> Commands { get; private set; }
+        public IReadOnlyList<Type> Types { get; private set; }
+        public IReadOnlyList<object> Objects { get; private set; }
 
         public ScriptingService(IServiceManager app, ILogger logger, ScriptingOptions options)
             : base(app)
@@ -30,7 +30,8 @@ namespace Ara3D.ScriptService
             WatchingCompiler = new DirectoryWatchingCompiler(Logger, Options.ScriptsFolder, Options.LibrariesFolder);
             WatchingCompiler.RecompileEvent += WatchingCompilerRecompileEvent;
             UpdateDataModel();
-            Commands = new List<IScriptedCommand>();
+            Types = Array.Empty<Type>();
+            Objects = Array.Empty<object>();
         }
 
         public void ExecuteCommand(IScriptedCommand command)
@@ -60,7 +61,6 @@ namespace Ara3D.ScriptService
 
         private void WatchingCompilerRecompileEvent(object sender, EventArgs e)
         {
-            // TODO: get the plugins from the assembly if things ar successful
             UpdateDataModel();
         }
 
@@ -76,98 +76,46 @@ namespace Ara3D.ScriptService
             set => WatchingCompiler.AutoRecompile = value;
         }
 
-        public void UpdateDataModel()
+        public IReadOnlyList<object> CreateObjects(IEnumerable<Type> types)
         {
-            var types = Compiler?.ExportedTypes ?? Array.Empty<Type>();
-            var cmds = new List<IScriptedCommand>();
-            foreach (var type in types)
+            var objects = new List<object>();
+            foreach (var t in types)
             {
-                if (!typeof(IScriptedCommand).IsAssignableFrom(type))
+                if (!t.HasDefaultConstructor())
                     continue;
-
                 try
                 {
-                    var cmd = Activator.CreateInstance(type);
-                    if (cmd == null)
-                    {
-                        Logger.LogError($"Failed to create instance of type {type}");
-                        continue;
-                    }
-                    var bbCmd = cmd as IScriptedCommand;
-                    if (bbCmd == null)
-                    {
-                        Logger.LogError($"Failed to cast instance of type {type} to IScriptedCommand");
-                        continue;
-                    }
-                    cmds.Add(bbCmd);
+                    var obj = Activator.CreateInstance(t);
+                    Logger.Log($"Created object of type {t}");
+                    objects.Add(obj);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Logger.LogError($"Exception occurred while processing type {type}");
+                    Logger.LogError($"Error while checking default constructor for type {t}: {e}");
                 }
             }
 
-            Commands = cmds;
+            return objects;
+        }
+
+        public void UpdateDataModel()
+        {
+            Types = Compiler?.ExportedTypes.ToArray() ?? Array.Empty<Type>();
+            Objects = CreateObjects(Types);
 
             Repository.Value = new ScriptingDataModel()
             {
                 Dll = Assembly?.Location ?? "",
                 Directory = WatchingCompiler?.Directory,
-                TypeNames = types.Select(t => t.FullName).OrderBy(t => t).ToArray(),
+                TypeNames = Types.Select(t => t.FullName).OrderBy(t => t).ToArray(),
                 Files = Compiler?.Input?.SourceFiles?.Select(sf => sf.FilePath).OrderBy(x => x.Value).ToArray() ?? Array.Empty<FilePath>(),
                 Assemblies = Compiler?.Refs?.Select(fp => fp.Value).ToList(),
                 Diagnostics = Compiler?.Compilation?.Diagnostics?.Select(d => d.ToString()).ToArray() ?? Array.Empty<string>(),
                 ParseSuccess = Compiler?.Input?.HasParseErrors == false,
                 EmitSuccess = Compiler?.CompilationSuccess == true,
                 LoadSuccess = Assembly != null,
-                Options =  Options,
-                Commands = cmds.Select(c => c.Name).ToList(),
+                Options = Options,
             };
-        }
-
-        public IScriptedCommand CompileSingleCommand(FilePath file)
-        {
-            Logger?.Log($"Requested compilation of single command {file}");
-
-            if (Compiler == null || Compiler?.CompilationSuccess == false)
-            {
-                Logger?.Log("Failed: no successful previous compilation to start from.");
-                return null;
-            }
-
-            var options = WatchingCompiler.GetOptionsWithNewName();
-            var refs = Compiler.Refs;
-            var localCompiler = new Compiler(new[] { file }, refs, options, Logger,
-                CancellationToken.None);
-
-            if (!localCompiler.CompilationSuccess)
-            {
-                Logger?.Log("Failed: local compilation of command.");
-                return null;
-            }
-
-            var commandTypes = localCompiler.ExportedTypes.Where(t => t.ImplementsInterface(typeof(IScriptedCommand))).ToList();
-            if (commandTypes.Count == 0)
-            {
-                Logger?.Log("Failed: could not find exported type implementing IScriptedCommand");
-                return null;
-            }
-            
-            if (commandTypes.Count > 1)
-            {
-                Logger?.Log("Failed: ambiguous ... found multiple exported types implementing IScriptedCommand.");
-                return null;
-            }
-
-            var instance = Activator.CreateInstance(commandTypes[0]);
-
-            if (instance == null)
-            {
-                Logger?.Log($"Failed: could not create instance of of {commandTypes[0]}");
-                return null;
-            }
-
-            return instance as IScriptedCommand;
         }
     }
 }

@@ -7,32 +7,16 @@ namespace Ara3D.Models
         Guid Id,
         string Name,    
         TriangleMesh3D Mesh,
-        Matrix4x4 Transform,
-        ModelMaterial Material) : IModelNode
+        Matrix4x4 Matrix,
+        ModelMaterial Material) : ITransformable3D<ModelNode>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator ModelNode(TriangleMesh3D mesh)
             => new(Guid.NewGuid(), "", mesh, Matrix4x4.Identity, ModelMaterial.Default);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ModelNode Translate(Vector3 v)
-            => this with { Transform = Transform * Matrix4x4.CreateTranslation(v) };
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ModelNode TranslateTo(Vector3 v)
-            => this with { Transform = Transform.WithTranslation(v) };
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ModelNode Rotate(Vector3 v, Angle angle)
-            => this with { Transform = Transform * Quaternion.CreateFromAxisAngle(v, angle) };
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ModelNode Scale(Vector3 v)
-            => this with { Transform = Transform * Matrix4x4.CreateScale(v.X, v.Y, v.Z) };
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ModelNode Scale(Number n)
-            => this with { Transform = Transform * Matrix4x4.CreateScale(n) };
+        public ModelNode Transform(Matrix4x4 matrix)
+            => this with { Matrix = Matrix * matrix };
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ModelNode WithColor(Color color)

@@ -3,6 +3,6 @@
 namespace Ara3D.Studio.API;
 
 public interface IModelAsset : IAsset
-{
-    IModel Import();  
+{ 
+    Model Import();  
 }

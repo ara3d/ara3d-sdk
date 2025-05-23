@@ -141,7 +141,7 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        public void AddModel(IModel model)
+        public void AddModel(Model model)
         {
             var meshes = new Dictionary<TriangleMesh3D, int>();
 
@@ -159,7 +159,7 @@ namespace Ara3D.Studio.Data
             foreach (var node in model.Nodes)
             {
                 var meshIndex = meshes[node.Mesh];
-                var (translation, quaternion, scale, success) = node.Transform.Decompose;
+                var (translation, quaternion, scale, success) = node.Matrix.Decompose;
                 var color = node.Material.Color;
                 var instance = new InstanceStruct()
                 {
