@@ -4,7 +4,7 @@ public abstract class TypedPropDescriptor<T> : PropDescriptor
 {
     protected TypedPropDescriptor(string name, string displayName, string description, string units, bool isReadOnly,
         bool isDeprecated, Dictionary<string, string> tags = null)
-        : base(name, typeof(T), displayName, description, units, isReadOnly, isDeprecated, tags) { }
+        : base(typeof(T), name, displayName, description, units, isReadOnly, isDeprecated, tags) { }
 
     public abstract T Update(T value, PropUpdateType propUpdate);
     public abstract T Validate(T value);

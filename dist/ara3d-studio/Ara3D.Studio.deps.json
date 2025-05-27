@@ -16,6 +16,7 @@
           "Ara3D.IO.BFAST": "1.0.0",
           "Ara3D.IO.G3D": "1.0.0",
           "Ara3D.IO.VIM": "1.0.0",
+          "Ara3D.IO.Windows": "1.0.0",
           "Ara3D.Logging": "1.0.0",
           "Ara3D.Memory": "1.0.0",
           "Ara3D.Models": "1.0.0",
@@ -29,6 +30,10 @@
           "Ara3D.Utils.Roslyn": "1.0.0",
           "MahApps.Metro.IconPacks": "5.1.0",
           "MaterialDesignThemes": "5.2.1",
+          "Microsoft.Extensions.Configuration": "9.0.5",
+          "Microsoft.Extensions.Configuration.CommandLine": "9.0.5",
+          "Microsoft.Extensions.Configuration.FileExtensions": "9.0.5",
+          "Microsoft.Extensions.Configuration.Json": "9.0.5",
           "Pfim": "0.11.3",
           "Silk.NET.Input": "2.21.0",
           "Silk.NET.OpenGL": "2.21.0",
@@ -49,6 +54,46 @@
           "lib/net8.0/Amazon.Extensions.CognitoAuthentication.dll": {
             "assemblyVersion": "3.0.0.0",
             "fileVersion": "3.0.0.0"
+          }
+        }
+      },
+      "AssimpNetter/5.4.3.3": {
+        "runtime": {
+          "lib/net5.0/AssimpNetter.dll": {
+            "assemblyVersion": "5.4.3.3",
+            "fileVersion": "5.4.3.3"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-arm64/native/libassimp.so": {
+            "rid": "linux-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libassimp.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libassimp.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libassimp.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/assimp.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "5.4.3.0"
+          },
+          "runtimes/win-x86/native/assimp.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "5.4.3.0"
           }
         }
       },
@@ -595,12 +640,95 @@
         }
       },
       "Microsoft.CSharp/4.7.0": {},
+      "Microsoft.Database.ManagedEsent/2.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Esent.Interop.dll": {
+            "assemblyVersion": "1.9.4.1",
+            "fileVersion": "1.9.4.1"
+          }
+        }
+      },
       "Microsoft.DiaSymReader.Native/1.7.0": {},
       "Microsoft.DotNet.PlatformAbstractions/3.1.6": {
         "runtime": {
           "lib/netstandard2.0/Microsoft.DotNet.PlatformAbstractions.dll": {
             "assemblyVersion": "3.1.6.0",
             "fileVersion": "3.100.620.31604"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration/9.0.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.5",
+          "Microsoft.Extensions.Primitives": "9.0.5"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Abstractions/9.0.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "9.0.5"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.CommandLine/9.0.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "9.0.5",
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.5"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.CommandLine.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.FileExtensions/9.0.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "9.0.5",
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.5",
+          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.5",
+          "Microsoft.Extensions.FileProviders.Physical": "9.0.5",
+          "Microsoft.Extensions.Primitives": "9.0.5"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.FileExtensions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Json/9.0.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "9.0.5",
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.5",
+          "Microsoft.Extensions.Configuration.FileExtensions": "9.0.5",
+          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.5"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.Json.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
           }
         }
       },
@@ -624,6 +752,38 @@
           }
         }
       },
+      "Microsoft.Extensions.FileProviders.Abstractions/9.0.5": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "9.0.5"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.FileProviders.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileProviders.Physical/9.0.5": {
+        "dependencies": {
+          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.5",
+          "Microsoft.Extensions.FileSystemGlobbing": "9.0.5",
+          "Microsoft.Extensions.Primitives": "9.0.5"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.FileProviders.Physical.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileSystemGlobbing/9.0.5": {
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.FileSystemGlobbing.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
       "Microsoft.Extensions.Logging.Abstractions/8.0.0": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
@@ -632,6 +792,14 @@
           "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll": {
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.Primitives/9.0.5": {
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Primitives.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
           }
         }
       },
@@ -980,6 +1148,121 @@
           }
         }
       },
+      "Xbim.Common/6.0.521": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "8.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Xbim.Common.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.521.0"
+          }
+        }
+      },
+      "Xbim.Essentials/6.0.521": {
+        "dependencies": {
+          "Xbim.Common": "6.0.521",
+          "Xbim.IO.Esent": "6.0.521",
+          "Xbim.IO.MemoryModel": "6.0.521",
+          "Xbim.Ifc": "6.0.521",
+          "Xbim.Ifc2x3": "6.0.521",
+          "Xbim.Ifc4": "6.0.521",
+          "Xbim.Ifc4x3": "6.0.521",
+          "Xbim.Tessellator": "6.0.521"
+        }
+      },
+      "Xbim.Ifc/6.0.521": {
+        "dependencies": {
+          "Xbim.Common": "6.0.521",
+          "Xbim.IO.Esent": "6.0.521",
+          "Xbim.IO.MemoryModel": "6.0.521",
+          "Xbim.Ifc2x3": "6.0.521",
+          "Xbim.Ifc4": "6.0.521",
+          "Xbim.Ifc4x3": "6.0.521"
+        },
+        "runtime": {
+          "lib/net8.0/Xbim.Ifc.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.521.0"
+          }
+        }
+      },
+      "Xbim.Ifc2x3/6.0.521": {
+        "dependencies": {
+          "Xbim.Common": "6.0.521",
+          "Xbim.Ifc4": "6.0.521"
+        },
+        "runtime": {
+          "lib/net8.0/Xbim.Ifc2x3.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.521.0"
+          }
+        }
+      },
+      "Xbim.Ifc4/6.0.521": {
+        "dependencies": {
+          "Xbim.Common": "6.0.521"
+        },
+        "runtime": {
+          "lib/net8.0/Xbim.Ifc4.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.521.0"
+          }
+        }
+      },
+      "Xbim.Ifc4x3/6.0.521": {
+        "dependencies": {
+          "Xbim.Common": "6.0.521",
+          "Xbim.Ifc4": "6.0.521"
+        },
+        "runtime": {
+          "lib/net8.0/Xbim.Ifc4x3.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.521.0"
+          }
+        }
+      },
+      "Xbim.IO.Esent/6.0.521": {
+        "dependencies": {
+          "Microsoft.Database.ManagedEsent": "2.0.3",
+          "Xbim.Common": "6.0.521",
+          "Xbim.IO.MemoryModel": "6.0.521"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Xbim.IO.Esent.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.521.0"
+          }
+        }
+      },
+      "Xbim.IO.MemoryModel/6.0.521": {
+        "dependencies": {
+          "Xbim.Common": "6.0.521",
+          "Xbim.Ifc2x3": "6.0.521",
+          "Xbim.Ifc4": "6.0.521",
+          "Xbim.Ifc4x3": "6.0.521"
+        },
+        "runtime": {
+          "lib/net8.0/Xbim.IO.MemoryModel.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.521.0"
+          }
+        }
+      },
+      "Xbim.Tessellator/6.0.521": {
+        "dependencies": {
+          "Xbim.Common": "6.0.521",
+          "Xbim.Ifc2x3": "6.0.521",
+          "Xbim.Ifc4": "6.0.521"
+        },
+        "runtime": {
+          "lib/net8.0/Xbim.Tessellator.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.521.0"
+          }
+        }
+      },
       "Ara3D.Authentication/1.0.0": {
         "dependencies": {
           "AWSSDK.CognitoIdentityProvider": "4.0.1.2",
@@ -1075,6 +1358,21 @@
           }
         }
       },
+      "Ara3D.IO.Windows/1.0.0": {
+        "dependencies": {
+          "Ara3D.Models": "1.0.0",
+          "Ara3D.Studio.API": "1.0.0",
+          "Ara3D.Utils": "1.0.0",
+          "AssimpNetter": "5.4.3.3",
+          "Xbim.Essentials": "6.0.521"
+        },
+        "runtime": {
+          "Ara3D.IO.Windows.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "Ara3D.Logging/1.0.0": {
         "dependencies": {
           "Ara3D.Utils": "1.0.0"
@@ -1107,6 +1405,7 @@
       },
       "Ara3D.Models/1.0.0": {
         "dependencies": {
+          "Ara3D.Collections": "1.0.0",
           "Ara3D.DataTable": "1.0.0",
           "Ara3D.Memory": "1.0.0",
           "Ara3D.PropKit": "1.0.0",
@@ -1187,6 +1486,7 @@
       "Ara3D.Studio.Samples/1.0.0": {
         "dependencies": {
           "Ara3D.Models": "1.0.0",
+          "Ara3D.ScriptService": "1.0.0",
           "Ara3D.Studio.API": "1.0.0",
           "Plato.Core": "1.0.0",
           "Plato.Geometry": "1.0.0"
@@ -1272,6 +1572,13 @@
       "sha512": "sha512-McILpYezRIg7gUMuDVB7UNUaVmk50mT/rn5gGnOn9q5xH9Pz5XKuCoVJHYKs1enSExsDKvvIJUHhdoq4y4gxfw==",
       "path": "amazon.extensions.cognitoauthentication/3.0.0",
       "hashPath": "amazon.extensions.cognitoauthentication.3.0.0.nupkg.sha512"
+    },
+    "AssimpNetter/5.4.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iqCpQZVySlrU8+g/GuLoifAmdHVz6Hyb9Xx6MW62cuwezUi/ppUgFNNDZu8yIXztnP8k0AJJPHfZOZRu2zSmtg==",
+      "path": "assimpnetter/5.4.3.3",
+      "hashPath": "assimpnetter.5.4.3.3.nupkg.sha512"
     },
     "AWSSDK.CognitoIdentity/4.0.0.2": {
       "type": "package",
@@ -1609,6 +1916,13 @@
       "path": "microsoft.csharp/4.7.0",
       "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
     },
+    "Microsoft.Database.ManagedEsent/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-liyUzhHNir3ix0VKzeP08VuXDWGSyYQ/6y9lTUX2bhfh/AGs56tpS8Oj08ap+idb4FIZAwDfAbA7uARTj56CmA==",
+      "path": "microsoft.database.managedesent/2.0.3",
+      "hashPath": "microsoft.database.managedesent.2.0.3.nupkg.sha512"
+    },
     "Microsoft.DiaSymReader.Native/1.7.0": {
       "type": "package",
       "serviceable": true,
@@ -1622,6 +1936,48 @@
       "sha512": "sha512-jek4XYaQ/PGUwDKKhwR8K47Uh1189PFzMeLqO83mXrXQVIpARZCcfuDedH50YDTepBkfijCZN5U/vZi++erxtg==",
       "path": "microsoft.dotnet.platformabstractions/3.1.6",
       "hashPath": "microsoft.dotnet.platformabstractions.3.1.6.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uYXLg2Gt8KUH5nT3u+TBpg9VrRcN5+2zPmIjqEHR4kOoBwsbtMDncEJw9HiLvZqGgIo2TR4oraibAoy5hXn2bQ==",
+      "path": "microsoft.extensions.configuration/9.0.5",
+      "hashPath": "microsoft.extensions.configuration.9.0.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Abstractions/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ew0G6gIznnyAkbIa67wXspkDFcVektjN3xaDAfBDIPbWph+rbuGaaohFxUSGw28ht7wdcWtTtElKnzfkcDDbOQ==",
+      "path": "microsoft.extensions.configuration.abstractions/9.0.5",
+      "hashPath": "microsoft.extensions.configuration.abstractions.9.0.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.CommandLine/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BloAPG22eV+F4CpGKg0lHeXsLxbsGeId4mNpNsUc250j79pcJL3OWVRgmyIUBP5eF74lYJlaOVF+54MRBAQV3A==",
+      "path": "microsoft.extensions.configuration.commandline/9.0.5",
+      "hashPath": "microsoft.extensions.configuration.commandline.9.0.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.FileExtensions/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ifrA7POOJ7EeoEJhC8r03WufBsEV4zgnTLQURHh1QIS/vU6ff/60z8M4tD3i2csdFPREEc1nGbiOZhi7Q5aMfw==",
+      "path": "microsoft.extensions.configuration.fileextensions/9.0.5",
+      "hashPath": "microsoft.extensions.configuration.fileextensions.9.0.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Json/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LiWV+Sn5yvoQEd/vihGwkR3CZ4ekMrqP5OQiYOlbzMBfBa6JHBWBsTO5ta6dMYO9ADMiv9K6GBKJSF9DrP29sw==",
+      "path": "microsoft.extensions.configuration.json/9.0.5",
+      "hashPath": "microsoft.extensions.configuration.json.9.0.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-V8S3bsm50ig6JSyrbcJJ8bW2b9QLGouz+G1miK3UTaOWmMtFwNNNzUf4AleyDWUmTrWMLNnFSLEQtxmxgNQnNQ==",
+      "path": "microsoft.extensions.dependencyinjection/8.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
       "type": "package",
@@ -1637,12 +1993,40 @@
       "path": "microsoft.extensions.dependencymodel/8.0.0",
       "hashPath": "microsoft.extensions.dependencymodel.8.0.0.nupkg.sha512"
     },
+    "Microsoft.Extensions.FileProviders.Abstractions/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LLm+e8lvD+jOI+blHRSxPqywPaohOTNcVzQv548R1UpkEiNB2D+zf3RrqxBdB1LDPicRMTnfiaKJovxF8oX1bQ==",
+      "path": "microsoft.extensions.fileproviders.abstractions/9.0.5",
+      "hashPath": "microsoft.extensions.fileproviders.abstractions.9.0.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Physical/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cMQqvK0rclKzAm2crSFe9JiimR+wzt6eaoRxa8/mYFkqekY4JEP8eShVZs4NPsKV2HQFHfDgwfFSsWUrUgqbKA==",
+      "path": "microsoft.extensions.fileproviders.physical/9.0.5",
+      "hashPath": "microsoft.extensions.fileproviders.physical.9.0.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileSystemGlobbing/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TWJZJGIyUncH4Ah+Sy9X5mPJeoz02lRlFx9VWaFo4b4o0tkA1dk2u6HRHrfEC2L6N4IC+vFzfRWol1egyQqLtg==",
+      "path": "microsoft.extensions.filesystemglobbing/9.0.5",
+      "hashPath": "microsoft.extensions.filesystemglobbing.9.0.5.nupkg.sha512"
+    },
     "Microsoft.Extensions.Logging.Abstractions/8.0.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-arDBqTgFCyS0EvRV7O3MZturChstm50OJ0y9bDJvAcmEPJm0FFpFyjU/JLYyStNGGey081DvnQYlncNX5SJJGA==",
       "path": "microsoft.extensions.logging.abstractions/8.0.0",
       "hashPath": "microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Primitives/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-b4OAv1qE1C9aM+ShWJu3rlo/WjDwa/I30aIPXqDWSKXTtKl1Wwh6BZn+glH5HndGVVn3C6ZAPQj5nv7/7HJNBQ==",
+      "path": "microsoft.extensions.primitives/9.0.5",
+      "hashPath": "microsoft.extensions.primitives.9.0.5.nupkg.sha512"
     },
     "Microsoft.IdentityModel.Abstractions/8.10.0": {
       "type": "package",
@@ -1861,6 +2245,69 @@
       "path": "ultz.native.sdl/2.30.1",
       "hashPath": "ultz.native.sdl.2.30.1.nupkg.sha512"
     },
+    "Xbim.Common/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zMQpmpsPQD8HmYuX0d8wF3Fb4rbHlJnoil5on8vaBv/0gPx3FlNqyRVHCmx3kCyghrN/D+8ItYQryj36WhNRWA==",
+      "path": "xbim.common/6.0.521",
+      "hashPath": "xbim.common.6.0.521.nupkg.sha512"
+    },
+    "Xbim.Essentials/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ESD5w/wHwl8mYlgLIKIJ+gBvQVe9CIxusmLmyquHdvRm4ZtuTPOyjynglYROmYM429pXhVxez3A6hb6WZBW3VQ==",
+      "path": "xbim.essentials/6.0.521",
+      "hashPath": "xbim.essentials.6.0.521.nupkg.sha512"
+    },
+    "Xbim.Ifc/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8w+h8wJ8H8cxNcp/6APlr2HsTI26i/yi/tJxBSwRI1qyC98D6XGpmLzYWSnKExUK23mMHN2rhR+4JAqDi7Fzow==",
+      "path": "xbim.ifc/6.0.521",
+      "hashPath": "xbim.ifc.6.0.521.nupkg.sha512"
+    },
+    "Xbim.Ifc2x3/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ws55QE349Rr5GRHO+DfaDzOBG4XthBVoeKgPVkjgMoHpSrVsgkiXCsmB5jYpwNfeLRRjA/50Lnk9AgJ+EGy0MA==",
+      "path": "xbim.ifc2x3/6.0.521",
+      "hashPath": "xbim.ifc2x3.6.0.521.nupkg.sha512"
+    },
+    "Xbim.Ifc4/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/taWnT4NOtIOdkdOX7R3EoJ8YhQVNSvvz8lwklLS37ZnO83m2Pt1B7JcJAub99X3nF50msp3vq2gkmLNKZ2TRQ==",
+      "path": "xbim.ifc4/6.0.521",
+      "hashPath": "xbim.ifc4.6.0.521.nupkg.sha512"
+    },
+    "Xbim.Ifc4x3/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/C05li8+hKsP1n9wuxTmXdxwjVXMzRaXv+XwE8HApN+bqoLpb3F0UsvxVyx81wdBL9LRb0yBnSR8W0phg4aShQ==",
+      "path": "xbim.ifc4x3/6.0.521",
+      "hashPath": "xbim.ifc4x3.6.0.521.nupkg.sha512"
+    },
+    "Xbim.IO.Esent/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YERP/01mt5wsn+KcCDa9dsqR9qyQTeDS9Svt42yrtP0cv4O4RDY/QOIlMLTwFEMt8WXDSOOflRFuTqJW3wlaMw==",
+      "path": "xbim.io.esent/6.0.521",
+      "hashPath": "xbim.io.esent.6.0.521.nupkg.sha512"
+    },
+    "Xbim.IO.MemoryModel/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2xuYZNnyw1cj9jqb68u9iUSPGAIRVmXd7ZaANYnVQSESSHazwZjtMlRXh5cjY8OIauDcQMKFvdWIBETeNNCnpg==",
+      "path": "xbim.io.memorymodel/6.0.521",
+      "hashPath": "xbim.io.memorymodel.6.0.521.nupkg.sha512"
+    },
+    "Xbim.Tessellator/6.0.521": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DcnJ+m2UNAlQ9wS3/3tcZLWU9e98YmnZhDPa5m/yVxWGg37hsuFcsmxI0ZbYsazc0ozHQWbUbfN1tT4xxVLyDQ==",
+      "path": "xbim.tessellator/6.0.521",
+      "hashPath": "xbim.tessellator.6.0.521.nupkg.sha512"
+    },
     "Ara3D.Authentication/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -1897,6 +2344,11 @@
       "sha512": ""
     },
     "Ara3D.IO.VIM/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.IO.Windows/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

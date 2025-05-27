@@ -4,7 +4,7 @@ namespace Ara3D.Studio.API;
 
 public interface IModelGenerator
 {
-    Model Evaluate();
+    Model Eval();
 }
 
 public static class ApiExtensions

@@ -33,7 +33,7 @@ public class PlatonicSolidDemos : IModelGenerator
     [Range(0f, 1f)]
     public float Alpha { get; set; } = 1f;
 
-    public Model Evaluate()
+    public Model Eval()
     {
         var mesh = PlatonicSolids.Tetrahedron.ToNode();
         var nodes = new List<ModelNode>();

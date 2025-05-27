@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿using Ara3D.Utils;
 
 namespace Ara3D.PropKit;
 
@@ -18,30 +18,17 @@ public abstract class PropDescriptor
     public bool IsReadOnly { get; }
     public bool IsDeprecated { get; }
 
-    protected PropDescriptor(string name, Type type, string displayName = "", string description = "", string units = "",
+    protected PropDescriptor(Type type, string name = null, string displayName = null, string description = null, string units = null,
         bool isReadOnly = false, bool isDeprecated = false, Dictionary<string, string> tags = null)
     {
-        Name = name;
-        DisplayName = displayName ?? name;
+        Name = name ?? type.Name;
+        DisplayName = displayName ?? name.SplitCamelCase();
         Type = type;
-        Description = description;
-        Units = units;
+        Description = description ?? "";
+        Units = units ?? "";
         IsReadOnly = isReadOnly;
         IsDeprecated = isDeprecated;
         Tags = tags ?? [];
-    }
-
-    public static Regex RegexUppercaseAcronym = new ("([A-Z]+)([A-Z][a-z])", RegexOptions.Compiled); 
-    public static Regex RegexUppercase = new ("([a-z0-9])([A-Z])", RegexOptions.Compiled);
-
-    public static string SplitCamelCase(string input)
-    {
-        if (string.IsNullOrEmpty(input))
-            return input;
-        var result = RegexUppercaseAcronym.Replace(input, "$1 $2");
-        result = RegexUppercase.Replace(result, "$1 $2");
-        result = char.ToUpper(result[0]) + result.Substring(1);
-        return result;
     }
 
     public abstract object Update(object value, PropUpdateType propUpdate);

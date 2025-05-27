@@ -126,6 +126,19 @@ namespace Ara3D.Utils
         public static string ToBitConverterLowerInvariant(this byte[] bytes)
             => BitConverter.ToString(bytes).Replace("-", string.Empty).ToLowerInvariant();
 
+        public static Regex RegexUppercaseAcronym = new Regex("([A-Z]+)([A-Z][a-z])", RegexOptions.Compiled);
+        public static Regex RegexUppercase = new Regex("([a-z0-9])([A-Z])", RegexOptions.Compiled);
+
+        public static string SplitCamelCase(this string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+            var result = RegexUppercaseAcronym.Replace(input, "$1 $2");
+            result = RegexUppercase.Replace(result, "$1 $2");
+            result = char.ToUpper(result[0]) + result.Substring(1);
+            return result;
+        }
+
         public static string LetterUpperCharsString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public static string DigitCharsString = "0123456789";
         public static char[] LetterUpperChars = LetterUpperCharsString.ToCharArray();

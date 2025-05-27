@@ -9,6 +9,6 @@ public class ScalingDemo : IModelOperator
     [Range(0.01f, 10f)]
     public float Scale { get; set; } = 2f;
 
-    public Model Evaluate(Model model)
+    public Model Eval(Model model)
         => model.Scale(Scale);
 }

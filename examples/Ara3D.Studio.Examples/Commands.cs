@@ -11,7 +11,7 @@ using Ara3D.Utils;
 /// </summary>
 public class HelloWorld : IScriptedCommand
 {
-    public string Name => "Hello World!";
+    public string Name => "Hello Prevu3D!";
 
     public void Execute()
         => MessageBox.Show(Name);
