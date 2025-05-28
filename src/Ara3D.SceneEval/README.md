@@ -31,8 +31,8 @@ nodes to that object (which are supplied to the `Eval`). Any public fields
 or properties exposed on that object are exposed via an `IPropContainer` interface. 
 
 
-## SceneEvaluContext
+## SceneEvalContext
 
 An object supplied to nodes during evaluation which contains additional context 
-information for the current evaluation, and an opportunity to cancel it early via
+information for the current evaluation, and an opportunity to cancel work asynchronously via
 a `CancellationToken`.

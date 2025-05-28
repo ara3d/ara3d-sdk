@@ -103,6 +103,9 @@ in the `dist` folder.
 - [Ara3D.PropKit](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.PropKit)  
   Property descriptors and change-notification toolkit for auto-generated serialization and UI.
 
+- [Ara3D.SceneEval](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.SceneEval)
+  Data structures for creating a scene evaluation dependency graph with caching. 
+
 - [Ara3D.ScriptService](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.ScriptService)  
   Integration layer for embedding C# scripts at runtime.
 
@@ -129,6 +132,12 @@ in the `dist` folder.
 
 ---
 
+## 🚀 Getting Started
+
+To get started with **Ara3D-SDK** you can run the Ara3D.Studio executable. Creating new 
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions of all kinds—bug fixes, features, documentation, and more!
@@ -152,8 +161,7 @@ Found a bug? Have a question? Want to suggest a feature for either the SDK or **
 
 ## 🔗 Related Projects
 
-- [Ara3D.Plato](https://github.com/ara3d/plato) – Lightweight scripting language for geometry
-- [Ara3D.IO](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.IO) – Import/export logic for various 3D formats
+- [Ara3D.Plato](https://github.com/ara3d/plato) – Domain specific language for math and geometry
 
 <!--
 

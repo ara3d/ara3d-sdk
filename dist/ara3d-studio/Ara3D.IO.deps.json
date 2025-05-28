@@ -123,6 +123,9 @@
         }
       },
       "Ara3D.PropKit/1.0.0": {
+        "dependencies": {
+          "Ara3D.Utils": "1.0.0"
+        },
         "runtime": {
           "Ara3D.PropKit.dll": {
             "assemblyVersion": "1.0.0",

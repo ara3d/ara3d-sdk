@@ -22,13 +22,13 @@ public class PlatonicSolidDemos : IModelGenerator
     public float Spacing { get; set; } = 2f;
 
     [Range(0f, 1f)]
-    public float Red { get; set; } = 0.7f;
+    public float Red { get; set; } = 0.2f;
 
     [Range(0f, 1f)]
-    public float Green { get; set; } = 0.4f;
+    public float Green { get; set; } = 0.8f;
 
     [Range(0f, 1f)]
-    public float Blue { get; set; } = 0.8f;
+    public float Blue { get; set; } = 0.1f;
 
     [Range(0f, 1f)]
     public float Alpha { get; set; } = 1f;

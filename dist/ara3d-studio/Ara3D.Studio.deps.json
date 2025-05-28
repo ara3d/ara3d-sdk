@@ -21,6 +21,7 @@
           "Ara3D.Memory": "1.0.0",
           "Ara3D.Models": "1.0.0",
           "Ara3D.PropKit": "1.0.0",
+          "Ara3D.SceneEval": "1.0.0",
           "Ara3D.ScriptService": "1.0.0",
           "Ara3D.Services": "1.0.0",
           "Ara3D.Studio.Data": "1.0.0",
@@ -36,6 +37,7 @@
           "Microsoft.Extensions.Configuration.Json": "9.0.5",
           "Pfim": "0.11.3",
           "Silk.NET.Input": "2.21.0",
+          "Silk.NET.Input.Common": "2.22.0",
           "Silk.NET.OpenGL": "2.21.0",
           "Silk.NET.Windowing": "2.21.0",
           "StbImageSharp": "2.30.15",
@@ -861,7 +863,7 @@
           }
         }
       },
-      "Silk.NET.Core/2.21.0": {
+      "Silk.NET.Core/2.22.0": {
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Microsoft.DotNet.PlatformAbstractions": "3.1.6",
@@ -872,14 +874,14 @@
         },
         "runtime": {
           "lib/net6.0/Silk.NET.Core.dll": {
-            "assemblyVersion": "2.21.0.0",
-            "fileVersion": "2.21.0.0"
+            "assemblyVersion": "2.22.0.0",
+            "fileVersion": "2.22.0.0"
           }
         }
       },
       "Silk.NET.GLFW/2.21.0": {
         "dependencies": {
-          "Silk.NET.Core": "2.21.0",
+          "Silk.NET.Core": "2.22.0",
           "Ultz.Native.GLFW": "3.4.0"
         },
         "runtime": {
@@ -891,25 +893,25 @@
       },
       "Silk.NET.Input/2.21.0": {
         "dependencies": {
-          "Silk.NET.Input.Common": "2.21.0",
+          "Silk.NET.Input.Common": "2.22.0",
           "Silk.NET.Input.Glfw": "2.21.0",
           "Silk.NET.Input.Sdl": "2.21.0"
         }
       },
-      "Silk.NET.Input.Common/2.21.0": {
+      "Silk.NET.Input.Common/2.22.0": {
         "dependencies": {
-          "Silk.NET.Windowing.Common": "2.21.0"
+          "Silk.NET.Windowing.Common": "2.22.0"
         },
         "runtime": {
           "lib/net5.0/Silk.NET.Input.Common.dll": {
-            "assemblyVersion": "2.21.0.0",
-            "fileVersion": "2.21.0.0"
+            "assemblyVersion": "2.22.0.0",
+            "fileVersion": "2.22.0.0"
           }
         }
       },
       "Silk.NET.Input.Glfw/2.21.0": {
         "dependencies": {
-          "Silk.NET.Input.Common": "2.21.0",
+          "Silk.NET.Input.Common": "2.22.0",
           "Silk.NET.Windowing.Glfw": "2.21.0"
         },
         "runtime": {
@@ -921,7 +923,7 @@
       },
       "Silk.NET.Input.Sdl/2.21.0": {
         "dependencies": {
-          "Silk.NET.Input.Common": "2.21.0",
+          "Silk.NET.Input.Common": "2.22.0",
           "Silk.NET.Windowing.Sdl": "2.21.0"
         },
         "runtime": {
@@ -931,18 +933,18 @@
           }
         }
       },
-      "Silk.NET.Maths/2.21.0": {
+      "Silk.NET.Maths/2.22.0": {
         "runtime": {
           "lib/net5.0/Silk.NET.Maths.dll": {
-            "assemblyVersion": "2.21.0.0",
-            "fileVersion": "2.21.0.0"
+            "assemblyVersion": "2.22.0.0",
+            "fileVersion": "2.22.0.0"
           }
         }
       },
       "Silk.NET.OpenGL/2.21.0": {
         "dependencies": {
-          "Silk.NET.Core": "2.21.0",
-          "Silk.NET.Maths": "2.21.0"
+          "Silk.NET.Core": "2.22.0",
+          "Silk.NET.Maths": "2.22.0"
         },
         "runtime": {
           "lib/net5.0/Silk.NET.OpenGL.dll": {
@@ -953,8 +955,8 @@
       },
       "Silk.NET.SDL/2.21.0": {
         "dependencies": {
-          "Silk.NET.Core": "2.21.0",
-          "Silk.NET.Maths": "2.21.0",
+          "Silk.NET.Core": "2.22.0",
+          "Silk.NET.Maths": "2.22.0",
           "Ultz.Native.SDL": "2.30.1"
         },
         "runtime": {
@@ -966,26 +968,26 @@
       },
       "Silk.NET.Windowing/2.21.0": {
         "dependencies": {
-          "Silk.NET.Windowing.Common": "2.21.0",
+          "Silk.NET.Windowing.Common": "2.22.0",
           "Silk.NET.Windowing.Glfw": "2.21.0"
         }
       },
-      "Silk.NET.Windowing.Common/2.21.0": {
+      "Silk.NET.Windowing.Common/2.22.0": {
         "dependencies": {
-          "Silk.NET.Core": "2.21.0",
-          "Silk.NET.Maths": "2.21.0"
+          "Silk.NET.Core": "2.22.0",
+          "Silk.NET.Maths": "2.22.0"
         },
         "runtime": {
           "lib/netstandard2.1/Silk.NET.Windowing.Common.dll": {
-            "assemblyVersion": "2.21.0.0",
-            "fileVersion": "2.21.0.0"
+            "assemblyVersion": "2.22.0.0",
+            "fileVersion": "2.22.0.0"
           }
         }
       },
       "Silk.NET.Windowing.Glfw/2.21.0": {
         "dependencies": {
           "Silk.NET.GLFW": "2.21.0",
-          "Silk.NET.Windowing.Common": "2.21.0"
+          "Silk.NET.Windowing.Common": "2.22.0"
         },
         "runtime": {
           "lib/net5.0/Silk.NET.Windowing.Glfw.dll": {
@@ -997,7 +999,7 @@
       "Silk.NET.Windowing.Sdl/2.21.0": {
         "dependencies": {
           "Silk.NET.SDL": "2.21.0",
-          "Silk.NET.Windowing.Common": "2.21.0"
+          "Silk.NET.Windowing.Common": "2.22.0"
         },
         "runtime": {
           "lib/net6.0/Silk.NET.Windowing.Sdl.dll": {
@@ -1420,8 +1422,22 @@
         }
       },
       "Ara3D.PropKit/1.0.0": {
+        "dependencies": {
+          "Ara3D.Utils": "1.0.0"
+        },
         "runtime": {
           "Ara3D.PropKit.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.SceneEval/1.0.0": {
+        "dependencies": {
+          "Ara3D.PropKit": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.SceneEval.dll": {
             "assemblyVersion": "1.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -2070,12 +2086,12 @@
       "path": "pfim/0.11.3",
       "hashPath": "pfim.0.11.3.nupkg.sha512"
     },
-    "Silk.NET.Core/2.21.0": {
+    "Silk.NET.Core/2.22.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-U8gATeEGvSIc1ogSdG/LKr6SLgOjkis7Oo/QzCq+aOoGjw4tHYRVpm02V+pHp/qlQhziBbdQ/Vl5d58cmFY+PA==",
-      "path": "silk.net.core/2.21.0",
-      "hashPath": "silk.net.core.2.21.0.nupkg.sha512"
+      "sha512": "sha512-XbDilPmvsQIrvxZkeVCNNX3LyRtA3hN6UykAiyZjlu/JkYh68U3WQummpP+j7jsxlX8s/pOrrU3vbN8LnMl0VA==",
+      "path": "silk.net.core/2.22.0",
+      "hashPath": "silk.net.core.2.22.0.nupkg.sha512"
     },
     "Silk.NET.GLFW/2.21.0": {
       "type": "package",
@@ -2091,12 +2107,12 @@
       "path": "silk.net.input/2.21.0",
       "hashPath": "silk.net.input.2.21.0.nupkg.sha512"
     },
-    "Silk.NET.Input.Common/2.21.0": {
+    "Silk.NET.Input.Common/2.22.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-olS5rw8KEakrJXSWNEAcU52SesxpwYECjLFP/L+vA3G8Gr798DeOzwlp6PMZpQkqXYkmkxoOaSeL9Yjf4A5ayQ==",
-      "path": "silk.net.input.common/2.21.0",
-      "hashPath": "silk.net.input.common.2.21.0.nupkg.sha512"
+      "sha512": "sha512-DZy30akJABBmTnn8OICik0TFEuXrkd7YCQvoq+oh50eJzXt8JgEYYa+sJYBib/Phs5WULZg/QR7fM8Gi1G3tXg==",
+      "path": "silk.net.input.common/2.22.0",
+      "hashPath": "silk.net.input.common.2.22.0.nupkg.sha512"
     },
     "Silk.NET.Input.Glfw/2.21.0": {
       "type": "package",
@@ -2112,12 +2128,12 @@
       "path": "silk.net.input.sdl/2.21.0",
       "hashPath": "silk.net.input.sdl.2.21.0.nupkg.sha512"
     },
-    "Silk.NET.Maths/2.21.0": {
+    "Silk.NET.Maths/2.22.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1Hv05KJmKXzzlp3+nFHl2A8yaugGkAj0gCSOaSsLFNFnwuLUIKLBGaC6y23JgGYnK+1t1DS40oPOquHQPI06rg==",
-      "path": "silk.net.maths/2.21.0",
-      "hashPath": "silk.net.maths.2.21.0.nupkg.sha512"
+      "sha512": "sha512-W9b5UlUGCu5Ywb5f8ZyIWJ475ucY+mT/nEiSTo3JH098VxHaZS/02bYr9f29VWBaJhh3DwMkfxQvgTyXzTrHyw==",
+      "path": "silk.net.maths/2.22.0",
+      "hashPath": "silk.net.maths.2.22.0.nupkg.sha512"
     },
     "Silk.NET.OpenGL/2.21.0": {
       "type": "package",
@@ -2140,12 +2156,12 @@
       "path": "silk.net.windowing/2.21.0",
       "hashPath": "silk.net.windowing.2.21.0.nupkg.sha512"
     },
-    "Silk.NET.Windowing.Common/2.21.0": {
+    "Silk.NET.Windowing.Common/2.22.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kA+E52DU65Rjcu4CKHvpioz1FLRo/iabxsS+hEjOKxMKuus90hMQ0mADI6PVN8nbge4vaHZ9n28yGAOV7CXo+Q==",
-      "path": "silk.net.windowing.common/2.21.0",
-      "hashPath": "silk.net.windowing.common.2.21.0.nupkg.sha512"
+      "sha512": "sha512-ynasHSQ4jGrmpn/07UagE3qVNRLzWvg+fbM8uHI0d5LF95y++Kuno42QLkP/UEruC1YovI+NRhMfGJy0gDQaZg==",
+      "path": "silk.net.windowing.common/2.22.0",
+      "hashPath": "silk.net.windowing.common.2.22.0.nupkg.sha512"
     },
     "Silk.NET.Windowing.Glfw/2.21.0": {
       "type": "package",
@@ -2374,6 +2390,11 @@
       "sha512": ""
     },
     "Ara3D.PropKit/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.SceneEval/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
