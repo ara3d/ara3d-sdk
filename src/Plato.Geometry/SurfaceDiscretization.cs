@@ -1,6 +1,4 @@
-﻿using Plato;
-
-namespace Ara3D.Geometry
+﻿namespace Plato.Geometry
 {
     /// <summary>
     /// This class is used for sampling parameterized surfaces and computing quad-mesh strip indices.
@@ -8,31 +6,31 @@ namespace Ara3D.Geometry
     /// </summary>
     public class SurfaceDiscretization
     {
-        public IArray<float> Us { get; }
-        public IArray<float> Vs { get; }
+        public IArray<Number> Us { get; }
+        public IArray<Number> Vs { get; }
         public IArray2D<Vector2> Uvs { get; }
         public bool ClosedU { get; }
         public bool ClosedV { get; }
         public IArray2D<Integer4> QuadIndices { get; }
 
-        public SurfaceDiscretization(int nColumns, int nRows, bool closedU, bool closedV)
+        public SurfaceDiscretization(Integer nColumns, Integer nRows, bool closedU, bool closedV)
         {
             ClosedU = closedU;
             ClosedV = closedV;
             
             Us = closedU 
-                ? nColumns.InterpolateInclusive()
-                : (nColumns + 1).InterpolateInclusive();
+                ? nColumns.LinearSpace
+                : (nColumns + 1).LinearSpace;
             Vs = closedV
-                ? nColumns.InterpolateInclusive()
-                : (nColumns + 1).InterpolateInclusive();
+                ? nColumns.LinearSpace
+                : (nColumns + 1).LinearSpace;
 
             Uvs = Vs.CartesianProduct(Us, (u, v) => new Vector2(u, v));
             
             QuadIndices = nRows.Range().CartesianProduct(nColumns.Range(), (y, x) => QuadMeshFaceVertices(x, y, Us.Count, Vs.Count));
         }
 
-        public static Integer4 QuadMeshFaceVertices(int col, int row, int nx, int ny)
+        public static Integer4 QuadMeshFaceVertices(Integer col, Integer row, Integer nx, Integer ny)
         {
             var a = row * nx + col;
             var b = row * nx + (col + 1) % nx;

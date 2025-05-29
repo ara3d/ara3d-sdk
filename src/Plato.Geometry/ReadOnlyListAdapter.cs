@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Plato
+namespace Plato.Geometry
 {
     public class ReadOnlyListAdapter<T> : IArray<T> 
     {

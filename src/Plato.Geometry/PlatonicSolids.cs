@@ -1,4 +1,4 @@
-﻿namespace Plato
+﻿namespace Plato.Geometry
 {
     /// <summary>
     /// This are the five unit-sized platonic-solids.
@@ -14,10 +14,10 @@
             => self.ToIArray().Map(x => x.Normalize);
 
         public static TriangleMesh3D ToTriangleMesh(this IArray<Vector3> self, params (int, int, int)[] faces)
-            => new(self.Map(v => (PoInteger3D)v), faces.ToIArray().Map(xs => (Integer3)xs));
+            => new(self.Map(v => (Point3D)v), faces.ToIArray().Map(xs => (Integer3)xs));
 
         public static QuadMesh3D ToQuadMesh(this IArray<Vector3> self, params (int, int, int, int)[] faces)
-            => new(self.Map(v => (PoInteger3D)v), faces.ToIArray().Map(xs => (Integer4)xs));
+            => new(self.Map(v => (Point3D)v), faces.ToIArray().Map(xs => (Integer4)xs));
 
         public static TriangleMesh3D FlipFaces(this TriangleMesh3D mesh)
             => new(mesh.Points, mesh.FaceIndices.Map(f => new Integer3(f.C, f.B, f.A)));

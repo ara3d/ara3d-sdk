@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using Plato;
-
-namespace Ara3D.Geometry
+﻿namespace Plato.Geometry
 {
     public enum StandardPlane
     {

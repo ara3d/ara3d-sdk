@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Ara3D.Models;
 using Ara3D.Studio.API;
 using Plato;
+using Plato.Geometry;
 
 namespace Ara3D.Studio.Samples;
 

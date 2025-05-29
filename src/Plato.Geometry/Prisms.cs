@@ -1,5 +1,6 @@
 ﻿namespace Plato.Geometry
 {
+    /*
     /// <summary>
     /// https://en.wikipedia.org/wiki/Prism_(geometry)
     /// </summary>
@@ -18,10 +19,8 @@
         public static GridMesh OctagramalPrism = Polygons.Octagram.ToPrism();
         public static GridMesh DecagramalPrism = Polygons.Decagram.ToPrism();
 
-        public static GridMesh ToPrism(this CommonPolygonsEnum polygonEnum, float extrusion = 1.0f)
-            => polygonEnum.ToPolygon().Extrude(extrusion);
-
         public static GridMesh ToPrism(this IPolyLine2D polyLine, float extrusion = 1.0f)
             => polyLine.Extrude(extrusion);
     }
+    */
 }

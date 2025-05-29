@@ -1,4 +1,4 @@
-﻿namespace Plato;
+﻿namespace Plato.Geometry;
 
 public static class PlatoGeometryExtensions
 {
@@ -6,5 +6,8 @@ public static class PlatoGeometryExtensions
         => new ReadOnlyListAdapter<T>(list);
 
     public static IArray<Integer> Range(this int self)
+        => new Array<Integer>(self, i => i);
+
+    public static IArray<Integer> Range(this Integer self)
         => new Array<Integer>(self, i => i);
 }

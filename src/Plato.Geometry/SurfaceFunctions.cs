@@ -1,10 +1,8 @@
 ﻿using System;
 using Plato;
 
-namespace Ara3D.Geometry
+namespace Plato.Geometry
 {
-
-
     public static class SurfaceFunctions
     {
         public static Angle Turns(this int n)
@@ -67,7 +65,7 @@ namespace Ara3D.Geometry
         // Height fields converted into surface functions 
         //===
 
-        public static Func<Vector2, Vector3> ToSurfaceFunction(this Func<Vector2, float> f)
+        public static Func<Vector2, Vector3> ToSurfaceFunction(this Func<Vector2, Number> f)
             => uv => (uv.X, uv.Y, f(uv));
 
         public static Vector3 MonkeySaddle(this Vector2 uv)
