@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Ara3D.Memory
 {
@@ -8,15 +9,24 @@ namespace Ara3D.Memory
         public static AlignedMemory ReadAllBytesAligned(string path)
             => File.OpenRead(path).ReadAllBytesAligned();
 
-        public const int DefaultBufferSize = 1024 * 1024; 
+        public const int DefaultBufferSize = 1024 * 1024;
 
         public static AlignedMemory ReadAllBytesAligned(this Stream stream)
         {
             if (!stream.CanSeek)
                 throw new NotSupportedException("Stream must support seeking");
-            var r = new AlignedMemory(stream.Length);
+
+            var length = stream.Length;
+
+            // Calculate padding to make the length a multiple of 32 bytes
+            var remainder = length % 32;
+            var paddedLength = remainder == 0 ? length : length + (32 - remainder);
+
+            // Allocate aligned memory with padded length
+            var r = new AlignedMemory(paddedLength);
+
             var dest = r.Bytes.Begin;
-            var remaining = r.Bytes.Length;
+            var remaining = length;
             while (remaining > 0)
             {
                 var count = Math.Min(remaining, DefaultBufferSize);
@@ -26,8 +36,18 @@ namespace Ara3D.Memory
                 remaining -= n;
                 dest += n;
             }
+
             if (remaining != 0)
                 throw new Exception($"Failed to read all bytes from stream. {remaining} bytes remaining");
+
+            // Fill the padding area with zeros if padding was needed
+            if (remainder != 0)
+            {
+                var paddingStart = r.Bytes.Begin + length;
+                var paddingSize = (int)(32 - remainder);
+                Unsafe.InitBlockUnaligned(paddingStart, 0, (uint)paddingSize);
+            }
+
             stream.Flush();
             stream.Dispose();
             return r;
