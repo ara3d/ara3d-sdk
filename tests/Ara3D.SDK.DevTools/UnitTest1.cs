@@ -143,7 +143,7 @@ namespace Ara3D.SDK.DevTools
         [Test, Explicit]
         public static void GetProjectSummary()
         {
-            var dir = @"C:\Users\cdigg\git\studio\ara3d-sdk\core\Ara3D.PropKit\";
+            var dir = @"..\..\..\..\..\src\Ara3D.PropKit\";
             var sb = ExtractCode(dir);
             Console.WriteLine(sb.ToString());
         }
