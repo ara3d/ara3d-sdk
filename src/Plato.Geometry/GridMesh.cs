@@ -1,4 +1,5 @@
-﻿namespace Plato.Geometry
+﻿
+namespace Plato.Geometry
 {
     /// <summary>
     /// A type of mesh, that has the topology of a grid. Even though
@@ -11,12 +12,9 @@
     /// </summary>
     public class GridMesh: IQuadMesh3D<GridMesh> 
     {
-        private IArray<Integer> _indices;
-        private IArray<Point3D> _points;
-
-        public GridMesh(IArray2D<Vector3> points, bool closedX, bool closedY)
+        public GridMesh(IArray2D<Point3D> points, bool closedX, bool closedY)
         {
-            Points = points;
+            PointGrid = points;
             ClosedX = closedX;
             ClosedY = closedY;
 
@@ -26,33 +24,53 @@
                 (col, row) => SurfaceDiscretization.QuadMeshFaceVertices(col, row, points.NumColumns, points.NumRows));
         }
 
-        public IArray2D<Vector3> Points { get; }
+        public IArray2D<Point3D> PointGrid { get; }
+        public IArray<Point3D> Points => PointGrid;
         public IArray<Integer4> FaceIndices { get; }
         public bool ClosedX { get; }
         public bool ClosedY { get; }
+
+        public GridMesh Deform(Func<Point3D, Point3D> f) 
+            => new(PointGrid.Map(f), ClosedX, ClosedY);
+
+        public Integer PrimitiveSize
+            => 4;
+
+        public Integer NumPrimitives
+            => FaceIndices.Count;
         
-        //public Int4 GetFaceIndices(int column, int row) => FaceIndices[column + row * Columns];
-        //public Quad GetFace(int column, int row) => this.Face(GetFaceIndices(column, row));
+        // TODO:  
 
-        public GridMesh Deform(Func<Vector3, Vector3> f) => new(Points.Map(f), ClosedX, ClosedY);
+        public Bounds3D Bounds => throw new NotImplementedException();
+        public IArray<Integer> Indices => throw new NotImplementedException();
+        public IArray<Quad3D> Primitives => throw new NotImplementedException();
+    }
 
-        public GridMesh Transform(Matrix4x4 mat)
-            => Deform(p => p.Transform(mat));
+    public static class DeformableExtensions
+    {
+        public static T Translate<T>(this T self, Vector3 v) where T : IDeformable3D<T>
+            => self.Deform(p => p + v);
+    }
 
-        public Integer PrimitiveSize { get; }
-        public Integer NumPrimitives { get; }
-
-        IArray<Integer> IIndexedGeometry.Indices => _indices;
-
-        public GridMesh Deform(Func<Point3D, Point3D> f)
+    public static class GridMeshExtensions
+    {
+        public static IArray2D<T> ToArray2D<T>(IArray<T>[] arrays)
         {
-            throw new NotImplementedException();
+            if (arrays.Length == 0)
+                return new Array2D<T>(0, 0, (_,_) => default);
+            var n = arrays[0].Count;
+            if (arrays.Any(xs => xs.Count != n))
+                throw new Exception("All arrays must be of the same length");
+            return new Array2D<T>(n, arrays.Length, (row, col) => arrays[row][col]);
         }
 
-        public Bounds3D Bounds { get; }
+        public static GridMesh ExtrudeTo(this PointArray3D row1, PointArray3D row2, bool closedX)
+            => new(ToArray2D([row1.Points, row2.Points]), closedX, false);
 
-        IArray<Point3D> IPointGeometry3D<GridMesh>.Points => _points;
+        public static PointArray3D To3D(this Polygon p)
+            => p;
 
-        public IArray<Quad3D> Primitives { get; }
+        public static GridMesh Extrude(this Polygon polygon, Number n)
+            => ExtrudeTo(polygon, polygon.To3D().Translate(Vector3.UnitZ * n), true);
     }
 }

@@ -65,6 +65,7 @@ namespace Ara3D.Studio.Data
             => AddMesh(
                 Enumerable.Select(mesh.Points, p => new Vector3(p.X, p.Y, p.Z)), 
                 GetIndices(mesh));
+
         public void AddVertex(Vector3 pos, Vector3 normal)
             => VertexList.Add(new VertexStruct(pos, normal));
 
@@ -141,11 +142,11 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        public void AddModel(Model model)
+        public void AddModel(Model3D model3D)
         {
             var meshes = new Dictionary<TriangleMesh3D, int>();
 
-            foreach (var node in model.Nodes)
+            foreach (var node in model3D.Nodes)
             {
                 if (!meshes.ContainsKey(node.Mesh))
                 {
@@ -156,7 +157,7 @@ namespace Ara3D.Studio.Data
             }
 
             var instances = new List<InstanceStruct>();
-            foreach (var node in model.Nodes)
+            foreach (var node in model3D.Nodes)
             {
                 var meshIndex = meshes[node.Mesh];
                 var (translation, quaternion, scale, success) = node.Matrix.Decompose;

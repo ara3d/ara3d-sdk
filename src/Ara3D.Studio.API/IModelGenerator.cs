@@ -1,10 +1,11 @@
 ﻿using Ara3D.Models;
+using Ara3D.SceneEval;
 
 namespace Ara3D.Studio.API;
 
 public interface IModelGenerator
 {
-    Model Eval();
+    IModel3D Eval(EvalContext context);
 }
 
 public static class ApiExtensions
@@ -13,7 +14,7 @@ public static class ApiExtensions
         => Activator.CreateInstance(self.GetType()) as IModelGenerator
             ?? throw new Exception($"Failed to make a copy of {self}");
 
-    public static IModelOperator CreateDefault(this IModelOperator self)
-        => Activator.CreateInstance(self.GetType()) as IModelOperator
+    public static IModelModifier CreateDefault(this IModelModifier self)
+        => Activator.CreateInstance(self.GetType()) as IModelModifier
             ?? throw new Exception($"Failed to make a copy of {self}");
 }

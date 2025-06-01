@@ -6,12 +6,14 @@
 
         private Dictionary<SceneEvalNode, SceneEvalNode> _rootLookup = new();
 
+        public IEnumerable<SceneEvalNode> AllNodes 
+            => _rootLookup.Keys;
+
         public event EventHandler GraphChanged;
         public event EventHandler GraphInvalidated;
 
-        public List<object> Evaluate(CancellationToken src = default)
+        public List<object> Evaluate(EvalContext context)
         {
-            var context = new SceneEvalContext(src);
             return Roots.AsParallel().Select(r => r.Eval(context)).ToList();
         }
 

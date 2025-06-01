@@ -15,4 +15,7 @@ public static class TransformableExtensions
 
     public static T Rotate<T>(this ITransformable3D<T> self, Vector3 axis, Angle angle) where T : ITransformable3D<T>
         => self.Transform(Quaternion.CreateFromAxisAngle(axis, angle));
+
+    public static T Rotate<T>(this ITransformable3D<T> self, float yaw, float pitch, float roll) where T : ITransformable3D<T>
+        => self.Transform(Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
 }

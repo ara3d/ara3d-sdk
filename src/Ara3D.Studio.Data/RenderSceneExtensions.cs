@@ -182,4 +182,8 @@ public static unsafe class RenderSceneExtensions
             rsb.GroupList.Add(tmp);
         }
     }
+
+    public static Bounds TotalBounds(this IRenderScene self)
+        => self.Instances.Count == 0 ? Bounds.Empty : self.Instances.Select(x => x.Bounds)
+            .Aggregate((a, b) => a.Union(b));
 }

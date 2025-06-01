@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\Ara3D.SceneEval\Ara3D.SceneEval.csproj" />
     <ProjectReference Include="..\Ara3D.Studio.Data\Ara3D.Studio.Data.csproj" />
   </ItemGroup>
 

@@ -92,6 +92,12 @@ namespace Ara3D.Memory
         public void Clear()
             => Count = 0;
 
+        ~UnmanagedList()
+        {
+            if (Memory != null)
+                Dispose();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Dispose()
         {

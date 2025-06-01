@@ -92,7 +92,7 @@ public static class PropFactory
                 GetRangeAsInt(rangeAttr, out var def, out var min, out var max);
                 yield return new PropAccessor(
                     new TypedPropDescriptorInt(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
-                    () => getter, setter);
+                    getter, setter);
             }
             else if (field.FieldType == typeof(float))
             {

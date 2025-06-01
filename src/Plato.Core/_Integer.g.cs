@@ -37,7 +37,7 @@ public Angle ArcSeconds { [MethodImpl(AggressiveInlining)] get  => this.Number.A
 public Array<Integer> Range { [MethodImpl(AggressiveInlining)] get  => this.MapRange((i)  => i); } 
 public IArray<Point2D> CirclePoints { [MethodImpl(AggressiveInlining)] get  => this.Fractions.Map((x)  => x.Turns.UnitCircle); } 
 public Number Number { [MethodImpl(AggressiveInlining)] get  => this; } 
-[MethodImpl(AggressiveInlining)]  public static implicit operator Number(Integer x) => x.Number;
+[MethodImpl(AggressiveInlining)]  public static implicit operator Number(Integer x) => x.Value;
         public Integer PlusOne { [MethodImpl(AggressiveInlining)] get  => this.Add(((Integer)1)); } 
 public Integer MinusOne { [MethodImpl(AggressiveInlining)] get  => this.Subtract(((Integer)1)); } 
 public Integer FromOne { [MethodImpl(AggressiveInlining)] get  => ((Integer)1).Subtract(this); } 

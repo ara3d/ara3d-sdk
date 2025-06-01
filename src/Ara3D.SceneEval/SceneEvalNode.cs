@@ -38,7 +38,7 @@ public class SceneEvalNode
         if (func == null)
             throw new InvalidOperationException($"The object {evaluableObject} does not have an Eval method.");
             
-        if (func.GetParameters().Length != inputs.Count)
+        if (func.GetParameters().Length != inputs.Count + 1)
             throw new InvalidOperationException($"The number of inputs {inputs.Count} does not match the number of parameters {func.GetParameters().Length} in the Eval method.");
 
         // TODO: optimize the func call. See BuildArrayInvoker below
@@ -50,7 +50,7 @@ public class SceneEvalNode
         UpdateInputs(inputs);
     }
 
-    public object Eval(SceneEvalContext context)
+    public object Eval(EvalContext context)
     {
         if (context.CancellationToken.IsCancellationRequested)
             throw new OperationCanceledException(context.CancellationToken);
@@ -70,7 +70,7 @@ public class SceneEvalNode
             input.Invalidated -= InputInvalidated;
 
         Inputs = inputs ?? Array.Empty<SceneEvalNode>();
-        _args = new object[Inputs.Count];
+        _args = new object[Inputs.Count + 1];
 
         foreach (var input in Inputs)
             input.Invalidated += InputInvalidated;
@@ -79,10 +79,11 @@ public class SceneEvalNode
         Graph.NotifyGraphChanged();
     }
 
-    private object EvalCore(SceneEvalContext context)
+    private object EvalCore(EvalContext context)
     {
         for (var i=0; i < Inputs.Count; i++)
             _args[i] = Inputs[i].Eval(context);
+        _args[Inputs.Count] = context;
         return _cached = _evalFunc(_args);
     }
 

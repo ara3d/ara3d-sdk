@@ -1,0 +1,3 @@
+[submodule "toolchain/parakeet"]
+	path = toolchain/parakeet
+	url = https://github.com/ara3d/parakeet

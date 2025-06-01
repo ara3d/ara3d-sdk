@@ -1,7 +1,16 @@
 ﻿namespace Plato.Geometry
 {
+    public enum PlatonicSolidsEnum
+    {
+        Tetrahedron,
+        Cube,
+        Octahedron,
+        Dodecahedron,
+        Icosahedron,
+    }
+
     /// <summary>
-    /// This are the five unit-sized platonic-solids.
+    /// These are the five unit-sized platonic-solids.
     /// Note that the face definitions were taken from Three.JS which uses counter clock-wise winding order.
     /// </summary>
     public static class PlatonicSolids
@@ -22,8 +31,17 @@
         public static TriangleMesh3D FlipFaces(this TriangleMesh3D mesh)
             => new(mesh.Points, mesh.FaceIndices.Map(f => new Integer3(f.C, f.B, f.A)));
 
+        public static Integer3 QuadFaceToTriFace(this Integer4 self, bool firstOrSecond)
+            => firstOrSecond ? (self.A, self.B, self.C) : (self.C, self.D, self.A);
+
+        public static IArray<Integer3> QuadFacesToTriFaces(this IArray<Integer4> self)
+            => (self.Count * 2).MapRange(i => QuadFaceToTriFace(self[i / 2], i % 2 == 0));
+
         public static TriangleMesh3D Triangulate(this QuadMesh3D mesh)
-            => new(mesh.Points, mesh.FaceIndices.FlatMap(f => new[] { new Integer3(f.A, f.B, f.C), new Integer3(f.C, f.D, f.A) }.ToIArray()));
+            => new(mesh.Points, mesh.FaceIndices.QuadFacesToTriFaces());
+
+        public static TriangleMesh3D Triangulate(this GridMesh mesh)
+            => new(mesh.Points, mesh.FaceIndices.QuadFacesToTriFaces());
 
         // https://mathworld.wolfram.com/RegularTetrahedron.html
         // https://github.com/mrdoob/three.js/blob/master/src/geometries/TetrahedronGeometry.js
@@ -131,5 +149,26 @@
                 (1, 5, 9), (5, 11, 4), (11, 10, 2), (10, 7, 6), (7, 1, 8),
                 (3, 9, 4), (3, 4, 2), (3, 2, 6), (3, 6, 8), (3, 8, 9),
                 (4, 9, 5), (2, 4, 11), (6, 2, 10), (8, 6, 7), (9, 8, 1));
+
+        public static readonly TriangleMesh3D TriangulatedCube
+            = Cube.Triangulate();
+
+        public static TriangleMesh3D GetMesh(int n)
+            => GetMesh((PlatonicSolidsEnum)n);
+
+        public static TriangleMesh3D GetMesh(PlatonicSolidsEnum n)
+        {
+            switch (n)
+            {
+                case PlatonicSolidsEnum.Tetrahedron: return Tetrahedron;
+                case PlatonicSolidsEnum.Cube: return TriangulatedCube;
+                case PlatonicSolidsEnum.Octahedron: return Octahedron;
+                case PlatonicSolidsEnum.Dodecahedron: return Dodecahedron;
+                case PlatonicSolidsEnum.Icosahedron: return Icosahedron;
+            }
+
+            return TriangulatedCube;
+        }
+
     }
 }
