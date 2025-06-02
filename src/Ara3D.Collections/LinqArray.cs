@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,98 +9,29 @@ using System.Threading.Tasks;
 namespace Ara3D.Collections
 {
     /// <summary>
-    /// Implements an IArray from a System.Array.
-    /// </summary>
-    public class ReadOnlyListAdapter<T> : IReadOnlyList<T>
-    {
-        private readonly IReadOnlyList<T> _list;
-
-        public int Count
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _list.Count;
-        }
-
-        public T this[int n]
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _list[n];
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ReadOnlyListAdapter(IReadOnlyList<T> xs)
-            => _list = xs;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<T> GetEnumerator()
-            => new ReadOnlyListEnumerator<T>(_list);
-       
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-            => GetEnumerator();
-    }
-
-    /// <summary>
     /// Extension functions for working on any object implementing IArray. This overrides
     /// many of the Linq functions providing better performance.
     /// </summary>
     public static class LinqArray
     {
         /// <summary>
-        /// Helper function for creating an IArray from the arguments.
-        /// </summary>
-        public static IReadOnlyList<T> Create<T>(params T[] self)
-            => self.ToIArray();
-
-        /// <summary>
-        /// A helper function to enable IArray to support IEnumerable
-        /// </summary>
-        public static IEnumerable<T> ToEnumerable<T>(this IReadOnlyList<T> self)
-            => Enumerable.Range(0, self.Count).Select(self.ElementAt);
-
-        public static IReadOnlyList<T> ForEach<T>(this IReadOnlyList<T> xs, Action<T> f)
-        {
-            for (var i = 0; i < xs.Count; ++i)
-                f(xs[i]);
-            return xs;
-        }
-
-        /// <summary>
         /// Creates an IArray with the given number of items,
         /// and uses the function to return items.
         /// </summary>
-        public static IReadOnlyList<T> Select<T>(this int count, Func<int, T> f)
-            => new FunctionalReadOnlyList<T>(count, f);
-
-        /// <summary>
-        /// Converts any implementation of IList (e.g. Array/List) to an IArray.
-        /// </summary>
-        public static IReadOnlyList<T> ToIArray<T>(this IReadOnlyList<T> self)
-            => self.Count.Select(i => self[i]);
-
-        /// <summary>
-        /// Converts any implementation of IList (e.g. Array/List) to an IArray.
-        /// </summary>
-        public static IReadOnlyList<T> ToIArray<T>(this T[] self)
-            => new ReadOnlyListAdapter<T>(self);
-
-        /// <summary>
-        /// Converts any implementation of IEnumerable to an IArray
-        /// </summary>
-        public static IReadOnlyList<T> ToIArray<T>(this IEnumerable<T> self)
-            => self is IReadOnlyList<T> xs ? xs.ToIArray() : self.ToArray().ToIArray();
+        public static ReadOnlyList<T> Select<T>(this int count, Func<int, T> f)
+            => new ReadOnlyList<T>(count, f);
         
         /// <summary>
         /// Creates an IArray by repeating each item in the source a number of times.
         /// </summary>
-        public static IReadOnlyList<T> RepeatElements<T>(this IReadOnlyList<T> self, int count)
-            => Select(count, i => self[i / count]);
+        public static ReadOnlyList<T> RepeatElements<T>(this IReadOnlyList<T> self, int count)
+            => Select(self.Count * count, i => self[i / count]);
 
         /// <summary>
         /// Creates an IArray starting with a seed value, and applying a function
         /// to each individual member of the array. This is eagerly evaluated.
         /// </summary>
-        public static IReadOnlyList<T> Generate<T>(this T init, int count, Func<T, T> f)
+        public static T[] Generate<T>(this T init, int count, Func<T, T> f)
         {
             var r = new T[count];
             for (var i = 0; i < count; ++i)
@@ -109,20 +39,20 @@ namespace Ara3D.Collections
                 r[i] = init;
                 init = f(init);
             }
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
         /// Creates an IArray of integers from zero up to one less than the given number.
         /// </summary>
-        public static IReadOnlyList<int> Range(this int self)
-            => Select(self, i => i);
+        public static IntegerRange Range(this int self)
+            => new IntegerRange(0, self);
 
         /// <summary>
         /// Creates an IArray of integers from a to one less than b.
         /// </summary>
-        public static IReadOnlyList<int> Upto(this int a, int b)
-            => Select((b - a), i => i + a);
+        public static IntegerRange UpTo(this int a, int b)
+            => new IntegerRange(a, b - a);
 
         /// <summary>
         /// Returns the first item in the array.
@@ -146,7 +76,7 @@ namespace Ara3D.Collections
         /// A mnemonic for "Any()" that returns false if the count is greater than zero
         /// </summary>
         public static bool IsEmpty<T>(this IReadOnlyList<T> self)
-            => !self.Any();
+            => self.Count == 0;
 
         /// <summary>
         /// Returns true if there are any elements in the array.
@@ -159,12 +89,6 @@ namespace Ara3D.Collections
         /// </summary>
         public static T[] ToArray<T>(this IReadOnlyList<T> self)
             => self.CopyTo(new T[self.Count]);
-
-        /// <summary>
-        /// Converts the IArray into a system List.
-        /// </summary>
-        public static List<T> ToList<T>(this IReadOnlyList<T> self)
-            => self.ToEnumerable().ToList();
 
         /// <summary>
         /// Converts the array into a function that returns values from an integer, returning a default value if out of range.
@@ -183,7 +107,8 @@ namespace Ara3D.Collections
         /// </summary>
         public static U AddTo<T, U>(this IReadOnlyList<T> self, U other) where U : ICollection<T>
         {
-            self.ForEach(other.Add);
+            for (var i = 0; i < self.Count; ++i)
+                other.Add(self[i]);
             return other;
         }
 
@@ -200,78 +125,78 @@ namespace Ara3D.Collections
         /// <summary>
         /// Returns an array generated by applying a function to each element.
         /// </summary>
-        public static IReadOnlyList<U> Select<T, U>(this IReadOnlyList<T> self, Func<T, U> f)
+        public static ReadOnlyList<U> Select<T, U>(this IReadOnlyList<T> self, Func<T, U> f)
             => Select(self.Count, i => f(self[i]));
 
         /// <summary>
         /// Returns an array generated by applying a function to each element.
         /// </summary>
-        public static IReadOnlyList<U> Select<T, U>(this IReadOnlyList<T> self, Func<T, int, U> f)
+        public static ReadOnlyList<U> Select<T, U>(this IReadOnlyList<T> self, Func<T, int, U> f)
             => Select(self.Count, i => f(self[i], i));
 
         /// <summary>
         /// Returns an array generated by applying a function to each element.
         /// </summary>
-        public static IReadOnlyList<U> SelectIndices<T, U>(this IReadOnlyList<T> self, Func<int, U> f)
+        public static ReadOnlyList<U> SelectIndices<T, U>(this IReadOnlyList<T> self, Func<int, U> f)
             => self.Count.Select(f);
 
         /// <summary>
         /// Converts an array of array into a flattened array. Each array is assumed to be of size stride.
         /// </summary>
-        public static IReadOnlyList<T> Flatten<T>(this IReadOnlyList<IReadOnlyList<T>> self, int n)
+        public static ReadOnlyList<T> Flatten<T>(this IReadOnlyList<IReadOnlyList<T>> self, int n)
             => Select(self.Count * n, i => self[i / n][i % n]);
 
         /// <summary>
         /// Converts an array of array into a flattened array.
         /// </summary>
-        public static IReadOnlyList<T> Flatten<T>(this IReadOnlyList<IReadOnlyList<T>> self)
+        public static T[] Flatten<T>(this IReadOnlyList<IReadOnlyList<T>> self)
         {
             var counts = self.Select(x => x.Count).PostAccumulate((x, y) => x + y);
             var r = new T[counts.Last()];
             var i = 0;
-            foreach (var xs in self.ToEnumerable())
+            foreach (var xs in self)
                 xs.CopyTo(r, counts[i++]);
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
         /// Returns an array of tuple where each element of the initial array is paired with its index.
         /// </summary>
-        public static IReadOnlyList<(T value, int index)> ZipWithIndex<T>(this IReadOnlyList<T> self)
+        public static ReadOnlyList<(T value, int index)> ZipWithIndex<T>(this IReadOnlyList<T> self)
             => self.Select((v, i) => (v, i));
 
         /// <summary>
         /// Returns an array from an array of arrays, where the number of sub-elements is the same for reach array and is known.
         /// </summary>
-        public static IReadOnlyList<T> SelectMany<T>(this IReadOnlyList<IReadOnlyList<T>> self, int count)
+        public static ReadOnlyList<T> SelectMany<T>(this IReadOnlyList<IReadOnlyList<T>> self, int count)
             => Select(self.Count, i => self[i / count][i % count]);
 
         /// <summary>
         /// Returns an array given a function that generates an IArray from each member. Eager evaluation.
         /// </summary>
-        public static IReadOnlyList<U> SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, IReadOnlyList<U>> func)
+        public static List<U> SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, IReadOnlyList<U>> func)
         {
             var xs = new List<U>();
             for (var i = 0; i < self.Count; ++i)
                 func(self[i]).AddTo(xs);
-            return xs.ToIArray();
+            return xs;
         }
 
         /// <summary>
         /// Returns an array given a function that generates an IArray from each member. Eager evaluation.
         /// </summary>
-        public static IReadOnlyList<U> SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, int, IReadOnlyList<U>> func)
+        public static List<U> SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, int, IReadOnlyList<U>> func)
         {
             var xs = new List<U>();
             for (var i = 0; i < self.Count; ++i)
                 func(self[i], i).AddTo(xs);
-            return xs.ToIArray();
+            return xs;
         }
 
         /// <summary>
         /// Returns an array given a function that generates a tuple from each member. Eager evaluation.
         /// </summary>
-        public static IReadOnlyList<U> SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, Tuple<U, U>> func)
+        public static U[] SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, Tuple<U, U>> func)
         {
             var r = new U[self.Count * 2];
             for (var i = 0; i < self.Count; ++i)
@@ -280,14 +205,13 @@ namespace Ara3D.Collections
                 r[i * 2] = tmp.Item1;
                 r[i * 2 + 1] = tmp.Item2;
             }
-
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
         /// Returns an array given a function that generates a tuple from each member. Eager evaluation.
         /// </summary>
-        public static IReadOnlyList<U> SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, Tuple<U, U, U>> func)
+        public static U[] SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, Tuple<U, U, U>> func)
         {
             var r = new U[self.Count * 3];
             for (var i = 0; i < self.Count; ++i)
@@ -297,13 +221,13 @@ namespace Ara3D.Collections
                 r[i * 3 + 1] = tmp.Item2;
                 r[i * 3 + 2] = tmp.Item3;
             }
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
         /// Returns an array given a function that generates a tuple from each member. Eager evaluation.
         /// </summary>
-        public static IReadOnlyList<U> SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, Tuple<U, U, U, U>> func)
+        public static U[] SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, Tuple<U, U, U, U>> func)
         {
             var r = new U[self.Count * 4];
             for (var i = 0; i < self.Count; ++i)
@@ -314,50 +238,50 @@ namespace Ara3D.Collections
                 r[i * 4 + 2] = tmp.Item3;
                 r[i * 4 + 3] = tmp.Item4;
             }
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
         /// Returns an array generated by applying a function to corresponding pairs of elements in both arrays.
         /// </summary>
-        public static IReadOnlyList<V> Zip<T, U, V>(this IReadOnlyList<T> self, IReadOnlyList<U> other, Func<T, U, V> f)
+        public static ReadOnlyList<V> Zip<T, U, V>(this IReadOnlyList<T> self, IReadOnlyList<U> other, Func<T, U, V> f)
             => Select(Math.Min(self.Count, other.Count), i => f(self[i], other[i]));
 
         /// <summary>
         /// Returns an array generated by applying a function to corresponding pairs of elements in both arrays.
         /// </summary>
-        public static IReadOnlyList<V> Zip<T, U, V>(this IReadOnlyList<T> self, IReadOnlyList<U> other, Func<T, U, int, V> f)
+        public static ReadOnlyList<V> Zip<T, U, V>(this IReadOnlyList<T> self, IReadOnlyList<U> other, Func<T, U, int, V> f)
             => Select(Math.Min(self.Count, other.Count), i => f(self[i], other[i], i));
 
         /// <summary>
         /// Returns an array generated by applying a function to corresponding pairs of elements in both arrays.
         /// </summary>
-        public static IReadOnlyList<W> Zip<T, U, V, W>(this IReadOnlyList<T> self, IReadOnlyList<U> other, IReadOnlyList<V> other2, Func<T, U, V, W> f)
+        public static ReadOnlyList<W> Zip<T, U, V, W>(this IReadOnlyList<T> self, IReadOnlyList<U> other, IReadOnlyList<V> other2, Func<T, U, V, W> f)
             => Select(Math.Min(Math.Min(self.Count, other.Count), other2.Count), i => f(self[i], other[i], other2[i]));
 
         /// <summary>
         /// Returns an array generated by applying a function to corresponding pairs of elements in both arrays.
         /// </summary>
-        public static IReadOnlyList<W> Zip<T, U, V, W>(this IReadOnlyList<T> self, IReadOnlyList<U> other, IReadOnlyList<V> other2, Func<T, U, V, int, W> f)
+        public static ReadOnlyList<W> Zip<T, U, V, W>(this IReadOnlyList<T> self, IReadOnlyList<U> other, IReadOnlyList<V> other2, Func<T, U, V, int, W> f)
             => Select(Math.Min(Math.Min(self.Count, other.Count), other2.Count), i => f(self[i], other[i], other2[i], i));
 
         /// <summary>
         /// Returns an array generated by applying a function to corresponding pairs of elements in both arrays.
         /// </summary>
-        public static IReadOnlyList<X> Zip<T, U, V, W, X>(this IReadOnlyList<T> self, IReadOnlyList<U> other, IReadOnlyList<V> other2, IReadOnlyList<W> other3, Func<T, U, V, W, X> f)
+        public static ReadOnlyList<X> Zip<T, U, V, W, X>(this IReadOnlyList<T> self, IReadOnlyList<U> other, IReadOnlyList<V> other2, IReadOnlyList<W> other3, Func<T, U, V, W, X> f)
             => Select(Math.Min(Math.Min(self.Count, other.Count), Math.Min(other2.Count, other3.Count)), i => f(self[i], other[i], other2[i], other3[i]));
 
         /// <summary>
         /// Returns an array generated by applying a function to corresponding pairs of elements in both arrays.
         /// </summary>
-        public static IReadOnlyList<X> Zip<T, U, V, W, X>(this IReadOnlyList<T> self, IReadOnlyList<U> other, IReadOnlyList<V> other2, IReadOnlyList<W> other3, Func<T, U, V, W, int, X> f)
+        public static ReadOnlyList<X> Zip<T, U, V, W, X>(this IReadOnlyList<T> self, IReadOnlyList<U> other, IReadOnlyList<V> other2, IReadOnlyList<W> other3, Func<T, U, V, W, int, X> f)
             => Select(Math.Min(Math.Min(self.Count, other.Count), Math.Min(other2.Count, other3.Count)), i => f(self[i], other[i], other2[i], other3[i], i));
 
         /// <summary>
         /// Applies a function to each element in the list paired with the next one.
         /// Used to implement adjacent differences for example.
         /// </summary>
-        public static IReadOnlyList<U> ZipEachWithNext<T, U>(this IReadOnlyList<T> self, Func<T, T, U> f)
+        public static ReadOnlyList<U> ZipEachWithNext<T, U>(this IReadOnlyList<T> self, Func<T, T, U> f)
             => self.Zip(self.Skip(), f);
 
         /// <summary>
@@ -373,18 +297,6 @@ namespace Ara3D.Collections
         /// </summary>
         public static IEnumerable<T> Where<T>(this IReadOnlyList<T> self, IReadOnlyList<bool> mask)
             => self.WhereIndices(mask.ToPredicate());
-
-        /// <summary>
-        /// Returns an IEnumerable containing only elements of the array for which the corresponding predicate is true.
-        /// </summary>
-        public static IEnumerable<T> Where<T>(this IReadOnlyList<T> self, Func<T, bool> predicate)
-            => self.ToEnumerable().Where(predicate);
-
-        /// <summary>
-        /// Returns an IEnumerable containing only elements of the array for which the corresponding predicate is true.
-        /// </summary>
-        public static IEnumerable<T> Where<T>(this IReadOnlyList<T> self, Func<T, int, bool> predicate)
-            => self.ToEnumerable().Where(predicate);
 
         /// <summary>
         /// Returns an IEnumerable containing only indices of the array for which the function satisfies a specific predicate.
@@ -450,26 +362,20 @@ namespace Ara3D.Collections
         /// <summary>
         /// Returns a new array containing the elements in the range of from to to
         /// </summary>
-        public static IReadOnlyList<T> Slice<T>(this IReadOnlyList<T> self, int from, int to)
+        public static ReadOnlyList<T> Slice<T>(this IReadOnlyList<T> self, int from, int to)
             => Select(to - from, i => self[i + from]);
-
-        /// <summary>
-        /// Returns a new array containing count elements starting from the offset .
-        /// </summary>
-        public static IReadOnlyList<T> Subarray<T>(this IReadOnlyList<T> self, int from, int count)
-            => self.Slice(from, from + count);
-
+        
         /// <summary>
         /// Returns an array of SubArrays of size "size"
         /// the last items that cannot fill an arrat if size "size" will be ignored
         /// </summary>
-        public static IReadOnlyList<IReadOnlyList<T>> SubArraysFixed<T>(this IReadOnlyList<T> self, int size)
+        public static ReadOnlyList<ReadOnlyList<T>> SubArraysFixed<T>(this IReadOnlyList<T> self, int size)
             => (self.Count / size).Select(i => self.SubArray(i, size));
 
 
         /// Returns an array of SubArrays of size "size" plus extras
         /// The extra array is of size count % size if present
-        public static IReadOnlyList<IReadOnlyList<T>> SubArrays<T>(this IReadOnlyList<T> self, int size)
+        public static ReadOnlyList<ReadOnlyList<T>> SubArrays<T>(this IReadOnlyList<T> self, int size)
             => self.Count % size == 0
                 ? self.SubArraysFixed(size)
                 : self.SubArraysFixed(size).Append(self.TakeLast(self.Count % size));
@@ -477,86 +383,86 @@ namespace Ara3D.Collections
         /// <summary>
         /// Returns stride elements of the list starting from a given index.
         /// </summary>
-        public static IReadOnlyList<T> SubArray<T>(this IReadOnlyList<T> self, int from, int count)
+        public static ReadOnlyList<T> SubArray<T>(this IReadOnlyList<T> self, int from, int count)
             => self.Slice(from, count + from);
 
         /// <summary>
         /// Returns elements of the array between from and skipping every stride element.
         /// </summary>
-        public static IReadOnlyList<T> Slice<T>(this IReadOnlyList<T> self, int from, int to, int stride)
+        public static ReadOnlyList<T> Slice<T>(this IReadOnlyList<T> self, int from, int to, int stride)
             => Select((to - from) / stride, i => self[i * stride + from]);
 
         /// <summary>
         /// Returns a new array containing the elements by taking every nth item.
         /// </summary>
-        public static IReadOnlyList<T> Stride<T>(this IReadOnlyList<T> self, int stride)
+        public static ReadOnlyList<T> Stride<T>(this IReadOnlyList<T> self, int stride)
             => self.Stride(0, stride);
 
         /// <summary>
         /// Returns a new array containing the elements by taking every nth item.
         /// </summary>
-        public static IReadOnlyList<T> Stride<T>(this IReadOnlyList<T> self, int from, int stride)
+        public static ReadOnlyList<T> Stride<T>(this IReadOnlyList<T> self, int from, int stride)
             => Select((self.Count - from) / stride, i => self[from + i * stride]);
 
         /// <summary>
         /// Returns a new array containing just the first n items.
         /// </summary>
-        public static IReadOnlyList<T> Take<T>(this IReadOnlyList<T> self, int n)
+        public static ReadOnlyList<T> Take<T>(this IReadOnlyList<T> self, int n)
             => self.Slice(0, n);
 
         /// <summary>
-        /// Returns a new array containing just at most stride items.
+        /// Returns a new array containing just at most n items.
         /// </summary>
-        public static IReadOnlyList<T> TakeAtMost<T>(this IReadOnlyList<T> self, int n)
-            => self.Count > n ? self.Slice(0, n) : self;
+        public static ReadOnlyList<T> TakeAtMost<T>(this IReadOnlyList<T> self, int n)
+            => self.Count > n ? self.Slice(0, n) : self.Slice(0, self.Count);
 
         /// <summary>
         /// Returns a new array containing the elements after the first stride elements.
         /// </summary>
-        public static IReadOnlyList<T> Skip<T>(this IReadOnlyList<T> self, int n = 1)
+        public static ReadOnlyList<T> Skip<T>(this IReadOnlyList<T> self, int n = 1)
             => self.Slice(n, self.Count);
 
         /// <summary>
         /// Returns a new array containing the last stride elements.
         /// </summary>
-        public static IReadOnlyList<T> TakeLast<T>(this IReadOnlyList<T> self, int n = 1)
+        public static ReadOnlyList<T> TakeLast<T>(this IReadOnlyList<T> self, int n = 1)
             => self.Skip(self.Count - n);
 
         /// <summary>
         /// Returns a new array containing all elements excluding the last stride elements.
         /// </summary>
-        public static IReadOnlyList<T> DropLast<T>(this IReadOnlyList<T> self, int n = 1)
-            => self.Count > n ? self.Take(self.Count - n) : self.Empty();
+        public static ReadOnlyList<T> DropLast<T>(this IReadOnlyList<T> self, int n = 1)
+            => self.Count > n ? self.Take(self.Count - n) : self.Take(0);
 
         /// <summary>
         /// Returns a new array by remapping indices
         /// </summary>
-        public static IReadOnlyList<T> MapIndices<T>(this IReadOnlyList<T> self, Func<int, int> f)
+        public static ReadOnlyList<T> MapIndices<T>(this IReadOnlyList<T> self, Func<int, int> f)
             => self.Count.Select(i => self[f(i)]);
 
         /// <summary>
         /// Returns an array by selecting every "nth" element.
         /// Unlike stride has the same number of elements as original array. 
         /// </summary>
-        public static IReadOnlyList<T> SelectEveryNth<T>(this IReadOnlyList<T> self, int n)
+        public static ReadOnlyList<T> SelectEveryNth<T>(this IReadOnlyList<T> self, int n)
             => self.MapIndices(i => i * n % self.Count);
 
         /// <summary>
         /// Returns a new array that reverses the order of elements
         /// </summary>
-        public static IReadOnlyList<T> Reverse<T>(this IReadOnlyList<T> self)
+        public static ReadOnlyList<T> Reverse<T>(this IReadOnlyList<T> self)
             => self.MapIndices(i => self.Count - 1 - i);
 
         /// <summary>
         /// Uses the provided indices to select elements from the array.
         /// </summary>
-        public static IReadOnlyList<T> SelectByIndex<T>(this IReadOnlyList<T> self, IReadOnlyList<int> indices)
+        public static ReadOnlyList<T> SelectByIndex<T>(this IReadOnlyList<T> self, IReadOnlyList<int> indices)
             => indices.Select(i => self[i]);
 
         /// <summary>
         /// Uses the array as indices to select elements from the other array.
         /// </summary>
-        public static IReadOnlyList<T> Choose<T>(this IReadOnlyList<int> indices, IReadOnlyList<T> values)
+        public static ReadOnlyList<T> Choose<T>(this IReadOnlyList<int> indices, IReadOnlyList<T> values)
             => values.SelectByIndex(indices);
 
         /// <summary>
@@ -571,14 +477,14 @@ namespace Ara3D.Collections
         /// based on keys created by the given keySelector
         /// </summary>
         public static IEnumerable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IReadOnlyList<TSource> self, Func<TSource, TKey> keySelector)
-            => self.ToEnumerable().GroupBy(keySelector);
+            => self.GroupBy(keySelector);
 
         /// <summary>
         /// Return the array separated into a series of groups (similar to DictionaryOfLists)
         /// based on keys created by the given keySelector and elements chosen by the element selector
         /// </summary>
         public static IEnumerable<IGrouping<TKey, TElem>> GroupBy<TSource, TKey, TElem>(this IReadOnlyList<TSource> self, Func<TSource, TKey> keySelector, Func<TSource, TElem> elementSelector)
-            => self.ToEnumerable().GroupBy(keySelector, elementSelector);
+            => self.GroupBy(keySelector, elementSelector);
 
         /// <summary>
         /// Uses the provided indices to select groups of contiguous elements from the array.
@@ -590,14 +496,14 @@ namespace Ara3D.Collections
         /// <summary>
         /// Similar to take, if count is less than the number of items in the array, otherwise uses a modulo operation.
         /// </summary>
-        public static IReadOnlyList<T> Resize<T>(this IReadOnlyList<T> self, int count)
+        public static ReadOnlyList<T> Resize<T>(this IReadOnlyList<T> self, int count)
             => Select(count, i => self[i % self.Count]);
 
         /// <summary>
         /// Returns an array of the same type with no elements.
         /// </summary>
-        public static IReadOnlyList<T> Empty<T>(this IReadOnlyList<T> self)
-            => self.Take(0);
+        public static EmptyList<T> Empty<T>(this IReadOnlyList<T> self)
+            => EmptyList<T>.Default;
 
         /// <summary>
         /// Returns an array of the same type with no elements.
@@ -608,7 +514,7 @@ namespace Ara3D.Collections
         /// <summary>
         /// Returns a sequence of integers from 0 to 1 less than the number of items in the array, representing indicies of the array.
         /// </summary>
-        public static IReadOnlyList<int> Indices<T>(this IReadOnlyList<T> self)
+        public static IntegerRange Indices<T>(this IReadOnlyList<T> self)
             => self.Count.Range();
 
         /// <summary>
@@ -620,7 +526,7 @@ namespace Ara3D.Collections
         /// <summary>
         /// Concatenates the contents of one array with another.
         /// </summary>
-        public static IReadOnlyList<T> Concat<T>(this IReadOnlyList<T> self, IReadOnlyList<T> other)
+        public static ReadOnlyList<T> Concatenate<T>(this IReadOnlyList<T> self, IReadOnlyList<T> other)
             => Select(self.Count + other.Count, i => i < self.Count ? self[i] : other[i - self.Count]);
 
         /// <summary>
@@ -655,27 +561,27 @@ namespace Ara3D.Collections
         /// <summary>
         /// Returns an array that is one element shorter that subtracts each element from its previous one.
         /// </summary>
-        public static IReadOnlyList<int> AdjacentDifferences(this IReadOnlyList<int> self)
+        public static ReadOnlyList<int> AdjacentDifferences(this IReadOnlyList<int> self)
             => self.ZipEachWithNext((a, b) => b - a);
 
         /// <summary>
         /// Creates a new array that concatenates a unit item list of one item after it.
         /// Repeatedly calling Append would result in significant performance degradation.
         /// </summary>
-        public static IReadOnlyList<T> Append<T>(this IReadOnlyList<T> self, T x)
+        public static ReadOnlyList<T> Append<T>(this IReadOnlyList<T> self, T x)
             => (self.Count + 1).Select(i => i < self.Count ? self[i] : x);
 
         /// <summary>
         /// Creates a new array that concatenates the given items to itself.
         /// </summary>
-        public static IReadOnlyList<T> Append<T>(this IReadOnlyList<T> self, params T[] x)
-            => self.Concat(x.ToIArray());
+        public static ReadOnlyList<T> Append<T>(this IReadOnlyList<T> self, params T[] x)
+            => self.Concatenate(x);
 
         /// <summary>
-        /// Creates a new array that concatsenates a unit item list of one item before it
+        /// Creates a new array that concatenates a unit item list of one item before it
         /// Repeatedly calling Prepend would result in significant performance degradation.
         /// </summary>
-        public static IReadOnlyList<T> Prepend<T>(this IReadOnlyList<T> self, T x)
+        public static ReadOnlyList<T> Prepend<T>(this IReadOnlyList<T> self, T x)
             => (self.Count + 1).Select(i => i == 0 ? x : self[i - 1]);
 
         /// <summary>
@@ -736,34 +642,33 @@ namespace Ara3D.Collections
         /// <summary>
         /// Applies a function (like "+") to each element in the series to create an effect similar to partial sums.
         /// </summary>
-        public static IReadOnlyList<T> Accumulate<T>(this IReadOnlyList<T> self, Func<T, T, T> f)
+        public static T[] Accumulate<T>(this IReadOnlyList<T> self, Func<T, T, T> f)
         {
             var n = self.Count;
             var r = new T[n];
-            if (n == 0) return r.ToIArray();
+            if (n == 0) return r;
             var prev = r[0] = self[0];
             for (var i = 1; i < n; ++i)
             {
                 prev = r[i] = f(prev, self[i]);
             }
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
         /// Applies a function (like "+") to each element in the series to create an effect similar to partial sums.
         /// The first value in the array will be zero.
         /// </summary>
-        public static IReadOnlyList<T> PostAccumulate<T>(this IReadOnlyList<T> self, Func<T, T, T> f, T init = default)
+        public static T[] PostAccumulate<T>(this IReadOnlyList<T> self, Func<T, T, T> f, T init = default)
         {
             var n = self.Count;
             var r = new T[n + 1];
             var prev = r[0] = init;
-            if (n == 0) return r.ToIArray();
             for (var i = 0; i < n; ++i)
             {
                 prev = r[i + 1] = f(prev, self[i]);
             }
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
@@ -775,7 +680,7 @@ namespace Ara3D.Collections
         /// <summary>
         /// Creates a readonly array from a seed value, by applying a function
         /// </summary>
-        public static IReadOnlyList<T> Build<T>(T init, Func<T, T> next, Func<T, bool> hasNext)
+        public static List<T> Build<T>(T init, Func<T, T> next, Func<T, bool> hasNext)
         {
             var r = new List<T>();
             while (hasNext(init))
@@ -783,13 +688,13 @@ namespace Ara3D.Collections
                 r.Add(init);
                 init = next(init);
             }
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
         /// Creates a readonly array from a seed value, by applying a function
         /// </summary>
-        public static IReadOnlyList<T> Build<T>(T init, Func<T, int, T> next, Func<T, int, bool> hasNext)
+        public static List<T> Build<T>(T init, Func<T, int, T> next, Func<T, int, bool> hasNext)
         {
             var i = 0;
             var r = new List<T>();
@@ -798,7 +703,7 @@ namespace Ara3D.Collections
                 r.Add(init);
                 init = next(init, ++i);
             }
-            return r.ToIArray();
+            return r;
         }
 
         /// <summary>
@@ -808,34 +713,16 @@ namespace Ara3D.Collections
             => indices.Prepend(0).Zip(indices.Append(self.Count), (x, y) => self.Slice(x, y));
 
         /// <summary>
-        /// Returns two arrays, one for which the predicate is true, and the second for which it is false.
-        /// </summary>
-        public static (IReadOnlyList<T>, IReadOnlyList<T>) Split<T>(this IReadOnlyList<T> self, Func<T, bool> predicate)
-            => (self.Where(predicate).ToIArray(), self.Where(x => !predicate(x)).ToIArray());
-
-        /// <summary>
         /// Creates an array of arrays, split at the given index.
         /// </summary>
-        public static IReadOnlyList<IReadOnlyList<T>> Split<T>(this IReadOnlyList<T> self, int index)
-            => Create(self.Take(index), self.Skip(index));
+        public static (ReadOnlyList<T>, ReadOnlyList<T>) Split<T>(this IReadOnlyList<T> self, int index)
+            => (self.Take(index), self.Skip(index));
 
         /// <summary>
         /// Splits an array of tuples into a tuple of array
         /// </summary>
-        public static (IReadOnlyList<T1>, IReadOnlyList<T2>) Unzip<T1, T2>(this IReadOnlyList<(T1, T2)> self)
+        public static (ReadOnlyList<T1>, ReadOnlyList<T2>) Unzip<T1, T2>(this IReadOnlyList<(T1, T2)> self)
             => (self.Select(pair => pair.Item1), self.Select(pair => pair.Item2));
-
-        /// <summary>
-        /// Returns true if the predicate is true for all of the elements in the array
-        /// </summary>
-        public static bool All<T>(this IReadOnlyList<T> self, Func<T, bool> predicate)
-            => self.ToEnumerable().All(predicate);
-
-        /// <summary>
-        /// Returns true if the predicate is true for any of the elements in the array
-        /// </summary>
-        public static bool Any<T>(this IReadOnlyList<T> self, Func<T, bool> predicate)
-            => self.ToEnumerable().Any(predicate);
 
         /// <summary>
         /// Sums items in an array using a selector function that returns integers.
@@ -850,24 +737,8 @@ namespace Ara3D.Collections
             => self.Aggregate(0.0, (init, x) => init + func(x));
 
         /// <summary>
-        /// Forces evaluation (aka reification) of the array by creating a copy in memory.
-        /// This is useful as a performance optimization, or to force the objects to exist permanently.
+        /// Converts to a regular array in parallel
         /// </summary>
-        public static IReadOnlyList<T> Evaluate<T>(this IReadOnlyList<T> x)
-            => (x is ReadOnlyListAdapter<T>) ? x : x.ToArray().ToIArray();
-
-        /// <summary>
-        /// Forces evaluation (aka reification) of the array in parallel.
-        /// </summary>
-        public static IReadOnlyList<T> EvaluateInParallel<T>(this IReadOnlyList<T> x)
-            => (x is ReadOnlyListAdapter<T>) ? x : x.ToArrayInParallel().ToIArray();
-
-        /// <summary>
-        /// Converts to a regular array in paralle;
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="xs"></param>
-        /// <returns></returns>
         public static T[] ToArrayInParallel<T>(this IReadOnlyList<T> xs)
         {
             if (xs.Count == 0)
@@ -877,7 +748,8 @@ namespace Ara3D.Collections
                 return xs.ToArray();
 
             var r = new T[xs.Count];
-            var partitioner = Partitioner.Create(0, xs.Count, xs.Count / Environment.ProcessorCount);
+            var partitioner = Partitioner
+                .Create(0, xs.Count, xs.Count / Environment.ProcessorCount);
 
             Parallel.ForEach(partitioner, (range, state) =>
             {
@@ -890,37 +762,25 @@ namespace Ara3D.Collections
         /// <summary>
         /// Maps pairs of elements to a new array.
         /// </summary>
-        public static IReadOnlyList<U> SelectPairs<T, U>(this IReadOnlyList<T> xs, Func<T, T, U> f)
+        public static ReadOnlyList<U> SelectPairs<T, U>(this IReadOnlyList<T> xs, Func<T, T, U> f)
             => (xs.Count / 2).Select(i => f(xs[i * 2], xs[i * 2 + 1]));
 
         /// <summary>
         /// Maps every 3 elements to a new array.
         /// </summary>
-        public static IReadOnlyList<U> SelectTriplets<T, U>(this IReadOnlyList<T> xs, Func<T, T, T, U> f)
+        public static ReadOnlyList<U> SelectTriplets<T, U>(this IReadOnlyList<T> xs, Func<T, T, T, U> f)
             => (xs.Count / 3).Select(i => f(xs[i * 3], xs[i * 3 + 1], xs[i * 3 + 2]));
 
         /// <summary>
         /// Maps every 4 elements to a new array.
         /// </summary>
-        public static IReadOnlyList<U> SelectQuartets<T, U>(this IReadOnlyList<T> xs, Func<T, T, T, T, U> f)
+        public static ReadOnlyList<U> SelectQuartets<T, U>(this IReadOnlyList<T> xs, Func<T, T, T, T, U> f)
             => (xs.Count / 4).Select(i => f(xs[i * 4], xs[i * 4 + 1], xs[i * 4 + 2], xs[i * 4 + 3]));
-
-        /// <summary>
-        /// Returns the number of unique instances of elements in the array.
-        /// </summary>
-        public static int CountUnique<T>(this IReadOnlyList<T> xs)
-            => xs.ToEnumerable().Distinct().Count();
-
-        /// <summary>
-        /// Returns elements in order.
-        /// </summary>
-        public static IReadOnlyList<T> Sort<T>(this IReadOnlyList<T> xs) where T : IComparable<T>
-            => xs.ToEnumerable().OrderBy(x => x).ToIArray();
 
         /// <summary>
         /// Given an array of elements of type T casts them to a U
         /// </summary>
-        public static IReadOnlyList<U> Cast<T, U>(this IReadOnlyList<T> xs) where T : U
+        public static ReadOnlyList<U> Cast<T, U>(this IReadOnlyList<T> xs) where T : U
             => xs.Select(x => (U)x);
 
         /// <summary>
@@ -928,18 +788,6 @@ namespace Ara3D.Collections
         /// </summary>
         public static bool Contains<T>(this IReadOnlyList<T> xs, T value)
             => xs.Any(x => x.Equals(value));
-
-        public static ILookup<TKey, TValue> ToLookup<TSource, TKey, TValue>(this IEnumerable<TSource> input, Func<TSource, TKey> keyFunc, Func<TSource, TValue> valueFunc)
-            => input.ToDictionary(keyFunc, valueFunc).ToLookup();
-
-        public static ILookup<TKey, TValue> ToLookup<TSource, TKey, TValue>(this IReadOnlyList<TSource> input, Func<TSource, TKey> keyFunc, Func<TSource, TValue> valueFunc)
-            => input.ToEnumerable().ToLookup(keyFunc, valueFunc);
-
-        public static ILookup<TKey, TSource> ToLookup<TSource, TKey>(this IEnumerable<TSource> input, Func<TSource, TKey> keyFunc)
-            => input.ToDictionary(keyFunc, x => x).ToLookup();
-
-        public static ILookup<TKey, TSource> ToLookup<TSource, TKey>(this IReadOnlyList<TSource> input, Func<TSource, TKey> keyFunc)
-            => input.ToEnumerable().ToLookup(keyFunc, x => x);
 
         public static T FirstOrDefault<T>(this IReadOnlyList<T> xs)
             => xs.Count > 0 ? xs[0] : default;
@@ -950,45 +798,43 @@ namespace Ara3D.Collections
         public static T FirstOrDefault<T>(this IReadOnlyList<T> xs, Func<T, bool> predicate)
             => xs.Where(predicate).FirstOrDefault();
 
-        public static IReadOnlyList<long> ToLongs(this IReadOnlyList<int> xs)
+        public static ReadOnlyList<long> ToLongs(this IReadOnlyList<int> xs)
             => xs.Select(x => (long)x);
 
-        public static IReadOnlyList<long> PrefixSums(this IReadOnlyList<int> self)
+        public static long[] PrefixSums(this IReadOnlyList<int> self)
             => self.ToLongs().PrefixSums();
 
-        public static IReadOnlyList<float> PrefixSums(this IReadOnlyList<float> self)
+        public static float[] PrefixSums(this IReadOnlyList<float> self)
             => self.Scan(0f, (a, b) => a + b);
 
-        public static IReadOnlyList<double> PrefixSums(this IReadOnlyList<double> self)
+        public static double[] PrefixSums(this IReadOnlyList<double> self)
             => self.Scan(0.0, (a, b) => a + b);
 
-        public static IReadOnlyList<U> Scan<T,U>(this IReadOnlyList<T> self, U init, Func<U, T, U> scanFunc)
+        public static U[] Scan<T,U>(this IReadOnlyList<T> self, U init, Func<U, T, U> scanFunc)
         {
-            if (self.Count == 0)
-                return EmptyList<U>.Default;
             var r = new U[self.Count];
             for (var i = 0; i < self.Count; ++i)
                 init = r[i] = scanFunc(init, self[i]);
-            return r.ToIArray();
+            return r;
         }
 
-        public static IReadOnlyList<long> PrefixSums(this IReadOnlyList<long> counts)
+        public static long[] PrefixSums(this IReadOnlyList<long> counts)
             => counts.Scan(0L, (a, b) => a + b);
 
         // Similar to prefix sums, but starts at zero.
         // r[i] = Sum(count[0 to i])
-        public static IReadOnlyList<int> CountsToOffsets(this IReadOnlyList<int> counts)
+        public static int[] CountsToOffsets(this IReadOnlyList<int> counts)
         {
             var r = new int[counts.Count];
             for (var i = 1; i < counts.Count; ++i)
                 r[i] = r[i - 1] + counts[i - 1];
-            return r.ToIArray();
+            return r;
         }
 
-        public static IReadOnlyList<int> OffsetsToCounts(this IReadOnlyList<int> offsets, int last)
+        public static ReadOnlyList<int> OffsetsToCounts(this IReadOnlyList<int> offsets, int last)
             => offsets.Indices().Select(i => i < offsets.Count - 1 ? offsets[i + 1] - offsets[i] : last - offsets[i]);
 
-        public static IReadOnlyList<T> SetElementAt<T>(this IReadOnlyList<T> self, int index, T value)
+        public static ReadOnlyList<T> SetElementAt<T>(this IReadOnlyList<T> self, int index, T value)
             => self.SelectIndices(i => i == index ? value : self[i]);
 
         public static IReadOnlyList<T> SetFirstElementWhere<T>(this IReadOnlyList<T> self, Func<T, bool> predicate, T value)
@@ -1030,7 +876,7 @@ namespace Ara3D.Collections
             return self.BinarySearchIndex(compare, mid + 1, max);
         }
 
-        public static IReadOnlyList<T> Repeat<T>(this T value, int count)
+        public static ReadOnlyList<T> Repeat<T>(this T value, int count)
             => count.Select(_ => value);
     }
 }

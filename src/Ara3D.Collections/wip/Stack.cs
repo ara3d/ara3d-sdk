@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Collections
+﻿namespace Ara3D.Collections.wip
 {
     public class Stack<T> : IStack<T>
     {
@@ -17,7 +17,7 @@
         public T Peek()
             => Value;
 
-        public bool IsEmpty 
+        public bool IsEmpty
             => false;
     }
 }

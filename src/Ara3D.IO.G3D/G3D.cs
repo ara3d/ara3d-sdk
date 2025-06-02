@@ -108,7 +108,7 @@ namespace Ara3D.IO.G3D
         {
             Header = header ?? new G3dHeader();
 
-            foreach (var attr in Attributes.ToEnumerable())
+            foreach (var attr in Attributes)
             {
                 var desc = attr.Descriptor;
                 switch (desc.Semantic)

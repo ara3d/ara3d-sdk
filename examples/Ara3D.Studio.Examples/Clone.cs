@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Ara3D.Models;
 using Ara3D.SceneEval;
 using Ara3D.Studio.API;
@@ -12,17 +11,16 @@ namespace Ara3D.Studio.Samples
     {
         public bool AtFaceCenters;
 
-        public static Model3DNode ToNode(TriangleMesh3D mesh, Point3D position, Material mat)
-            => new Model3DNode(Guid.NewGuid(), "", mesh, Matrix4x4.CreateTranslation(position), mat); 
+        public static Element ToElement(TriangleMesh3D mesh, Point3D position, Material mat)
+            => new(mesh, mat, Matrix4x4.CreateTranslation(position)); 
 
         public Model3D Eval(Model3D m, EvalContext eval)
         {
-            if (m.Nodes.Count == 0) return m;
-            var mat = m.Nodes[0].Material;
+            var mat = m.Materials.FirstOrDefault() ?? Material.Default;
             var instancedMesh = PlatonicSolids.TriangulatedCube;
             var mergedMesh = m.ToMesh();
             var points = AtFaceCenters ? mergedMesh.Faces.Map(f => f.Center) : mergedMesh.Points;
-            return points.Select(p => ToNode(instancedMesh, p, mat)).ToList();
+            return Model3D.Create(points.Select(p => ToElement(instancedMesh, p, mat)));
         }
     }
 }

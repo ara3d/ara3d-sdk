@@ -22,7 +22,7 @@ public class PushNodes : IModelModifier
 
     public Model3D Eval(Model3D m, EvalContext eval)
     {
-        if (m.Nodes.Count == 0) return m;
+        if (m.Elements.Count == 0) return m;
         var center = m.CenterOfNodes;
         return m.ModifyTransforms(mat => Push(mat, center, Amount));
     }   

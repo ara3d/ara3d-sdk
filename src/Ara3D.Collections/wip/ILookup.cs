@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Ara3D.Collections
+namespace Ara3D.Collections.wip
 {
     /// <summary>
     /// Lookup table: mapping from a key to some value.
@@ -31,8 +31,8 @@ namespace Ara3D.Collections
         {
             Dictionary = d ?? new Dictionary<TKey, TValue>();
             _default = defaultValue;
-            Keys = d.Keys.ToIArray();
-            Values = d.Values.ToIArray();
+            Keys = d.Keys.ToList();
+            Values = d.Values.ToList();
         }
 
         public IReadOnlyList<TKey> Keys { get; }
@@ -66,7 +66,5 @@ namespace Ara3D.Collections
         public static TValue GetOrDefault<TKey, TValue>(this ILookup<TKey, TValue> lookup, TKey key)
             => lookup.Contains(key) ? lookup[key] : default;
 
-        public static IEnumerable<TValue> GetValues<TKey, TValue>(this ILookup<TKey, TValue> lookup)
-            => lookup.Keys.ToEnumerable().Select(k => lookup[k]);
     }
 }

@@ -36,13 +36,7 @@ namespace Ara3D.Studio.Samples
             Debug.WriteLine($"# points {mesh2.Points.Count}");
             Debug.WriteLine($"# faces {mesh.FaceIndices.Count}");
 
-            var nodes = new List<Model3DNode>();
-            var node = mesh2.ToNode();
-            nodes.Add(node);
-            return nodes;
-
-            //var node = new ModelNode(Guid.NewGuid(), "Cylinder", mesh2, Matrix4x4.Identity, ModelMaterial.Default);
-            //return new Model([node]);
+            return Model3D.Create(mesh2);
         }
     }
 }

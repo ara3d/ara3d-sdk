@@ -6,7 +6,7 @@ namespace Ara3D.Studio.API;
 
 public interface IModelAsset : IAsset
 {
-    string Name { get; set; }
-    FilePath FilePath { get; set; }
-    Task<IModel3D> Import(ILogger logger);  
+    string Name { get; }
+    FilePath FilePath { get; }
+    Task<Model3D> Import(ILogger logger);  
 }

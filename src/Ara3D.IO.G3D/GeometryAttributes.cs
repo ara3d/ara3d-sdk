@@ -108,7 +108,7 @@ namespace Ara3D.IO.G3D
                 throw new Exception($"The attribute {CommonAttributes.Index} is missing. This attribute is required for all meshes.");
 
             // Now we create the public ordered list of attributes 
-            Attributes = Lookup.Values.OrderBy(attr => attr.Name).ToIArray();
+            Attributes = Lookup.Values.OrderBy(attr => attr.Name).ToList();
 
             // If the number of corner and faces are observed, one has to be a multiple of the other
             if (NumCorners > 0 && NumFaces > 0)

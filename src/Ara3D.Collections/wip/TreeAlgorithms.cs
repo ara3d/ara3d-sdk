@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Ara3D.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ara3D.Collections
+namespace Ara3D.Collections.wip
 {
     public static class TreeAlgorithms
     {
@@ -10,23 +11,19 @@ namespace Ara3D.Collections
             => new BinaryTree<T>(value, left, right);
 
         public static IBinaryTree<T> CreateLeaf<T>(this T value)
-            => CreateTree(value, null, null);
+            => value.CreateTree(null, null);
 
         public static IBinaryTree<T> LeftRotation<T>(this IBinaryTree<T> tree)
-            => CreateTree(
-                tree.Right.Value,
-                CreateTree(
-                    tree.Value,
+            => tree.Right.Value.CreateTree(
+                tree.Value.CreateTree(
                     tree.Left,
                     tree.Right.Left),
                 tree.Right.Right);
 
         public static IBinaryTree<T> RightRotation<T>(this IBinaryTree<T> tree)
-            => CreateTree(
-                tree.Left.Value,
+            => tree.Left.Value.CreateTree(
                 tree.Left.Left,
-                CreateTree(
-                    tree.Value,
+                tree.Value.CreateTree(
                     tree.Left.Right,
                     tree.Right));
 
@@ -59,16 +56,14 @@ namespace Ara3D.Collections
             this IBinaryTree<T> self)
             => self.Left == null
                 ? self.Right
-                : CreateTree(self.Value,
-                    self.Left.DeleteLeftmostNode(),
+                : self.Value.CreateTree(                    self.Left.DeleteLeftmostNode(),
                     self.Right);
 
         public static IBinaryTree<T> DeleteRightmostNode<T>(
             this IBinaryTree<T> self)
             => self.Right == null
                 ? self.Left
-                : CreateTree(self.Value,
-                    self.Left,
+                : self.Value.CreateTree(                    self.Left,
                     self.Right.DeleteRightmostNode());
 
         public static IBinaryTree<T> DeleteRoot<T>(
@@ -79,7 +74,7 @@ namespace Ara3D.Collections
 
             var next = root.Right.GetLeftmostNode();
             var right = root.Right.DeleteRightmostNode();
-            return CreateTree(next.Value, root.Left, right);
+            return next.Value.CreateTree(root.Left, right);
         }
 
         public static int Count<T>(this ITree<T> self)
@@ -112,13 +107,13 @@ namespace Ara3D.Collections
             Func<T, T, int> compare)
         {
             if (tree == null)
-                return CreateLeaf(value);
+                return value.CreateLeaf();
 
             var c = compare(value, tree.Value);
 
             return c >= 0
-                ? CreateTree(tree.Value, tree.Left, tree.Right.Insert(value, compare))
-                : CreateTree(tree.Value, tree.Left.Insert(value, compare), tree.Right);
+                ? tree.Value.CreateTree(tree.Left, tree.Right.Insert(value, compare))
+                : tree.Value.CreateTree(tree.Left.Insert(value, compare), tree.Right);
         }
 
         public static void Visit<T>(
@@ -129,7 +124,7 @@ namespace Ara3D.Collections
             visitAction(self, depth);
             foreach (var c in self.Subtrees)
                 if (c != null)
-                    Visit(c, visitAction, depth + 1);
+                    c.Visit(visitAction, depth + 1);
         }
 
         public static void OutputTreeNode<T>(ITree<T> tree, int depth)
@@ -141,14 +136,14 @@ namespace Ara3D.Collections
         public static void OutputTree<T>(ITree<T> tree)
         {
             Console.WriteLine($"Tree with {tree.Count()} nodes");
-            Visit(tree, OutputTreeNode);
+            tree.Visit(OutputTreeNode);
         }
 
         public static double AverageDepth<T>(this ITree<T> tree)
         {
             var sum = 0;
             var cnt = 0;
-            Visit(tree, (_, depth) =>
+            tree.Visit((_, depth) =>
             {
                 cnt++;
                 sum += depth;
@@ -159,7 +154,7 @@ namespace Ara3D.Collections
         public static int MaxDepth<T>(this ITree<T> tree)
         {
             var max = 0;
-            Visit(tree, (_, depth) => { max = Math.Max(depth, max); });
+            tree.Visit((_, depth) => { max = Math.Max(depth, max); });
             return max;
         }
 
@@ -185,18 +180,16 @@ namespace Ara3D.Collections
 
         public static IBinaryTree<T> ReplaceValue<T>(
             this IBinaryTree<T> root, T value)
-            => CreateTree(value, root.Left, root.Right);
+            => value.CreateTree(root.Left, root.Right);
 
         public static IBinaryTree<T> SwapWithLeftChild<T>(
             this IBinaryTree<T> root)
-            => CreateTree(root.Left.Value,
-                root.Left.ReplaceValue(root.Value),
+            => root.Left.Value.CreateTree(                root.Left.ReplaceValue(root.Value),
                 root.Right);
 
         public static IBinaryTree<T> SwapWithRightChild<T>(
             this IBinaryTree<T> root)
-            => CreateTree(root.Right.Value,
-                root.Left,
+            => root.Right.Value.CreateTree(                root.Left,
                 root.Right.ReplaceValue(root.Value));
 
         public static bool IsHeap<T>(this IBinaryTree<T> tree,
@@ -216,27 +209,25 @@ namespace Ara3D.Collections
             this IBinaryTree<T> root, T value, Func<T, T, int> compare)
         {
             if (root == null)
-                return CreateLeaf(value);
+                return value.CreateLeaf();
 
             if (compare(value, root.Value) > 0)
                 return (root.GetHashCode() ^ value.GetHashCode()) % 2 == 0
-                    ? CreateTree(value,
-                        root.Left.InsertHeap(root.Value, compare),
+                    ? value.CreateTree(                        root.Left.InsertHeap(root.Value, compare),
                         root.Right)
-                    : CreateTree(value,
-                        root.Left,
+                    : value.CreateTree(                        root.Left,
                         root.Right.InsertHeap(root.Value, compare));
 
             if (root.Left == null)
-                return CreateTree(root.Value, CreateLeaf(value), root.Right);
+                return root.Value.CreateTree(value.CreateLeaf(), root.Right);
 
             if (root.Right == null)
-                return CreateTree(root.Value, root.Left, CreateLeaf(value));
+                return root.Value.CreateTree(root.Left, value.CreateLeaf());
 
             if (compare(root.Left.Value, root.Right.Value) >= 0)
-                return CreateTree(root.Value, root.Left.InsertHeap(value, compare), root.Right);
+                return root.Value.CreateTree(root.Left.InsertHeap(value, compare), root.Right);
 
-            return CreateTree(root.Value, root.Left, root.Right.InsertHeap(value, compare));
+            return root.Value.CreateTree(root.Left, root.Right.InsertHeap(value, compare));
         }
 
         public static IBinaryTree<T> ExtractHeap<T>(
@@ -247,21 +238,21 @@ namespace Ara3D.Collections
             if (root.Right == null) return root.Left;
 
             if (compare(root.Left.Value, root.Right.Value) >= 0)
-                return CreateTree(
-                    root.Left.Value,
+                return root.Left.Value.CreateTree(
                     root.Left.ExtractHeap(compare),
                     root.Right);
 
-            return CreateTree(
-                root.Right.Value,
+            return root.Right.Value.CreateTree(
                 root.Left,
                 root.Right.ExtractHeap(compare));
         }
-    
+
         public static IEnumerable<T> DepthFirstSearch<T>(
             T root,
             Func<T, IEnumerable<T>> getChildren)
         {
+            throw new NotImplementedException();
+            /*
             var s = EmptyList<T>.Default.Push(root);
             while (!s.IsEmpty)
             {
@@ -271,6 +262,7 @@ namespace Ara3D.Collections
                     s.Push(child);
                 yield return current;
             }
+            */
         }
     }
 }

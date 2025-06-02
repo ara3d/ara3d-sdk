@@ -37,16 +37,19 @@ namespace Ara3D.Studio.Samples
 
         public Model3D Eval(Model3D model3D, EvalContext context)
         {
-            var tmp = new List<Model3DNode>();
+            throw new NotImplementedException("To-do: ");
+            /*
+            var tmp = new List<Element>();
             var i = 0;
             var x = (float)context.AnimationTime * Speed;
-            foreach (var item in model3D.Nodes)
+            foreach (var item in model3D.Elements)
             {
                 var rndOffset = (float)Random(RandomSeed, i++);
                 var rndScale = 1 + MathF.Sin(x + rndOffset);
                 tmp.Add(item.Scale(rndScale));
             }
             return new Model3D(tmp, model3D.DataTable);
+            */
         }
     }
 }

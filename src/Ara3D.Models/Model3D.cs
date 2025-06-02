@@ -2,40 +2,52 @@
 using Plato;
 using Ara3D.Memory;
 using Plato.Geometry;
+using Ara3D.Collections;
 
 namespace Ara3D.Models
 {
-    public class Model3D : ITransformable3D<Model3D>, IModel3D
+    /// <summary>
+    /// A model is a collection of elements, meshes, and materials.
+    /// Elements are the parts of a model. They may share references to meshes, materials, and transforms.
+    /// If multiple elements share a reference to a transform, then they are intended to move together.
+    /// A data table is optional and may be used to access additional structured
+    /// data associated with elements of a model.
+    /// </summary>
+    public class Model3D : ITransformable3D<Model3D>
     {
-        public Model3D(IReadOnlyList<TriangleMesh3D> meshes, IReadOnlyList<Material> materials, IReadOnlyList<Matrix4x4>
-            nodeTransforms, IReadOnlyList<string> nodeNames, IReadOnlyList<Node> nodes, IDataTable dataTable)
+        public Model3D(
+            IReadOnlyList<TriangleMesh3D> meshes, 
+            IReadOnlyList<Material> materials, 
+            IReadOnlyList<Matrix4x4> transforms, 
+            IReadOnlyList<ElementStruct> elements, 
+            IDataTable? dataTable)
         {
             Meshes = meshes;
             Materials = materials;
-            NodeTransforms = nodeTransforms;
-            NodeNames = nodeNames;
-            Nodes = nodes;
+            Transforms = transforms;
+            ElementStructs = elements;
             DataTable = dataTable;
+            Elements = elements.Select(GetElement);
         }
 
         public IReadOnlyList<TriangleMesh3D> Meshes { get; }
         public IReadOnlyList<Material> Materials { get; }
-        public IReadOnlyList<Matrix4x4> NodeTransforms { get; }
-        public IReadOnlyList<string> NodeNames { get; }
-        public IReadOnlyList<Node> Nodes { get; }
-        public IDataTable DataTable { get; }
+        public IReadOnlyList<Matrix4x4> Transforms { get; }
+        public IReadOnlyList<ElementStruct> ElementStructs { get; }
+        public IReadOnlyList<Element> Elements { get; }
+        public IDataTable? DataTable { get; }
+
+        public Element GetElement(ElementStruct es)
+            => new(
+               Meshes[es.MeshIndex],
+               Materials[es.MaterialIndex],
+               Transforms[es.TransformIndex]);
 
         public Model3D Transform(Matrix4x4 matrix)
-            => new(Nodes.Select(n => n.Transform(matrix)).ToList(), DataTable);
+            => new(Meshes, Materials, Transforms.Select(t => t * matrix).ToList(), ElementStructs, DataTable);
 
         public static Integer3 Offset(Integer3 self, Integer offset)
             => (self.A + offset, self.B + offset, self.C + offset);
-
-        public static implicit operator Model3D(TriangleMesh3D mesh)
-            => (Model3DNode)mesh;
-
-        public static implicit operator TriangleMesh3D(Model3D model)
-            => model.ToMesh();
 
         public TriangleMesh3D ToMesh()
         {
@@ -43,10 +55,10 @@ namespace Ara3D.Models
             var indices = new UnmanagedList<Integer3>();
             var indexOffset = 0;
 
-            foreach (var node in Nodes)
+            foreach (var node in Elements)
             {
                 var mesh = node.Mesh;
-                var mat = node.Matrix;
+                var mat = node.Transform;
 
                 if (!mat.Equals(Matrix4x4.Identity))
                 {
@@ -77,27 +89,33 @@ namespace Ara3D.Models
             return new TriangleMesh3D(points.ToIArray(), indices.ToIArray());
         }
 
-        public Model3D ModifyNodes(Func<Model3DNode, Model3DNode> f)
-            => new(Nodes.Select(f).ToList());
-
-        public Model3D ModifyTransforms(Func<Matrix4x4, Matrix4x4> f)
-            => new(Nodes.Select(n => n with { Matrix = f(n.Matrix) }).ToList());
+       public Model3D ModifyTransforms(Func<Matrix4x4, Matrix4x4> f)
+            => new(Meshes, Materials, Transforms.Select(f), ElementStructs, DataTable);
 
         public Point3D CenterOfNodes
-            => Nodes.Select(n => n.Matrix.Value.Translation).Aggregate(
+            => Elements.Select(n => n.Transform.Value.Translation).Aggregate(
                     Vector3.Zero, (v, p) => v + (Vector3)p);
 
         public Model3D ModifyMeshes(Func<TriangleMesh3D, TriangleMesh3D> f)
-        {
-            var d = new Dictionary<TriangleMesh3D, TriangleMesh3D>();
-            foreach (var n in Nodes)
-            {
-                if (!d.ContainsKey(n.Mesh))
-                    d.Add(n.Mesh, f(n.Mesh));
-            }
+            => new(Meshes.Select(f).ToList(), Materials, Transforms, ElementStructs, DataTable);
 
-            return ModifyNodes(n => n with { Mesh = d[n.Mesh] });
+        public static Model3D Create(IEnumerable<Element> elements)
+        {
+            var bldr = new Model3DBuilder();
+            bldr.AddElements(elements);
+            return bldr.Build();
         }
-     
+
+        public static Model3D Create(Element e)
+            => Create([e]);
+
+        public static Model3D Create(TriangleMesh3D mesh)
+            => Create(new Element(mesh));
+
+        public static implicit operator Model3D(Element e)
+            => Create([e]);
+
+        public static implicit operator Model3D(TriangleMesh3D m)
+            => new Element(m, Material.Default, Matrix4x4.Identity);
     }
 }

@@ -146,7 +146,7 @@ namespace Ara3D.Studio.Data
         {
             var meshes = new Dictionary<TriangleMesh3D, int>();
 
-            foreach (var node in model3D.Nodes)
+            foreach (var node in model3D.Elements)
             {
                 if (!meshes.ContainsKey(node.Mesh))
                 {
@@ -157,10 +157,10 @@ namespace Ara3D.Studio.Data
             }
 
             var instances = new List<InstanceStruct>();
-            foreach (var node in model3D.Nodes)
+            foreach (var node in model3D.Elements)
             {
                 var meshIndex = meshes[node.Mesh];
-                var (translation, quaternion, scale, success) = node.Matrix.Decompose;
+                var (translation, quaternion, scale, success) = node.Transform.Decompose;
                 var color = node.Material.Color;
                 var instance = new InstanceStruct()
                 {

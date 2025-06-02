@@ -8,10 +8,8 @@ public class Merge : IModelModifier
 {
     public Model3D Eval(Model3D m, EvalContext eval)
     {
-        if (m.Nodes.Count == 0) return m;
-        var mat = m.Nodes[0].Material;
-        var mergedMesh = m.ToMesh();
-        var node = (Model3DNode)mergedMesh;
-        return node with { Material = mat };
+        if (m.Elements.Count == 0) return m;
+        var mat = m.Elements[0].Material;
+        return new Element(m.ToMesh(), mat);
     }
 }

@@ -107,10 +107,10 @@ namespace Ara3D.IO.G3D
             => new GeometryAttributes(attributes);
 
         public static IGeometryAttributes ToGeometryAttributes(this IReadOnlyList<GeometryAttribute> attributes)
-            => attributes.ToEnumerable().ToGeometryAttributes();
+            => attributes.ToGeometryAttributes();
 
         public static IGeometryAttributes AddAttributes(this IGeometryAttributes attributes, params GeometryAttribute[] newAttributes)
-            => attributes.Attributes.ToEnumerable().Concat(newAttributes).ToGeometryAttributes();
+            => attributes.Attributes.Concat(newAttributes).ToGeometryAttributes();
 
         public static IGeometryAttributes SetAttribute(this IGeometryAttributes self, GeometryAttribute attr)
             => self.Attributes.Where(a => !a.Descriptor.Equals(attr.Descriptor)).Append(attr).ToGeometryAttributes();
@@ -119,7 +119,7 @@ namespace Ara3D.IO.G3D
             => new G3D(attributes, header);
 
         public static G3D ToG3d(this IReadOnlyList<GeometryAttribute> attributes, G3dHeader? header = null)
-            => attributes.ToEnumerable().ToG3d(header);
+            => attributes.ToG3d(header);
 
         public static IReadOnlyList<int> IndexFlippedRemapping(this IGeometryAttributes g)
             => g.NumCorners.Select(c => ((c / g.NumCornersPerFace) + 1) * g.NumCornersPerFace - 1 - c % g.NumCornersPerFace);
