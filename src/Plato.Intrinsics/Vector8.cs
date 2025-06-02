@@ -208,18 +208,8 @@ namespace Plato
             [MethodImpl(AggressiveInlining)] get => Vector256.Abs(Value);
         }
 
-        public Vector8 Ceiling
-        {
-            [MethodImpl(AggressiveInlining)] get => Vector256.Ceiling(Value);
-        }
-
         [MethodImpl(AggressiveInlining)]
         public Number Dot(Vector8 other) => Vector256.Dot(Value, other.Value);
-
-        public Vector8 Floor
-        {
-            [MethodImpl(AggressiveInlining)] get => Vector256.Floor(Value);
-        }
 
         /// <summary>Reciprocal (1/x) of each element</summary>
         public Vector8 Reciprocal

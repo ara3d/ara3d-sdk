@@ -7,5 +7,9 @@
   </PropertyGroup>
   
   <Import Project="..\Plato.Intrinsics\Plato.Intrinsics.projitems" Label="Shared" />
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
+  </ItemGroup>
 
 </Project>

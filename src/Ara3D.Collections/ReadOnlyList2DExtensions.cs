@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ara3D.Collections
 {
-    public static class Array2D
+    public static class ReadOnlyList2DExtensions
     {
         public static ReadOnlyList2D<T> Create<T>(params IReadOnlyList<T>[] arrays)
             => arrays.ToArray2D();
