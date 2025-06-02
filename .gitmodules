@@ -1,6 +1,0 @@
-[submodule "toolchain/parakeet"]
-	path = toolchain/parakeet
-	url = https://github.com/ara3d/parakeet
-[submodule "toolchain/Plato"]
-	path = toolchain/Plato
-	url = https://github.com/cdiggins/Plato
