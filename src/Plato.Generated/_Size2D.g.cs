@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract, StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Size2D: IValue

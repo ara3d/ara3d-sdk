@@ -2,7 +2,7 @@
 using Ara3D.Collections;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     public static partial class Intrinsics
     {

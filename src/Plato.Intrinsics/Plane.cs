@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using SNPlane = System.Numerics.Plane;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     /// <summary>
     /// A lightweight wrapper around <see cref="System.Numerics.Plane"/>.

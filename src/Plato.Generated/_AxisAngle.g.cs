@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract, StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct AxisAngle: IRotation3D
@@ -44,7 +44,7 @@ namespace Plato
         // Explicit implementation of interfaces by forwarding properties to fields
 
         // Implemented interface functions
-        public Quaternion Quaternion { [MethodImpl(AggressiveInlining)] get  => Plato.Quaternion.CreateFromAxisAngle(this.Axis, this.Angle); } 
+        public Quaternion Quaternion { [MethodImpl(AggressiveInlining)] get  => Quaternion.CreateFromAxisAngle(this.Axis, this.Angle); } 
 [MethodImpl(AggressiveInlining)]  public static implicit operator Quaternion(AxisAngle aa) => aa.Quaternion;
         public static AxisAngle Identity { [MethodImpl(AggressiveInlining)] get  => (Constants.ZAxis3D, ((Number)0)); } 
 public Matrix4x4 Matrix { [MethodImpl(AggressiveInlining)] get  => this.Quaternion.Matrix; } 

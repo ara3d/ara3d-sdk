@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract, StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct SineWave: IRealFunction, IOpenShape

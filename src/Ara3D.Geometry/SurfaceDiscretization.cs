@@ -1,6 +1,6 @@
 ﻿using Ara3D.Collections;
 
-namespace Plato.Geometry
+namespace Ara3D.Geometry
 {
     /// <summary>
     /// This class is used for sampling parameterized surfaces and computing quad-mesh strip indices.
@@ -29,7 +29,7 @@ namespace Plato.Geometry
 
             Uvs = Vs.CartesianProduct(Us, (u, v) => new Vector2(u, v));
             
-            QuadIndices = nRows.Range().CartesianProduct(nColumns.Range(), (y, x) => QuadMeshFaceVertices(x, y, Us.Count, Vs.Count));
+            QuadIndices = nRows.Range.CartesianProduct(nColumns.Range, (y, x) => QuadMeshFaceVertices(x, y, Us.Count, Vs.Count));
         }
 
         public static Integer4 QuadMeshFaceVertices(Integer col, Integer row, Integer nx, Integer ny)

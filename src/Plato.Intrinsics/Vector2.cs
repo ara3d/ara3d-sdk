@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using SNVector2 = System.Numerics.Vector2;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract]
     public readonly partial struct Vector2 

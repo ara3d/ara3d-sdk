@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Matrix3x2: IValue, IArrayLike<Matrix3x2, Number>

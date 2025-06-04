@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract, StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct TRSTransform3D: ITransform3D
@@ -47,7 +47,7 @@ namespace Plato
 
         // Implemented interface functions
         public Matrix4x4 Matrix { [MethodImpl(AggressiveInlining)] get  => this.Translation.Multiply(this.Rotation).Multiply(this.Scale.Matrix); } 
-public static TRSTransform3D Identity { [MethodImpl(AggressiveInlining)] get  => (Plato.Translation3D.Identity, Plato.Rotation3D.Identity, Plato.Scaling3D.Identity); } 
+public static TRSTransform3D Identity { [MethodImpl(AggressiveInlining)] get  => (Translation3D.Identity, Rotation3D.Identity, Scaling3D.Identity); } 
 [MethodImpl(AggressiveInlining)] public Point3D Multiply(Point3D v) => this.TransformPoint(v);
 [MethodImpl(AggressiveInlining)]  public static Point3D operator *(TRSTransform3D x, Point3D v) => x.Multiply(v);
         [MethodImpl(AggressiveInlining)] public Vector3 Multiply(Vector3 v) => this.TransformNormal(v);

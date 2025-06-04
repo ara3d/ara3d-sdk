@@ -1,7 +1,6 @@
 ﻿using Ara3D.DataTable;
-using Plato;
+using Ara3D.Geometry;
 using Ara3D.Memory;
-using Plato.Geometry;
 using Ara3D.Collections;
 
 namespace Ara3D.Models

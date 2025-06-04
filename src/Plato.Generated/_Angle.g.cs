@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Angle: IMeasure<Angle>
@@ -91,8 +91,8 @@ public AxisAngle RotateY { [MethodImpl(AggressiveInlining)] get  => (Constants.Y
 public AxisAngle RotateZ { [MethodImpl(AggressiveInlining)] get  => (Constants.ZAxis3D, this); } 
 public static Angle Zero { [MethodImpl(AggressiveInlining)] get  => Angle.CreateFromComponent(((Number)0)); } 
 public static Angle One { [MethodImpl(AggressiveInlining)] get  => Angle.CreateFromComponent(((Number)1)); } 
-public static Angle MinValue { [MethodImpl(AggressiveInlining)] get  => Angle.CreateFromComponent(Plato.Number.MinValue); } 
-public static Angle MaxValue { [MethodImpl(AggressiveInlining)] get  => Angle.CreateFromComponent(Plato.Number.MaxValue); } 
+public static Angle MinValue { [MethodImpl(AggressiveInlining)] get  => Angle.CreateFromComponent(Number.MinValue); } 
+public static Angle MaxValue { [MethodImpl(AggressiveInlining)] get  => Angle.CreateFromComponent(Number.MaxValue); } 
 [MethodImpl(AggressiveInlining)] public Number Reduce(Number initial, System.Func<Number, Number, Number> f) => this.Components.Reduce(initial, f);
 public Number MinComponent { [MethodImpl(AggressiveInlining)] get  => this.Reduce(this[((Integer)0)], (a, b)  => a.Min(b)); } 
 public Number MaxComponent { [MethodImpl(AggressiveInlining)] get  => this.Reduce(this[((Integer)0)], (a, b)  => a.Max(b)); } 

@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract, StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Rotation3D: IRotation3D
@@ -42,7 +42,7 @@ namespace Plato
         Quaternion IRotation3D.Quaternion { [MethodImpl(AggressiveInlining)] get => Quaternion; }
 
         // Implemented interface functions
-        public static Rotation3D Identity { [MethodImpl(AggressiveInlining)] get  => Plato.Quaternion.Identity; } 
+        public static Rotation3D Identity { [MethodImpl(AggressiveInlining)] get  => Quaternion.Identity; } 
 public Matrix4x4 Matrix { [MethodImpl(AggressiveInlining)] get  => this.Quaternion.Matrix; } 
 [MethodImpl(AggressiveInlining)] public Point3D Multiply(Point3D v) => this.TransformPoint(v);
 [MethodImpl(AggressiveInlining)]  public static Point3D operator *(Rotation3D x, Point3D v) => x.Multiply(v);

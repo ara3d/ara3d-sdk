@@ -1,6 +1,5 @@
-﻿using Plato;
+﻿using Ara3D.Geometry;
 using Ara3D.Memory;
-using Plato.Geometry;
 
 namespace Ara3D.Models
 {

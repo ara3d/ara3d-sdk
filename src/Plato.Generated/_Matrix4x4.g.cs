@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Matrix4x4: IValue, IArrayLike<Matrix4x4, Number>
@@ -72,7 +72,7 @@ public Vector3 Translation { [MethodImpl(AggressiveInlining)] get  => (this.M14,
 [MethodImpl(AggressiveInlining)] public Vector3 Transform(Vector3 v) => v.Transform(this);
 [MethodImpl(AggressiveInlining)] public Vector3 TransformNormal(Vector3 v) => v.TransformNormal(this);
 [MethodImpl(AggressiveInlining)] public Vector3 Multiply(Vector3 v) => this.Transform(v);
-public static Matrix4x4 Identity { [MethodImpl(AggressiveInlining)] get  => (Plato.Vector4.UnitX, Plato.Vector4.UnitY, Plato.Vector4.UnitZ, Plato.Vector4.UnitW); } 
+public static Matrix4x4 Identity { [MethodImpl(AggressiveInlining)] get  => (Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW); } 
 [MethodImpl(AggressiveInlining)] public Number At(Integer n) => this.Components[n];
 public Number this[Integer n] { [MethodImpl(AggressiveInlining)]  get => At(n); }
         [MethodImpl(AggressiveInlining)] public Matrix4x4 MapComponents(System.Func<Number, Number> f) => Matrix4x4.CreateFromComponents(this.Components.Map(f));

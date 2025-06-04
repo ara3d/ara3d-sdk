@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Ara3D.Collections;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     /// <summary>
     /// A simple wrapper around the built-in <c>int</c> type,

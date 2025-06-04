@@ -4,7 +4,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Runtime.Serialization;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     /// <summary>
     /// This is a wrapper around Vector256&lt;float&gt; that provides a more user-friendly API.

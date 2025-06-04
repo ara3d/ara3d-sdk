@@ -1,6 +1,6 @@
 ﻿using Ara3D.Memory;
 using Ara3D.Utils;
-using Plato;
+using Ara3D.Geometry;
 
 namespace Ara3D.Studio.Data;
 

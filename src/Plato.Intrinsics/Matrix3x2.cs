@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using SNMatrix3x2 = System.Numerics.Matrix3x2;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract]
     public partial struct Matrix3x2 

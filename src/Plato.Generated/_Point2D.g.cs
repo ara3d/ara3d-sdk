@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract, StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Point2D: ICoordinate, IVectorLike<Point2D>, IGeometricPrimitive2D<Point2D>, IDifference<Point2D, Vector2>
@@ -72,8 +72,8 @@ namespace Plato
 [MethodImpl(AggressiveInlining)] public Point2D Deform(System.Func<Point2D, Point2D> f) => f.Invoke(this);
 public static Point2D Zero { [MethodImpl(AggressiveInlining)] get  => Point2D.CreateFromComponent(((Number)0)); } 
 public static Point2D One { [MethodImpl(AggressiveInlining)] get  => Point2D.CreateFromComponent(((Number)1)); } 
-public static Point2D MinValue { [MethodImpl(AggressiveInlining)] get  => Point2D.CreateFromComponent(Plato.Number.MinValue); } 
-public static Point2D MaxValue { [MethodImpl(AggressiveInlining)] get  => Point2D.CreateFromComponent(Plato.Number.MaxValue); } 
+public static Point2D MinValue { [MethodImpl(AggressiveInlining)] get  => Point2D.CreateFromComponent(Number.MinValue); } 
+public static Point2D MaxValue { [MethodImpl(AggressiveInlining)] get  => Point2D.CreateFromComponent(Number.MaxValue); } 
 [MethodImpl(AggressiveInlining)] public Number Reduce(Number initial, System.Func<Number, Number, Number> f) => this.Components.Reduce(initial, f);
 public Number MinComponent { [MethodImpl(AggressiveInlining)] get  => this.Reduce(this[((Integer)0)], (a, b)  => a.Min(b)); } 
 public Number MaxComponent { [MethodImpl(AggressiveInlining)] get  => this.Reduce(this[((Integer)0)], (a, b)  => a.Max(b)); } 

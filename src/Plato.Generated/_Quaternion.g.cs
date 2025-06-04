@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Quaternion: IValue, IArrayLike<Quaternion, Number>
@@ -51,7 +51,7 @@ namespace Plato
         [MethodImpl(AggressiveInlining)] public Vector3 Transform(Vector3 v) => v.Transform(this);
 [MethodImpl(AggressiveInlining)] public Vector3 Multiply(Vector3 v) => this.Transform(v);
 public Matrix4x4 Matrix { [MethodImpl(AggressiveInlining)] get  => this; } 
-public Matrix4x4 Matrix4x4 { [MethodImpl(AggressiveInlining)] get  => Plato.Matrix4x4.CreateFromQuaternion(this); } 
+public Matrix4x4 Matrix4x4 { [MethodImpl(AggressiveInlining)] get  => Matrix4x4.CreateFromQuaternion(this); } 
 [MethodImpl(AggressiveInlining)]  public static implicit operator Matrix4x4(Quaternion q) => q.Matrix4x4;
         public static Quaternion Identity { [MethodImpl(AggressiveInlining)] get  => (((Number)0), ((Number)0), ((Number)0), ((Number)1)); } 
 [MethodImpl(AggressiveInlining)] public Number At(Integer n) => this.Components[n];

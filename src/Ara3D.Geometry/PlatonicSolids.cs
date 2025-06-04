@@ -1,4 +1,4 @@
-﻿namespace Plato.Geometry
+﻿namespace Ara3D.Geometry
 {
     public enum PlatonicSolidsEnum
     {

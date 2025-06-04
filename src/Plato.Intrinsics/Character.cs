@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     /// <summary>
     /// A simple wrapper around the built-in <c>char</c> type.

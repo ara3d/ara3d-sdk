@@ -1,4 +1,4 @@
-﻿namespace Plato
+﻿namespace Ara3D.Geometry
 {
     public static class ReadOnlyListMapExtensions
     {

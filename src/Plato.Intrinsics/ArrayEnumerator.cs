@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
     public struct ArrayEnumerator<T>(System.Collections.Generic.IReadOnlyList<T> array) : IEnumerator<T>

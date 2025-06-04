@@ -1,20 +1,5 @@
-﻿namespace Plato.Geometry
+﻿namespace Ara3D.Geometry
 {
-    public class PointArray3D : IDeformable3D<PointArray3D>
-    {
-        public IReadOnlyList<Point3D> Points { get; }
-
-        public PointArray3D(IReadOnlyList<Point3D> points)
-            => Points = points;
-
-        public PointArray3D Deform(Func<Point3D, Point3D> f)
-            => new(Points.Map(f));
-
-        public static implicit operator PointArray3D(Polygon polygon)
-            => new(polygon.Points.Map(pt => pt.To3D));
-    }
-
-
     public class Polygon : IDeformable2D<Polygon>
     {
         public IReadOnlyList<Point2D> Points { get; }

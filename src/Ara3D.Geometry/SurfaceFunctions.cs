@@ -1,7 +1,4 @@
-﻿using System;
-using Plato;
-
-namespace Plato.Geometry
+﻿namespace Ara3D.Geometry
 {
     public static class SurfaceFunctions
     {
@@ -58,8 +55,8 @@ namespace Plato.Geometry
         // https://commons.wikimedia.org/wiki/File:Parametric_surface_illustration_(trefoil_knot).png
         public static Vector3 Trefoil(Angle u, Angle v, Number r)
             => (r * (3 * u).Sin / (2 + v.Cos),
-                r * (u.Sin + 2 * (2 * u).Sin) / (2 + (v + 1.Turns() / 3).Cos),
-                r / 2 * (u.Cos - 2 * (2 * u).Cos) * (2 + v.Cos) * (2 + (v + 1.Turns() / 3).Cos) / 4);
+                r * (u.Sin + 2 * (2 * u).Sin) / (2 + (v + Turns(1) / 3).Cos),
+                r / 2 * (u.Cos - 2 * (2 * u).Cos) * (2 + v.Cos) * (2 + (v + Turns(1) / 3).Cos) / 4);
 
         //===
         // Height fields converted into surface functions 

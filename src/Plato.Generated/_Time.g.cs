@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract, StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Time: IMeasure<Time>
@@ -54,8 +54,8 @@ namespace Plato
         // Implemented interface functions
         public static Time Zero { [MethodImpl(AggressiveInlining)] get  => Time.CreateFromComponent(((Number)0)); } 
 public static Time One { [MethodImpl(AggressiveInlining)] get  => Time.CreateFromComponent(((Number)1)); } 
-public static Time MinValue { [MethodImpl(AggressiveInlining)] get  => Time.CreateFromComponent(Plato.Number.MinValue); } 
-public static Time MaxValue { [MethodImpl(AggressiveInlining)] get  => Time.CreateFromComponent(Plato.Number.MaxValue); } 
+public static Time MinValue { [MethodImpl(AggressiveInlining)] get  => Time.CreateFromComponent(Number.MinValue); } 
+public static Time MaxValue { [MethodImpl(AggressiveInlining)] get  => Time.CreateFromComponent(Number.MaxValue); } 
 [MethodImpl(AggressiveInlining)] public Number Reduce(Number initial, System.Func<Number, Number, Number> f) => this.Components.Reduce(initial, f);
 public Number MinComponent { [MethodImpl(AggressiveInlining)] get  => this.Reduce(this[((Integer)0)], (a, b)  => a.Min(b)); } 
 public Number MaxComponent { [MethodImpl(AggressiveInlining)] get  => this.Reduce(this[((Integer)0)], (a, b)  => a.Max(b)); } 

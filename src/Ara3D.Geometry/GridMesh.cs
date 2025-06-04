@@ -1,7 +1,7 @@
 ﻿
 using Ara3D.Collections;
 
-namespace Plato.Geometry
+namespace Ara3D.Geometry
 {
     /// <summary>
     /// A type of mesh, that has the topology of a grid. Even though
@@ -70,9 +70,9 @@ namespace Plato.Geometry
             => new(ToArray2D([row1.Points, row2.Points]), closedX, false);
 
         public static PointArray3D To3D(this Polygon p)
-            => p;
+            => new(p.Points.Map(p => p.To3D));
 
         public static GridMesh Extrude(this Polygon polygon, Number n)
-            => ExtrudeTo(polygon, polygon.To3D().Translate(Vector3.UnitZ * n), true);
+            => ExtrudeTo(polygon.To3D(), polygon.To3D().Translate(Vector3.UnitZ * n), true);
     }
 }

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using SNVector4 = System.Numerics.Vector4;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract]
     public partial struct Vector4 

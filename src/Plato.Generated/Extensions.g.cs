@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     public static partial class Extensions
     {
-        [MethodImpl(AggressiveInlining)] public static Bounds2D Bounds(this IReadOnlyList<Point2D> xs) => xs.Reduce(Plato.Bounds2D.Empty, (a, b)  => a.Include(b));
-[MethodImpl(AggressiveInlining)] public static Bounds3D Bounds(this IReadOnlyList<Point3D> xs) => xs.Reduce(Plato.Bounds3D.Empty, (a, b)  => a.Include(b));
+        [MethodImpl(AggressiveInlining)] public static Bounds2D Bounds(this IReadOnlyList<Point2D> xs) => xs.Reduce(Bounds2D.Empty, (a, b)  => a.Include(b));
+[MethodImpl(AggressiveInlining)] public static Bounds3D Bounds(this IReadOnlyList<Point3D> xs) => xs.Reduce(Bounds3D.Empty, (a, b)  => a.Include(b));
 [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line2D> Lines(this IReadOnlyList<Line2D> xs) => xs;
 [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line3D> Lines(this IReadOnlyList<Line3D> xs) => xs;
 [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line2D> Lines(this IReadOnlyList<Triangle2D> xs) => xs.FlatMap((x)  => x.Lines);

@@ -2,8 +2,7 @@
 using Ara3D.Models;
 using Ara3D.SceneEval;
 using Ara3D.Studio.API;
-using Plato;
-using Plato.Geometry;
+using Ara3D.Geometry;
 
 namespace Ara3D.Studio.Samples;
 

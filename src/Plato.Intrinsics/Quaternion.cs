@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using SNQuaternion = System.Numerics.Quaternion;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract]
     public partial struct Quaternion

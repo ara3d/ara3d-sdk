@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct Vector4: IVector<Vector4>
@@ -92,8 +92,8 @@ public Vector4 SmoothStep { [MethodImpl(AggressiveInlining)] get  => this.Sqr.Mu
 public Vector4 SmootherStep { [MethodImpl(AggressiveInlining)] get  => this.Pow3.Multiply(this.Multiply(((Number)6)).Subtract(((Number)15))).Add(((Number)10)); } 
 public static Vector4 Zero { [MethodImpl(AggressiveInlining)] get  => Vector4.CreateFromComponent(((Number)0)); } 
 public static Vector4 One { [MethodImpl(AggressiveInlining)] get  => Vector4.CreateFromComponent(((Number)1)); } 
-public static Vector4 MinValue { [MethodImpl(AggressiveInlining)] get  => Vector4.CreateFromComponent(Plato.Number.MinValue); } 
-public static Vector4 MaxValue { [MethodImpl(AggressiveInlining)] get  => Vector4.CreateFromComponent(Plato.Number.MaxValue); } 
+public static Vector4 MinValue { [MethodImpl(AggressiveInlining)] get  => Vector4.CreateFromComponent(Number.MinValue); } 
+public static Vector4 MaxValue { [MethodImpl(AggressiveInlining)] get  => Vector4.CreateFromComponent(Number.MaxValue); } 
 [MethodImpl(AggressiveInlining)] public Number Reduce(Number initial, System.Func<Number, Number, Number> f) => this.Components.Reduce(initial, f);
 public Number MinComponent { [MethodImpl(AggressiveInlining)] get  => this.Reduce(this[((Integer)0)], (a, b)  => a.Min(b)); } 
 public Number MaxComponent { [MethodImpl(AggressiveInlining)] get  => this.Reduce(this[((Integer)0)], (a, b)  => a.Max(b)); } 

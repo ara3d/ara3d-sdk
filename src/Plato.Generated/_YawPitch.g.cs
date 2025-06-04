@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 using Ara3D.Collections;
 
-namespace Plato
+namespace Ara3D.Geometry
 {
     [DataContract, StructLayout(LayoutKind.Sequential, Pack=1)]
     public partial struct YawPitch: IRotation3D
@@ -44,7 +44,7 @@ namespace Plato
         // Explicit implementation of interfaces by forwarding properties to fields
 
         // Implemented interface functions
-        public Quaternion Quaternion { [MethodImpl(AggressiveInlining)] get  => Plato.Quaternion.CreateFromYawPitchRoll(this.Yaw, this.Pitch, ((Number)0)); } 
+        public Quaternion Quaternion { [MethodImpl(AggressiveInlining)] get  => Quaternion.CreateFromYawPitchRoll(this.Yaw, this.Pitch, ((Number)0)); } 
 [MethodImpl(AggressiveInlining)]  public static implicit operator Quaternion(YawPitch e) => e.Quaternion;
         public static YawPitch Identity { [MethodImpl(AggressiveInlining)] get  => (((Number)0), ((Number)0)); } 
 public Matrix4x4 Matrix { [MethodImpl(AggressiveInlining)] get  => this.Quaternion.Matrix; } 

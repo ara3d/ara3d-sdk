@@ -2,7 +2,7 @@
 using Ara3D.Memory;
 using Ara3D.Models;
 using Ara3D.Utils;
-using Plato;
+using Ara3D.Geometry;
 using Quaternion = System.Numerics.Quaternion;
 using Vector3 = System.Numerics.Vector3;
 using Vector4 = System.Numerics.Vector4;
