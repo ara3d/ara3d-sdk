@@ -125,7 +125,7 @@ namespace Plato
         /// <summary>
         /// Creates a range of integers from 0 to this integer. 
         /// </summary>
-        public IReadOnlyList<Integer> Range
+        public System.Collections.Generic.IReadOnlyList<Integer> Range
             => ArrayExtensions.Range(this);
     }
 }

@@ -4,9 +4,9 @@ using System.Runtime.CompilerServices;
 namespace Plato
 {
     [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public struct ArrayEnumerator<T>(IReadOnlyList<T> array) : IEnumerator<T>
+    public struct ArrayEnumerator<T>(System.Collections.Generic.IReadOnlyList<T> array) : IEnumerator<T>
     {
-        public readonly IReadOnlyList<T> Array = array;
+        public readonly System.Collections.Generic.IReadOnlyList<T> Array = array;
         public int Index = -1;
         public readonly int Count = array.Count;
 
