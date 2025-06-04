@@ -122,12 +122,12 @@ namespace Plato
             => SNQuaternion.Dot(Value, quaternion2.Value);
 
         [MethodImpl(AggressiveInlining)]
-        public static Quaternion Lerp(Quaternion quaternion1, Quaternion quaternion2, Number amount)
-            => SNQuaternion.Lerp(quaternion1.Value, quaternion2.Value, amount);
+        public Quaternion Lerp(Quaternion quaternion2, Number amount)
+            => SNQuaternion.Lerp(Value, quaternion2.Value, amount);
 
         [MethodImpl(AggressiveInlining)]
-        public static Quaternion Slerp(Quaternion quaternion1, Quaternion quaternion2, Number amount)
-            => SNQuaternion.Slerp(quaternion1.Value, quaternion2.Value, amount);
+        public Quaternion Slerp(Quaternion quaternion2, Number amount)
+            => SNQuaternion.Slerp(Value, quaternion2.Value, amount);
 
         // Properties
 
@@ -157,7 +157,7 @@ namespace Plato
         }
     }
 
-    public static partial class QuaternionExtensions
+    public static partial class QuaternionExtensions2
     {
         [MethodImpl(AggressiveInlining)]
         public static Quaternion CreateFromAxisAngle(this Quaternion _, Vector3 axis, Angle angle)

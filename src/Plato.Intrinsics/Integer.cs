@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using Ara3D.Collections;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace Plato
@@ -120,5 +121,11 @@ namespace Plato
             var delta = other - this;
             return (int)(Value + (delta.Value * t));
         }
+
+        /// <summary>
+        /// Creates a range of integers from 0 to this integer. 
+        /// </summary>
+        public System.Collections.Generic.IReadOnlyList<Integer> Range
+            => ArrayExtensions.Range(this);
     }
 }

@@ -150,14 +150,14 @@ library Geometry
 
     Center(x: Bounds2D): Point2D => x.Min.Average(x.Max);
     Corners(x: Bounds2D): IArray<Point2D> => [
-        (x.Min.X, x.Min.Y), 
-        (x.Max.X, x.Min.Y), 
-        (x.Min.X, x.Max.Y), 
-        (x.Max.X, x.Max.Y), 
-        (x.Min.X, x.Min.Y), 
-        (x.Max.X, x.Min.Y),
-        (x.Min.X, x.Max.Y), 
-        (x.Max.X, x.Max.Y)];
+        new Point2D(x.Min.X, x.Min.Y), 
+        new Point2D(x.Max.X, x.Min.Y), 
+        new Point2D(x.Min.X, x.Max.Y), 
+        new Point2D(x.Max.X, x.Max.Y), 
+        new Point2D(x.Min.X, x.Min.Y), 
+        new Point2D(x.Max.X, x.Min.Y),
+        new Point2D(x.Min.X, x.Max.Y), 
+        new Point2D(x.Max.X, x.Max.Y)];
     Empty(_: Bounds2D): Bounds2D => (MaxPoint2D, MinPoint2D);
     Bounds(xs: IArray<Point2D>): Bounds2D => xs.Reduce(Bounds2D.Empty, (a, b) => a.Include(b));
 
@@ -166,14 +166,14 @@ library Geometry
 
     Center(x: Bounds3D): Point3D => x.Min.Average(x.Max);
     Corners(x: Bounds3D): IArray<Point3D> => [
-        (x.Min.X, x.Min.Y, x.Min.Z), 
-        (x.Max.X, x.Min.Y, x.Min.Z), 
-        (x.Min.X, x.Max.Y, x.Min.Z), 
-        (x.Max.X, x.Max.Y, x.Min.Z), 
-        (x.Min.X, x.Min.Y, x.Max.Z), 
-        (x.Max.X, x.Min.Y, x.Max.Z),
-        (x.Min.X, x.Max.Y, x.Max.Z), 
-        (x.Max.X, x.Max.Y, x.Max.Z)];
+        new Point3D(x.Min.X, x.Min.Y, x.Min.Z), 
+        new Point3D(x.Max.X, x.Min.Y, x.Min.Z), 
+        new Point3D(x.Min.X, x.Max.Y, x.Min.Z), 
+        new Point3D(x.Max.X, x.Max.Y, x.Min.Z), 
+        new Point3D(x.Min.X, x.Min.Y, x.Max.Z), 
+        new Point3D(x.Max.X, x.Min.Y, x.Max.Z),
+        new Point3D(x.Min.X, x.Max.Y, x.Max.Z), 
+        new Point3D(x.Max.X, x.Max.Y, x.Max.Z)];
     Empty(_: Bounds3D): Bounds3D => (MaxPoint3D, MinPoint3D);
     Bounds(xs: IArray<Point3D>): Bounds3D => xs.Reduce(Bounds3D.Empty, (a, b) => a.Include(b));
 

@@ -14,13 +14,13 @@
 
         public const float NumberTolerance = float.Epsilon * 10;
 
-        public static IArray<Vector3> Normalize(this IArray<Vector3> vectors)
+        public static IReadOnlyList<Vector3> Normalize(this IReadOnlyList<Vector3> vectors)
             => vectors.Map(v => v.Normalize);
 
-        public static IArray<Vector3> Rotate(this IArray<Vector3> self, Vector3 axis, float angle)
+        public static IReadOnlyList<Vector3> Rotate(this IReadOnlyList<Vector3> self, Vector3 axis, float angle)
             => self.Transform(Matrix4x4.CreateFromAxisAngle(axis, angle));
 
-        public static IArray<Vector3> Transform(this IArray<Vector3> self, Matrix4x4 matrix)
+        public static IReadOnlyList<Vector3> Transform(this IReadOnlyList<Vector3> self, Matrix4x4 matrix)
             => self.Map(x => x.Transform(matrix));
 
         public static Integer3 Sort(this Integer3 v) =>

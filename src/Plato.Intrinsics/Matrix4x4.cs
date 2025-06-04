@@ -106,22 +106,6 @@ namespace Plato
             => value1.Value * f.ReciprocalEstimate;
 
         // --------------------------------------------------------------------------------
-        // One-to-one static methods (Add, Multiply, Subtract, etc.)
-        // --------------------------------------------------------------------------------
-       
-        [MethodImpl(AggressiveInlining)]
-        public static Matrix4x4 Add(Matrix4x4 value1, Matrix4x4 value2)
-            => SNMatrix4x4.Add(value1.Value, value2.Value);
-
-        [MethodImpl(AggressiveInlining)]
-        public static Matrix4x4 Subtract(Matrix4x4 value1, Matrix4x4 value2)
-            => SNMatrix4x4.Subtract(value1.Value, value2.Value);
-
-        [MethodImpl(AggressiveInlining)]
-        public static Matrix4x4 Multiply(Matrix4x4 value1, Matrix4x4 value2)
-            => SNMatrix4x4.Multiply(value1.Value, value2.Value);
-
-        // --------------------------------------------------------------------------------
         // Example "Create*" static methods (forwarded)
         // --------------------------------------------------------------------------------
 
@@ -184,8 +168,8 @@ namespace Plato
         }
 
         [MethodImpl(AggressiveInlining)]
-        public static Matrix4x4 Lerp(Matrix4x4 matrix1, Matrix4x4 matrix2, Number amount)
-            => SNMatrix4x4.Lerp(matrix1.Value, matrix2.Value, amount);
+        public Matrix4x4 Lerp(Matrix4x4 matrix2, Number amount)
+            => SNMatrix4x4.Lerp(this.Value, matrix2.Value, amount);
 
         public Matrix4x4 Invert
         {
@@ -196,6 +180,12 @@ namespace Plato
                 if (!success) throw new InvalidOperationException("Non-invertible matrix    ");
                 return result;
             }
+        }
+
+        public bool CanInvert
+        {
+            [MethodImpl(AggressiveInlining)]
+            get => SNMatrix4x4.Invert(Value, out var _);
         }
 
         [MethodImpl(AggressiveInlining)]

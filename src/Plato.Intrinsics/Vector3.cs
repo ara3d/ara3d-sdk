@@ -174,7 +174,7 @@ namespace Plato
         /// <summary>
         /// Returns the square root of each element.
         /// </summary>
-        public Vector3 SquareRoot
+        public Vector3 Sqrt
         {
             [MethodImpl(AggressiveInlining)] get => SNVector3.SquareRoot(Value);
         }

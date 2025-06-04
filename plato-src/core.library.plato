@@ -19,8 +19,7 @@ library Core
     Pow3(x: Number): Number => x * x * x;
     Pow4(x: Number): Number => x * x * x * x;
     Pow5(x: Number): Number => x * x * x * x * x;    
-    Sqr(x: Number): Number => x.Pow2;           
-    Sqrt(x: Number): Number => x.SquareRoot;
+    Sqr(x: Number): Number => x.Pow2;
     
     //==
     // Vector-like specific functions
@@ -65,13 +64,8 @@ library Core
     Reciprocal(self: IVectorLike): IVectorLike => self.MapComponents(x => x.Reciprocal);
     ReciprocalEstimate(self: IVectorLike): IVectorLike => self.MapComponents(x => x.ReciprocalEstimate);
     ReciprocalSquareRootEstimate(self: IVectorLike): IVectorLike => self.MapComponents(x => x.ReciprocalSquareRootEstimate);
-    //Round(self: IVectorLike, digits: Integer): IVectorLike => self.MapComponents(x => x.Round(digits));
-    //RoundAwayFromZero(self: IVectorLike, digits: Integer): IVectorLike => self.MapComponents(x => x.RoundAwayFromZero(digits));
     RoundToZero(self: IVectorLike, digits: Integer): IVectorLike => self.MapComponents(x => x.RoundToZero(digits));
     ScaleB(self: IVectorLike, n: Integer): IVectorLike => self.MapComponents(x => x.ScaleB(n));
-    //SquareRoot(self: IVectorLike): IVectorLike => self.MapComponents(x => x.SquareRoot);
-    Square(self: IVectorLike): IVectorLike => self.MapComponents(x => x.Sqr);
-    Truncate(self: IVectorLike): IVectorLike => self.MapComponents(x => x.Truncate);
 
     //==
     // Vector-like functions derived from Number functions (see above)
@@ -112,7 +106,7 @@ library Core
     Millionth(x: IScalarArithmetic): IScalarArithmetic => x.Thousandth.Thousandth;    
     Billionth(x: IScalarArithmetic): IScalarArithmetic => x.Thousandth.Millionth;
     
-    // Support for having the scalar on the lkeft 
+    // Support for having the scalar on the left 
     Multiply(scalar: Number, x: IScalarArithmetic): IScalarArithmetic => x * scalar;
 
     //==

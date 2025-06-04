@@ -3,14 +3,6 @@
 
 library Intrinsics
 {     
-    //== 
-    // Generic utility functions 
-    //==
-
-    MapRange(x: Integer, f: Function1<Integer, $T>): Array<$T>;
-    FlatMap(xs: IArray<$T1>, f: Function1<$T1, IArray<$T2>>): Array<$T2>;
-    MakeArray2D(columns: Integer, rows: Integer, f: Function2<Integer, Integer, $T>): Array2D<$T>;   
-
     //==
     // Matrix4x4
     //==
@@ -33,12 +25,10 @@ library Intrinsics
     Multiply(value1: Matrix4x4, f: Number): Matrix4x4;
     Multiply(f: Number, value1: Matrix4x4): Matrix4x4;
     Divide(value1: Matrix4x4, f: Number): Matrix4x4;
-    Add(self: Matrix4x4, value1: Matrix4x4, value2: Matrix4x4): Matrix4x4;
-    Subtract(self: Matrix4x4, value1: Matrix4x4, value2: Matrix4x4): Matrix4x4;
-    Multiply(self: Matrix4x4, value1: Matrix4x4, value2: Matrix4x4): Matrix4x4;
     Decompose(self: Matrix4x4): Tuple4<Vector3, Quaternion, Vector3, Boolean>;
-    Lerp(self: Matrix4x4, matrix1: Matrix4x4, matrix2: Matrix4x4, amount: Number): Matrix4x4;
-    Invert(self: Matrix4x4): Tuple2<Matrix4x4, Boolean>;
+    Lerp(self: Matrix4x4, matrix2: Matrix4x4, amount: Number): Matrix4x4;
+    Invert(self: Matrix4x4): Matrix4x4;
+    CanInvert(self: Matrix4x4): Boolean;
     GetHashCode(self: Matrix4x4): Integer;
     Rotation(self: Matrix4x4): Quaternion;
     
@@ -207,7 +197,6 @@ library Intrinsics
     Transform(self: Vector4, rotation: Quaternion): Vector4;
     Max(self: Vector4, value2: Vector4): Vector4;
     Min(self: Vector4, value2: Vector4): Vector4;
-    Truncate(self: Vector4): Vector4;
     GetHashCode(self: Vector4): Integer;
 
     //==
@@ -232,7 +221,7 @@ library Intrinsics
 
     Abs(self: Vector8): Vector8;
     Reciprocal(self: Vector8): Vector8;
-    ReciprocalSqrt(self: Vector8): Vector8;
+    ReciprocalSqrtEstimate(self: Vector8): Vector8;
     Sqrt(self: Vector8): Vector8;
     Sqr(self: Vector8): Vector8;
     Sum(self: Vector8): Number;
@@ -245,12 +234,11 @@ library Intrinsics
     Divide(left: Vector8, scalar: Number): Vector8;
     Divide(scalar: Number, right: Vector8): Vector8;
     Negative(value: Vector8): Vector8;
-    AndNot(self: Vector8, a: Vector8, b: Vector8): Vector8;
+    AndNot(a: Vector8, b: Vector8): Vector8;
     BitwiseAnd(a: Vector8, b: Vector8): Vector8;
     BitwiseOr(a: Vector8, b: Vector8): Vector8;
     Complement(a: Vector8): Vector8;
-    ExclusiveOr(a: Vector8, b: Vector8): Vector8;
-    ConditionalSelect(self: Vector8, condition: Vector8, a: Vector8, b: Vector8): Vector8;
+    ConditionalSelect(condition: Vector8, a: Vector8, b: Vector8): Vector8;
     Equals(a: Vector8, b: Vector8): Vector8;
     NotEquals(a: Vector8, b: Vector8): Vector8;
     LessThan(a: Vector8, b: Vector8): Vector8;
@@ -260,7 +248,6 @@ library Intrinsics
     Max(self: Vector8, other: Vector8): Vector8;
     Min(self: Vector8, other: Vector8): Vector8;
     Dot(self: Vector8, other: Vector8): Number;
-    Hypot(self: Vector8, other: Vector8): Vector8;
     FirstElement(self: Vector8): Number;
     GetHashCode(self: Vector8): Integer;
 
@@ -275,7 +262,7 @@ library Intrinsics
     WithD(self: Plane, d: Number): Plane;
 
     Normalize(self: Plane): Plane;
-    CreateFromVertices(self: Plane, point1: Vector3, point2: Vector3, point3: Vector3): Plane;
+    CreateFromVertices(_: Plane, point1: Vector3, point2: Vector3, point3: Vector3): Plane;
     Dot(self: Plane, value: Vector4): Number;
     DotCoordinate(self: Plane, value: Vector3): Number;
     DotNormal(self: Plane, value: Vector3): Number;
@@ -310,8 +297,8 @@ library Intrinsics
     Divide(a: Quaternion, b: Quaternion): Quaternion;
     Concatenate(self: Quaternion, value2: Quaternion): Quaternion;
     Dot(self: Quaternion, quaternion2: Quaternion): Number;
-    Lerp(self: Quaternion, quaternion1: Quaternion, quaternion2: Quaternion, amount: Number): Quaternion;
-    Slerp(self: Quaternion, quaternion1: Quaternion, quaternion2: Quaternion, amount: Number): Quaternion;
+    Lerp(self: Quaternion, quaternion2: Quaternion, amount: Number): Quaternion;
+    Slerp(self: Quaternion, quaternion2: Quaternion, amount: Number): Quaternion;
     GetHashCode(self: Quaternion): Integer;
 
     CreateFromAxisAngle(_: Quaternion, axis: Vector3, angle: Number): Quaternion;
@@ -351,13 +338,13 @@ library Intrinsics
     Pow(self: Number, power: Number): Number;
     Reciprocal(self: Number): Number;
     ReciprocalEstimate(self: Number): Number;
-    ReciprocalSquareRootEstimate(self: Number): Number;
+    ReciprocalSqrtEstimate(self: Number): Number;
     Round(self: Number, digits: Integer): Number;
     RoundAwayFromZero(self: Number, digits: Integer): Number;
     RoundToZero(self: Number, digits: Integer): Number;
     ScaleB(self: Number, n: Integer): Number;
     Sign(self: Number): Integer;
-    SquareRoot(self: Number): Number;
+    Sqrt(self: Number): Number;
     Square(self: Number): Number;
     Truncate(self: Number): Number;
     
@@ -395,6 +382,7 @@ library Intrinsics
     GreaterThanOrEquals(a: Integer, b: Integer): Boolean;
     CompareTo(self: Integer, other: Integer): Integer;
     GetHashCode(self: Integer): Integer;
+    Range(self: Integer): IArray<Integer>;
 
     //==
     // Boolean
@@ -431,4 +419,65 @@ library Intrinsics
     CompareTo(self: Angle, other: Angle): Integer;
     GetHashCode(self: Angle): Integer;
     Radians(self: Angle): Number;
+
+    //==
+    // Array
+    //==
+
+    All(xs: IArray<$T>, f: Function1<$T, Boolean>): Boolean;
+    Any(xs: IArray<$T>, f: Function1<$T, Boolean>): Boolean;
+    Append(self: IArray<$T>, value: $T): IArray<$T>;
+    AtModulo(xs: IArray<$T>, n: Integer): $T;
+    CartesianProduct(columns: IArray<$TColumn>, rows: IArray<$TRow>, func: Function2<$TColumn, $TRow, $TResult>): IArray2D<$TResult>;
+    Concatenate(xs: IArray<$T>, ys: IArray<$T>): IArray<$T>;
+    Drop(xs: IArray<$T>, n: Integer): IArray<$T>;
+    EveryNth(self: IArray<$T>, n: Integer): IArray<$T>;
+    First(xs: IArray<$T>): $T;        
+    FlatMap(xs: IArray<$T1>, f: Function1<$T1, IArray<$T2>>): IArray<$T2>;
+    Indices(xs: IArray<$T>): IArray<Integer>;
+    IsEmpty(xs: IArray<$T>): Boolean;
+    Last(xs: IArray<$T>): $T;
+    MakeArray2D(columns: Integer, rows: Integer, f: Function2<Integer, Integer, $T>): IArray2D<$T>;   
+    Map(xs: IArray<$T1>, f: Function1<$T1, $T2>): IArray<$T2>;
+    Map(xs: IArray<$T1>, f: Function1<$T1, Integer, $T2>): IArray<$T2>;
+    MapIndices(xs: IArray<$T>): IArray<Integer>;               
+    MapPairs(xs: IArray<$T>, f: Function2<$T, $T, $TR>): IArray<$TR>;
+    MapQuartets(xs: IArray<$T>, f: Function4<$T, $T, $T, $T, $TR>): IArray<$TR>;    
+    MapRange(n: Integer, f: Function1<Integer, $T>): IArray<$T>;
+    MapTriplets(xs: IArray<$T>, f: Function3<$T, $T, $T, $TR>): IArray<$TR>;
+    Middle(xs: IArray<$T>): $T;
+    Prepend(self: IArray<$T>, value: $T): IArray<$T>;
+    PrependAndAppend(self: IArray<$T>, before: $T, after: $T): IArray<$T>;
+    Range(n: Integer): IArray<Integer>;
+    Reduce(xs: IArray<$T>, acc: $U, f: Function2<$U, $T, $U>): $U;
+    Repeat(x: IAny, n: Integer): IArray<IAny>;
+    Rest(xs: IArray<$T>): IArray<$T>;
+    Reverse(self: IArray<$T>): IArray<$T>;
+    Shift(xs: IArray<$T>, n: Integer): IArray<$T>;
+    Skip(xs: IArray<$T>, n: Integer): IArray<$T>;
+    Slice(xs: IArray<$T>, from: Integer, to: Integer): IArray<$T>;
+    Slice(xs: IArray<$T>, from: Integer, to: Integer, stride: Integer): IArray<$T>;
+    Slices(xs: IArray<$T>, size: Integer): IArray2D<$T>;
+    SubArray(xs: IArray<$T>, from: Integer, count: Integer): IArray<$T>;
+    Stride(xs: IArray<$T>, stride: Integer): IArray<$T>;
+    Stride(xs: IArray<$T>, offset: Integer, stride: Integer): IArray<$T>;
+    Take(xs: IArray<$T>, n: Integer): IArray<$T>;
+    TakeLast(xs: IArray<$T>, n: Integer): IArray<$T>;
+    WithNext(self: IArray<$T>, f: Function2<$T, $T, $TR>, first: Boolean): IArray<$T>;
+    Zip(xs: IArray<$T1>, ys: IArray<$T2>, f: Function2<$T1, $T2, $T3>): IArray<$T3>;  
+    Zip(xs: IArray<$T1>, ys: IArray<$T2>, zs: IArray<$T3>, f: Function3<$T1, $T2, $T3, $T4>): IArray<$T4>;  
+    
+    //==
+    // Array2D and Array3D
+    //==
+
+    Map(xs: IArray2D<$T1>, f: Function1<$T1, $T2>): IArray2D<$T2>;
+    Row(self: IArray2D<$T>, row: Integer): IArray<$T>;
+    Column(self: IArray2D<$T>, col: Integer): IArray<$T>;
+    Rows(self: IArray2D<$T>): IArray<IArray<$T>>;
+    Columns(self: IArray2D<$T>): IArray<IArray<$T>>;
+    Count(xs: IArray2D<$T>): Integer;
+    Count(xs: IArray3D<$T>): Integer;    
+    At(xs: IArray2D<$T>, i: Integer): $T;  
+    At(xs: IArray3D<$T>, i: Integer): $T;
 }

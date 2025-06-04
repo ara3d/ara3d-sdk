@@ -151,7 +151,7 @@ namespace Plato
         /// <summary>
         /// Returns the square root of each element in the specified <see cref="Vector2"/>.
         /// </summary>
-        public Vector2 SquareRoot
+        public Vector2 Sqrt
         {
             [MethodImpl(AggressiveInlining)] get => SNVector2.SquareRoot(Value);
         }

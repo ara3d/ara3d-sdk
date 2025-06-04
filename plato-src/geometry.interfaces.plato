@@ -176,16 +176,6 @@ interface IImplicitProcedural<TDomain>
     inherits IProcedural<TDomain, Boolean>
 { }
 
-// An implicit surface, where we are either on the surface or not. 
-interface IImplicitSurface
-    inherits ISurface, IImplicitProcedural<Point3D>
-{ }
-
-// An implicitly defined curve
-interface IImplicitCurve2D
-    inherits IGeometry2D, IImplicitProcedural<Point2D>
-{ }
-
 // An implicit solid/volume, where we are either inside (true) or outside (false).
 interface IImplicitVolume
     inherits IGeometry3D, IImplicitProcedural<Point3D>

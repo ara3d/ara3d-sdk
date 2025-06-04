@@ -11,7 +11,7 @@ namespace Ara3D.Studio.Samples;
 public class ToTriangles : IModelModifier
 {
     public static TriangleMesh3D ToMesh(Triangle3D t)
-        => new(t.Points, new Integer3[] { (0, 1, 2) }.ToIArray());
+        => new(t.Points, [new Integer3(0, 1, 2)]);
 
     public static Element ToElement(Triangle3D t, Material mat)
         => new(ToMesh(t), mat, Matrix4x4.Identity);

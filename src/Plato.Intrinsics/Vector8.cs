@@ -155,7 +155,7 @@ namespace Plato
         //-------------------------------------------------------------------------------------
 
         [MethodImpl(AggressiveInlining)]
-        public static Vector8 AndNot(Vector8 a, Vector8 b) => Vector256.AndNot(a.Value, b.Value);
+        public Vector8 AndNot(Vector8 b) => Vector256.AndNot(Value, b.Value);
 
         [MethodImpl(AggressiveInlining)]
         public static Vector8 operator &(Vector8 a, Vector8 b) => Vector256.BitwiseAnd(a.Value, b.Value);
@@ -170,8 +170,8 @@ namespace Plato
         public static Vector8 operator ^(Vector8 a, Vector8 b) => Vector256.Xor(a.Value, b.Value);
 
         [MethodImpl(AggressiveInlining)]
-        public static Vector8 ConditionalSelect(Vector8 condition, Vector8 a, Vector8 b) =>
-            Vector256.ConditionalSelect(condition.Value, a.Value, b.Value);
+        public Vector8 ConditionalSelect(Vector8 a, Vector8 b) =>
+            Vector256.ConditionalSelect(Value, a.Value, b.Value);
 
         //-------------------------------------------------------------------------------------
         // Comparison operators 
@@ -208,18 +208,8 @@ namespace Plato
             [MethodImpl(AggressiveInlining)] get => Vector256.Abs(Value);
         }
 
-        public Vector8 Ceiling
-        {
-            [MethodImpl(AggressiveInlining)] get => Vector256.Ceiling(Value);
-        }
-
         [MethodImpl(AggressiveInlining)]
         public Number Dot(Vector8 other) => Vector256.Dot(Value, other.Value);
-
-        public Vector8 Floor
-        {
-            [MethodImpl(AggressiveInlining)] get => Vector256.Floor(Value);
-        }
 
         /// <summary>Reciprocal (1/x) of each element</summary>
         public Vector8 Reciprocal
@@ -228,7 +218,7 @@ namespace Plato
         }
 
         /// <summary>Approximate reciprocal of the square root of each element: 1 / sqrt(x)</summary>
-        public Vector8 ReciprocalSqrt
+        public Vector8 ReciprocalSqrtEstimate
         {
             [MethodImpl(AggressiveInlining)] get => Avx.ReciprocalSqrt(Value);
         }
