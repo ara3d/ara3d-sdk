@@ -22,7 +22,7 @@ library Algebra
 
     // https://en.wikipedia.org/wiki/Quartic_function
     Quartic(a: INumerical, b: INumerical, c: INumerical, d: INumerical, e: INumerical, x: Number): INumerical
-        => a * x.Pow(4) + b * x.Pow3 + c * x.Sqr + d * x + e;
+        => a * x.Pow4 + b * x.Pow3 + c * x.Sqr + d * x + e;
 
     // Linear derivative: dy/dx = m
     LinearDerivative(m: INumerical, b: INumerical, x: Number): INumerical
@@ -49,8 +49,8 @@ library Algebra
         => (a * 6.0) * x + (b * 2.0);
 
     // Quartic derivative: dy/dx = 4*a*x^3 + 3*b*x^2 + 2*c*x + d
-    QuarticDerivative(x: Number, a: INumerical, b: INumerical, c: INumerical, d: INumerical, e: INumerical): INumerical
-        => (a * 4.0) * x.Pow(3)
+    QuarticDerivative(a: INumerical, b: INumerical, c: INumerical, d: INumerical, e: INumerical, x: INumerical): INumerical
+        => (a * 4.0) * x.Pow3
          + (b * 3.0) * x.Sqr
          + (c * 2.0) * x
          + d;

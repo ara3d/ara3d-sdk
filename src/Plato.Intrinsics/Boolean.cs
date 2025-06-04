@@ -9,18 +9,18 @@ using System.Runtime.Serialization;
         /// forwarding logical operations and common methods to <c>Boolean</c>.
         /// </summary>
         [DataContract]
-        public partial struct Boolean 
+        public partial struct Boolean
         {
             // -------------------------------------------------------------------------------
             // Field (the wrapped Boolean)
             // -------------------------------------------------------------------------------
-            
+
             [DataMember] public readonly bool Value;
 
             // -------------------------------------------------------------------------------
             // Constructors
             // -------------------------------------------------------------------------------
-            
+
             [MethodImpl(AggressiveInlining)]
             public Boolean(bool value) => Value = value;
 
@@ -45,7 +45,7 @@ using System.Runtime.Serialization;
 
             [MethodImpl(AggressiveInlining)]
             public static bool operator false(Boolean b) => !b.Value;
-        
+
             // -------------------------------------------------------------------------------
             // Operators (logical, equality, etc.)
             // -------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ using System.Runtime.Serialization;
             [MethodImpl(AggressiveInlining)]
             public static Boolean operator !(Boolean b)
                 => !b.Value;
-        
+
             // -------------------------------------------------------------------------------
             // Comparison operators
             // -------------------------------------------------------------------------------
@@ -101,5 +101,9 @@ using System.Runtime.Serialization;
             [MethodImpl(AggressiveInlining)]
             public int CompareTo(Boolean other)
                 => Value.CompareTo(other);
+
+
+            public Boolean ExclusiveOr(Boolean other)
+                => Value ^ other;
         }
     }

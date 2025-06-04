@@ -35,5 +35,8 @@ namespace Ara3D.Collections
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IEnumerator IEnumerable.GetEnumerator() 
             => GetEnumerator();
+
+        public ReadOnlyList<T> Default =>
+            new ReadOnlyList<T>(0, _ => default(T));
     }
 }

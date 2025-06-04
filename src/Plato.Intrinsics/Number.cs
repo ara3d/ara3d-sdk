@@ -309,7 +309,7 @@ namespace Plato
         /// <summary>
         /// An estimate of the reciprocal square root of the number.
         /// </summary>
-        public Number ReciprocalSquareRootEstimate
+        public Number ReciprocalSqrtEstimate
         {
             [MethodImpl(AggressiveInlining)] get => MathF.ReciprocalSqrtEstimate(Value);
         }
@@ -349,7 +349,7 @@ namespace Plato
         /// <summary>
         /// The square root of the number.
         /// </summary>
-        public Number SquareRoot
+        public Number Sqrt
         {
             [MethodImpl(AggressiveInlining)] get => MathF.Sqrt(Value);
         }

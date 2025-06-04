@@ -64,7 +64,7 @@ library IInterval
         => count.LinearSpaceExclusive.Map(x => interval.Lerp(x));
 
     Intervals(count: Integer): IArray<NumberInterval>
-        => (count + 1).LinearSpace.WithNext((a, b) => new NumberInterval(a, b));
+        => (count + 1).LinearSpace.WithNext((a, b) => new NumberInterval(a, b), false);
 
     Subdivide(interval: IInterval<$T>, start: Number, end: Number): IInterval<$T>
 		=> (interval.Lerp(start), interval.Lerp(end));

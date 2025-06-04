@@ -1,13 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
+using Ara3D.Collections;
 using static System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace Plato
 {
     public static partial class Intrinsics
     {
-        [MethodImpl(AggressiveInlining)] public static Array<T> MapRange<T>(this Integer x, Func<Integer, T> f) => new Array<T>(x, f);
-        [MethodImpl(AggressiveInlining)] public static Array<T> MakeArray<T>(params T[] args) => new Array<T>(args.Length, i => args[i]);
-        [MethodImpl(AggressiveInlining)] public static Array2D<T> MakeArray2D<T>(this Integer columns, Integer rows, Func<Integer, Integer, T> f) => new Array2D<T>(columns, rows, f);
+        [MethodImpl(AggressiveInlining)] public static T[] MakeArray<T>(params T[] args) => args;
+
+        [MethodImpl(AggressiveInlining)] public static ReadOnlyList2D<T> MakeArray2D<T>(this Integer columns, Integer rows, Func<Integer, Integer, T> f) 
+            => new ReadOnlyList2D<T>((columns * rows).MapRange(i => f(i % columns, i / columns)), columns, rows);
 
         [MethodImpl(AggressiveInlining)] public static Integer CombineHashCodes() => 17;
         [MethodImpl(AggressiveInlining)] public static Integer CombineHashCodes<T0>(T0 x0) => HashCode.Combine(x0);
