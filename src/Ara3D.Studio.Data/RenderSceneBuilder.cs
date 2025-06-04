@@ -63,7 +63,7 @@ namespace Ara3D.Studio.Data
         // TODO: ideally we would use reinterpret casts 
         public void AddMesh(TriangleMesh3D mesh)
             => AddMesh(
-                Enumerable.Select(mesh.Points, p => new Vector3(p.X, p.Y, p.Z)), 
+                mesh.Points.Select(p => new Vector3(p.X, p.Y, p.Z)), 
                 GetIndices(mesh));
 
         public void AddVertex(Vector3 pos, Vector3 normal)

@@ -82,7 +82,5 @@
     <ProjectReference Include="..\Ara3D.Studio.Data\Ara3D.Studio.Data.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" PrivateAssets="All" />
-    <ProjectReference Include="..\Plato.Core\Plato.Core.csproj" PrivateAssets="All" />
-    <ProjectReference Include="..\Plato.Geometry\Plato.Geometry.csproj" PrivateAssets="All" />
   </ItemGroup>
 </Project>
