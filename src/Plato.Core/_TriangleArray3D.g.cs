@@ -13,16 +13,16 @@ namespace Plato
     public partial struct TriangleArray3D: ITriangleArray3D<TriangleArray3D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList<Triangle3D> Triangles;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Triangle3D> Triangles;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public TriangleArray3D WithTriangles(IReadOnlyList<Triangle3D> triangles) => new TriangleArray3D(triangles);
+        [MethodImpl(AggressiveInlining)] public TriangleArray3D WithTriangles(System.Collections.Generic.IReadOnlyList<Triangle3D> triangles) => new TriangleArray3D(triangles);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public TriangleArray3D(IReadOnlyList<Triangle3D> triangles) { Triangles = triangles; }
+        [MethodImpl(AggressiveInlining)] public TriangleArray3D(System.Collections.Generic.IReadOnlyList<Triangle3D> triangles) { Triangles = triangles; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static TriangleArray3D Create(IReadOnlyList<Triangle3D> triangles) => new TriangleArray3D(triangles);
+        [MethodImpl(AggressiveInlining)] public static TriangleArray3D Create(System.Collections.Generic.IReadOnlyList<Triangle3D> triangles) => new TriangleArray3D(triangles);
 
         // Static default implementation
         public static readonly TriangleArray3D Default = default;
@@ -44,8 +44,8 @@ namespace Plato
             return new TriangleArray3D(this.Triangles.Map((t)  => t.Deform(_var115)));
         }
 
-public IReadOnlyList<Point3D> Points { [MethodImpl(AggressiveInlining)] get  => this.Triangles.FlatMap((x)  => x.Points); } 
-public IReadOnlyList<Line3D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Triangles.FlatMap((x)  => x.Lines); } 
+public System.Collections.Generic.IReadOnlyList<Point3D> Points { [MethodImpl(AggressiveInlining)] get  => this.Triangles.FlatMap((x)  => x.Points); } 
+public System.Collections.Generic.IReadOnlyList<Line3D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Triangles.FlatMap((x)  => x.Lines); } 
 [MethodImpl(AggressiveInlining)] public TriangleArray3D Deform<_T0>(_T0 t) where _T0 : ITransform3D{
             var _var116 = t;
             return this.Deform((v)  => v.Vector3.Transform(_var116.Matrix));
@@ -80,12 +80,12 @@ public Integer PrimitiveSize { [MethodImpl(AggressiveInlining)] get  => ((Intege
 
         // Unimplemented interface functions
         public Integer NumPrimitives => throw new NotImplementedException();
-public IReadOnlyList<Triangle3D> Primitives => throw new NotImplementedException();
+public System.Collections.Generic.IReadOnlyList<Triangle3D> Primitives => throw new NotImplementedException();
 }
     // Extension methods for the type
     public static partial class Extensions
     {
         [MethodImpl(AggressiveInlining)] public static Integer NumPrimitives(this TriangleArray3D x) => x.NumPrimitives;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Triangle3D> Primitives(this TriangleArray3D x) => x.Primitives;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Triangle3D> Primitives(this TriangleArray3D x) => x.Primitives;
     }
 }

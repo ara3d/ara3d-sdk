@@ -63,19 +63,19 @@ public NumberInterval RightHalf { [MethodImpl(AggressiveInlining)] get  => this.
 [MethodImpl(AggressiveInlining)] public NumberInterval Recenter(Number c) => (c.Subtract(this.Size.Half), c.Add(this.Size.Half));
 [MethodImpl(AggressiveInlining)] public NumberInterval Clamp(NumberInterval y) => (this.Clamp(y.Start), this.Clamp(y.End));
 [MethodImpl(AggressiveInlining)] public Number Clamp(Number value) => value.Clamp(this.Start, this.End);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Number> LinearSpace(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Number> LinearSpace(Integer count){
             var _var8 = this;
             return count.LinearSpace.Map((x)  => _var8.Lerp(x));
         }
 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Number> LinearSpaceExclusive(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Number> LinearSpaceExclusive(Integer count){
             var _var9 = this;
             return count.LinearSpaceExclusive.Map((x)  => _var9.Lerp(x));
         }
 
 [MethodImpl(AggressiveInlining)] public NumberInterval Subdivide(Number start, Number end) => (this.Lerp(start), this.Lerp(end));
 [MethodImpl(AggressiveInlining)] public NumberInterval Subdivide(NumberInterval subInterval) => this.Subdivide(subInterval.Start, subInterval.End);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<NumberInterval> Subdivide(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<NumberInterval> Subdivide(Integer count){
             var _var10 = this;
             return count.Intervals.Map((i)  => _var10.Subdivide(i));
         }

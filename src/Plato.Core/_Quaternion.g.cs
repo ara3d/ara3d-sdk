@@ -36,8 +36,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 4; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X, Y, Z, W); }
-        [MethodImpl(AggressiveInlining)] public static Quaternion CreateFromComponents(IReadOnlyList<Number> numbers) => new Quaternion(numbers[0], numbers[1], numbers[2], numbers[3]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X, Y, Z, W); }
+        [MethodImpl(AggressiveInlining)] public static Quaternion CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Quaternion(numbers[0], numbers[1], numbers[2], numbers[3]);
 
         [MethodImpl(AggressiveInlining)] public static Quaternion CreateFromComponent(Number x) => new Quaternion(x, x, x, x);
 

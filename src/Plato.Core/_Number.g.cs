@@ -31,8 +31,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 1; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(Value); }
-        [MethodImpl(AggressiveInlining)] public static Number CreateFromComponents(IReadOnlyList<Number> numbers) => new Number(numbers[0]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(Value); }
+        [MethodImpl(AggressiveInlining)] public static Number CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Number(numbers[0]);
 
         [MethodImpl(AggressiveInlining)] public static Number CreateFromComponent(Number x) => new Number(x);
 
@@ -190,7 +190,7 @@ public Number AvgComponent { [MethodImpl(AggressiveInlining)] get  => this.SumCo
 public Number Magnitude { [MethodImpl(AggressiveInlining)] get  => this.MagnitudeSquared.Sqrt; } 
 public Number MagnitudeSquared { [MethodImpl(AggressiveInlining)] get  => this.SumSqrComponents.Divide(this.NumComponents); } 
 public Number ReciprocalSquareRootEstimate { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x)  => x.ReciprocalSquareRootEstimate); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Number> Sample(Number b, Integer n){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Number> Sample(Number b, Integer n){
             var _var133 = b;
             {
                 var _var132 = this;
@@ -426,7 +426,7 @@ public Number this[Integer n] { [MethodImpl(AggressiveInlining)]  get => At(n); 
         [MethodImpl(AggressiveInlining)] public static Number Magnitude(this float v) => ((Number)v).Magnitude;
         [MethodImpl(AggressiveInlining)] public static Number MagnitudeSquared(this float v) => ((Number)v).MagnitudeSquared;
         [MethodImpl(AggressiveInlining)] public static Number ReciprocalSquareRootEstimate(this float self) => ((Number)self).ReciprocalSquareRootEstimate;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Number> Sample(this float a, Number b, Integer n) => ((Number)a).Sample(b, n);
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Number> Sample(this float a, Number b, Integer n) => ((Number)a).Sample(b, n);
         [MethodImpl(AggressiveInlining)] public static Number Half(this float x) => ((Number)x).Half;
         [MethodImpl(AggressiveInlining)] public static Number Quarter(this float x) => ((Number)x).Quarter;
         [MethodImpl(AggressiveInlining)] public static Number Eight(this float x) => ((Number)x).Eight;

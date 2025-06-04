@@ -40,7 +40,7 @@ namespace Plato
 [MethodImpl(AggressiveInlining)] public PolarCoordinate EvalPolar(Angle t) => (this.GetRadius(t), t);
 [MethodImpl(AggressiveInlining)] public Point2D Eval(Angle t) => this.EvalPolar(t);
 [MethodImpl(AggressiveInlining)] public Point2D Eval(Number t) => this.Eval(t.Turns);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> Sample(Integer numPoints){
             var _var22 = this;
             return numPoints.LinearSpace.Map((x)  => _var22.Eval(x));
         }

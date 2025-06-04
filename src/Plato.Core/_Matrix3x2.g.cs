@@ -36,8 +36,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 6; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(M11, M12, M21, M22, M31, M32); }
-        [MethodImpl(AggressiveInlining)] public static Matrix3x2 CreateFromComponents(IReadOnlyList<Number> numbers) => new Matrix3x2(numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(M11, M12, M21, M22, M31, M32); }
+        [MethodImpl(AggressiveInlining)] public static Matrix3x2 CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Matrix3x2(numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5]);
 
         [MethodImpl(AggressiveInlining)] public static Matrix3x2 CreateFromComponent(Number x) => new Matrix3x2(x, x, x, x, x, x);
 

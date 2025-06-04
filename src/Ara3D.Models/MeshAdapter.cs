@@ -14,8 +14,8 @@ namespace Ara3D.Models
         {
             PointData = pointData;
             IndexData = indexData;
-            var points = PointData.Reinterpret<Point3D>().ToIArray();
-            var indices = IndexData.Reinterpret<Integer3>().ToIArray();
+            var points = PointData.Reinterpret<Point3D>();
+            var indices = IndexData.Reinterpret<Integer3>();
             Mesh = new TriangleMesh3D(points, indices);
         }
 

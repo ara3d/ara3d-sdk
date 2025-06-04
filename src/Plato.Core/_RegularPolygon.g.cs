@@ -44,16 +44,16 @@ namespace Plato
         // Explicit implementation of interfaces by forwarding properties to fields
 
         // Implemented interface functions
-        public IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.NumPoints.CirclePoints; } 
+        public System.Collections.Generic.IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.NumPoints.CirclePoints; } 
 [MethodImpl(AggressiveInlining)] public Point2D At(Integer n) => n.Number.Divide(this.NumPoints).Turns.UnitCircle;
 public Point2D this[Integer n] { [MethodImpl(AggressiveInlining)]  get => At(n); }
         public Integer Count { [MethodImpl(AggressiveInlining)] get  => this.NumPoints; } 
-public IReadOnlyList<Line2D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Points.WithNext((a, b)  => new Line2D(a, b), this.Closed); } 
+public System.Collections.Generic.IReadOnlyList<Line2D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Points.WithNext((a, b)  => new Line2D(a, b), this.Closed); } 
 [MethodImpl(AggressiveInlining)] public Point2D Point(Integer index) => this.Points[index];
 [MethodImpl(AggressiveInlining)] public Triangle2D Triangle(Integer3 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C));
 [MethodImpl(AggressiveInlining)] public Quad2D Quad(Integer4 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C), this.Point(f.D));
 public Bounds2D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bounds(); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> Sample(Integer numPoints){
             var _var50 = this;
             return numPoints.LinearSpace.Map((x)  => _var50.Eval(x));
         }

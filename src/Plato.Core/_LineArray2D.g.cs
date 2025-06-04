@@ -13,16 +13,16 @@ namespace Plato
     public partial struct LineArray2D: ILineArray2D<LineArray2D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList<Line2D> Lines;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Line2D> Lines;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public LineArray2D WithLines(IReadOnlyList<Line2D> lines) => new LineArray2D(lines);
+        [MethodImpl(AggressiveInlining)] public LineArray2D WithLines(System.Collections.Generic.IReadOnlyList<Line2D> lines) => new LineArray2D(lines);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public LineArray2D(IReadOnlyList<Line2D> lines) { Lines = lines; }
+        [MethodImpl(AggressiveInlining)] public LineArray2D(System.Collections.Generic.IReadOnlyList<Line2D> lines) { Lines = lines; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static LineArray2D Create(IReadOnlyList<Line2D> lines) => new LineArray2D(lines);
+        [MethodImpl(AggressiveInlining)] public static LineArray2D Create(System.Collections.Generic.IReadOnlyList<Line2D> lines) => new LineArray2D(lines);
 
         // Static default implementation
         public static readonly LineArray2D Default = default;
@@ -44,17 +44,17 @@ namespace Plato
             return new LineArray2D(this.Lines.Map((l)  => l.Deform(_var108)));
         }
 
-public IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Lines.FlatMap((x)  => x.Points); } 
+public System.Collections.Generic.IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Lines.FlatMap((x)  => x.Points); } 
 public Integer PrimitiveSize { [MethodImpl(AggressiveInlining)] get  => ((Integer)2); } 
 
         // Unimplemented interface functions
         public Integer NumPrimitives => throw new NotImplementedException();
-public IReadOnlyList<Line2D> Primitives => throw new NotImplementedException();
+public System.Collections.Generic.IReadOnlyList<Line2D> Primitives => throw new NotImplementedException();
 }
     // Extension methods for the type
     public static partial class Extensions
     {
         [MethodImpl(AggressiveInlining)] public static Integer NumPrimitives(this LineArray2D x) => x.NumPrimitives;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line2D> Primitives(this LineArray2D x) => x.Primitives;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Line2D> Primitives(this LineArray2D x) => x.Primitives;
     }
 }

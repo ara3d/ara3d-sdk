@@ -47,8 +47,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 3; }
-        public IReadOnlyList<Point2D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point2D>(A, B, C); }
-        [MethodImpl(AggressiveInlining)] public static Triangle2D CreateFromComponents(IReadOnlyList<Point2D> numbers) => new Triangle2D(numbers[0], numbers[1], numbers[2]);
+        public System.Collections.Generic.IReadOnlyList<Point2D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point2D>(A, B, C); }
+        [MethodImpl(AggressiveInlining)] public static Triangle2D CreateFromComponents(System.Collections.Generic.IReadOnlyList<Point2D> numbers) => new Triangle2D(numbers[0], numbers[1], numbers[2]);
 
         [MethodImpl(AggressiveInlining)] public static Triangle2D CreateFromComponent(Point2D x) => new Triangle2D(x, x, x);
 
@@ -64,7 +64,7 @@ public Line2D LineC { [MethodImpl(AggressiveInlining)] get  => (this.C, this.A);
         /* Geometry_14.Points(t: Triangle2D): IArray<Point2D> [Library]; */
         /* Geometry_14.Points(t: Triangle2D): IArray<Point2D> [Library]; */
         /* Meshes_18.Points(x: Triangle2D): IArray<Point2D> [Library]; */
-        public IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Components; } 
+        public System.Collections.Generic.IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Components; } 
 public Triangle3D To3D { [MethodImpl(AggressiveInlining)] get  => (this.A.To3D, this.B.To3D, this.C.To3D); } 
 public Triangle3D Triangle3D { [MethodImpl(AggressiveInlining)] get  => this.To3D; } 
 [MethodImpl(AggressiveInlining)]  public static implicit operator Triangle3D(Triangle2D x) => x.Triangle3D;
@@ -72,13 +72,13 @@ public Triangle3D Triangle3D { [MethodImpl(AggressiveInlining)] get  => this.To3
 // AMBIGUOUS FUNCTIONS 2
         /* Meshes_18.Lines(x: Triangle2D): IArray<Line2D> [Library]; */
         /* Meshes_18.Lines(xs: IPolyLine2D): IArray<Line2D> [Library]; */
-        public IReadOnlyList<Line2D> Lines { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.LineA, this.LineB, this.LineC); } 
+        public System.Collections.Generic.IReadOnlyList<Line2D> Lines { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.LineA, this.LineB, this.LineC); } 
 [MethodImpl(AggressiveInlining)] public Triangle2D Deform(System.Func<Point2D, Point2D> f) => (f.Invoke(this.A), f.Invoke(this.B), f.Invoke(this.C));
 [MethodImpl(AggressiveInlining)] public Point2D Point(Integer index) => this.Points[index];
 [MethodImpl(AggressiveInlining)] public Triangle2D Triangle(Integer3 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C));
 [MethodImpl(AggressiveInlining)] public Quad2D Quad(Integer4 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C), this.Point(f.D));
 public Bounds2D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bounds(); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> Sample(Integer numPoints){
             var _var44 = this;
             return numPoints.LinearSpace.Map((x)  => _var44.Eval(x));
         }

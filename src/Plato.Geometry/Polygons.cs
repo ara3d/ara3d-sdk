@@ -2,9 +2,9 @@
 {
     public class PointArray3D : IDeformable3D<PointArray3D>
     {
-        public IArray<Point3D> Points { get; }
+        public IReadOnlyList<Point3D> Points { get; }
 
-        public PointArray3D(IArray<Point3D> points)
+        public PointArray3D(IReadOnlyList<Point3D> points)
             => Points = points;
 
         public PointArray3D Deform(Func<Point3D, Point3D> f)
@@ -17,9 +17,9 @@
 
     public class Polygon : IDeformable2D<Polygon>
     {
-        public IArray<Point2D> Points { get; }
+        public IReadOnlyList<Point2D> Points { get; }
 
-        public Polygon(IArray<Point2D> points)
+        public Polygon(IReadOnlyList<Point2D> points)
             => Points = points;
 
         public Polygon Deform(Func<Point2D, Point2D> f)
@@ -49,13 +49,13 @@
 
     public static class Polygons
     {
-        public static IArray<T> SelectEveryNth<T>(this IArray<T> self, Integer n)
+        public static IReadOnlyList<T> SelectEveryNth<T>(this IReadOnlyList<T> self, Integer n)
             => self.Count.MapRange(i => self[(i * n) % self.Count]);
 
-        public static Polygon ToPolygon(this IArray<Point2D> points) 
+        public static Polygon ToPolygon(this IReadOnlyList<Point2D> points) 
             => new(points);
 
-        public static IArray<Point2D> CirclePoints(this Integer n)
+        public static IReadOnlyList<Point2D> CirclePoints(this Integer n)
             => n.LinearSpace.Map(t => t.Circle());
 
         public static Polygon RegularPolygon(int n)

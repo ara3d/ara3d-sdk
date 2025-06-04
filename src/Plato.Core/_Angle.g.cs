@@ -31,8 +31,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 1; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(Value); }
-        [MethodImpl(AggressiveInlining)] public static Angle CreateFromComponents(IReadOnlyList<Number> numbers) => new Angle(numbers[0]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(Value); }
+        [MethodImpl(AggressiveInlining)] public static Angle CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Angle(numbers[0]);
 
         [MethodImpl(AggressiveInlining)] public static Angle CreateFromComponent(Number x) => new Angle(x);
 
@@ -158,7 +158,7 @@ public Angle Pow4 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents(
 public Angle Pow5 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow5); } 
 public Angle Sqr { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqr); } 
 public Angle Sqrt { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqrt); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Angle> Sample(Angle b, Integer n){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Angle> Sample(Angle b, Integer n){
             var _var138 = b;
             {
                 var _var137 = this;

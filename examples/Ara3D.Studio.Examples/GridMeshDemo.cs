@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Ara3D.Collections;
 using Ara3D.Models;
 using Ara3D.SceneEval;
 using Ara3D.Studio.API;
@@ -17,11 +18,11 @@ public class GridMeshDemo : IModelGenerator
     [Range(-360f, 360f)] public float YRotation;
     [Range(-360f, 360f)] public float ZRotation;
     
-    public static IArray2D<T> ToArray2D<T>(T[] xs, int rows)
+    public static IReadOnlyList2D<T> ToArray2D<T>(T[] xs, int rows)
     {
         var cols = xs.Length / rows;
         if (xs.Length % cols != 0) throw new Exception($"Number of values {xs.Length} not divisible by {rows}");
-        return new Array2D<T>(cols, rows, (col, row) => xs[row * cols + col]);
+        return new FunctionalReadOnlyList2D<T>(cols, rows, (col, row) => xs[row * cols + col]);
     }
 
     public Model3D Eval(EvalContext eval)

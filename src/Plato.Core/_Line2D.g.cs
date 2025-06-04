@@ -45,8 +45,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 2; }
-        public IReadOnlyList<Point2D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point2D>(A, B); }
-        [MethodImpl(AggressiveInlining)] public static Line2D CreateFromComponents(IReadOnlyList<Point2D> numbers) => new Line2D(numbers[0], numbers[1]);
+        public System.Collections.Generic.IReadOnlyList<Point2D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point2D>(A, B); }
+        [MethodImpl(AggressiveInlining)] public static Line2D CreateFromComponents(System.Collections.Generic.IReadOnlyList<Point2D> numbers) => new Line2D(numbers[0], numbers[1]);
 
         [MethodImpl(AggressiveInlining)] public static Line2D CreateFromComponent(Point2D x) => new Line2D(x, x);
 
@@ -69,7 +69,7 @@ public Point2D End { [MethodImpl(AggressiveInlining)] get  => this.B; }
 public Line3D To3D { [MethodImpl(AggressiveInlining)] get  => (this.A.To3D, this.B.To3D); } 
 public Line3D Line3D { [MethodImpl(AggressiveInlining)] get  => this.To3D; } 
 [MethodImpl(AggressiveInlining)]  public static implicit operator Line3D(Line2D x) => x.Line3D;
-        public IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.A, this.B); } 
+        public System.Collections.Generic.IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.A, this.B); } 
 [MethodImpl(AggressiveInlining)] public Line2D Deform(System.Func<Point2D, Point2D> f) => (f.Invoke(this.A), f.Invoke(this.B));
 [MethodImpl(AggressiveInlining)] public Point2D At(Integer n) => this.Components[n];
 public Point2D this[Integer n] { [MethodImpl(AggressiveInlining)]  get => At(n); }
@@ -97,19 +97,19 @@ public Line2D RightHalf { [MethodImpl(AggressiveInlining)] get  => this.Right(((
 [MethodImpl(AggressiveInlining)] public Line2D Recenter(Point2D c) => (c.Subtract(this.Size.Half), c.Add(this.Size.Half));
 [MethodImpl(AggressiveInlining)] public Line2D Clamp(Line2D y) => (this.Clamp(y.Start), this.Clamp(y.End));
 [MethodImpl(AggressiveInlining)] public Point2D Clamp(Point2D value) => value.Clamp(this.Start, this.End);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> LinearSpace(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> LinearSpace(Integer count){
             var _var46 = this;
             return count.LinearSpace.Map((x)  => _var46.Lerp(x));
         }
 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> LinearSpaceExclusive(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> LinearSpaceExclusive(Integer count){
             var _var47 = this;
             return count.LinearSpaceExclusive.Map((x)  => _var47.Lerp(x));
         }
 
 [MethodImpl(AggressiveInlining)] public Line2D Subdivide(Number start, Number end) => (this.Lerp(start), this.Lerp(end));
 [MethodImpl(AggressiveInlining)] public Line2D Subdivide(NumberInterval subInterval) => this.Subdivide(subInterval.Start, subInterval.End);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Line2D> Subdivide(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Line2D> Subdivide(Integer count){
             var _var48 = this;
             return count.Intervals.Map((i)  => _var48.Subdivide(i));
         }

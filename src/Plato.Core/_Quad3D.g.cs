@@ -49,8 +49,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 4; }
-        public IReadOnlyList<Point3D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point3D>(A, B, C, D); }
-        [MethodImpl(AggressiveInlining)] public static Quad3D CreateFromComponents(IReadOnlyList<Point3D> numbers) => new Quad3D(numbers[0], numbers[1], numbers[2], numbers[3]);
+        public System.Collections.Generic.IReadOnlyList<Point3D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point3D>(A, B, C, D); }
+        [MethodImpl(AggressiveInlining)] public static Quad3D CreateFromComponents(System.Collections.Generic.IReadOnlyList<Point3D> numbers) => new Quad3D(numbers[0], numbers[1], numbers[2], numbers[3]);
 
         [MethodImpl(AggressiveInlining)] public static Quad3D CreateFromComponent(Point3D x) => new Quad3D(x, x, x, x);
 
@@ -66,14 +66,14 @@ public Triangle3D TriangleB { [MethodImpl(AggressiveInlining)] get  => (this.C, 
 // AMBIGUOUS FUNCTIONS 2
         /* Geometry_14.Points(q: Quad3D): IArray<Point3D> [Library]; */
         /* Meshes_18.Points(x: Quad3D): IArray<Point3D> [Library]; */
-        public IReadOnlyList<Point3D> Points { [MethodImpl(AggressiveInlining)] get  => this.Components; } 
+        public System.Collections.Generic.IReadOnlyList<Point3D> Points { [MethodImpl(AggressiveInlining)] get  => this.Components; } 
 public Number Area { [MethodImpl(AggressiveInlining)] get  => this.TriangleA.Area.Add(this.TriangleB.Area); } 
 public Vector3 Normal { [MethodImpl(AggressiveInlining)] get  => this.TriangleA.Normal.Average(this.TriangleB.Normal).Normalize; } 
 // AMBIGUOUS FUNCTIONS 2
         /* Meshes_18.Lines(x: Quad3D): IArray<Line3D> [Library]; */
         /* Meshes_18.Lines(xs: IPolyLine3D): IArray<Line3D> [Library]; */
-        public IReadOnlyList<Line3D> Lines { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.LineA, this.LineB, this.LineC, this.LineD); } 
-public IReadOnlyList<Triangle3D> Triangles { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.TriangleA, this.TriangleB); } 
+        public System.Collections.Generic.IReadOnlyList<Line3D> Lines { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.LineA, this.LineB, this.LineC, this.LineD); } 
+public System.Collections.Generic.IReadOnlyList<Triangle3D> Triangles { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.TriangleA, this.TriangleB); } 
 [MethodImpl(AggressiveInlining)] public Quad3D Deform(System.Func<Point3D, Point3D> f) => (f.Invoke(this.A), f.Invoke(this.B), f.Invoke(this.C), f.Invoke(this.D));
 [MethodImpl(AggressiveInlining)] public Point3D Point(Integer index) => this.Points[index];
 [MethodImpl(AggressiveInlining)] public Triangle3D Triangle(Integer3 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C));
@@ -109,7 +109,7 @@ public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
 [MethodImpl(AggressiveInlining)] public Quad3D TranslateX(Number s) => this.Translate(s.XVector3);
 [MethodImpl(AggressiveInlining)] public Quad3D TranslateY(Number s) => this.Translate(s.YVector3);
 [MethodImpl(AggressiveInlining)] public Quad3D TranslateZ(Number s) => this.Translate(s.ZVector3);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point3D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point3D> Sample(Integer numPoints){
             var _var85 = this;
             return numPoints.LinearSpace.Map((x)  => _var85.Eval(x));
         }

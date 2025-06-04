@@ -46,7 +46,7 @@ namespace Plato
         // Implemented interface functions
         [MethodImpl(AggressiveInlining)] public Point2D Eval(Angle t) => t.Circle(this.Center, this.Radius);
 [MethodImpl(AggressiveInlining)] public Point2D Eval(Number t) => this.Eval(t.Turns);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> Sample(Integer numPoints){
             var _var14 = this;
             return numPoints.LinearSpace.Map((x)  => _var14.Eval(x));
         }

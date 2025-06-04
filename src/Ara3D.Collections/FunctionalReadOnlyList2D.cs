@@ -4,22 +4,22 @@ using System.Collections.Generic;
 
 namespace Ara3D.Collections
 {
-    public class ReadOnlyList2D<T> : IReadOnlyList2D<T>
+    public class FunctionalReadOnlyList2D<T> : IReadOnlyList2D<T>
     {
         public int NumColumns { get; }
         public int NumRows { get; }
-        public T this[int column, int row] => this[row * NumColumns + column];
+        public Func<int, int, T> Func { get; }
+        public T this[int column, int row] => Func(column, row);
         public IReadOnlyList<T> Data { get; }
         public T this[int index] => Data[index];
-        public int Count => Data.Count;
+        public int Count => NumColumns * NumRows;
 
-        public ReadOnlyList2D(IReadOnlyList<T> data, int columns, int rows)
+        public FunctionalReadOnlyList2D(int columns, int rows, Func<int, int, T> func)
         {
-            if (rows * columns != data.Count)
-                throw new Exception($"The data array has length {data.Count} but expected {rows * columns}");
+            Func = func;
+            Data = new ReadOnlyList<T>(Count, i => this[i % NumColumns, i / NumColumns]);
             NumRows = rows;
             NumColumns = columns;
-            Data = data;
         }
 
         public IEnumerator<T> GetEnumerator()

@@ -47,8 +47,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 3; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X, Y, Z); }
-        [MethodImpl(AggressiveInlining)] public static Point3D CreateFromComponents(IReadOnlyList<Number> numbers) => new Point3D(numbers[0], numbers[1], numbers[2]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X, Y, Z); }
+        [MethodImpl(AggressiveInlining)] public static Point3D CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Point3D(numbers[0], numbers[1], numbers[2]);
 
         [MethodImpl(AggressiveInlining)] public static Point3D CreateFromComponent(Number x) => new Point3D(x, x, x);
 
@@ -141,7 +141,7 @@ public Point3D Pow4 { [MethodImpl(AggressiveInlining)] get  => this.MapComponent
 public Point3D Pow5 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow5); } 
 public Point3D Sqr { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqr); } 
 public Point3D Sqrt { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqrt); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point3D> Sample(Point3D b, Integer n){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point3D> Sample(Point3D b, Integer n){
             var _var55 = b;
             {
                 var _var54 = this;
@@ -212,7 +212,7 @@ public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
         // Unimplemented interface functions
         [MethodImpl(AggressiveInlining)] public Point3D Subtract(Vector3 amount) => throw new NotImplementedException();
 [MethodImpl(AggressiveInlining)]  public static Point3D operator -(Point3D x, Vector3 amount) => x.Subtract(amount);
-        public IReadOnlyList<Point3D> Points => throw new NotImplementedException();
+        public System.Collections.Generic.IReadOnlyList<Point3D> Points => throw new NotImplementedException();
 [MethodImpl(AggressiveInlining)] public Point3D Modulo(Number other) => throw new NotImplementedException();
 [MethodImpl(AggressiveInlining)]  public static Point3D operator %(Point3D self, Number other) => self.Modulo(other);
     }
@@ -220,7 +220,7 @@ public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
     public static partial class Extensions
     {
         [MethodImpl(AggressiveInlining)] public static Point3D Subtract(this Point3D x, Vector3 amount) => x.Subtract(amount);
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Point3D> Points(this Point3D x) => x.Points;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Point3D> Points(this Point3D x) => x.Points;
         [MethodImpl(AggressiveInlining)] public static Point3D Modulo(this Point3D self, Number other) => self.Modulo(other);
     }
 }

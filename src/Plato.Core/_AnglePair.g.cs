@@ -63,19 +63,19 @@ public AnglePair RightHalf { [MethodImpl(AggressiveInlining)] get  => this.Right
 [MethodImpl(AggressiveInlining)] public AnglePair Recenter(Angle c) => (c.Subtract(this.Size.Half), c.Add(this.Size.Half));
 [MethodImpl(AggressiveInlining)] public AnglePair Clamp(AnglePair y) => (this.Clamp(y.Start), this.Clamp(y.End));
 [MethodImpl(AggressiveInlining)] public Angle Clamp(Angle value) => value.Clamp(this.Start, this.End);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Angle> LinearSpace(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Angle> LinearSpace(Integer count){
             var _var5 = this;
             return count.LinearSpace.Map((x)  => _var5.Lerp(x));
         }
 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Angle> LinearSpaceExclusive(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Angle> LinearSpaceExclusive(Integer count){
             var _var6 = this;
             return count.LinearSpaceExclusive.Map((x)  => _var6.Lerp(x));
         }
 
 [MethodImpl(AggressiveInlining)] public AnglePair Subdivide(Number start, Number end) => (this.Lerp(start), this.Lerp(end));
 [MethodImpl(AggressiveInlining)] public AnglePair Subdivide(NumberInterval subInterval) => this.Subdivide(subInterval.Start, subInterval.End);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<AnglePair> Subdivide(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<AnglePair> Subdivide(Integer count){
             var _var7 = this;
             return count.Intervals.Map((i)  => _var7.Subdivide(i));
         }

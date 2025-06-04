@@ -34,7 +34,7 @@ public interface IInterpolatable<Self> where Self : IInterpolatable<Self>
     }
 public interface IArrayLike<Self, T> where Self : IArrayLike<Self, T>
     {
-        IReadOnlyList<T> Components { get; }
+        System.Collections.Generic.IReadOnlyList<T> Components { get; }
     }
 public interface IVectorLike<Self>: IInterpolatable<Self>, IScalarArithmetic<Self>, IArrayLike<Self, Number> where Self : IVectorLike<Self>
     {
@@ -243,11 +243,11 @@ public interface ISolid: IProceduralSurface
     }
 public interface IPointGeometry2D<Self>: IGeometry2D, IDeformable2D<Self>, IBounded2D where Self : IPointGeometry2D<Self>
     {
-        IReadOnlyList<Point2D> Points { get; }
+        System.Collections.Generic.IReadOnlyList<Point2D> Points { get; }
     }
 public interface IPointGeometry3D<Self>: IGeometry3D, IDeformable3D<Self>, IBounded3D where Self : IPointGeometry3D<Self>
     {
-        IReadOnlyList<Point3D> Points { get; }
+        System.Collections.Generic.IReadOnlyList<Point3D> Points { get; }
     }
 public interface IPrimitiveGeometry
     {
@@ -271,11 +271,11 @@ public interface IGeometricPrimitive3D<Self>: IPointGeometry3D<Self>, IDeformabl
     }
 public interface IPrimitiveGeometry2D<Self, T>: IPrimitiveGeometry, IDeformable2D<Self> where Self : IPrimitiveGeometry2D<Self, T>
     {
-        IReadOnlyList<T> Primitives { get; }
+        System.Collections.Generic.IReadOnlyList<T> Primitives { get; }
     }
 public interface IPrimitiveGeometry3D<Self, T>: IPrimitiveGeometry, IDeformable3D<Self> where Self : IPrimitiveGeometry3D<Self, T>
     {
-        IReadOnlyList<T> Primitives { get; }
+        System.Collections.Generic.IReadOnlyList<T> Primitives { get; }
     }
 public interface ILineGeometry2D<Self>: IPrimitiveGeometry2D<Self, Line2D>, ILineGeometry where Self : ILineGeometry2D<Self>
     {
@@ -297,7 +297,7 @@ public interface IQuadGeometry3D<Self>: IPrimitiveGeometry3D<Self, Quad3D>, IQua
     }
 public interface IIndexedGeometry: IPrimitiveGeometry
     {
-        IReadOnlyList<Integer> Indices { get; }
+        System.Collections.Generic.IReadOnlyList<Integer> Indices { get; }
     }
 public interface IPointArray2D<Self>: IPointGeometry2D<Self> where Self : IPointArray2D<Self>
     {
@@ -349,11 +349,11 @@ public interface IQuadArray3D<Self>: IQuadGeometry3D<Self> where Self : IQuadArr
     }
 public interface IQuadGrid2D<Self>: IQuadMesh2D<Self> where Self : IQuadGrid2D<Self>
     {
-        IReadOnlyList2D<Point2D> PointGrid { get; }
+        Ara3D.Collections.IReadOnlyList2D<Point2D> PointGrid { get; }
     }
 public interface IQuadGrid3D<Self>: IQuadMesh3D<Self> where Self : IQuadGrid3D<Self>
     {
-        IReadOnlyList2D<Point3D> PointGrid { get; }
+        Ara3D.Collections.IReadOnlyList2D<Point3D> PointGrid { get; }
         Boolean ClosedX { get; }
         Boolean ClosedY { get; }
     }

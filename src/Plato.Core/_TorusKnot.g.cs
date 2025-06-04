@@ -48,7 +48,7 @@ namespace Plato
         // Implemented interface functions
         [MethodImpl(AggressiveInlining)] public Point3D Eval(Angle t) => t.TorusKnot(this.P, this.Q).Multiply(this.Radius);
 [MethodImpl(AggressiveInlining)] public Point3D Eval(Number t) => this.Eval(t.Turns);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point3D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point3D> Sample(Integer numPoints){
             var _var35 = this;
             return numPoints.LinearSpace.Map((x)  => _var35.Eval(x));
         }

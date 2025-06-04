@@ -13,26 +13,26 @@ namespace Plato
     public partial struct TriangleMesh3D: ITriangleMesh3D<TriangleMesh3D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList<Point3D> Points;
-        [DataMember] public readonly IReadOnlyList<Integer3> FaceIndices;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Point3D> Points;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Integer3> FaceIndices;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public TriangleMesh3D WithPoints(IReadOnlyList<Point3D> points) => new TriangleMesh3D(points, FaceIndices);
-        [MethodImpl(AggressiveInlining)] public TriangleMesh3D WithFaceIndices(IReadOnlyList<Integer3> faceIndices) => new TriangleMesh3D(Points, faceIndices);
+        [MethodImpl(AggressiveInlining)] public TriangleMesh3D WithPoints(System.Collections.Generic.IReadOnlyList<Point3D> points) => new TriangleMesh3D(points, FaceIndices);
+        [MethodImpl(AggressiveInlining)] public TriangleMesh3D WithFaceIndices(System.Collections.Generic.IReadOnlyList<Integer3> faceIndices) => new TriangleMesh3D(Points, faceIndices);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public TriangleMesh3D(IReadOnlyList<Point3D> points, IReadOnlyList<Integer3> faceIndices) { Points = points; FaceIndices = faceIndices; }
+        [MethodImpl(AggressiveInlining)] public TriangleMesh3D(System.Collections.Generic.IReadOnlyList<Point3D> points, System.Collections.Generic.IReadOnlyList<Integer3> faceIndices) { Points = points; FaceIndices = faceIndices; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static TriangleMesh3D Create(IReadOnlyList<Point3D> points, IReadOnlyList<Integer3> faceIndices) => new TriangleMesh3D(points, faceIndices);
+        [MethodImpl(AggressiveInlining)] public static TriangleMesh3D Create(System.Collections.Generic.IReadOnlyList<Point3D> points, System.Collections.Generic.IReadOnlyList<Integer3> faceIndices) => new TriangleMesh3D(points, faceIndices);
 
         // Static default implementation
         public static readonly TriangleMesh3D Default = default;
 
         // Implicit converters to/from value-tuples and deconstructor
-        [MethodImpl(AggressiveInlining)] public static implicit operator (IReadOnlyList<Point3D>, IReadOnlyList<Integer3>)(TriangleMesh3D self) => (self.Points, self.FaceIndices);
-        [MethodImpl(AggressiveInlining)] public static implicit operator TriangleMesh3D((IReadOnlyList<Point3D>, IReadOnlyList<Integer3>) value) => new TriangleMesh3D(value.Item1, value.Item2);
-        [MethodImpl(AggressiveInlining)] public void Deconstruct(out IReadOnlyList<Point3D> points, out IReadOnlyList<Integer3> faceIndices) { points = Points; faceIndices = FaceIndices;  }
+        [MethodImpl(AggressiveInlining)] public static implicit operator (System.Collections.Generic.IReadOnlyList<Point3D>, System.Collections.Generic.IReadOnlyList<Integer3>)(TriangleMesh3D self) => (self.Points, self.FaceIndices);
+        [MethodImpl(AggressiveInlining)] public static implicit operator TriangleMesh3D((System.Collections.Generic.IReadOnlyList<Point3D>, System.Collections.Generic.IReadOnlyList<Integer3>) value) => new TriangleMesh3D(value.Item1, value.Item2);
+        [MethodImpl(AggressiveInlining)] public void Deconstruct(out System.Collections.Generic.IReadOnlyList<Point3D> points, out System.Collections.Generic.IReadOnlyList<Integer3> faceIndices) { points = Points; faceIndices = FaceIndices;  }
 
         // Object virtual function overrides: Equals, GetHashCode, ToString
         [MethodImpl(AggressiveInlining)] public Boolean Equals(TriangleMesh3D other) => Points.Equals(other.Points) && FaceIndices.Equals(other.FaceIndices);
@@ -42,13 +42,13 @@ namespace Plato
         [MethodImpl(AggressiveInlining)] public override string ToString() => $"{{ \"Points\" = {Points}, \"FaceIndices\" = {FaceIndices} }}";
 
         // Explicit implementation of interfaces by forwarding properties to fields
-        IReadOnlyList<Point3D> IPointGeometry3D<TriangleMesh3D>.Points { [MethodImpl(AggressiveInlining)] get => Points; }
+        System.Collections.Generic.IReadOnlyList<Point3D> IPointGeometry3D<TriangleMesh3D>.Points { [MethodImpl(AggressiveInlining)] get => Points; }
 
         // Implemented interface functions
         [MethodImpl(AggressiveInlining)] public TriangleMesh3D Deform(System.Func<Point3D, Point3D> f) => (this.Points.Map(f), this.FaceIndices);
-public IReadOnlyList<Integer> Indices { [MethodImpl(AggressiveInlining)] get  => this.FaceIndices.FlatMap((fi)  => fi.Components); } 
-public IReadOnlyList<Triangle3D> Faces { [MethodImpl(AggressiveInlining)] get  => this.Triangles; } 
-public IReadOnlyList<Triangle3D> Triangles { [MethodImpl(AggressiveInlining)] get {
+public System.Collections.Generic.IReadOnlyList<Integer> Indices { [MethodImpl(AggressiveInlining)] get  => this.FaceIndices.FlatMap((fi)  => fi.Components); } 
+public System.Collections.Generic.IReadOnlyList<Triangle3D> Faces { [MethodImpl(AggressiveInlining)] get  => this.Triangles; } 
+public System.Collections.Generic.IReadOnlyList<Triangle3D> Triangles { [MethodImpl(AggressiveInlining)] get {
             var _var87 = this;
             return this.FaceIndices.Map((f)  => _var87.Triangle(f));
         }
@@ -91,11 +91,11 @@ public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
 public Integer PrimitiveSize { [MethodImpl(AggressiveInlining)] get  => ((Integer)3); } 
 
         // Unimplemented interface functions
-        public IReadOnlyList<Triangle3D> Primitives => throw new NotImplementedException();
+        public System.Collections.Generic.IReadOnlyList<Triangle3D> Primitives => throw new NotImplementedException();
 }
     // Extension methods for the type
     public static partial class Extensions
     {
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Triangle3D> Primitives(this TriangleMesh3D x) => x.Primitives;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Triangle3D> Primitives(this TriangleMesh3D x) => x.Primitives;
     }
 }

@@ -45,8 +45,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 2; }
-        public IReadOnlyList<Point3D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point3D>(A, B); }
-        [MethodImpl(AggressiveInlining)] public static Line3D CreateFromComponents(IReadOnlyList<Point3D> numbers) => new Line3D(numbers[0], numbers[1]);
+        public System.Collections.Generic.IReadOnlyList<Point3D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point3D>(A, B); }
+        [MethodImpl(AggressiveInlining)] public static Line3D CreateFromComponents(System.Collections.Generic.IReadOnlyList<Point3D> numbers) => new Line3D(numbers[0], numbers[1]);
 
         [MethodImpl(AggressiveInlining)] public static Line3D CreateFromComponent(Point3D x) => new Line3D(x, x);
 
@@ -68,9 +68,9 @@ public Point3D End { [MethodImpl(AggressiveInlining)] get  => this.B; }
         /* IInterval_16.Center(x: IInterval<$T>): $T [Library]; */
         public Point3D Center { [MethodImpl(AggressiveInlining)] get  => this.A.Average(this.B); } 
 [MethodImpl(AggressiveInlining)] public Point3D Eval(Number t) => this.A.Lerp(this.B, t);
-public IReadOnlyList<Point3D> Points { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.A, this.B); } 
+public System.Collections.Generic.IReadOnlyList<Point3D> Points { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(this.A, this.B); } 
 [MethodImpl(AggressiveInlining)] public Line3D Deform(System.Func<Point3D, Point3D> f) => (f.Invoke(this.A), f.Invoke(this.B));
-public IReadOnlyList<Line3D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Points.WithNext((a, b)  => new Line3D(a, b), this.Closed); } 
+public System.Collections.Generic.IReadOnlyList<Line3D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Points.WithNext((a, b)  => new Line3D(a, b), this.Closed); } 
 [MethodImpl(AggressiveInlining)] public Point3D Point(Integer index) => this.Points[index];
 [MethodImpl(AggressiveInlining)] public Triangle3D Triangle(Integer3 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C));
 [MethodImpl(AggressiveInlining)] public Quad3D Quad(Integer4 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C), this.Point(f.D));
@@ -105,7 +105,7 @@ public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
 [MethodImpl(AggressiveInlining)] public Line3D TranslateX(Number s) => this.Translate(s.XVector3);
 [MethodImpl(AggressiveInlining)] public Line3D TranslateY(Number s) => this.Translate(s.YVector3);
 [MethodImpl(AggressiveInlining)] public Line3D TranslateZ(Number s) => this.Translate(s.ZVector3);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point3D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point3D> Sample(Integer numPoints){
             var _var68 = this;
             return numPoints.LinearSpace.Map((x)  => _var68.Eval(x));
         }
@@ -127,19 +127,19 @@ public Line3D RightHalf { [MethodImpl(AggressiveInlining)] get  => this.Right(((
 [MethodImpl(AggressiveInlining)] public Line3D Recenter(Point3D c) => (c.Subtract(this.Size.Half), c.Add(this.Size.Half));
 [MethodImpl(AggressiveInlining)] public Line3D Clamp(Line3D y) => (this.Clamp(y.Start), this.Clamp(y.End));
 [MethodImpl(AggressiveInlining)] public Point3D Clamp(Point3D value) => value.Clamp(this.Start, this.End);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point3D> LinearSpace(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point3D> LinearSpace(Integer count){
             var _var69 = this;
             return count.LinearSpace.Map((x)  => _var69.Lerp(x));
         }
 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point3D> LinearSpaceExclusive(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point3D> LinearSpaceExclusive(Integer count){
             var _var70 = this;
             return count.LinearSpaceExclusive.Map((x)  => _var70.Lerp(x));
         }
 
 [MethodImpl(AggressiveInlining)] public Line3D Subdivide(Number start, Number end) => (this.Lerp(start), this.Lerp(end));
 [MethodImpl(AggressiveInlining)] public Line3D Subdivide(NumberInterval subInterval) => this.Subdivide(subInterval.Start, subInterval.End);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Line3D> Subdivide(Integer count){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Line3D> Subdivide(Integer count){
             var _var71 = this;
             return count.Intervals.Map((i)  => _var71.Subdivide(i));
         }

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
   </ItemGroup>
 

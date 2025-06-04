@@ -13,26 +13,26 @@ namespace Plato
     public partial struct QuadMesh3D: IQuadMesh3D<QuadMesh3D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList<Point3D> Points;
-        [DataMember] public readonly IReadOnlyList<Integer4> FaceIndices;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Point3D> Points;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Integer4> FaceIndices;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public QuadMesh3D WithPoints(IReadOnlyList<Point3D> points) => new QuadMesh3D(points, FaceIndices);
-        [MethodImpl(AggressiveInlining)] public QuadMesh3D WithFaceIndices(IReadOnlyList<Integer4> faceIndices) => new QuadMesh3D(Points, faceIndices);
+        [MethodImpl(AggressiveInlining)] public QuadMesh3D WithPoints(System.Collections.Generic.IReadOnlyList<Point3D> points) => new QuadMesh3D(points, FaceIndices);
+        [MethodImpl(AggressiveInlining)] public QuadMesh3D WithFaceIndices(System.Collections.Generic.IReadOnlyList<Integer4> faceIndices) => new QuadMesh3D(Points, faceIndices);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public QuadMesh3D(IReadOnlyList<Point3D> points, IReadOnlyList<Integer4> faceIndices) { Points = points; FaceIndices = faceIndices; }
+        [MethodImpl(AggressiveInlining)] public QuadMesh3D(System.Collections.Generic.IReadOnlyList<Point3D> points, System.Collections.Generic.IReadOnlyList<Integer4> faceIndices) { Points = points; FaceIndices = faceIndices; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static QuadMesh3D Create(IReadOnlyList<Point3D> points, IReadOnlyList<Integer4> faceIndices) => new QuadMesh3D(points, faceIndices);
+        [MethodImpl(AggressiveInlining)] public static QuadMesh3D Create(System.Collections.Generic.IReadOnlyList<Point3D> points, System.Collections.Generic.IReadOnlyList<Integer4> faceIndices) => new QuadMesh3D(points, faceIndices);
 
         // Static default implementation
         public static readonly QuadMesh3D Default = default;
 
         // Implicit converters to/from value-tuples and deconstructor
-        [MethodImpl(AggressiveInlining)] public static implicit operator (IReadOnlyList<Point3D>, IReadOnlyList<Integer4>)(QuadMesh3D self) => (self.Points, self.FaceIndices);
-        [MethodImpl(AggressiveInlining)] public static implicit operator QuadMesh3D((IReadOnlyList<Point3D>, IReadOnlyList<Integer4>) value) => new QuadMesh3D(value.Item1, value.Item2);
-        [MethodImpl(AggressiveInlining)] public void Deconstruct(out IReadOnlyList<Point3D> points, out IReadOnlyList<Integer4> faceIndices) { points = Points; faceIndices = FaceIndices;  }
+        [MethodImpl(AggressiveInlining)] public static implicit operator (System.Collections.Generic.IReadOnlyList<Point3D>, System.Collections.Generic.IReadOnlyList<Integer4>)(QuadMesh3D self) => (self.Points, self.FaceIndices);
+        [MethodImpl(AggressiveInlining)] public static implicit operator QuadMesh3D((System.Collections.Generic.IReadOnlyList<Point3D>, System.Collections.Generic.IReadOnlyList<Integer4>) value) => new QuadMesh3D(value.Item1, value.Item2);
+        [MethodImpl(AggressiveInlining)] public void Deconstruct(out System.Collections.Generic.IReadOnlyList<Point3D> points, out System.Collections.Generic.IReadOnlyList<Integer4> faceIndices) { points = Points; faceIndices = FaceIndices;  }
 
         // Object virtual function overrides: Equals, GetHashCode, ToString
         [MethodImpl(AggressiveInlining)] public Boolean Equals(QuadMesh3D other) => Points.Equals(other.Points) && FaceIndices.Equals(other.FaceIndices);
@@ -42,13 +42,13 @@ namespace Plato
         [MethodImpl(AggressiveInlining)] public override string ToString() => $"{{ \"Points\" = {Points}, \"FaceIndices\" = {FaceIndices} }}";
 
         // Explicit implementation of interfaces by forwarding properties to fields
-        IReadOnlyList<Point3D> IPointGeometry3D<QuadMesh3D>.Points { [MethodImpl(AggressiveInlining)] get => Points; }
+        System.Collections.Generic.IReadOnlyList<Point3D> IPointGeometry3D<QuadMesh3D>.Points { [MethodImpl(AggressiveInlining)] get => Points; }
 
         // Implemented interface functions
         [MethodImpl(AggressiveInlining)] public QuadMesh3D Deform(System.Func<Point3D, Point3D> f) => (this.Points.Map(f), this.FaceIndices);
-public IReadOnlyList<Integer> Indices { [MethodImpl(AggressiveInlining)] get  => this.FaceIndices.FlatMap((fi)  => fi.Components); } 
-public IReadOnlyList<Quad3D> Faces { [MethodImpl(AggressiveInlining)] get  => this.Quads; } 
-public IReadOnlyList<Quad3D> Quads { [MethodImpl(AggressiveInlining)] get {
+public System.Collections.Generic.IReadOnlyList<Integer> Indices { [MethodImpl(AggressiveInlining)] get  => this.FaceIndices.FlatMap((fi)  => fi.Components); } 
+public System.Collections.Generic.IReadOnlyList<Quad3D> Faces { [MethodImpl(AggressiveInlining)] get  => this.Quads; } 
+public System.Collections.Generic.IReadOnlyList<Quad3D> Quads { [MethodImpl(AggressiveInlining)] get {
             var _var93 = this;
             return this.FaceIndices.Map((f)  => _var93.Quad(f));
         }
@@ -91,11 +91,11 @@ public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
 public Integer PrimitiveSize { [MethodImpl(AggressiveInlining)] get  => ((Integer)4); } 
 
         // Unimplemented interface functions
-        public IReadOnlyList<Quad3D> Primitives => throw new NotImplementedException();
+        public System.Collections.Generic.IReadOnlyList<Quad3D> Primitives => throw new NotImplementedException();
 }
     // Extension methods for the type
     public static partial class Extensions
     {
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Quad3D> Primitives(this QuadMesh3D x) => x.Primitives;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Quad3D> Primitives(this QuadMesh3D x) => x.Primitives;
     }
 }

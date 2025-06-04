@@ -13,16 +13,16 @@ namespace Plato
     public partial struct LineArray3D: ILineArray3D<LineArray3D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList<Line3D> Lines;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Line3D> Lines;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public LineArray3D WithLines(IReadOnlyList<Line3D> lines) => new LineArray3D(lines);
+        [MethodImpl(AggressiveInlining)] public LineArray3D WithLines(System.Collections.Generic.IReadOnlyList<Line3D> lines) => new LineArray3D(lines);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public LineArray3D(IReadOnlyList<Line3D> lines) { Lines = lines; }
+        [MethodImpl(AggressiveInlining)] public LineArray3D(System.Collections.Generic.IReadOnlyList<Line3D> lines) { Lines = lines; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static LineArray3D Create(IReadOnlyList<Line3D> lines) => new LineArray3D(lines);
+        [MethodImpl(AggressiveInlining)] public static LineArray3D Create(System.Collections.Generic.IReadOnlyList<Line3D> lines) => new LineArray3D(lines);
 
         // Static default implementation
         public static readonly LineArray3D Default = default;
@@ -44,7 +44,7 @@ namespace Plato
             return new LineArray3D(this.Lines.Map((l)  => l.Deform(_var109)));
         }
 
-public IReadOnlyList<Point3D> Points { [MethodImpl(AggressiveInlining)] get  => this.Lines.FlatMap((x)  => x.Points); } 
+public System.Collections.Generic.IReadOnlyList<Point3D> Points { [MethodImpl(AggressiveInlining)] get  => this.Lines.FlatMap((x)  => x.Points); } 
 [MethodImpl(AggressiveInlining)] public LineArray3D Deform<_T0>(_T0 t) where _T0 : ITransform3D{
             var _var110 = t;
             return this.Deform((v)  => v.Vector3.Transform(_var110.Matrix));
@@ -79,12 +79,12 @@ public Integer PrimitiveSize { [MethodImpl(AggressiveInlining)] get  => ((Intege
 
         // Unimplemented interface functions
         public Integer NumPrimitives => throw new NotImplementedException();
-public IReadOnlyList<Line3D> Primitives => throw new NotImplementedException();
+public System.Collections.Generic.IReadOnlyList<Line3D> Primitives => throw new NotImplementedException();
 }
     // Extension methods for the type
     public static partial class Extensions
     {
         [MethodImpl(AggressiveInlining)] public static Integer NumPrimitives(this LineArray3D x) => x.NumPrimitives;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line3D> Primitives(this LineArray3D x) => x.Primitives;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Line3D> Primitives(this LineArray3D x) => x.Primitives;
     }
 }

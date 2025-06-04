@@ -13,28 +13,28 @@ namespace Plato
     public partial struct QuadGrid2D: IQuadGrid2D<QuadGrid2D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList2D<Point2D> Grid;
+        [DataMember] public readonly Ara3D.Collections.IReadOnlyList2D<Point2D> Grid;
         [DataMember] public readonly Boolean ClosedX;
         [DataMember] public readonly Boolean ClosedY;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public QuadGrid2D WithGrid(IReadOnlyList2D<Point2D> grid) => new QuadGrid2D(grid, ClosedX, ClosedY);
+        [MethodImpl(AggressiveInlining)] public QuadGrid2D WithGrid(Ara3D.Collections.IReadOnlyList2D<Point2D> grid) => new QuadGrid2D(grid, ClosedX, ClosedY);
         [MethodImpl(AggressiveInlining)] public QuadGrid2D WithClosedX(Boolean closedX) => new QuadGrid2D(Grid, closedX, ClosedY);
         [MethodImpl(AggressiveInlining)] public QuadGrid2D WithClosedY(Boolean closedY) => new QuadGrid2D(Grid, ClosedX, closedY);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public QuadGrid2D(IReadOnlyList2D<Point2D> grid, Boolean closedX, Boolean closedY) { Grid = grid; ClosedX = closedX; ClosedY = closedY; }
+        [MethodImpl(AggressiveInlining)] public QuadGrid2D(Ara3D.Collections.IReadOnlyList2D<Point2D> grid, Boolean closedX, Boolean closedY) { Grid = grid; ClosedX = closedX; ClosedY = closedY; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static QuadGrid2D Create(IReadOnlyList2D<Point2D> grid, Boolean closedX, Boolean closedY) => new QuadGrid2D(grid, closedX, closedY);
+        [MethodImpl(AggressiveInlining)] public static QuadGrid2D Create(Ara3D.Collections.IReadOnlyList2D<Point2D> grid, Boolean closedX, Boolean closedY) => new QuadGrid2D(grid, closedX, closedY);
 
         // Static default implementation
         public static readonly QuadGrid2D Default = default;
 
         // Implicit converters to/from value-tuples and deconstructor
-        [MethodImpl(AggressiveInlining)] public static implicit operator (IReadOnlyList2D<Point2D>, Boolean, Boolean)(QuadGrid2D self) => (self.Grid, self.ClosedX, self.ClosedY);
-        [MethodImpl(AggressiveInlining)] public static implicit operator QuadGrid2D((IReadOnlyList2D<Point2D>, Boolean, Boolean) value) => new QuadGrid2D(value.Item1, value.Item2, value.Item3);
-        [MethodImpl(AggressiveInlining)] public void Deconstruct(out IReadOnlyList2D<Point2D> grid, out Boolean closedX, out Boolean closedY) { grid = Grid; closedX = ClosedX; closedY = ClosedY;  }
+        [MethodImpl(AggressiveInlining)] public static implicit operator (Ara3D.Collections.IReadOnlyList2D<Point2D>, Boolean, Boolean)(QuadGrid2D self) => (self.Grid, self.ClosedX, self.ClosedY);
+        [MethodImpl(AggressiveInlining)] public static implicit operator QuadGrid2D((Ara3D.Collections.IReadOnlyList2D<Point2D>, Boolean, Boolean) value) => new QuadGrid2D(value.Item1, value.Item2, value.Item3);
+        [MethodImpl(AggressiveInlining)] public void Deconstruct(out Ara3D.Collections.IReadOnlyList2D<Point2D> grid, out Boolean closedX, out Boolean closedY) { grid = Grid; closedX = ClosedX; closedY = ClosedY;  }
 
         // Object virtual function overrides: Equals, GetHashCode, ToString
         [MethodImpl(AggressiveInlining)] public Boolean Equals(QuadGrid2D other) => Grid.Equals(other.Grid) && ClosedX.Equals(other.ClosedX) && ClosedY.Equals(other.ClosedY);
@@ -49,11 +49,11 @@ namespace Plato
         [MethodImpl(AggressiveInlining)] public QuadGrid2D Deform(System.Func<Point2D, Point2D> f) => new QuadGrid2D(this.PointGrid.Map(f), this.ClosedX, this.ClosedY);
 public Integer NumColumns { [MethodImpl(AggressiveInlining)] get  => this.Grid.NumColumns; } 
 public Integer NumRows { [MethodImpl(AggressiveInlining)] get  => this.Grid.NumRows; } 
-public IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Grid; } 
-public IReadOnlyList<Integer4> FaceIndices { [MethodImpl(AggressiveInlining)] get  => this.Grid.AllQuadFaceIndices(this.ClosedX, this.ClosedY); } 
-public IReadOnlyList<Integer> Indices { [MethodImpl(AggressiveInlining)] get  => this.FaceIndices.FlatMap((fi)  => fi.Components); } 
-public IReadOnlyList<Quad2D> Faces { [MethodImpl(AggressiveInlining)] get  => this.Quads; } 
-public IReadOnlyList<Quad2D> Quads { [MethodImpl(AggressiveInlining)] get {
+public System.Collections.Generic.IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Grid; } 
+public System.Collections.Generic.IReadOnlyList<Integer4> FaceIndices { [MethodImpl(AggressiveInlining)] get  => this.Grid.AllQuadFaceIndices(this.ClosedX, this.ClosedY); } 
+public System.Collections.Generic.IReadOnlyList<Integer> Indices { [MethodImpl(AggressiveInlining)] get  => this.FaceIndices.FlatMap((fi)  => fi.Components); } 
+public System.Collections.Generic.IReadOnlyList<Quad2D> Faces { [MethodImpl(AggressiveInlining)] get  => this.Quads; } 
+public System.Collections.Generic.IReadOnlyList<Quad2D> Quads { [MethodImpl(AggressiveInlining)] get {
             var _var126 = this;
             return this.FaceIndices.Map((f)  => _var126.Quad(f));
         }
@@ -66,13 +66,13 @@ public Bounds2D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
 public Integer PrimitiveSize { [MethodImpl(AggressiveInlining)] get  => ((Integer)4); } 
 
         // Unimplemented interface functions
-        public IReadOnlyList<Quad2D> Primitives => throw new NotImplementedException();
-public IReadOnlyList2D<Point2D> PointGrid => throw new NotImplementedException();
+        public System.Collections.Generic.IReadOnlyList<Quad2D> Primitives => throw new NotImplementedException();
+public Ara3D.Collections.IReadOnlyList2D<Point2D> PointGrid => throw new NotImplementedException();
 }
     // Extension methods for the type
     public static partial class Extensions
     {
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Quad2D> Primitives(this QuadGrid2D x) => x.Primitives;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList2D<Point2D> PointGrid(this QuadGrid2D x) => x.PointGrid;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Quad2D> Primitives(this QuadGrid2D x) => x.Primitives;
+        [MethodImpl(AggressiveInlining)] public static Ara3D.Collections.IReadOnlyList2D<Point2D> PointGrid(this QuadGrid2D x) => x.PointGrid;
     }
 }

@@ -13,16 +13,16 @@ namespace Plato
     public partial struct PointArray3D: IPointArray3D<PointArray3D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList<Point3D> Points;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Point3D> Points;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public PointArray3D WithPoints(IReadOnlyList<Point3D> points) => new PointArray3D(points);
+        [MethodImpl(AggressiveInlining)] public PointArray3D WithPoints(System.Collections.Generic.IReadOnlyList<Point3D> points) => new PointArray3D(points);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public PointArray3D(IReadOnlyList<Point3D> points) { Points = points; }
+        [MethodImpl(AggressiveInlining)] public PointArray3D(System.Collections.Generic.IReadOnlyList<Point3D> points) { Points = points; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static PointArray3D Create(IReadOnlyList<Point3D> points) => new PointArray3D(points);
+        [MethodImpl(AggressiveInlining)] public static PointArray3D Create(System.Collections.Generic.IReadOnlyList<Point3D> points) => new PointArray3D(points);
 
         // Static default implementation
         public static readonly PointArray3D Default = default;
@@ -37,7 +37,7 @@ namespace Plato
         [MethodImpl(AggressiveInlining)] public override string ToString() => $"{{ \"Points\" = {Points} }}";
 
         // Explicit implementation of interfaces by forwarding properties to fields
-        IReadOnlyList<Point3D> IPointGeometry3D<PointArray3D>.Points { [MethodImpl(AggressiveInlining)] get => Points; }
+        System.Collections.Generic.IReadOnlyList<Point3D> IPointGeometry3D<PointArray3D>.Points { [MethodImpl(AggressiveInlining)] get => Points; }
 
         // Implemented interface functions
         [MethodImpl(AggressiveInlining)] public PointArray3D Deform(System.Func<Point3D, Point3D> f) => new PointArray3D(this.Points.Map(f));

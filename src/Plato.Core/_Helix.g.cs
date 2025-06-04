@@ -48,7 +48,7 @@ namespace Plato
         // Implemented interface functions
         [MethodImpl(AggressiveInlining)] public Point3D Eval(Angle t) => t.Helix(this.NumTurns).Multiply((this.Radius, this.Radius, this.Height));
 [MethodImpl(AggressiveInlining)] public Point3D Eval(Number t) => this.Eval(t.Turns);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point3D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point3D> Sample(Integer numPoints){
             var _var38 = this;
             return numPoints.LinearSpace.Map((x)  => _var38.Eval(x));
         }

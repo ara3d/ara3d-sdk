@@ -13,16 +13,16 @@ namespace Plato
     public partial struct QuadArray2D: IQuadArray2D<QuadArray2D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList<Quad2D> Quads;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Quad2D> Quads;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public QuadArray2D WithQuads(IReadOnlyList<Quad2D> quads) => new QuadArray2D(quads);
+        [MethodImpl(AggressiveInlining)] public QuadArray2D WithQuads(System.Collections.Generic.IReadOnlyList<Quad2D> quads) => new QuadArray2D(quads);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public QuadArray2D(IReadOnlyList<Quad2D> quads) { Quads = quads; }
+        [MethodImpl(AggressiveInlining)] public QuadArray2D(System.Collections.Generic.IReadOnlyList<Quad2D> quads) { Quads = quads; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static QuadArray2D Create(IReadOnlyList<Quad2D> quads) => new QuadArray2D(quads);
+        [MethodImpl(AggressiveInlining)] public static QuadArray2D Create(System.Collections.Generic.IReadOnlyList<Quad2D> quads) => new QuadArray2D(quads);
 
         // Static default implementation
         public static readonly QuadArray2D Default = default;
@@ -44,19 +44,19 @@ namespace Plato
             return new QuadArray2D(this.Quads.Map((q)  => q.Deform(_var120)));
         }
 
-public IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Quads.FlatMap((x)  => x.Points); } 
-public IReadOnlyList<Line2D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Quads.FlatMap((x)  => x.Lines); } 
-public IReadOnlyList<Triangle2D> Triangles { [MethodImpl(AggressiveInlining)] get  => this.Quads.FlatMap((x)  => x.Triangles); } 
+public System.Collections.Generic.IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Quads.FlatMap((x)  => x.Points); } 
+public System.Collections.Generic.IReadOnlyList<Line2D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Quads.FlatMap((x)  => x.Lines); } 
+public System.Collections.Generic.IReadOnlyList<Triangle2D> Triangles { [MethodImpl(AggressiveInlining)] get  => this.Quads.FlatMap((x)  => x.Triangles); } 
 public Integer PrimitiveSize { [MethodImpl(AggressiveInlining)] get  => ((Integer)4); } 
 
         // Unimplemented interface functions
         public Integer NumPrimitives => throw new NotImplementedException();
-public IReadOnlyList<Quad2D> Primitives => throw new NotImplementedException();
+public System.Collections.Generic.IReadOnlyList<Quad2D> Primitives => throw new NotImplementedException();
 }
     // Extension methods for the type
     public static partial class Extensions
     {
         [MethodImpl(AggressiveInlining)] public static Integer NumPrimitives(this QuadArray2D x) => x.NumPrimitives;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Quad2D> Primitives(this QuadArray2D x) => x.Primitives;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Quad2D> Primitives(this QuadArray2D x) => x.Primitives;
     }
 }

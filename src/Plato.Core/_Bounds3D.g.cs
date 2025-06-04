@@ -47,8 +47,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 2; }
-        public IReadOnlyList<Point3D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point3D>(Min, Max); }
-        [MethodImpl(AggressiveInlining)] public static Bounds3D CreateFromComponents(IReadOnlyList<Point3D> numbers) => new Bounds3D(numbers[0], numbers[1]);
+        public System.Collections.Generic.IReadOnlyList<Point3D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point3D>(Min, Max); }
+        [MethodImpl(AggressiveInlining)] public static Bounds3D CreateFromComponents(System.Collections.Generic.IReadOnlyList<Point3D> numbers) => new Bounds3D(numbers[0], numbers[1]);
 
         [MethodImpl(AggressiveInlining)] public static Bounds3D CreateFromComponent(Point3D x) => new Bounds3D(x, x);
 
@@ -57,7 +57,7 @@ namespace Plato
         /* Geometry_14.Center(x: Bounds3D): Point3D [Library]; */
         /* IBounds_4.Center(x: IBounds<$T,$D>): $T [Library]; */
         public Point3D Center { [MethodImpl(AggressiveInlining)] get  => this.Min.Average(this.Max); } 
-public IReadOnlyList<Point3D> Corners { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(new Point3D(this.Min.X, this.Min.Y, this.Min.Z), new Point3D(this.Max.X, this.Min.Y, this.Min.Z), new Point3D(this.Min.X, this.Max.Y, this.Min.Z), new Point3D(this.Max.X, this.Max.Y, this.Min.Z), new Point3D(this.Min.X, this.Min.Y, this.Max.Z), new Point3D(this.Max.X, this.Min.Y, this.Max.Z), new Point3D(this.Min.X, this.Max.Y, this.Max.Z), new Point3D(this.Max.X, this.Max.Y, this.Max.Z)); } 
+public System.Collections.Generic.IReadOnlyList<Point3D> Corners { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(new Point3D(this.Min.X, this.Min.Y, this.Min.Z), new Point3D(this.Max.X, this.Min.Y, this.Min.Z), new Point3D(this.Min.X, this.Max.Y, this.Min.Z), new Point3D(this.Max.X, this.Max.Y, this.Min.Z), new Point3D(this.Min.X, this.Min.Y, this.Max.Z), new Point3D(this.Max.X, this.Min.Y, this.Max.Z), new Point3D(this.Min.X, this.Max.Y, this.Max.Z), new Point3D(this.Max.X, this.Max.Y, this.Max.Z)); } 
 public static Bounds3D Empty { [MethodImpl(AggressiveInlining)] get  => (Constants.MaxPoint3D, Constants.MinPoint3D); } 
 [MethodImpl(AggressiveInlining)] public Bounds3D Deform(System.Func<Point3D, Point3D> f) => this.Corners.Map(f).Bounds();
 public Vector3 Size { [MethodImpl(AggressiveInlining)] get  => this.Max.Subtract(this.Min); } 

@@ -35,26 +35,26 @@ public Angle Degrees { [MethodImpl(AggressiveInlining)] get  => this.Number.Turn
 public Angle Gradians { [MethodImpl(AggressiveInlining)] get  => this.Number.Gradians; } 
 public Angle ArcMinutes { [MethodImpl(AggressiveInlining)] get  => this.Number.ArcMinutes; } 
 public Angle ArcSeconds { [MethodImpl(AggressiveInlining)] get  => this.Number.ArcSeconds; } 
-public IReadOnlyList<Point2D> CirclePoints { [MethodImpl(AggressiveInlining)] get  => this.Fractions.Map((x)  => x.Turns.UnitCircle); } 
+public System.Collections.Generic.IReadOnlyList<Point2D> CirclePoints { [MethodImpl(AggressiveInlining)] get  => this.Fractions.Map((x)  => x.Turns.UnitCircle); } 
 public Number Number { [MethodImpl(AggressiveInlining)] get  => this; } 
 [MethodImpl(AggressiveInlining)]  public static implicit operator Number(Integer x) => x.Number;
         public Integer PlusOne { [MethodImpl(AggressiveInlining)] get  => this.Add(((Integer)1)); } 
 public Integer MinusOne { [MethodImpl(AggressiveInlining)] get  => this.Subtract(((Integer)1)); } 
 public Integer FromOne { [MethodImpl(AggressiveInlining)] get  => ((Integer)1).Subtract(this); } 
 [MethodImpl(AggressiveInlining)] public Number FloatDivision(Integer y) => this.Number.Divide(y.Number);
-public IReadOnlyList<Number> Fractions { [MethodImpl(AggressiveInlining)] get {
+public System.Collections.Generic.IReadOnlyList<Number> Fractions { [MethodImpl(AggressiveInlining)] get {
             var _var139 = this;
             return this.Range.Map((i)  => i.FloatDivision(_var139.Subtract(((Integer)1))));
         }
          } 
-public IReadOnlyList<Number> FractionsExclusive { [MethodImpl(AggressiveInlining)] get {
+public System.Collections.Generic.IReadOnlyList<Number> FractionsExclusive { [MethodImpl(AggressiveInlining)] get {
             var _var140 = this;
             return this.Range.Map((i)  => i.FloatDivision(_var140));
         }
          } 
-public IReadOnlyList<Number> LinearSpace { [MethodImpl(AggressiveInlining)] get  => this.Fractions; } 
-public IReadOnlyList<Number> LinearSpaceExclusive { [MethodImpl(AggressiveInlining)] get  => this.FractionsExclusive; } 
-public IReadOnlyList<NumberInterval> Intervals { [MethodImpl(AggressiveInlining)] get  => this.Add(((Integer)1)).LinearSpace.WithNext((a, b)  => new NumberInterval(a, b), ((Boolean)false)); } 
+public System.Collections.Generic.IReadOnlyList<Number> LinearSpace { [MethodImpl(AggressiveInlining)] get  => this.Fractions; } 
+public System.Collections.Generic.IReadOnlyList<Number> LinearSpaceExclusive { [MethodImpl(AggressiveInlining)] get  => this.FractionsExclusive; } 
+public System.Collections.Generic.IReadOnlyList<NumberInterval> Intervals { [MethodImpl(AggressiveInlining)] get  => this.Add(((Integer)1)).LinearSpace.WithNext((a, b)  => new NumberInterval(a, b), ((Boolean)false)); } 
 [MethodImpl(AggressiveInlining)] public Integer Add(Integer b) => this + b;
         [MethodImpl(AggressiveInlining)] public Integer Subtract(Integer b) => this - b;
         [MethodImpl(AggressiveInlining)] public Integer Multiply(Integer b) => this * b;
@@ -73,7 +73,7 @@ public IReadOnlyList<NumberInterval> Intervals { [MethodImpl(AggressiveInlining)
             return (a, b, c, d);
         }
 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList2D<Integer4> AllQuadFaceIndices(Integer nRows, Boolean closedX, Boolean closedY){
+[MethodImpl(AggressiveInlining)] public Ara3D.Collections.IReadOnlyList2D<Integer4> AllQuadFaceIndices(Integer nRows, Boolean closedX, Boolean closedY){
             var _var142 = nRows;
             {
                 var _var141 = this;
@@ -88,7 +88,7 @@ public IReadOnlyList<NumberInterval> Intervals { [MethodImpl(AggressiveInlining)
 [MethodImpl(AggressiveInlining)] public Integer Lesser(Integer b) => this.LessThanOrEquals(b) ? this : b;
 [MethodImpl(AggressiveInlining)] public Integer Greater(Integer b) => this.GreaterThanOrEquals(b) ? this : b;
 [MethodImpl(AggressiveInlining)] public Integer Average(Integer b) => this.Lerp(b, ((Number)0.5));
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Integer> Sample(Integer b, Integer n){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Integer> Sample(Integer b, Integer n){
             var _var144 = b;
             {
                 var _var143 = this;
@@ -109,17 +109,17 @@ public IReadOnlyList<NumberInterval> Intervals { [MethodImpl(AggressiveInlining)
         [MethodImpl(AggressiveInlining)] public static Angle Gradians(this int x) => ((Integer)x).Gradians;
         [MethodImpl(AggressiveInlining)] public static Angle ArcMinutes(this int x) => ((Integer)x).ArcMinutes;
         [MethodImpl(AggressiveInlining)] public static Angle ArcSeconds(this int x) => ((Integer)x).ArcSeconds;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Point2D> CirclePoints(this int n) => ((Integer)n).CirclePoints;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Point2D> CirclePoints(this int n) => ((Integer)n).CirclePoints;
         [MethodImpl(AggressiveInlining)] public static Number Number(this int x) => ((Integer)x).Number;
         [MethodImpl(AggressiveInlining)] public static Integer PlusOne(this int x) => ((Integer)x).PlusOne;
         [MethodImpl(AggressiveInlining)] public static Integer MinusOne(this int x) => ((Integer)x).MinusOne;
         [MethodImpl(AggressiveInlining)] public static Integer FromOne(this int x) => ((Integer)x).FromOne;
         [MethodImpl(AggressiveInlining)] public static Number FloatDivision(this int x, Integer y) => ((Integer)x).FloatDivision(y);
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Number> Fractions(this int x) => ((Integer)x).Fractions;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Number> FractionsExclusive(this int x) => ((Integer)x).FractionsExclusive;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Number> LinearSpace(this int count) => ((Integer)count).LinearSpace;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Number> LinearSpaceExclusive(this int count) => ((Integer)count).LinearSpaceExclusive;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<NumberInterval> Intervals(this int count) => ((Integer)count).Intervals;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Number> Fractions(this int x) => ((Integer)x).Fractions;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Number> FractionsExclusive(this int x) => ((Integer)x).FractionsExclusive;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Number> LinearSpace(this int count) => ((Integer)count).LinearSpace;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Number> LinearSpaceExclusive(this int count) => ((Integer)count).LinearSpaceExclusive;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<NumberInterval> Intervals(this int count) => ((Integer)count).Intervals;
         [MethodImpl(AggressiveInlining)] public static Integer Abs(this Integer self) => self.Abs;
         [MethodImpl(AggressiveInlining)] public static Integer Abs(this int self) => ((Integer)self).Abs;
         [MethodImpl(AggressiveInlining)] public static Integer Sign(this Integer self) => self.Sign;
@@ -147,10 +147,10 @@ public IReadOnlyList<NumberInterval> Intervals { [MethodImpl(AggressiveInlining)
         [MethodImpl(AggressiveInlining)] public static Integer CompareTo(this Integer self, Integer other) => self.CompareTo(other);
         [MethodImpl(AggressiveInlining)] public static Integer CompareTo(this int self, Integer other) => ((Integer)self).CompareTo(other);
         [MethodImpl(AggressiveInlining)] public static Integer4 QuadFaceIndices(this int col, Integer row, Integer nCols, Integer nRows) => ((Integer)col).QuadFaceIndices(row, nCols, nRows);
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList2D<Integer4> AllQuadFaceIndices(this int nCols, Integer nRows, Boolean closedX, Boolean closedY) => ((Integer)nCols).AllQuadFaceIndices(nRows, closedX, closedY);
+        [MethodImpl(AggressiveInlining)] public static Ara3D.Collections.IReadOnlyList2D<Integer4> AllQuadFaceIndices(this int nCols, Integer nRows, Boolean closedX, Boolean closedY) => ((Integer)nCols).AllQuadFaceIndices(nRows, closedX, closedY);
         [MethodImpl(AggressiveInlining)] public static Integer Lesser(this int a, Integer b) => ((Integer)a).Lesser(b);
         [MethodImpl(AggressiveInlining)] public static Integer Greater(this int a, Integer b) => ((Integer)a).Greater(b);
         [MethodImpl(AggressiveInlining)] public static Integer Average(this int a, Integer b) => ((Integer)a).Average(b);
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Integer> Sample(this int a, Integer b, Integer n) => ((Integer)a).Sample(b, n);
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Integer> Sample(this int a, Integer b, Integer n) => ((Integer)a).Sample(b, n);
     }
 }

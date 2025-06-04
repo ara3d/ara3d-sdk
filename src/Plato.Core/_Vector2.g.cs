@@ -36,8 +36,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 2; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X, Y); }
-        [MethodImpl(AggressiveInlining)] public static Vector2 CreateFromComponents(IReadOnlyList<Number> numbers) => new Vector2(numbers[0], numbers[1]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X, Y); }
+        [MethodImpl(AggressiveInlining)] public static Vector2 CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Vector2(numbers[0], numbers[1]);
 
         [MethodImpl(AggressiveInlining)] public static Vector2 CreateFromComponent(Number x) => new Vector2(x, x);
 
@@ -159,7 +159,7 @@ public Vector2 Pow3 { [MethodImpl(AggressiveInlining)] get  => this.MapComponent
 public Vector2 Pow4 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow4); } 
 public Vector2 Pow5 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow5); } 
 public Vector2 Sqr { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqr); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Vector2> Sample(Vector2 b, Integer n){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Vector2> Sample(Vector2 b, Integer n){
             var _var149 = b;
             {
                 var _var148 = this;
@@ -342,7 +342,7 @@ public Number this[Integer n] { [MethodImpl(AggressiveInlining)]  get => At(n); 
         [MethodImpl(AggressiveInlining)] public static Vector2 Pow4(this System.Numerics.Vector2 x) => ((Vector2)x).Pow4;
         [MethodImpl(AggressiveInlining)] public static Vector2 Pow5(this System.Numerics.Vector2 x) => ((Vector2)x).Pow5;
         [MethodImpl(AggressiveInlining)] public static Vector2 Sqr(this System.Numerics.Vector2 x) => ((Vector2)x).Sqr;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Vector2> Sample(this System.Numerics.Vector2 a, Vector2 b, Integer n) => ((Vector2)a).Sample(b, n);
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Vector2> Sample(this System.Numerics.Vector2 a, Vector2 b, Integer n) => ((Vector2)a).Sample(b, n);
         [MethodImpl(AggressiveInlining)] public static Vector2 Half(this System.Numerics.Vector2 x) => ((Vector2)x).Half;
         [MethodImpl(AggressiveInlining)] public static Vector2 Quarter(this System.Numerics.Vector2 x) => ((Vector2)x).Quarter;
         [MethodImpl(AggressiveInlining)] public static Vector2 Eight(this System.Numerics.Vector2 x) => ((Vector2)x).Eight;

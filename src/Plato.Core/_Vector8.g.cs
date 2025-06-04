@@ -36,8 +36,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 8; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X0, X1, X2, X3, X4, X5, X6, X7); }
-        [MethodImpl(AggressiveInlining)] public static Vector8 CreateFromComponents(IReadOnlyList<Number> numbers) => new Vector8(numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], numbers[6], numbers[7]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X0, X1, X2, X3, X4, X5, X6, X7); }
+        [MethodImpl(AggressiveInlining)] public static Vector8 CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Vector8(numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], numbers[6], numbers[7]);
 
         [MethodImpl(AggressiveInlining)] public static Vector8 CreateFromComponent(Number x) => new Vector8(x, x, x, x, x, x, x, x);
 
@@ -158,7 +158,7 @@ public Vector8 Pow2 { [MethodImpl(AggressiveInlining)] get  => this.MapComponent
 public Vector8 Pow3 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow3); } 
 public Vector8 Pow4 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow4); } 
 public Vector8 Pow5 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow5); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Vector8> Sample(Vector8 b, Integer n){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Vector8> Sample(Vector8 b, Integer n){
             var _var164 = b;
             {
                 var _var163 = this;
@@ -361,7 +361,7 @@ public Number this[Integer n] { [MethodImpl(AggressiveInlining)]  get => At(n); 
         [MethodImpl(AggressiveInlining)] public static Vector8 Pow3(this System.Runtime.Intrinsics.Vector256<float> x) => ((Vector8)x).Pow3;
         [MethodImpl(AggressiveInlining)] public static Vector8 Pow4(this System.Runtime.Intrinsics.Vector256<float> x) => ((Vector8)x).Pow4;
         [MethodImpl(AggressiveInlining)] public static Vector8 Pow5(this System.Runtime.Intrinsics.Vector256<float> x) => ((Vector8)x).Pow5;
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Vector8> Sample(this System.Runtime.Intrinsics.Vector256<float> a, Vector8 b, Integer n) => ((Vector8)a).Sample(b, n);
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Vector8> Sample(this System.Runtime.Intrinsics.Vector256<float> a, Vector8 b, Integer n) => ((Vector8)a).Sample(b, n);
         [MethodImpl(AggressiveInlining)] public static Vector8 Half(this System.Runtime.Intrinsics.Vector256<float> x) => ((Vector8)x).Half;
         [MethodImpl(AggressiveInlining)] public static Vector8 Quarter(this System.Runtime.Intrinsics.Vector256<float> x) => ((Vector8)x).Quarter;
         [MethodImpl(AggressiveInlining)] public static Vector8 Eight(this System.Runtime.Intrinsics.Vector256<float> x) => ((Vector8)x).Eight;

@@ -13,26 +13,26 @@ namespace Plato
     public partial struct PolyLine3D: IPolyLine3D<PolyLine3D>
     {
         // Fields
-        [DataMember] public readonly IReadOnlyList<Point3D> Points;
+        [DataMember] public readonly System.Collections.Generic.IReadOnlyList<Point3D> Points;
         [DataMember] public readonly Boolean Closed;
 
         // With functions 
-        [MethodImpl(AggressiveInlining)] public PolyLine3D WithPoints(IReadOnlyList<Point3D> points) => new PolyLine3D(points, Closed);
+        [MethodImpl(AggressiveInlining)] public PolyLine3D WithPoints(System.Collections.Generic.IReadOnlyList<Point3D> points) => new PolyLine3D(points, Closed);
         [MethodImpl(AggressiveInlining)] public PolyLine3D WithClosed(Boolean closed) => new PolyLine3D(Points, closed);
 
         // Regular Constructor
-        [MethodImpl(AggressiveInlining)] public PolyLine3D(IReadOnlyList<Point3D> points, Boolean closed) { Points = points; Closed = closed; }
+        [MethodImpl(AggressiveInlining)] public PolyLine3D(System.Collections.Generic.IReadOnlyList<Point3D> points, Boolean closed) { Points = points; Closed = closed; }
 
         // Static factory function
-        [MethodImpl(AggressiveInlining)] public static PolyLine3D Create(IReadOnlyList<Point3D> points, Boolean closed) => new PolyLine3D(points, closed);
+        [MethodImpl(AggressiveInlining)] public static PolyLine3D Create(System.Collections.Generic.IReadOnlyList<Point3D> points, Boolean closed) => new PolyLine3D(points, closed);
 
         // Static default implementation
         public static readonly PolyLine3D Default = default;
 
         // Implicit converters to/from value-tuples and deconstructor
-        [MethodImpl(AggressiveInlining)] public static implicit operator (IReadOnlyList<Point3D>, Boolean)(PolyLine3D self) => (self.Points, self.Closed);
-        [MethodImpl(AggressiveInlining)] public static implicit operator PolyLine3D((IReadOnlyList<Point3D>, Boolean) value) => new PolyLine3D(value.Item1, value.Item2);
-        [MethodImpl(AggressiveInlining)] public void Deconstruct(out IReadOnlyList<Point3D> points, out Boolean closed) { points = Points; closed = Closed;  }
+        [MethodImpl(AggressiveInlining)] public static implicit operator (System.Collections.Generic.IReadOnlyList<Point3D>, Boolean)(PolyLine3D self) => (self.Points, self.Closed);
+        [MethodImpl(AggressiveInlining)] public static implicit operator PolyLine3D((System.Collections.Generic.IReadOnlyList<Point3D>, Boolean) value) => new PolyLine3D(value.Item1, value.Item2);
+        [MethodImpl(AggressiveInlining)] public void Deconstruct(out System.Collections.Generic.IReadOnlyList<Point3D> points, out Boolean closed) { points = Points; closed = Closed;  }
 
         // Object virtual function overrides: Equals, GetHashCode, ToString
         [MethodImpl(AggressiveInlining)] public Boolean Equals(PolyLine3D other) => Points.Equals(other.Points) && Closed.Equals(other.Closed);
@@ -43,11 +43,11 @@ namespace Plato
 
         // Explicit implementation of interfaces by forwarding properties to fields
         Boolean IOpenClosedShape.Closed { [MethodImpl(AggressiveInlining)] get => Closed; }
-        IReadOnlyList<Point3D> IPointGeometry3D<PolyLine3D>.Points { [MethodImpl(AggressiveInlining)] get => Points; }
+        System.Collections.Generic.IReadOnlyList<Point3D> IPointGeometry3D<PolyLine3D>.Points { [MethodImpl(AggressiveInlining)] get => Points; }
 
         // Implemented interface functions
         [MethodImpl(AggressiveInlining)] public PolyLine3D Deform(System.Func<Point3D, Point3D> f) => (this.Points.Map(f), this.Closed);
-public IReadOnlyList<Line3D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Points.WithNext((a, b)  => new Line3D(a, b), this.Closed); } 
+public System.Collections.Generic.IReadOnlyList<Line3D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Points.WithNext((a, b)  => new Line3D(a, b), this.Closed); } 
 [MethodImpl(AggressiveInlining)] public Point3D Point(Integer index) => this.Points[index];
 [MethodImpl(AggressiveInlining)] public Triangle3D Triangle(Integer3 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C));
 [MethodImpl(AggressiveInlining)] public Quad3D Quad(Integer4 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C), this.Point(f.D));
@@ -82,7 +82,7 @@ public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
 [MethodImpl(AggressiveInlining)] public PolyLine3D TranslateX(Number s) => this.Translate(s.XVector3);
 [MethodImpl(AggressiveInlining)] public PolyLine3D TranslateY(Number s) => this.Translate(s.YVector3);
 [MethodImpl(AggressiveInlining)] public PolyLine3D TranslateZ(Number s) => this.Translate(s.ZVector3);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point3D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point3D> Sample(Integer numPoints){
             var _var103 = this;
             return numPoints.LinearSpace.Map((x)  => _var103.Eval(x));
         }

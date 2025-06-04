@@ -56,13 +56,13 @@ public Point2D TopRight { [MethodImpl(AggressiveInlining)] get  => (this.Right, 
 public Point2D TopLeft { [MethodImpl(AggressiveInlining)] get  => (this.Left, this.Top); } 
 public Quad2D Quad2D { [MethodImpl(AggressiveInlining)] get  => (this.BottomLeft, this.BottomRight, this.TopRight, this.TopLeft); } 
 [MethodImpl(AggressiveInlining)]  public static implicit operator Quad2D(Rect2D x) => x.Quad2D;
-        public IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Quad2D.Points; } 
-public IReadOnlyList<Line2D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Points.WithNext((a, b)  => new Line2D(a, b), this.Closed); } 
+        public System.Collections.Generic.IReadOnlyList<Point2D> Points { [MethodImpl(AggressiveInlining)] get  => this.Quad2D.Points; } 
+public System.Collections.Generic.IReadOnlyList<Line2D> Lines { [MethodImpl(AggressiveInlining)] get  => this.Points.WithNext((a, b)  => new Line2D(a, b), this.Closed); } 
 [MethodImpl(AggressiveInlining)] public Point2D Point(Integer index) => this.Points[index];
 [MethodImpl(AggressiveInlining)] public Triangle2D Triangle(Integer3 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C));
 [MethodImpl(AggressiveInlining)] public Quad2D Quad(Integer4 f) => (this.Point(f.A), this.Point(f.B), this.Point(f.C), this.Point(f.D));
 public Bounds2D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bounds(); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> Sample(Integer numPoints){
             var _var49 = this;
             return numPoints.LinearSpace.Map((x)  => _var49.Eval(x));
         }

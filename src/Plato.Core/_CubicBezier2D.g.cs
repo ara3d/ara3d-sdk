@@ -49,7 +49,7 @@ namespace Plato
 
         // Implemented interface functions
         [MethodImpl(AggressiveInlining)] public Point2D Eval(Number t) => this.A.Vector2.CubicBezier(this.B, this.C, this.D, t);
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> Sample(Integer numPoints){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> Sample(Integer numPoints){
             var _var13 = this;
             return numPoints.LinearSpace.Map((x)  => _var13.Eval(x));
         }

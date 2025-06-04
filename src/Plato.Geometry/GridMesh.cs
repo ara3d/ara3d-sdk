@@ -1,4 +1,6 @@
 ﻿
+using Ara3D.Collections;
+
 namespace Plato.Geometry
 {
     /// <summary>
@@ -12,7 +14,7 @@ namespace Plato.Geometry
     /// </summary>
     public class GridMesh: IQuadMesh3D<GridMesh> 
     {
-        public GridMesh(IArray2D<Point3D> points, bool closedX, bool closedY)
+        public GridMesh(IReadOnlyList2D<Point3D> points, bool closedX, bool closedY)
         {
             PointGrid = points;
             ClosedX = closedX;
@@ -24,9 +26,9 @@ namespace Plato.Geometry
                 (col, row) => SurfaceDiscretization.QuadMeshFaceVertices(col, row, points.NumColumns, points.NumRows));
         }
 
-        public IArray2D<Point3D> PointGrid { get; }
-        public IArray<Point3D> Points => PointGrid;
-        public IArray<Integer4> FaceIndices { get; }
+        public IReadOnlyList2D<Point3D> PointGrid { get; }
+        public IReadOnlyList<Point3D> Points => PointGrid;
+        public IReadOnlyList<Integer4> FaceIndices { get; }
         public bool ClosedX { get; }
         public bool ClosedY { get; }
 
@@ -42,8 +44,8 @@ namespace Plato.Geometry
         // TODO:  
 
         public Bounds3D Bounds => throw new NotImplementedException();
-        public IArray<Integer> Indices => throw new NotImplementedException();
-        public IArray<Quad3D> Primitives => throw new NotImplementedException();
+        public IReadOnlyList<Integer> Indices => throw new NotImplementedException();
+        public IReadOnlyList<Quad3D> Primitives => throw new NotImplementedException();
     }
 
     public static class DeformableExtensions
@@ -54,14 +56,14 @@ namespace Plato.Geometry
 
     public static class GridMeshExtensions
     {
-        public static IArray2D<T> ToArray2D<T>(IArray<T>[] arrays)
+        public static IReadOnlyList2D<T> ToArray2D<T>(IReadOnlyList<T>[] arrays)
         {
             if (arrays.Length == 0)
-                return new Array2D<T>(0, 0, (_,_) => default);
+                return new FunctionalReadOnlyList2D<T>(0, 0, (_,_) => default);
             var n = arrays[0].Count;
             if (arrays.Any(xs => xs.Count != n))
                 throw new Exception("All arrays must be of the same length");
-            return new Array2D<T>(n, arrays.Length, (row, col) => arrays[row][col]);
+            return new FunctionalReadOnlyList2D<T>(n, arrays.Length, (row, col) => arrays[row][col]);
         }
 
         public static GridMesh ExtrudeTo(this PointArray3D row1, PointArray3D row2, bool closedX)

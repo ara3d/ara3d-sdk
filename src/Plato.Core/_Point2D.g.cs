@@ -45,8 +45,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 2; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X, Y); }
-        [MethodImpl(AggressiveInlining)] public static Point2D CreateFromComponents(IReadOnlyList<Number> numbers) => new Point2D(numbers[0], numbers[1]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(X, Y); }
+        [MethodImpl(AggressiveInlining)] public static Point2D CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Point2D(numbers[0], numbers[1]);
 
         [MethodImpl(AggressiveInlining)] public static Point2D CreateFromComponent(Number x) => new Point2D(x, x);
 
@@ -139,7 +139,7 @@ public Point2D Pow4 { [MethodImpl(AggressiveInlining)] get  => this.MapComponent
 public Point2D Pow5 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow5); } 
 public Point2D Sqr { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqr); } 
 public Point2D Sqrt { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqrt); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Point2D> Sample(Point2D b, Integer n){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Point2D> Sample(Point2D b, Integer n){
             var _var43 = b;
             {
                 var _var42 = this;
@@ -180,7 +180,7 @@ public Bounds2D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
         // Unimplemented interface functions
         [MethodImpl(AggressiveInlining)] public Point2D Subtract(Vector2 amount) => throw new NotImplementedException();
 [MethodImpl(AggressiveInlining)]  public static Point2D operator -(Point2D x, Vector2 amount) => x.Subtract(amount);
-        public IReadOnlyList<Point2D> Points => throw new NotImplementedException();
+        public System.Collections.Generic.IReadOnlyList<Point2D> Points => throw new NotImplementedException();
 [MethodImpl(AggressiveInlining)] public Point2D Modulo(Number other) => throw new NotImplementedException();
 [MethodImpl(AggressiveInlining)]  public static Point2D operator %(Point2D self, Number other) => self.Modulo(other);
     }
@@ -188,7 +188,7 @@ public Bounds2D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
     public static partial class Extensions
     {
         [MethodImpl(AggressiveInlining)] public static Point2D Subtract(this Point2D x, Vector2 amount) => x.Subtract(amount);
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Point2D> Points(this Point2D x) => x.Points;
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Point2D> Points(this Point2D x) => x.Points;
         [MethodImpl(AggressiveInlining)] public static Point2D Modulo(this Point2D self, Number other) => self.Modulo(other);
     }
 }

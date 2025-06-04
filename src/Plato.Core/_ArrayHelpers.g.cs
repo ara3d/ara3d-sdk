@@ -36,12 +36,12 @@ namespace Plato
         // Explicit implementation of interfaces by forwarding properties to fields
 
         // Implemented interface functions
-        [MethodImpl(AggressiveInlining)] public static IReadOnlyList<Integer2> Integer2Array(IReadOnlyList<Integer> xs) => xs.MapPairs((a, b)  => new Integer2(a, b));
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Integer3> Integer3Array(IReadOnlyList<Integer> xs) => xs.MapTriplets((a, b, c)  => new Integer3(a, b, c));
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Integer4> Integer4Array(IReadOnlyList<Integer> xs) => xs.MapQuartets((a, b, c, d)  => new Integer4(a, b, c, d));
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Vector2> Vector2Array(IReadOnlyList<Number> xs) => xs.MapPairs((a, b)  => new Vector2(a, b));
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Vector3> Vector3Array(IReadOnlyList<Number> xs) => xs.MapTriplets((a, b, c)  => new Vector3(a, b, c));
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Vector4> Vector4Array(IReadOnlyList<Number> xs) => xs.MapQuartets((a, b, c, d)  => new Vector4(a, b, c, d));
+        [MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Integer2> Integer2Array(System.Collections.Generic.IReadOnlyList<Integer> xs) => xs.MapPairs((a, b)  => new Integer2(a, b));
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Integer3> Integer3Array(System.Collections.Generic.IReadOnlyList<Integer> xs) => xs.MapTriplets((a, b, c)  => new Integer3(a, b, c));
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Integer4> Integer4Array(System.Collections.Generic.IReadOnlyList<Integer> xs) => xs.MapQuartets((a, b, c, d)  => new Integer4(a, b, c, d));
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Vector2> Vector2Array(System.Collections.Generic.IReadOnlyList<Number> xs) => xs.MapPairs((a, b)  => new Vector2(a, b));
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Vector3> Vector3Array(System.Collections.Generic.IReadOnlyList<Number> xs) => xs.MapTriplets((a, b, c)  => new Vector3(a, b, c));
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Vector4> Vector4Array(System.Collections.Generic.IReadOnlyList<Number> xs) => xs.MapQuartets((a, b, c, d)  => new Vector4(a, b, c, d));
 
         // Unimplemented interface functions
     }

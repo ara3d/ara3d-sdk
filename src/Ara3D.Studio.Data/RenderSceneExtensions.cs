@@ -12,9 +12,6 @@ public static unsafe class RenderSceneExtensions
     public static IntPtr GetIntPtr<T>(this IBuffer<T> self) where T : unmanaged
         => new(self.GetPointer());
 
-    public static IArray<T> ToIArray<T>(this IReadOnlyList<T> self)
-        => new Array<T>(self.Count, i => self[i]);
-
     public static TriangleMesh3D ToMesh(this MeshSliceStruct slice, IRenderScene scene)
     {
         var minVertex = uint.MaxValue;
@@ -46,7 +43,7 @@ public static unsafe class RenderSceneExtensions
             faceIndices.Add(new Integer3((int)index1, (int)index2, (int)index3));
         }
 
-        return (points.ToIArray(), faceIndices.ToIArray());
+        return (points, faceIndices);
     }
 
     public static void VerifyIsValidNumber(float f, string name)

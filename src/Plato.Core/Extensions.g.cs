@@ -11,18 +11,18 @@ namespace Plato
 {
     public static partial class Extensions
     {
-        [MethodImpl(AggressiveInlining)] public static Bounds2D Bounds(this IReadOnlyList<Point2D> xs) => xs.Reduce(Plato.Bounds2D.Empty, (a, b)  => a.Include(b));
-[MethodImpl(AggressiveInlining)] public static Bounds3D Bounds(this IReadOnlyList<Point3D> xs) => xs.Reduce(Plato.Bounds3D.Empty, (a, b)  => a.Include(b));
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line2D> Lines(this IReadOnlyList<Line2D> xs) => xs;
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line3D> Lines(this IReadOnlyList<Line3D> xs) => xs;
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line2D> Lines(this IReadOnlyList<Triangle2D> xs) => xs.FlatMap((x)  => x.Lines);
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line3D> Lines(this IReadOnlyList<Triangle3D> xs) => xs.FlatMap((x)  => x.Lines);
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line2D> Lines(this IReadOnlyList<Quad2D> xs) => xs.FlatMap((x)  => x.Lines);
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Line3D> Lines(this IReadOnlyList<Quad3D> xs) => xs.FlatMap((x)  => x.Lines);
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Triangle2D> Triangles(this IReadOnlyList<Triangle2D> xs) => xs;
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Triangle3D> Triangles(this IReadOnlyList<Triangle3D> xs) => xs;
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Triangle2D> Triangles(this IReadOnlyList<Quad2D> xs) => xs.FlatMap((x)  => x.Triangles);
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList<Triangle3D> Triangles(this IReadOnlyList<Quad3D> xs) => xs.FlatMap((x)  => x.Triangles);
-[MethodImpl(AggressiveInlining)] public static IReadOnlyList2D<Integer4> AllQuadFaceIndices<_T0>(this IReadOnlyList2D<_T0> xs, Boolean closedX, Boolean closedY) => xs.NumColumns.AllQuadFaceIndices(xs.NumRows, closedX, closedY);
+        [MethodImpl(AggressiveInlining)] public static Bounds2D Bounds(this System.Collections.Generic.IReadOnlyList<Point2D> xs) => xs.Reduce(Plato.Bounds2D.Empty, (a, b)  => a.Include(b));
+[MethodImpl(AggressiveInlining)] public static Bounds3D Bounds(this System.Collections.Generic.IReadOnlyList<Point3D> xs) => xs.Reduce(Plato.Bounds3D.Empty, (a, b)  => a.Include(b));
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Line2D> Lines(this System.Collections.Generic.IReadOnlyList<Line2D> xs) => xs;
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Line3D> Lines(this System.Collections.Generic.IReadOnlyList<Line3D> xs) => xs;
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Line2D> Lines(this System.Collections.Generic.IReadOnlyList<Triangle2D> xs) => xs.FlatMap((x)  => x.Lines);
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Line3D> Lines(this System.Collections.Generic.IReadOnlyList<Triangle3D> xs) => xs.FlatMap((x)  => x.Lines);
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Line2D> Lines(this System.Collections.Generic.IReadOnlyList<Quad2D> xs) => xs.FlatMap((x)  => x.Lines);
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Line3D> Lines(this System.Collections.Generic.IReadOnlyList<Quad3D> xs) => xs.FlatMap((x)  => x.Lines);
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Triangle2D> Triangles(this System.Collections.Generic.IReadOnlyList<Triangle2D> xs) => xs;
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Triangle3D> Triangles(this System.Collections.Generic.IReadOnlyList<Triangle3D> xs) => xs;
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Triangle2D> Triangles(this System.Collections.Generic.IReadOnlyList<Quad2D> xs) => xs.FlatMap((x)  => x.Triangles);
+[MethodImpl(AggressiveInlining)] public static System.Collections.Generic.IReadOnlyList<Triangle3D> Triangles(this System.Collections.Generic.IReadOnlyList<Quad3D> xs) => xs.FlatMap((x)  => x.Triangles);
+[MethodImpl(AggressiveInlining)] public static Ara3D.Collections.IReadOnlyList2D<Integer4> AllQuadFaceIndices<_T0>(this Ara3D.Collections.IReadOnlyList2D<_T0> xs, Boolean closedX, Boolean closedY) => xs.NumColumns.AllQuadFaceIndices(xs.NumRows, closedX, closedY);
 }
 }

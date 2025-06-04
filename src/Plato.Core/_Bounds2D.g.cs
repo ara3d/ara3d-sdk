@@ -47,8 +47,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 2; }
-        public IReadOnlyList<Point2D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point2D>(Min, Max); }
-        [MethodImpl(AggressiveInlining)] public static Bounds2D CreateFromComponents(IReadOnlyList<Point2D> numbers) => new Bounds2D(numbers[0], numbers[1]);
+        public System.Collections.Generic.IReadOnlyList<Point2D> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Point2D>(Min, Max); }
+        [MethodImpl(AggressiveInlining)] public static Bounds2D CreateFromComponents(System.Collections.Generic.IReadOnlyList<Point2D> numbers) => new Bounds2D(numbers[0], numbers[1]);
 
         [MethodImpl(AggressiveInlining)] public static Bounds2D CreateFromComponent(Point2D x) => new Bounds2D(x, x);
 
@@ -57,7 +57,7 @@ namespace Plato
         /* Geometry_14.Center(x: Bounds2D): Point2D [Library]; */
         /* IBounds_4.Center(x: IBounds<$T,$D>): $T [Library]; */
         public Point2D Center { [MethodImpl(AggressiveInlining)] get  => this.Min.Average(this.Max); } 
-public IReadOnlyList<Point2D> Corners { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(new Point2D(this.Min.X, this.Min.Y), new Point2D(this.Max.X, this.Min.Y), new Point2D(this.Min.X, this.Max.Y), new Point2D(this.Max.X, this.Max.Y), new Point2D(this.Min.X, this.Min.Y), new Point2D(this.Max.X, this.Min.Y), new Point2D(this.Min.X, this.Max.Y), new Point2D(this.Max.X, this.Max.Y)); } 
+public System.Collections.Generic.IReadOnlyList<Point2D> Corners { [MethodImpl(AggressiveInlining)] get  => Intrinsics.MakeArray(new Point2D(this.Min.X, this.Min.Y), new Point2D(this.Max.X, this.Min.Y), new Point2D(this.Min.X, this.Max.Y), new Point2D(this.Max.X, this.Max.Y), new Point2D(this.Min.X, this.Min.Y), new Point2D(this.Max.X, this.Min.Y), new Point2D(this.Min.X, this.Max.Y), new Point2D(this.Max.X, this.Max.Y)); } 
 public static Bounds2D Empty { [MethodImpl(AggressiveInlining)] get  => (Constants.MaxPoint2D, Constants.MinPoint2D); } 
 public Bounds3D To3D { [MethodImpl(AggressiveInlining)] get  => (this.Min.To3D, this.Max.To3D); } 
 public Bounds3D Bounds3D { [MethodImpl(AggressiveInlining)] get  => this.To3D; } 

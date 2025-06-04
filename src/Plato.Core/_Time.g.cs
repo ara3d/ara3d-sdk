@@ -46,8 +46,8 @@ namespace Plato
 
         // IArrayLike predefined functions
         public Integer NumComponents { [MethodImpl(AggressiveInlining)] get => 1; }
-        public IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(Seconds); }
-        [MethodImpl(AggressiveInlining)] public static Time CreateFromComponents(IReadOnlyList<Number> numbers) => new Time(numbers[0]);
+        public System.Collections.Generic.IReadOnlyList<Number> Components { [MethodImpl(AggressiveInlining)] get => Intrinsics.MakeArray<Number>(Seconds); }
+        [MethodImpl(AggressiveInlining)] public static Time CreateFromComponents(System.Collections.Generic.IReadOnlyList<Number> numbers) => new Time(numbers[0]);
 
         [MethodImpl(AggressiveInlining)] public static Time CreateFromComponent(Number x) => new Time(x);
 
@@ -121,7 +121,7 @@ public Time Pow4 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((
 public Time Pow5 { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Pow5); } 
 public Time Sqr { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqr); } 
 public Time Sqrt { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Sqrt); } 
-[MethodImpl(AggressiveInlining)] public IReadOnlyList<Time> Sample(Time b, Integer n){
+[MethodImpl(AggressiveInlining)] public System.Collections.Generic.IReadOnlyList<Time> Sample(Time b, Integer n){
             var _var4 = b;
             {
                 var _var3 = this;

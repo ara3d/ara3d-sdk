@@ -1,4 +1,6 @@
-﻿namespace Plato.Geometry
+﻿using Ara3D.Collections;
+
+namespace Plato.Geometry
 {
     /// <summary>
     /// This class is used for sampling parameterized surfaces and computing quad-mesh strip indices.
@@ -6,12 +8,12 @@
     /// </summary>
     public class SurfaceDiscretization
     {
-        public IArray<Number> Us { get; }
-        public IArray<Number> Vs { get; }
-        public IArray2D<Vector2> Uvs { get; }
+        public IReadOnlyList<Number> Us { get; }
+        public IReadOnlyList<Number> Vs { get; }
+        public IReadOnlyList2D<Vector2> Uvs { get; }
         public bool ClosedU { get; }
         public bool ClosedV { get; }
-        public IArray2D<Integer4> QuadIndices { get; }
+        public IReadOnlyList2D<Integer4> QuadIndices { get; }
 
         public SurfaceDiscretization(Integer nColumns, Integer nRows, bool closedU, bool closedV)
         {
