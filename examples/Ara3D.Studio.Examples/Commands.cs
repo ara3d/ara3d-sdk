@@ -1,10 +1,7 @@
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Ara3D.ScriptService;
-using Ara3D.Studio.API;
-using Ara3D.Utils;
 
 /// <summary>
 /// Shows a message box with the text: "Hello world!"

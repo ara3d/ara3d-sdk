@@ -29,11 +29,12 @@ Once registered, the software is free to use for any purpose, including commerci
 ## 📁 Repository Structure
 
 - `data/` – Sample and test 3D models
-- `examples/` – Sample applications and usage examples
-- `src/` – Core cross-platform C# libraries
-- `plato/` – [Plato](https://github.com/ara3d/plato): a scripting language and toolchain
-- `tests/` – NUnit projects for unit, regression, and developer testing
 - `dist/` – Pre-built binaries and tools, including `Ara3D.Studio.exe`
+- `examples/` – Sample applications and usage examples
+- `plato-src/` – [Plato](https://github.com/ara3d/plato) source code for core numerical and geometry types and functions 
+- `src/` – Core cross-platform C# libraries
+- `tests/` – NUnit projects for unit, regression, and developer testing
+- `toolchain/` – Projects for parsing Plato and generating C# sourc code. 
 
 ---
 
@@ -45,14 +46,18 @@ Once registered, the software is free to use for any purpose, including commerci
 
 ## 🖇️ Dependencies 
 
-The core **Ara3D.SDK** package is .NET 8 compatible and uses the following external libraries:
+The core **Ara3D.SDK** package is .NET 8 compatible, cross-platform,  
+and uses only the following external Nuget libraries:
 
 - Microsoft.CodeAnalysis.CSharp - 4.8.0
 - Microsoft.DiaSymReader.Native - 1.7.0
 - System.Memory - 4.6.0
 
 The test projects and samples are windows-specific and use NUnit 3 and executables found 
-in the `dist` folder. 
+in the `dist` folder.
+
+The auto-generated code from Plato uses projects found in the toolchain folder. 
+They are not run automatically, and are not currently supported. 
 
 ---
 
@@ -66,6 +71,9 @@ in the `dist` folder.
 
 - [Ara3D.Domo](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.Domo)  
   Domain modeling helpers and patterns for building robust data-driven apps.
+
+- [Ara3D.Geometry](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.Geometry)  
+  2D and 3D math and geometry library. Compatible with System.Numerics.
 
 - [Ara3D.IO.A3D](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.IO.A3D)  
   [*Under Development*] Reader/writer for the `.a3d` geometry format.
@@ -103,7 +111,7 @@ in the `dist` folder.
 - [Ara3D.PropKit](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.PropKit)  
   Property descriptors and change-notification toolkit for auto-generated serialization and UI.
 
-- [Ara3D.SceneEval](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.SceneEval)
+- [Ara3D.SceneEval](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.SceneEval)  
   Data structures for creating a scene evaluation dependency graph with caching. 
 
 - [Ara3D.ScriptService](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.ScriptService)  
@@ -125,16 +133,20 @@ in the `dist` folder.
   Miscellaneous helper methods and extension functions.
 
 - [Ara3D.Utils.Roslyn](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.Utils.Roslyn)  
-  Roslyn-specific utility extensions (syntax walkers, code fixes).
+  Utility extensions for the C# Roslyn compiler.
 
-- [Plato.Geometry](https://github.com/ara3d/ara3d-sdk/tree/main/src/Plato.Geometry)  
-  2D and 3D math and geometry library. Written in Plato, and auto-generated as C#. 
+- [Plato.Generated](https://github.com/ara3d/ara3d-sdk/tree/main/src/Plato.Generated)  
+  C# shared project containing C# source generated from Plato source code. Contains core numerical and geometry types and functions.
+
+- [Plato.Intrinsics](https://github.com/ara3d/ara3d-sdk/tree/main/src/Plato.Intrinsics)  
+  C# shared project containing predefined types and built-in functions required by Plato generated code.
 
 ---
 
 ## 🚀 Getting Started
 
-To get started with **Ara3D-SDK** you can run the Ara3D.Studio executable. Creating new 
+To get started with **Ara3D-SDK** you can run the Ara3D.Studio exe found in the `dist` folder. Take a look at the `examples` file.
+If all goes well, you be able to modify scripts in that file and have the script auto-load.
 
 ---
 
@@ -161,134 +173,4 @@ Found a bug? Have a question? Want to suggest a feature for either the SDK or **
 
 ## 🔗 Related Projects
 
-- [Ara3D.Plato](https://github.com/ara3d/plato) – Domain specific language for math and geometry
-
-<!--
-
-# Libraries
-
-## Math and Geometry Libraries
-
-### plato-src 
-
-This project contains the Plato source code for our core geometry and mathematics libraries. 
-Plato is a domain specific language, designed to make it easy to design numerical data structures and algorithms
-that target different languages. 
-
-For more information see [the Plato repository](https://github.com/cdiggins/plato). 
-
-This code is being migrated from [the Plato.Geometry repository](https://github.com/ara3d/Plato.Geometry). 
-
-###  Plato.Core
-
-This contains an extensive C# library of mathematical and geometric data structures and routines. This code 
-is auto- generated from the `plato-src` proejct.   
-
-### Plato.Intrinsics
-
-This is a shared project containing the primitive types and building block functions assumed by the Plato code generator. It is used by Plato.Core. 
-
-### Ara3D.Scene
-
-A simple generic 3D scene graph library for use by both IO libraries and rendering libraries. 
-
-## Low-Level Libraries
-
-### Ara3D.Memory
-
-This is a collection of useful classes and interfaces for efficiently working with very large amounts of aligned low-level memory. 
-
-Compared to the System libraries:
-
-* Can go beyond the 2^31 limit imposed by `Span`
-* `ByteSlice` is not subject to `ref struct` limitated (e.g., can be stored on the heap) 
-* Uses aligned native allocators  so that it can be cast to SIMD vector types (e.g. `Vector256<float>`)
-
-The primary classes and structs are:
-
-* `AlignedMemory` - A block of fixed memory that is aligned to a specific byte boundary. This makes casting between SIMD type (like Vector256) safe and efficient. It can be larger than 2GB. 
-* `FixedArray` - A pointer to an array that is fixed in memory, and provides access via ByteSlices and Spans.  
-* `ByteSlice` - A pointer to a region of memory, with a length. Similar to a `Span<byte>` except that it can be stored on the heap and can be longer than 2GB. Provides helpers for safe casting to unmanaged types. 
-* `UnmanagedList<T>` - A dynamic array of unmanaged types which uses, and makes public, an aligned memory block. Can grow but not shrink. 
-* `Buffer<T>` - A types-safe wrapper around a `ByteSlice` and that exposes an array-like interface for reading and writing. 
-
-The interfaces are:
-
-* `IBuffer` - A generic block of memory accessible as a slice. 
-* `ITypedBuffer` - A generic interface for a buffer of unmanaged types. 
-* `INamedBuffer` - A buffer with an associated name.
-* `ITypedNamedBuffer` - A buffer with both an associated name and a type 
-* `IBuffer<T>` - An array of unmanaged types. Implements `IReadOnlyList<T>`
-* `INamedBuffer<T>` - An array of unmanaged types associated with a name.
-* `IMemoryOwner` - A disposable block of memory that provides a `IBuffer` interface.
-* `IMemoryOwner<T>` - A disposable block of memory that provides an `IBuffer<T>` interface.
-
-## Infrastructure Libraries 
-
-### Ara3D.Logging 
-
-A library of classes to help with logging.
-
-### Ara3D.Utils
-
-A collection of miscellaneous helper types and functions. 
-
-### Ara3D.Domo
-
-A library for defining "models" in the context of MVC or MVVM architecture. Domo stands for domain modeling, 
-and is inspired by Domain Driven Design principles. 
-
-In a nutshell, using Domo you can define data models as immutable objects that are stored in repositories 
-which inform observers when the model has been updated. 
-
-This makes it easier to separate the business logic from the application logic and the UI. This makes 
-your software architecture easier to modify, extend, reuse, and maintain.    
-
-### Ara3D.Services
-
-Used for breaking software up into areas of responsibility called services, which are high-level classes 
-that usually have one instance throughout the lifetime of an application. Services are stored within a Service 
-Manager. 
-
-Services are passed other services which they depend on in their constructor. This is a pattern known 
-Dependency Injection. This is done in a straightforward and transparent manner without any kind of reflection,
-code generation, or special framework support, while still providing the architectual benefits.  
-
-## Collection Libraries
-
-### Ara3D.Collections
-
-*Undergoing significant refactoring* 
-
-Primarily used today for `IArray<T>` and related functions which will be replaced throughout
-by `IReadOnlyList<T>` for a better experience with existing libraries. 
-
-## IO Libraries
-
-### Ara3D.BFAST 
-
-A library for efficiently reading and writing large named buffers from memory. A named buffer
-is an array of bytes that is associated with a string.  
-
-### Ara3D.G3D
-
-A library for reading and writing geometry in the G3D format.
-
-### Ara3D.IFCParser
-
-A library for parsing [IFC](https://en.wikipedia.org/wiki/Industry_Foundation_Classes) entity stored within a STEP file.
-
-### Ara3D.StepParser
-
-A library for parsing [STEP](https://en.wikipedia.org/wiki/ISO_10303-21) files.
-
-### Ara3D.MemoryMappedFile
-
-A library for efficiently working with very large files as [memory mapped files](https://en.wikipedia.org/wiki/Memory-mapped_file). 
-
-## Ara3D.Studio API
-
-### Ara3D.Studio.Data
-
-This library defines the classes that define the internal representation of rendering and scene data used by Ara3D.Studio. 
--->
+- [Ara3D.Plato](https://github.com/cdiggins/plato) – A Domain specific programming language for math and geometry/

@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Ara3D.Models;
-using Ara3D.SceneEval;
-using Ara3D.Studio.API;
-using Ara3D.Geometry;
+﻿using System.ComponentModel;
 
 namespace Ara3D.Studio.Samples;
 
