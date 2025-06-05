@@ -1,4 +1,4 @@
-
+//===
 //# 2D Shapes
 
 type Point2D
@@ -103,9 +103,8 @@ type RegularPolygon
     NumPoints: Integer;
 }
 
-//==
-// 3D Types
-//==
+//===
+//# 3D Types
 
 type Point3D
     implements ICoordinate, IVectorLike, IGeometricPrimitive3D, IDifference<Vector3>
@@ -146,9 +145,8 @@ type Ray3D
     Direction: Vector3;
 }
 
-//==
-// 3D Curves 
-//== 
+//===
+//# 3D Curves 
 
 type Triangle3D
     implements IPolygon3D, IDeformable3D, IArrayLike<Point3D>
@@ -165,4 +163,77 @@ type Quad3D
     B: Point3D;
     C: Point3D;
     D: Point3D;
+}
+
+//==
+//# 3D Primitive Geometry 
+
+// A collection of 3D points, also known as a point cloud.
+type Points3D
+    implements IPrimitiveGeometry3D<Point3D>
+{ 
+    Primitives: IArray<Point3D>;
+}
+
+// A collection of 3D lines.
+type Lines3D
+    implements IPrimitiveGeometry3D<Line3D>
+{ 
+    Primitives: IArray<Line3D>;
+}
+
+// A collection of 3D triangles
+type Triangles3D
+    implements IPrimitiveGeometry3D<Triangle3D>
+{ 
+    Primitives: IArray<Triangle3D>;
+}
+
+// A collection of 3D quadrilaterals
+type Quads3D
+    implements IPrimitiveGeometry3D<Quad3D>
+{ 
+    Primitives: IArray<Quad3D>;
+}
+
+// A series of connected line segments 
+type PolyLine3D
+    implements IGeometry3D
+{
+    Points: Points3D;
+    Closed: Boolean;
+}
+
+// A set of points that implicitly map to a grid of points. Very useful for construction.
+type QuadGrid3D
+    implements IGeometry3D
+{
+    Points: IArray2D<Point3D>; 
+	ClosedX: Boolean;
+    ClosedY: Boolean;
+}
+
+//==
+// # Meshes and Indexed Geometry 
+// Indexed geometry means points can be shared across primitives. 
+
+type LineMesh3D
+    implements IIndexedGeometry3D<Integer2>
+{
+    Points: Points3D;
+    FaceIndices: IArray<Integer2>;
+}
+
+type TriangleMesh3D
+    implements IIndexedGeometry3D<Integer3>
+{
+    Points: Points3D;
+    FaceIndices: IArray<Integer3>;
+}
+
+type QuadMesh3D
+    implements IIndexedGeometry3D<Integer4>
+{
+    Points: Points3D;
+    FaceIndices: IArray<Integer4>;
 }

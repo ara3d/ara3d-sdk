@@ -1,51 +1,57 @@
 ﻿library Meshes
 {
-    //==    
-    // # Primitives
+    Line(self: Points3D, index: Integer2): Line3D
+        => (self[index.A], self[index.B]);
 
-    NumPrimitives(g: IIndexedGeometry): Integer => g.Indices.Count / g.PrimitiveSize;
-    PrimitiveSize(g: ILineGeometry): Integer => 2;
-    PrimitiveSize(g: ITriangleGeometry): Integer => 3;
-    PrimitiveSize(g: IQuadGeometry): Integer => 4;
+    Triangle(self: Points3D, index: Integer3): Triangle3D
+        => (self[index.A], self[index.B], self[index.C]);
+    
+    Quad(self: Points3D, index: Integer4): Quad3D
+        => (self[index.A], self[index.B], self[index.C], self[index.D]);    
+    
+    Line(self: IPointGeometry3D, index: Integer2): Line3D
+        => self.Points.GetLine(index);
+
+    Triangle(self: IPointGeometry3D, index: Integer3): Triangle3D
+        => self.Points.GetTriangle(index);
         
-    //== 
-    // # Indices of geometry arrays
+    Quad(self: IPointGeometry3D, index: Integer4): Quad3D
+        => self.Points.GetQuad(index);
 
-    Indices(g: ITriangleMesh2D): IArray<Integer> => g.FaceIndices.FlatMap(fi => fi.Components); 
-    Indices(g: ITriangleMesh3D): IArray<Integer> => g.FaceIndices.FlatMap(fi => fi.Components); 
-    Indices(g: IQuadMesh2D): IArray<Integer> => g.FaceIndices.FlatMap(fi => fi.Components); 
-    Indices(g: IQuadMesh3D): IArray<Integer> => g.FaceIndices.FlatMap(fi => fi.Components); 
-       
-    //==
-    // # IndexedGeometry
+    Lines(self: LineMesh3D): Lines3D
+        => self.FaceIndices.Map(fi => self.Line(fi));
 
-    Faces(g: ITriangleMesh2D): IArray<Triangle2D> => g.Triangles; 
-    Faces(g: ITriangleMesh3D): IArray<Triangle3D> => g.Triangles; 
+    Triangles(self: TriangleMesh3D): Triangles3D
+        => self.FaceIndices.Map(fi => self.Triangle(fi));
     
-    Faces(g: IQuadMesh2D): IArray<Quad2D> => g.Quads; 
-    Faces(g: IQuadMesh3D): IArray<Quad3D> => g.Quads; 
+    Quads(self: QuadMesh3D): Quads3D
+        => self.FaceIndices.Map(fi => self.Quad(fi));
 
-    Point(g: IPointGeometry2D, index: Integer): Point2D => g.Points[index];
-    Point(g: IPointGeometry3D, index: Integer): Point3D => g.Points[index];
+    Transform(self: Deformable3D, t: Transform3D): Self
+        => self.Deform(self, p => p.Transform(t));
 
-    Triangle(g: IPointGeometry2D, f: Integer3): Triangle2D => (g.Point(f.A), g.Point(f.B), g.Point(f.C));
-    Triangle(g: IPointGeometry3D, f: Integer3): Triangle3D => (g.Point(f.A), g.Point(f.B), g.Point(f.C));
+    Transform(self: Point3D, t: Transform3D): Point3D
+        => t.Matrix * self;
 
-    Quad(g: IPointGeometry2D, f: Integer4): Quad2D => (g.Point(f.A), g.Point(f.B), g.Point(f.C), g.Point(f.D));
-    Quad(g: IPointGeometry3D, f: Integer4): Quad3D => (g.Point(f.A), g.Point(f.B), g.Point(f.C), g.Point(f.D));
-            
-    Triangles(g: ITriangleMesh2D): IArray<Triangle2D> => g.FaceIndices.Map(f => g.Triangle(f));
-    Triangles(g: ITriangleMesh3D): IArray<Triangle3D> => g.FaceIndices.Map(f => g.Triangle(f));
-    
-    Quads(g: IQuadMesh2D): IArray<Quad2D> => g.FaceIndices.Map(f => g.Quad(f));
-    Quads(g: IQuadMesh3D): IArray<Quad3D> => g.FaceIndices.Map(f => g.Quad(f));
+    Deform(line: Line3D, f: Function1<Point3D, Point3D>): Line3D
+        => (f(line.A), f(line.B));
 
-    Bounds(g: IPointGeometry2D): Bounds2D => g.Points.Bounds();
-    Bounds(g: IPointGeometry3D): Bounds3D => g.Points.Bounds();
+    Deform(triangle: Triangle3D, f: Function1<Point3D, Point3D>): Triangle3D
+        => (f(triangle.A), f(triangle.B), f(triangle.C));
 
-    //==
-    // Points, Lines, Triangles, and Quads implementations 
+    Deform(quad: Quad3D, f: Function1<Point3D, Point3D>): Quad3D
+        => (f(quad.A), f(quad.B), f(quad.C), f(quad.D));
 
+    Deform(self: IPrimitiveGeometry3D<$T>, f: Function1<Point3D, Point3D>): IPrimitiveGeometry3D<$T>
+        where $T: IDeformable3D
+        => self.Primitives.Map(p => p.Deform(f));
+
+    Deform(self: IPointGeometry3D, f: Function1<Point3D, Point3D>): IPointGeometry3D
+        => self.WithPoints(p => p.Deform(f));
+
+    Bounds(g: IPointGeometry3D): Bounds3D 
+        => g.Points.Bounds();
+         
     Points(x: Line2D): IArray<Point2D> => [x.A, x.B];
     Points(x: Line3D): IArray<Point3D> => [x.A, x.B];
     Points(x: Triangle2D): IArray<Point2D> => [x.A, x.B, x.C];
@@ -61,18 +67,6 @@
     Triangles(q: Quad2D): IArray<Triangle2D> => [q.TriangleA, q.TriangleB]; 
     Triangles(q: Quad3D): IArray<Triangle3D> => [q.TriangleA, q.TriangleB];
 
-    Lines(xs: IArray<Line2D>): IArray<Line2D> => xs;
-    Lines(xs: IArray<Line3D>): IArray<Line3D> => xs;
-    Lines(xs: IArray<Triangle2D>): IArray<Line2D> => xs.FlatMap(x => x.Lines);
-    Lines(xs: IArray<Triangle3D>): IArray<Line3D> => xs.FlatMap(x => x.Lines);
-    Lines(xs: IArray<Quad2D>): IArray<Line2D> => xs.FlatMap(x => x.Lines);
-    Lines(xs: IArray<Quad3D>): IArray<Line3D> => xs.FlatMap(x => x.Lines);
-
-    Triangles(xs: IArray<Triangle2D>): IArray<Triangle2D> => xs;
-    Triangles(xs: IArray<Triangle3D>): IArray<Triangle3D> => xs;
-    Triangles(xs: IArray<Quad2D>): IArray<Triangle2D> => xs.FlatMap(x => x.Triangles);
-    Triangles(xs: IArray<Quad3D>): IArray<Triangle3D> => xs.FlatMap(x => x.Triangles);
-    
     Points(xs: ILineArray2D): IArray<Point2D> => xs.Lines.FlatMap(x => x.Points);
     Points(xs: ILineArray3D): IArray<Point3D> => xs.Lines.FlatMap(x => x.Points);
     Points(xs: ITriangleArray2D): IArray<Point2D> => xs.Triangles.FlatMap(x => x.Points);
@@ -93,6 +87,8 @@
 
     //==
     // IDeformable implementations 
+
+    // TODO: these could all be replaced with a "WithPoints" function. 
 
     Deform(x: Line2D, f: Function1<Point2D, Point2D>): Line2D => (f(x.A), f(x.B));
     Deform(x: Ray2D, f: Function1<Point2D, Point2D>): Ray2D => (f(x.Origin), f(x.Origin + x.Direction).Vector2.Normalize);
@@ -126,6 +122,9 @@
 
     //==
     // Deformable functions
+
+    // TODO: these need to become transformable functions.
+  
 
     Deform(x: IDeformable3D, t: ITransform3D): IDeformable3D => x.Deform(v => v.Vector3.Transform(t.Matrix));
 

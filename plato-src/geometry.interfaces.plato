@@ -20,34 +20,6 @@ interface IGeometry3D
 { }
 
 //==
-// ## Bounded 
-
-// This type provides a 2D bounding-box
-interface IBounded2D
-{
-    // Returns a 2D axis aligned bounding box.
-    Bounds(x: Self): Bounds2D;
-}
-
-// This type provides a 3D bounding-box
-interface IBounded3D
-{
-    // Returns a 3D axis aligned bounding box.
-    Bounds(x: Self): Bounds3D;
-}
-
-// Most geometric forms that can be primitive
-interface IDeformable2D 
-{
-    Deform(x: Self, f: Function1<Point2D, Point2D>): Self;
-}
-
-interface IDeformable3D 
-{
-    Deform(x: Self, f: Function1<Point3D, Point3D>): Self;
-}
-
-//==
 // # Shapes 
 // 
 // Shapes in this library are defined as geometric forms with a topological space of 1 dimension.
@@ -205,141 +177,65 @@ interface ISolid
 { }
 
 //==
-// # Primitive Geometry
-//
+// # Meshes and Primitive Collections
 
 // Any geometry that can be described as a series of 2D points 
 interface IPointGeometry2D
-    inherits IGeometry2D, IDeformable2D, IBounded2D
+    inherits IGeometry2D, IDeformable2D
 {
     Points(x: Self): IArray<Point2D>;
 }
 
-// Any geometry that can be described as a series of 3D points 
-interface IPointGeometry3D 
-    inherits IGeometry3D, IDeformable3D, IBounded3D
+// Any geometry that is defined by a series of 3D points 
+interface IPointGeometry3D
+    inherits IGeometry3D, IDeformable3D
 {
-    Points(x: Self): IArray<Point3D>;
+    Points(x: Self): Points3D;
 }
-
-// A primitive geometry has a fixed number of primitives each with a fixed size 
-// Examples of primitives include lines, triangles, and quads
-interface IPrimitiveGeometry 
-{
-	PrimitiveSize(x: Self): Integer;
-    NumPrimitives(x: Self): Integer;
-}
-
-// Primitive geometry with primitives of size 2
-interface ILineGeometry inherits IPrimitiveGeometry { }
-
-// Primitive geometry with primitives of size 3
-interface ITriangleGeometry inherits IPrimitiveGeometry { }
-
-// Primitive geometry with primitives of size 4
-interface IQuadGeometry inherits IPrimitiveGeometry { }
 
 // A basic 2D primitive geometry that is a collection of a fixed number of 2D points
 interface IGeometricPrimitive2D
-    inherits IPointGeometry2D, IDeformable2D
+    inherits IPointGeometry2D
 { }
 
 // A basic 3D primitive geometry that is a collection of a fixed number of 3D points
 interface IGeometricPrimitive3D
-    inherits IPointGeometry3D, IDeformable3D 
+    inherits IPointGeometry3D
 { }
 
 // 2D Primitive geometry 
 interface IPrimitiveGeometry2D<T> 
     where T: IGeometricPrimitive2D
-    inherits IPrimitiveGeometry, IDeformable2D 
+    inherits IPrimitiveGeometry 
 { 
     Primitives(x: Self): IArray<T>;
 }
 
 // 3D Primitive geometry 
-interface IPrimitiveGeometry3D<T> 
+interface IPrimitiveGeometry3D<PrimitiveT>
     where T: IGeometricPrimitive3D
-    inherits IPrimitiveGeometry, IDeformable3D 
-{ 
-    Primitives(x: Self): IArray<T>;
+    inherits IGeometry3D
+{
+    Primitives(x: Self): IArray<PrimitiveT>;
 }
 
-// Collection of 2D line-segments 
-interface ILineGeometry2D 
-    inherits IPrimitiveGeometry2D<Line2D>, ILineGeometry 
-{ }
-
-// Collection of 3D line-segments
-interface ILineGeometry3D 
-    inherits IPrimitiveGeometry3D<Line3D>, ILineGeometry 
-{ }
-
-// Collection of 2D triangles 
-interface ITriangleGeometry2D 
-    inherits IPrimitiveGeometry2D<Triangle2D>, ITriangleGeometry 
-{ }
-
-// Collection of 3D triangles 
-interface ITriangleGeometry3D 
-    inherits IPrimitiveGeometry3D<Triangle3D>, ITriangleGeometry 
-{ }
-
-// Collection of 2D quadrilaterals
-interface IQuadGeometry2D 
-    inherits IPrimitiveGeometry2D<Quad2D>, IQuadGeometry 
-{ }
-
-// Collection of 3D quadrilaterals
-interface IQuadGeometry3D 
-    inherits IPrimitiveGeometry3D<Quad3D>, IQuadGeometry 
-{ }
-
-//==
-// # Indexed Geometry 
-
-// Indexed geometry has a set of points and indexes into those points 
-// This is commonly how triangle or quad meshes are defined in most geometry libraries 
-interface IIndexedGeometry inherits IPrimitiveGeometry 
-{ 
-    Indices(x: Self): IArray<Integer>; 
+// Most meshes are indexed geometry, they have a set of control points (vertices)
+// A set of indices that define the faces of the mesh. 
+interface IIndexedGeometry3D<IndexT>
+    inherits IPointGeometry3D
+{
+    FaceIndices(x: Self): IArray<IndexT>;
 }
 
-interface IPointArray2D inherits IPointGeometry2D { }
-interface IPointArray3D inherits IPointGeometry3D { }
-
-interface IIndexedGeometry2D inherits IIndexedGeometry, IPointGeometry2D { }
-interface IIndexedGeometry3D inherits IIndexedGeometry, IPointGeometry3D { }
-
-interface ILineMesh2D inherits IIndexedGeometry2D, ILineGeometry2D { }
-interface ILineMesh3D inherits IIndexedGeometry3D, ILineGeometry3D { }
-
-interface ILineArray2D inherits ILineGeometry2D { }
-interface ILineArray3D inherits ILineGeometry3D { }
-
-interface ITriangleMesh2D inherits IIndexedGeometry2D, ITriangleGeometry2D { }
-interface ITriangleMesh3D inherits IIndexedGeometry3D, ITriangleGeometry3D { }
-
-interface ITriangleArray2D inherits ITriangleGeometry2D { }
-interface ITriangleArray3D inherits ITriangleGeometry3D { }
-
-interface IQuadMesh2D inherits IIndexedGeometry2D, IQuadGeometry2D { }
-interface IQuadMesh3D inherits IIndexedGeometry3D, IQuadGeometry3D { }
-
-interface IQuadArray2D inherits IQuadGeometry2D { }
-interface IQuadArray3D inherits IQuadGeometry3D { }
-
-// Represents a grid of quadrilaterals. 
-interface IQuadGrid2D inherits IQuadMesh2D
-{ 
-    PointGrid(x: Self): IArray2D<Point2D>;
+// Any type that supports being transformed in 3D space. 
+interface ITransformable3D 
+{
+    Transform(x: Self, t: Transform3D): Self;
 }
 
-// Represents a grid of quadrilaterals. This is commonly produced when sampling a parameterized surface. 
-interface IQuadGrid3D
-    inherits IQuadMesh3D
-{ 
-    PointGrid(x: Self): IArray2D<Point3D>;
-    ClosedX(x: Self): Boolean;
-    ClosedY(x: Self): Boolean;
-}
+// Any type that supports being deformed, by applying a Point3D to Point3D function. 
+interface IDeformable3D 
+    inherits ITransformable3D 
+{
+    Deform(x: Self, f: Function1<Point3D, Point3D>): Self;
+ }
