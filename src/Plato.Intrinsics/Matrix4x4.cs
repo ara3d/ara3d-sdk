@@ -137,6 +137,20 @@ namespace Ara3D.Geometry
         // Decompose, Determinant, Transpose, etc. (common instance methods)
         // --------------------------------------------------------------------------------
 
+        public Vector3 Translation
+        {
+            [MethodImpl(AggressiveInlining)]
+            get => Value.Translation;
+        }
+
+        [MethodImpl(AggressiveInlining)]
+        public Matrix4x4 WithTranslation(Vector3 translation)
+        {
+            var matrix = Value;
+            matrix.Translation = translation;
+            return matrix;
+        }
+
         /// <summary>
         /// Attempts to extract scale, rotation (as a <see cref="Quaternion"/>),
         /// and translation from Value matrix.

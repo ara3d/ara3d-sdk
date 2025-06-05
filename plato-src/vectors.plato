@@ -115,12 +115,6 @@ library Vectors
     
     Column4(m: Matrix4x4): Vector4 
         => (M14, M24, M34, M44);
- 
-    WithTranslation(m: Matrix4x4, v: Vector3): Matrix4x4
-        => m.WithRow4(v.ToVector4(1.0));
-                
-    Translation(m: Matrix4x4): Vector3
-        => (m.M14, m.M24, m.M34);
 
     Transform(m: Matrix4x4, v: Vector3): Vector3
         => v.Transform(m);

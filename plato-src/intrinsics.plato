@@ -31,6 +31,8 @@ library Intrinsics
     CanInvert(self: Matrix4x4): Boolean;
     GetHashCode(self: Matrix4x4): Integer;
     Rotation(self: Matrix4x4): Quaternion;
+    Translation(self: Matrix4x4): Vector3;
+    WithTranslation(self: Matrix4x4, translation: Vector3): Matrix4x4;
     
     CreateTranslation(_: Matrix4x4, position: Vector3): Matrix4x4;
     CreateScale(_: Matrix4x4, scale: Number): Matrix4x4;
