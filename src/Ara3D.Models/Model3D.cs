@@ -14,7 +14,7 @@ namespace Ara3D.Models
     /// </summary>
     public class Model3D : ITransformable3D<Model3D>
     {
-        public Model3D(System.Collections.Generic.IReadOnlyList<TriangleMesh3D> meshes, System.Collections.Generic.IReadOnlyList<Material> materials, System.Collections.Generic.IReadOnlyList<Matrix4x4> transforms, System.Collections.Generic.IReadOnlyList<ElementStruct> elements, 
+        public Model3D(IReadOnlyList<TriangleMesh3D> meshes, IReadOnlyList<Material> materials, IReadOnlyList<Matrix4x4> transforms, IReadOnlyList<ElementStruct> elements, 
             IDataTable? dataTable)
         {
             Meshes = meshes;
@@ -25,11 +25,11 @@ namespace Ara3D.Models
             Elements = elements.Select(GetElement);
         }
 
-        public System.Collections.Generic.IReadOnlyList<TriangleMesh3D> Meshes { get; }
-        public System.Collections.Generic.IReadOnlyList<Material> Materials { get; }
-        public System.Collections.Generic.IReadOnlyList<Matrix4x4> Transforms { get; }
-        public System.Collections.Generic.IReadOnlyList<ElementStruct> ElementStructs { get; }
-        public System.Collections.Generic.IReadOnlyList<Element> Elements { get; }
+        public IReadOnlyList<TriangleMesh3D> Meshes { get; }
+        public IReadOnlyList<Material> Materials { get; }
+        public IReadOnlyList<Matrix4x4> Transforms { get; }
+        public IReadOnlyList<ElementStruct> ElementStructs { get; }
+        public IReadOnlyList<Element> Elements { get; }
         public IDataTable? DataTable { get; }
 
         public Element GetElement(ElementStruct es)

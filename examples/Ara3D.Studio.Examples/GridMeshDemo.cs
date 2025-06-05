@@ -23,8 +23,10 @@ public class GridMeshDemo : IModelGenerator
         var x10 = new Point3D(+0.5f, -0.5f, 0);
         var x11 = new Point3D(+0.5f, +0.5f, 0);
         var points = ToArray2D([x00, x01, x10, x11], 2);
-        var grid = new GridMesh(points, false, false);
-        var mesh = grid.Triangulate();
-        return mesh;
+        var grid = new QuadGrid3D(points, false, false);
+
+        throw new NotImplementedException("TODO");
+        //var mesh = grid.Triangulate();
+        //return mesh;
     }
 }

@@ -37,8 +37,6 @@
         public static TriangleMesh3D Triangulate(this QuadMesh3D mesh)
             => new(mesh.Points, mesh.FaceIndices.QuadFacesToTriFaces());
 
-        public static TriangleMesh3D Triangulate(this GridMesh mesh)
-            => new(mesh.Points, mesh.FaceIndices.QuadFacesToTriFaces());
 
         // https://mathworld.wolfram.com/RegularTetrahedron.html
         // https://github.com/mrdoob/three.js/blob/master/src/geometries/TetrahedronGeometry.js

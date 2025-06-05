@@ -17,15 +17,18 @@ public class Cylinder : IModelGenerator
 
     public Model3D Eval(EvalContext context)
     {
+        throw new NotImplementedException("TODO");
+        /*
         var polygon = Polygons.RegularPolygon(Sides).Deform(p => p * Radius);
         var mesh = polygon.Extrude(Height).Triangulate();
-        var mesh2 = Flip 
-            ? new TriangleMesh3D(mesh.Points, mesh.FaceIndices.Map(f => new Integer3(f.C, f.B, f.A))) 
+        var mesh2 = Flip
+            ? new TriangleMesh3D(mesh.Points, mesh.FaceIndices.Map(f => new Integer3(f.C, f.B, f.A)))
             : mesh;
-            
+
         Debug.WriteLine($"# points {mesh2.Points.Count}");
         Debug.WriteLine($"# faces {mesh.FaceIndices.Count}");
 
         return Model3D.Create(mesh2);
+        */
     }
 }

@@ -103,6 +103,12 @@ type RegularPolygon
     NumPoints: Integer;
 }
 
+type Polygon
+    implements IPolygon2D
+{
+    Points: IArray<Point2D>;
+}
+
 //===
 //# 3D Types
 
@@ -132,7 +138,7 @@ type Bounds3D
 
 // A line segment in 3D.
 type Line3D 
-    implements IPolyLine3D, IOpenShape3D, IDeformable3D, IInterval<Point3D>, IArrayLike<Point3D>
+    implements IDeformable3D, IInterval<Point3D>, IArrayLike<Point3D>
 {
     A: Point3D;
     B: Point3D;
@@ -149,7 +155,7 @@ type Ray3D
 //# 3D Curves 
 
 type Triangle3D
-    implements IPolygon3D, IDeformable3D, IArrayLike<Point3D>
+    implements IDeformable3D, IArrayLike<Point3D>
 {
     A: Point3D;
     B: Point3D;
@@ -157,12 +163,37 @@ type Triangle3D
 }
 
 type Quad3D
-    implements IPolygon3D, IDeformable3D, IArrayLike<Point3D>
+    implements IDeformable3D, IArrayLike<Point3D>
 {
     A: Point3D;
     B: Point3D;
     C: Point3D;
     D: Point3D;
+}
+
+//==
+//# 2D Primitive Geometry 
+
+// A collection of 3D points, also known as a point cloud.
+type Points2D
+    implements IPrimitiveGeometry2D<Point2D>
+{ 
+    Primitives: IArray<Point2D>;
+}
+
+// A collection of 2D lines.
+type Lines2D
+    implements IPrimitiveGeometry2D<Line2D>
+{ 
+    Primitives: IArray<Line2D>;
+}
+
+// A series of connected line segments 
+type PolyLine2D
+    implements IGeometry2D
+{
+    Points: IArray<Point2D>;
+    Closed: Boolean;
 }
 
 //==
@@ -200,7 +231,7 @@ type Quads3D
 type PolyLine3D
     implements IGeometry3D
 {
-    Points: Points3D;
+    Points: IArray<Point3D>;
     Closed: Boolean;
 }
 
@@ -208,7 +239,7 @@ type PolyLine3D
 type QuadGrid3D
     implements IGeometry3D
 {
-    Points: IArray2D<Point3D>; 
+    PointGrid: IArray2D<Point3D>; 
 	ClosedX: Boolean;
     ClosedY: Boolean;
 }
@@ -220,20 +251,20 @@ type QuadGrid3D
 type LineMesh3D
     implements IIndexedGeometry3D<Integer2>
 {
-    Points: Points3D;
+    Points: IArray<Point3D>;
     FaceIndices: IArray<Integer2>;
 }
 
 type TriangleMesh3D
     implements IIndexedGeometry3D<Integer3>
 {
-    Points: Points3D;
+    Points: IArray<Point3D>;
     FaceIndices: IArray<Integer3>;
 }
 
 type QuadMesh3D
     implements IIndexedGeometry3D<Integer4>
 {
-    Points: Points3D;
+    Points: IArray<Point3D>;
     FaceIndices: IArray<Integer4>;
 }

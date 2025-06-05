@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Geometry;
 
-public class ParametricSurface : IDeformable3D<ParametricSurface>
+// TODO: this needs to be moved to the Plato source
+public class ParametricSurface 
 {
     public bool ClosedX { get; }
     public bool ClosedY { get; }

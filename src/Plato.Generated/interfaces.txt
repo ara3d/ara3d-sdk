@@ -68,6 +68,7 @@ Bounds3D
   - IBounds<Point3D,Vector3>
     - IValue
   - IDeformable3D
+    - ITransformable3D
   - IArrayLike<Point3D>
 
 Box
@@ -531,31 +532,8 @@ Line2D
     - IValue
 
 Line3D
-  - IPolyLine3D
-    - IPointGeometry3D
-      - IGeometry3D
-        - IGeometry
-      - IDeformable3D
-      - IBounded3D
-    - IOpenClosedShape
-      - IShape
-        - IGeometry
-    - ICurve3D
-      - IGeometry3D
-        - IGeometry
-      - ICurve<Point3D>
-        - IProcedural<Number,TRange>
-        - IOpenClosedShape
-          - IShape
-            - IGeometry
-  - IOpenShape3D
-    - IGeometry3D
-      - IGeometry
-    - IOpenShape
-      - IOpenClosedShape
-        - IShape
-          - IGeometry
   - IDeformable3D
+    - ITransformable3D
   - IInterval<Point3D>
     - IValue
   - IArrayLike<Point3D>
@@ -563,23 +541,23 @@ Line3D
 LinearEquation
   - IRealFunction
 
-LineArray2D
-  - ILineArray2D
-    - ILineGeometry2D
-      - IPrimitiveGeometry2D<Line2D>
-        - IPrimitiveGeometry
-        - IDeformable2D
-      - ILineGeometry
-        - IPrimitiveGeometry
+LineMesh3D
+  - IIndexedGeometry3D<Integer2>
+    - IPointGeometry3D
+      - IGeometry3D
+        - IGeometry
+      - IDeformable3D
+        - ITransformable3D
 
-LineArray3D
-  - ILineArray3D
-    - ILineGeometry3D
-      - IPrimitiveGeometry3D<Line3D>
-        - IPrimitiveGeometry
-        - IDeformable3D
-      - ILineGeometry
-        - IPrimitiveGeometry
+Lines2D
+  - IPrimitiveGeometry2D<Line2D>
+    - IGeometry2D
+      - IGeometry
+
+Lines3D
+  - IPrimitiveGeometry3D<Line3D>
+    - IGeometry3D
+      - IGeometry
 
 Lissajous
   - IAngularCurve2D
@@ -632,12 +610,6 @@ Matrix3x2
 Matrix4x4
   - IValue
   - IArrayLike<Number>
-
-MatrixTransform2D
-  - ITransform2D
-
-MatrixTransform3D
-  - ITransform3D
 
 NPrism
   - ISolid
@@ -713,8 +685,7 @@ Point2D
       - IGeometry2D
         - IGeometry
       - IDeformable2D
-      - IBounded2D
-    - IDeformable2D
+        - ITransformable2D
   - IDifference<Vector2>
 
 Point3D
@@ -728,66 +699,56 @@ Point3D
       - IGeometry3D
         - IGeometry
       - IDeformable3D
-      - IBounded3D
-    - IDeformable3D
+        - ITransformable3D
   - IDifference<Vector3>
 
-PointArray2D
-  - IPointArray2D
-    - IPointGeometry2D
-      - IGeometry2D
-        - IGeometry
-      - IDeformable2D
-      - IBounded2D
+Points2D
+  - IPrimitiveGeometry2D<Point2D>
+    - IGeometry2D
+      - IGeometry
 
-PointArray3D
-  - IPointArray3D
-    - IPointGeometry3D
-      - IGeometry3D
-        - IGeometry
-      - IDeformable3D
-      - IBounded3D
+Points3D
+  - IPrimitiveGeometry3D<Point3D>
+    - IGeometry3D
+      - IGeometry
 
 PolarCoordinate
   - ICoordinate
 
-PolyLine2D
-  - IPolyLine2D
-    - IPointGeometry2D
+Polygon
+  - IPolygon2D
+    - IPolyLine2D
+      - IPointGeometry2D
+        - IGeometry2D
+          - IGeometry
+        - IDeformable2D
+          - ITransformable2D
+      - IOpenClosedShape
+        - IShape
+          - IGeometry
+      - ICurve2D
+        - IGeometry2D
+          - IGeometry
+        - ICurve<Point2D>
+          - IProcedural<Number,TRange>
+          - IOpenClosedShape
+            - IShape
+              - IGeometry
+    - IClosedShape2D
       - IGeometry2D
         - IGeometry
-      - IDeformable2D
-      - IBounded2D
-    - IOpenClosedShape
-      - IShape
-        - IGeometry
-    - ICurve2D
-      - IGeometry2D
-        - IGeometry
-      - ICurve<Point2D>
-        - IProcedural<Number,TRange>
+      - IClosedShape
         - IOpenClosedShape
           - IShape
             - IGeometry
 
+PolyLine2D
+  - IGeometry2D
+    - IGeometry
+
 PolyLine3D
-  - IPolyLine3D
-    - IPointGeometry3D
-      - IGeometry3D
-        - IGeometry
-      - IDeformable3D
-      - IBounded3D
-    - IOpenClosedShape
-      - IShape
-        - IGeometry
-    - ICurve3D
-      - IGeometry3D
-        - IGeometry
-      - ICurve<Point3D>
-        - IProcedural<Number,TRange>
-        - IOpenClosedShape
-          - IShape
-            - IGeometry
+  - IGeometry3D
+    - IGeometry
 
 Pose2D
   - IRigidTransform2D
@@ -814,7 +775,7 @@ Quad2D
         - IGeometry2D
           - IGeometry
         - IDeformable2D
-        - IBounded2D
+          - ITransformable2D
       - IOpenClosedShape
         - IShape
           - IGeometry
@@ -836,121 +797,21 @@ Quad2D
   - IArrayLike<Point2D>
 
 Quad3D
-  - IPolygon3D
-    - IPolyLine3D
-      - IPointGeometry3D
-        - IGeometry3D
-          - IGeometry
-        - IDeformable3D
-        - IBounded3D
-      - IOpenClosedShape
-        - IShape
-          - IGeometry
-      - ICurve3D
-        - IGeometry3D
-          - IGeometry
-        - ICurve<Point3D>
-          - IProcedural<Number,TRange>
-          - IOpenClosedShape
-            - IShape
-              - IGeometry
-    - IClosedShape3D
-      - IGeometry3D
-        - IGeometry
-      - IClosedShape
-        - IOpenClosedShape
-          - IShape
-            - IGeometry
   - IDeformable3D
+    - ITransformable3D
   - IArrayLike<Point3D>
 
-QuadArray2D
-  - IQuadArray2D
-    - IQuadGeometry2D
-      - IPrimitiveGeometry2D<Quad2D>
-        - IPrimitiveGeometry
-        - IDeformable2D
-      - IQuadGeometry
-        - IPrimitiveGeometry
-
-QuadArray3D
-  - IQuadArray3D
-    - IQuadGeometry3D
-      - IPrimitiveGeometry3D<Quad3D>
-        - IPrimitiveGeometry
-        - IDeformable3D
-      - IQuadGeometry
-        - IPrimitiveGeometry
-
-QuadGrid2D
-  - IQuadGrid2D
-    - IQuadMesh2D
-      - IIndexedGeometry2D
-        - IIndexedGeometry
-          - IPrimitiveGeometry
-        - IPointGeometry2D
-          - IGeometry2D
-            - IGeometry
-          - IDeformable2D
-          - IBounded2D
-      - IQuadGeometry2D
-        - IPrimitiveGeometry2D<Quad2D>
-          - IPrimitiveGeometry
-          - IDeformable2D
-        - IQuadGeometry
-          - IPrimitiveGeometry
-
 QuadGrid3D
-  - IQuadGrid3D
-    - IQuadMesh3D
-      - IIndexedGeometry3D
-        - IIndexedGeometry
-          - IPrimitiveGeometry
-        - IPointGeometry3D
-          - IGeometry3D
-            - IGeometry
-          - IDeformable3D
-          - IBounded3D
-      - IQuadGeometry3D
-        - IPrimitiveGeometry3D<Quad3D>
-          - IPrimitiveGeometry
-          - IDeformable3D
-        - IQuadGeometry
-          - IPrimitiveGeometry
-
-QuadMesh2D
-  - IQuadMesh2D
-    - IIndexedGeometry2D
-      - IIndexedGeometry
-        - IPrimitiveGeometry
-      - IPointGeometry2D
-        - IGeometry2D
-          - IGeometry
-        - IDeformable2D
-        - IBounded2D
-    - IQuadGeometry2D
-      - IPrimitiveGeometry2D<Quad2D>
-        - IPrimitiveGeometry
-        - IDeformable2D
-      - IQuadGeometry
-        - IPrimitiveGeometry
+  - IGeometry3D
+    - IGeometry
 
 QuadMesh3D
-  - IQuadMesh3D
-    - IIndexedGeometry3D
-      - IIndexedGeometry
-        - IPrimitiveGeometry
-      - IPointGeometry3D
-        - IGeometry3D
-          - IGeometry
-        - IDeformable3D
-        - IBounded3D
-    - IQuadGeometry3D
-      - IPrimitiveGeometry3D<Quad3D>
-        - IPrimitiveGeometry
-        - IDeformable3D
-      - IQuadGeometry
-        - IPrimitiveGeometry
+  - IIndexedGeometry3D<Integer4>
+    - IPointGeometry3D
+      - IGeometry3D
+        - IGeometry
+      - IDeformable3D
+        - ITransformable3D
 
 Quadratic
   - IRealFunction
@@ -979,6 +840,11 @@ QuadraticBezier3D
       - IShape
         - IGeometry
 
+Quads3D
+  - IPrimitiveGeometry3D<Quad3D>
+    - IGeometry3D
+      - IGeometry
+
 Quaternion
   - IValue
   - IArrayLike<Number>
@@ -989,6 +855,7 @@ Ray2D
 Ray3D
   - IValue
   - IDeformable3D
+    - ITransformable3D
 
 Rect2D
   - IPolygon2D
@@ -997,7 +864,7 @@ Rect2D
         - IGeometry2D
           - IGeometry
         - IDeformable2D
-        - IBounded2D
+          - ITransformable2D
       - IOpenClosedShape
         - IShape
           - IGeometry
@@ -1027,7 +894,7 @@ RegularPolygon
         - IGeometry2D
           - IGeometry
         - IDeformable2D
-        - IBounded2D
+          - ITransformable2D
       - IOpenClosedShape
         - IShape
           - IGeometry
@@ -1198,6 +1065,9 @@ TorusKnot
 Transform2D
   - ITransform2D
 
+Transform3D
+  - ITransform3D
+
 Translation2D
   - IRigidTransform2D
     - ITransform2D
@@ -1228,7 +1098,7 @@ Triangle2D
         - IGeometry2D
           - IGeometry
         - IDeformable2D
-        - IBounded2D
+          - ITransformable2D
       - IOpenClosedShape
         - IShape
           - IGeometry
@@ -1252,90 +1122,26 @@ Triangle2D
       - IGeometry2D
         - IGeometry
       - IDeformable2D
-      - IBounded2D
-    - IDeformable2D
+        - ITransformable2D
   - IArrayLike<Point2D>
 
 Triangle3D
-  - IPolygon3D
-    - IPolyLine3D
-      - IPointGeometry3D
-        - IGeometry3D
-          - IGeometry
-        - IDeformable3D
-        - IBounded3D
-      - IOpenClosedShape
-        - IShape
-          - IGeometry
-      - ICurve3D
-        - IGeometry3D
-          - IGeometry
-        - ICurve<Point3D>
-          - IProcedural<Number,TRange>
-          - IOpenClosedShape
-            - IShape
-              - IGeometry
-    - IClosedShape3D
-      - IGeometry3D
-        - IGeometry
-      - IClosedShape
-        - IOpenClosedShape
-          - IShape
-            - IGeometry
   - IDeformable3D
+    - ITransformable3D
   - IArrayLike<Point3D>
 
-TriangleArray2D
-  - ITriangleArray2D
-    - ITriangleGeometry2D
-      - IPrimitiveGeometry2D<Triangle2D>
-        - IPrimitiveGeometry
-        - IDeformable2D
-      - ITriangleGeometry
-        - IPrimitiveGeometry
-
-TriangleArray3D
-  - ITriangleArray3D
-    - ITriangleGeometry3D
-      - IPrimitiveGeometry3D<Triangle3D>
-        - IPrimitiveGeometry
-        - IDeformable3D
-      - ITriangleGeometry
-        - IPrimitiveGeometry
-
-TriangleMesh2D
-  - ITriangleMesh2D
-    - IIndexedGeometry2D
-      - IIndexedGeometry
-        - IPrimitiveGeometry
-      - IPointGeometry2D
-        - IGeometry2D
-          - IGeometry
-        - IDeformable2D
-        - IBounded2D
-    - ITriangleGeometry2D
-      - IPrimitiveGeometry2D<Triangle2D>
-        - IPrimitiveGeometry
-        - IDeformable2D
-      - ITriangleGeometry
-        - IPrimitiveGeometry
-
 TriangleMesh3D
-  - ITriangleMesh3D
-    - IIndexedGeometry3D
-      - IIndexedGeometry
-        - IPrimitiveGeometry
-      - IPointGeometry3D
-        - IGeometry3D
-          - IGeometry
-        - IDeformable3D
-        - IBounded3D
-    - ITriangleGeometry3D
-      - IPrimitiveGeometry3D<Triangle3D>
-        - IPrimitiveGeometry
-        - IDeformable3D
-      - ITriangleGeometry
-        - IPrimitiveGeometry
+  - IIndexedGeometry3D<Integer3>
+    - IPointGeometry3D
+      - IGeometry3D
+        - IGeometry
+      - IDeformable3D
+        - ITransformable3D
+
+Triangles3D
+  - IPrimitiveGeometry3D<Triangle3D>
+    - IGeometry3D
+      - IGeometry
 
 TrisectrixOfMaclaurin
   - IPolarCurve
@@ -1352,6 +1158,9 @@ TrisectrixOfMaclaurin
     - IOpenClosedShape
       - IShape
         - IGeometry
+
+TRSTransform2D
+  - ITransform2D
 
 TRSTransform3D
   - ITransform3D

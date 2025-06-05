@@ -60,7 +60,7 @@ type OffsetRotation2D
 }
 
 // A transformation that consists of translation, rotation, and scale
-type Transform2D
+type TRSTransform2D
     implements ITransform2D
 {
     Translation: Translation2D;
@@ -95,7 +95,7 @@ type Skew2D
 }
 
 // A generic matrix transformation in 2D 
-type MatrixTransform2D 
+type Transform2D 
     implements ITransform2D
 {
     Matrix: Matrix3x2;
@@ -135,7 +135,7 @@ type IdentityTransform3D
 
 // An affine transform expressed by a 4x4 matrix.
 // There are no assurances made that the matrix is affine. 
-type MatrixTransform3D
+type Transform3D
     implements ITransform3D
 {
     Matrix: Matrix4x4;
@@ -258,11 +258,15 @@ library Transforms
     Multiply(x: ITransform3D, v: Vector3): Vector3
         => x.TransformNormal(v);
 
-    Multiply(x: ITransform3D, m: Matrix4x4): MatrixTransform3D
+    Multiply(x: ITransform3D, m: Matrix4x4): Transform3D
         => x.Compose(m);
 
     //==
     // General ITransform3D helpers
+
+    // Every Transform class provides a Matrix
+    Transform3D(x: ITransform3D): Transform3D
+        => x.Matrix;
 
     // Transforms a point 
     TransformPoint(x: ITransform3D, v: Point3D): Point3D
@@ -277,11 +281,11 @@ library Transforms
 		=> t.Matrix;
 
     // Any 3D transform can be trivially inverted 
-    Invert(t: ITransform3D): MatrixTransform3D
+    Invert(t: ITransform3D): Transform3D
         => t.Matrix.Invert;
 
     // Two 3D transforms can be combined (composed) into one via matrix multiplication
-    Compose(t: ITransform3D, m: Matrix4x4): MatrixTransform3D
+    Compose(t: ITransform3D, m: Matrix4x4): Transform3D
         => t.Matrix * m;
   
     // Extracts the rotation component of a transform
@@ -333,10 +337,10 @@ library Transforms
         => x.ZVector3;
     
     //==
-    // MatrixTransform3D
+    // Transform3D
     
     // The identity matrix 
-    Identity(_: MatrixTransform3D): MatrixTransform3D
+    Identity(_: Transform3D): Transform3D
         => Matrix4x4.Identity;
 
     //==

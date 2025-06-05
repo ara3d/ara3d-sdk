@@ -12,7 +12,7 @@ public class Clone : IModelModifier
         var mat = m.Materials.FirstOrDefault() ?? Material.Default;
         var instancedMesh = PlatonicSolids.TriangulatedCube;
         var mergedMesh = m.ToMesh();
-        var points = AtFaceCenters ? mergedMesh.Faces.Map(f => f.Center) : mergedMesh.Points;
+        var points = AtFaceCenters ? mergedMesh.Triangles.Map(f => f.Center) : mergedMesh.Points;
         return Model3D.Create(points.Select(p => ToElement(instancedMesh, p, mat)));
     }
 }

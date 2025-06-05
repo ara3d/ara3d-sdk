@@ -1,15 +1,6 @@
 ﻿namespace Ara3D.Geometry
 {
-    public class Polygon : IDeformable2D<Polygon>
-    {
-        public IReadOnlyList<Point2D> Points { get; }
 
-        public Polygon(IReadOnlyList<Point2D> points)
-            => Points = points;
-
-        public Polygon Deform(Func<Point2D, Point2D> f)
-            => new Polygon(Points.Map(f));
-    }
 
     public enum CommonPolygonsEnum
     {

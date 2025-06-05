@@ -190,7 +190,7 @@ interface IPointGeometry2D
 interface IPointGeometry3D
     inherits IGeometry3D, IDeformable3D
 {
-    Points(x: Self): Points3D;
+    Points(x: Self): IArray<Point3D>;
 }
 
 // A basic 2D primitive geometry that is a collection of a fixed number of 2D points
@@ -206,7 +206,7 @@ interface IGeometricPrimitive3D
 // 2D Primitive geometry 
 interface IPrimitiveGeometry2D<T> 
     where T: IGeometricPrimitive2D
-    inherits IPrimitiveGeometry 
+    inherits IGeometry2D 
 { 
     Primitives(x: Self): IArray<T>;
 }
@@ -238,4 +238,17 @@ interface IDeformable3D
     inherits ITransformable3D 
 {
     Deform(x: Self, f: Function1<Point3D, Point3D>): Self;
+ }
+
+// Any type that supports being transformed in 2D space. 
+interface ITransformable2D 
+{
+    Transform(x: Self, t: Transform2D): Self;
+}
+
+// Any type that supports being deformed, by applying a Point3D to Point3D function. 
+interface IDeformable2D 
+    inherits ITransformable2D 
+{
+    Deform(x: Self, f: Function1<Point2D, Point2D>): Self;
  }
