@@ -10,10 +10,11 @@ namespace Ara3D.SceneEval;
 /// The number of inputs must match the number of parameters in the `Eval` method.
 /// All public fields and properties on that object are exposed as an `IPropContainer` 
 /// </summary>
-public class SceneEvalNode
+public class SceneEvalNode : IDisposable
 {
     public SceneEvalGraph Graph { get; }
     public IReadOnlyList<SceneEvalNode> Inputs { get; private set; } = [];
+    public SceneEvalNode Output { get; set; }
     public IPropContainer Properties { get; }
     public object EvaluatableObject { get; }
     public string Name { get; }
@@ -95,8 +96,59 @@ public class SceneEvalNode
         Invalidated?.Invoke(this, EventArgs.Empty);
     }
 
-    // TODO: this needs to be tested and validated.
+    /// <summary>
+    /// Looking at only primary dependencies can be adapted to provide a "stack" view of an object
+    /// evaluation graph or a "tree" where the first item in the path is a parent and the rest are children.
+    /// The first item in the list is the root.  
+    /// </summary>
+    public IReadOnlyList<SceneEvalNode> GetPrimaryDependencyPath()
+    {
+        var list = new List<SceneEvalNode>();
+        var cur = this;
+        while (cur != null)
+        {
+            list.Add(cur);
+            if (cur.Inputs.Count == 0)
+                break;
+            cur = cur.Inputs[0]; 
+        }
 
+        list.Reverse();
+
+        for (var i=0; i < list.Count; i++)
+        {
+            var node = list[i];
+            if (node.Inputs.Count > 1)
+                throw new InvalidOperationException($"Node {node} has more than one input, cannot build primary dependency path.");
+            if (i == 0)
+                if (node.Inputs.Count != 0)
+                    throw new InvalidOperationException($"First item in primary dependency path {node} is not a source node, cannot build primary dependency path.");
+        }
+
+        return list;
+    }
+
+    public bool IsSource
+        => Inputs.Count == 0;
+
+    public SceneEvalNode GetRoot()
+        => Graph.GetRoot(this);
+
+    public void Dispose()
+    {
+        foreach (var input in Inputs)
+            input.Invalidated -= InputInvalidated;
+    }
+
+    public IEnumerable<SceneEvalNode> GetAllNodes()
+    {
+        yield return this;
+        foreach (var node in Inputs.SelectMany(n => n.GetAllNodes()))
+            yield return node;
+    }
+
+    /*
+    // TODO: this needs to be tested and validated.
     /// <summary>
     /// Builds a delegate that calls <paramref name="method"/>.  
     /// The delegate accepts an <c>object[]</c> with the actual arguments
@@ -154,42 +206,5 @@ public class SceneEvalNode
         return Expression.Lambda<Func<object[], object>>(body, arrParam)
             .Compile();
     }
-
-    /// <summary>
-    /// Looking at only primary dependencies can be adapted to provide a "stack" view of an object
-    /// evaluation graph or a "tree" where the first item in the path is a parent and the rest are children.
-    /// The first item in the list is the root.  
-    /// </summary>
-    public IReadOnlyList<SceneEvalNode> GetPrimaryDependencyPath()
-    {
-        var list = new List<SceneEvalNode>();
-        var cur = this;
-        while (cur != null)
-        {
-            list.Add(cur);
-            if (cur.Inputs.Count == 0)
-                break;
-            cur = cur.Inputs[0]; 
-        }
-
-        list.Reverse();
-
-        for (var i=0; i < list.Count; i++)
-        {
-            var node = list[i];
-            if (node.Inputs.Count > 1)
-                throw new InvalidOperationException($"Node {node} has more than one input, cannot build primary dependency path.");
-            if (i == 0)
-                if (node.Inputs.Count != 0)
-                    throw new InvalidOperationException($"First item in primary dependency path {node} is not a source node, cannot build primary dependency path.");
-        }
-
-        return list;
-    }
-
-    public bool IsSource
-        => Inputs.Count == 0;
-
-    public SceneEvalNode GetRoot()
-        => Graph.GetRoot(this);
+    */
 }
