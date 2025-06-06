@@ -26,7 +26,8 @@ public class ModelAsset : IModelAsset
     {
         if (Model != null)
             return Model;
-        var task = Import(context.Logger);
+        //var task = Import(context.Logger);
+        var task = Import(Logger.Console);
         task.RunSynchronously();
         return task.Result;
     }
