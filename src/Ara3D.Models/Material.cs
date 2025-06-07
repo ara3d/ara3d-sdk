@@ -4,8 +4,17 @@ namespace Ara3D.Models
 {
     public record Material(Color Color, float Metallic, float Roughness)
     {
+        public static Color DefaultColor
+            = new(0.5f, 0.5f, 0.5f, 1f);
+
+        public static float DefaultMetallic
+            = 0.1f;
+
+        public static float DefaultRoughness
+            = 0.5f;
+
         public static Material Default 
-            => new(new Color(0.5f,0.5f,0.5f,0), 0.1f, 0.5f);
+            = new(DefaultColor, DefaultMetallic, DefaultRoughness);
         
         public Material WithColor(Color color)
             => new(color, Metallic, Roughness);
@@ -15,5 +24,6 @@ namespace Ara3D.Models
 
         public Material WithRoughness(float roughness)
             => new(Color, Metallic, roughness);
+
     }
 }

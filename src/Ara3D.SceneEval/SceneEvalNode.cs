@@ -65,6 +65,9 @@ public class SceneEvalNode : IDisposable
         InvalidateCache();
     }
 
+    public void SetInput(SceneEvalNode input)
+        => UpdateInputs([input]);
+
     public void UpdateInputs(IReadOnlyList<SceneEvalNode> inputs)
     {
         foreach (var input in Inputs)

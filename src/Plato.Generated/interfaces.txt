@@ -629,16 +629,13 @@ NPyramid
 
 Number
   - IRealNumber
-    - INumerical
-      - IVectorLike
-        - IInterpolatable
-        - IScalarArithmetic
-        - IArrayLike<Number>
-      - IArithmetic
-        - IAdditive
-        - IMultiplicative
-        - IDivisible
-        - IModulo
+    - IInterpolatable
+    - IArithmetic
+      - IAdditive
+      - IMultiplicative
+      - IDivisible
+      - IModulo
+    - IScalarArithmetic
     - IOrderable
 
 NumberInterval

@@ -6,7 +6,6 @@ type Number
     implements IRealNumber
 { }
 
-
 // An angle measurement (internally stored as Radians)
 type Angle
     implements IMeasure

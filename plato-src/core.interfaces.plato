@@ -120,9 +120,9 @@ interface IMultiplicativeWithInverse
 // Represents a continuous one dimensional value.
 // https://en.wikipedia.org/wiki/Real_float
 // It supports all arithmetic operations.
-// The "Number" type is the only example of a IRealNumber
+// The "Number" type is currently the only example of a IRealNumber
 interface IRealNumber
-    inherits INumerical, IOrderable
+    inherits IInterpolatable, IArithmetic, IScalarArithmetic, IOrderable
 { }
 
 // Used for integer and cardinal types. 
