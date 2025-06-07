@@ -1,6 +1,5 @@
 ﻿namespace Ara3D.Studio.Samples;
 
-
 public class GridMeshDemo : IModelGenerator
 {
     [Range(1, 100)] public int Rows = 1;
@@ -20,11 +19,6 @@ public class GridMeshDemo : IModelGenerator
         return new FunctionalReadOnlyList2D<T>(cols, rows, (col, row) => xs[row * cols + col]);
     }
 
-    public static QuadMesh3D ToQuadMesh3D(QuadGrid3D grid)
-    {
-        return new QuadMesh3D(grid.Points, grid.FaceIndices);
-    }
-
     public Model3D Eval(EvalContext eval)
     {
         // Bottom Row
@@ -35,8 +29,7 @@ public class GridMeshDemo : IModelGenerator
         var x11 = new Point3D(+0.5f, +0.5f, 0);
         var points = ToArray2D([x00, x01, x10, x11], 2).Map(p => p * Scale);
         var grid = new QuadGrid3D(points, false, false);
-        var mesh = ToQuadMesh3D(grid);
-        var result = mesh.Triangulate();
+        var result = grid.Triangulate();
         if (Flip)
             result = result.FlipFaces();
         if (DoubleSided)

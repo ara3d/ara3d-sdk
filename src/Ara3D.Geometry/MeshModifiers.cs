@@ -51,6 +51,9 @@ public static class MeshModifiers
     public static IReadOnlyList<Translation3D> Translations(this IReadOnlyList<Vector3> vectors)
         => vectors.Map(ToTranslation3D);
 
+    public static IReadOnlyList<Point3D> Translate(this IReadOnlyList<Point3D> points, Vector3 vector)
+        => points.Transform(vector.ToTranslation3D());
+
     public static IReadOnlyList<Point3D> Translate(this IReadOnlyList<Point3D> points, IReadOnlyList<Vector3> vectors)
         => points.Transform(vectors.Translations());
 

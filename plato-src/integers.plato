@@ -2,9 +2,6 @@ library Integers
 {
     //==
     // Integer operations
-
-    Number(x: Integer): Number 
-        => x;
     
     PlusOne(x: Integer): Integer 
         => x + 1;

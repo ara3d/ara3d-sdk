@@ -27,5 +27,8 @@ namespace Ara3D.Collections
 
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
+
+        public static FunctionalReadOnlyList2D<T> Default 
+            = new FunctionalReadOnlyList2D<T>(0, 0, (col, row) => default);
     }
 }

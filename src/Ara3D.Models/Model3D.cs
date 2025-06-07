@@ -84,15 +84,21 @@ namespace Ara3D.Models
             return new TriangleMesh3D(points, indices);
         }
 
-       public Model3D ModifyTransforms(Func<Matrix4x4, Matrix4x4> f)
-            => new(Meshes, Materials, Transforms.Select(f), ElementStructs, DataTable);
+        public Model3D WithTransforms(IReadOnlyList<Matrix4x4> transforms)
+            => new(Meshes, Materials, transforms, ElementStructs, DataTable);
+
+        public Model3D ModifyTransforms(Func<Matrix4x4, Matrix4x4> f)
+            => WithTransforms(Transforms.Select(f));
 
         public Point3D NodeCenter
             => Elements.Select(n => n.Transform.Value.Translation).Aggregate(
                     Vector3.Zero, (v, p) => v + (Vector3)p) / Elements.Count;
 
+        public Model3D WithMesh(IReadOnlyList<TriangleMesh3D> meshes)
+            => new(meshes, Materials, Transforms, ElementStructs, DataTable);
+
         public Model3D ModifyMeshes(Func<TriangleMesh3D, TriangleMesh3D> f)
-            => new(Meshes.Select(f).ToList(), Materials, Transforms, ElementStructs, DataTable);
+            => new(Meshes.Select(f), Materials, Transforms, ElementStructs, DataTable);
 
         public static Model3D Create(IEnumerable<Element> elements)
         {

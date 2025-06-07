@@ -145,7 +145,7 @@ type Transform3D
 type Translation3D
     implements IRigidTransform3D
 {
-    Direction: Vector3;
+    Vector: Vector3;
 }
 
 // A rigid transform wit no translational component
@@ -288,18 +288,6 @@ library Transforms
     Compose(t: ITransform3D, m: Matrix4x4): Transform3D
         => t.Matrix * m;
   
-    // Extracts the rotation component of a transform
-    Rotation(t: ITransform3D): Rotation3D
-        => t.Matrix.Rotation;
-
-    // Extracts the translation component of a transform
-    Translation(t: ITransform3D): Translation3D
-        => t.Matrix.Translation;
-
-    // Converts a transform into a pose
-    Pose(t: ITransform3D): Pose3D
-        => (t.Matrix.Translation, t.Matrix.Rotation);
-
     //==
     // General IRotation3D helpers
 
@@ -321,7 +309,7 @@ library Transforms
 
     // Get the matrix from the 3D translation
     Matrix(t: Translation3D): Matrix4x4
-        => Matrix4x4.CreateTranslation(t.Translation);
+        => Matrix4x4.CreateTranslation(t.Vector);
         
     // An identity translation is a zero vector
     Identity(_: Translation3D): Translation3D
