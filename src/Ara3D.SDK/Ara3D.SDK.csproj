@@ -42,8 +42,7 @@
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>
       <!-- All ReferenceCopyLocalPaths that came from ProjectReference -->
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget','ProjectReference'))" />
-    </ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths&#xD;&#xA;                    -&gt;WithMetadataValue('ReferenceSourceTarget','ProjectReference'))" />    </ItemGroup>
   </Target>
   <ItemGroup>
     <None Include="ara3d-128x128.png">
