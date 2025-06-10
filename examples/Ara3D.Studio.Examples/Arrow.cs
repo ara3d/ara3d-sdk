@@ -2,28 +2,25 @@
 
 public class Arrow : IModelGenerator
 {
-    public float ShaftWidth;
-    public float ShaftHeight;
-    public float TipWidth;
-    public float TipHeight;
-    
-    public float TotalHeight => ShaftHeight + TipHeight;
+    [Range(1, 32)] public int Count = 16;
+    [Range(0f, 1f)] public float ShaftWidth = 0.01f;
+    [Range(0f, 1f)] public float ShaftHeight = 0.8f;
+    [Range(0f, 1f)] public float TipWidth = 0.2f;
+    [Range(0f, 1f)] public float TipHeight = 0.2f;
 
     public Model3D Eval(EvalContext context)
     {
-        var halfOutLine = new Point2D[]
+        var TotalHeight = ShaftHeight + TipHeight;
+        var halfOutLine = new Point3D[]
         {
-            (0, 0),
-            (ShaftWidth / 2, 0),
-            (ShaftWidth / 2, ShaftHeight),
-            (TipWidth / 2, ShaftHeight),
-            (0, TotalHeight),
+            (0, 0, 0),
+            (ShaftWidth / 2, 0, 0),
+            (ShaftWidth / 2, 0, ShaftHeight),
+            (TipWidth / 2, 0, ShaftHeight),
+            (0, 0, TotalHeight),
         };
         
-        // Make the points as if we are drawing up.
-        var points3D = halfOutLine.Map(p => new Point3D(p.X, 0, p.Y));
-
-        var grid = points3D.Extrude(ShaftHeight);
+        var grid = halfOutLine.Revolve(Vector3.UnitZ, Count);
         return grid.Triangulate();
     }
 }
