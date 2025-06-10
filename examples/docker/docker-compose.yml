@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  dotnet-dev:
+    build: .
+    container_name: dotnet-macos-sim
+    volumes:
+      - .:/home/devuser/app
+    working_dir: /home/devuser/app
+    stdin_open: true
+    tty: true

@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Reflection;
 using Ara3D.PropKit;
 using Ara3D.Utils;
@@ -10,11 +12,10 @@ namespace Ara3D.SceneEval;
 /// The number of inputs must match the number of parameters in the `Eval` method.
 /// All public fields and properties on that object are exposed as an `IPropContainer` 
 /// </summary>
-public class SceneEvalNode : IDisposable
+public class SceneEvalNode : IDisposable, INotifyPropertyChanged
 {
     public SceneEvalGraph Graph { get; }
-    public IReadOnlyList<SceneEvalNode> Inputs { get; private set; } = [];
-    public SceneEvalNode Output { get; set; }
+    public SceneEvalNode Input { get; set; }
     public IPropContainer Properties { get; }
     public object EvaluatableObject { get; }
     public string Name { get; }
@@ -22,8 +23,9 @@ public class SceneEvalNode : IDisposable
     private object _cached;
     private object[] _args;
     private readonly Func<object[], object> _evalFunc;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    public SceneEvalNode(SceneEvalGraph graph, IReadOnlyList<SceneEvalNode> inputs, object evaluableObject)
+    public SceneEvalNode(SceneEvalGraph graph, object evaluableObject)
     {
         Graph = graph ?? throw new ArgumentNullException(nameof(graph));
         EvaluatableObject = evaluableObject ?? throw new ArgumentNullException(nameof(evaluableObject));
@@ -38,17 +40,12 @@ public class SceneEvalNode : IDisposable
         var func = type.GetMethod("Eval");
         if (func == null)
             throw new InvalidOperationException($"The object {evaluableObject} does not have an Eval method.");
-            
-        if (func.GetParameters().Length != inputs.Count + 1)
-            throw new InvalidOperationException($"The number of inputs {inputs.Count} does not match the number of parameters {func.GetParameters().Length} in the Eval method.");
 
-        // TODO: optimize the func call. See BuildArrayInvoker below
+        _args = new object[func.GetParameters().Length];
         _evalFunc = (args) => func.Invoke(EvaluatableObject, args);
 
         Properties = new PropContainerWrapper(evaluableObject);
         Properties.PropertyChanged += (s, e) => InvalidateCache();
-
-        UpdateInputs(inputs);
     }
 
     public object Eval(EvalContext context)
@@ -66,28 +63,20 @@ public class SceneEvalNode : IDisposable
     }
 
     public void SetInput(SceneEvalNode input)
-        => UpdateInputs([input]);
-
-    public void UpdateInputs(IReadOnlyList<SceneEvalNode> inputs)
     {
-        foreach (var input in Inputs)
+        if (Input != null)
             input.Invalidated -= InputInvalidated;
-
-        Inputs = inputs ?? Array.Empty<SceneEvalNode>();
-        _args = new object[Inputs.Count + 1];
-
-        foreach (var input in Inputs)
-            input.Invalidated += InputInvalidated;
-
+        Input = input;
+        Input.Invalidated += InputInvalidated;
         InvalidateCache();
         Graph.NotifyGraphChanged();
     }
 
     private object EvalCore(EvalContext context)
     {
-        for (var i=0; i < Inputs.Count; i++)
-            _args[i] = Inputs[i].Eval(context);
-        _args[Inputs.Count] = context;
+        if (Input != null)
+            _args[0] = Input.Eval(context);
+        _args[^1] = context;
         return _cached = _evalFunc(_args);
     }
 
@@ -111,44 +100,26 @@ public class SceneEvalNode : IDisposable
         while (cur != null)
         {
             list.Add(cur);
-            if (cur.Inputs.Count == 0)
-                break;
-            cur = cur.Inputs[0]; 
+            cur = cur.Input; 
         }
-
         list.Reverse();
-
-        for (var i=0; i < list.Count; i++)
-        {
-            var node = list[i];
-            if (node.Inputs.Count > 1)
-                throw new InvalidOperationException($"Node {node} has more than one input, cannot build primary dependency path.");
-            if (i == 0)
-                if (node.Inputs.Count != 0)
-                    throw new InvalidOperationException($"First item in primary dependency path {node} is not a source node, cannot build primary dependency path.");
-        }
-
         return list;
     }
 
     public bool IsSource
-        => Inputs.Count == 0;
+        => Input == null;
 
     public SceneEvalNode GetRoot()
         => Graph.GetRoot(this);
 
     public void Dispose()
     {
-        foreach (var input in Inputs)
-            input.Invalidated -= InputInvalidated;
+        if (Input != null)
+            Input.Invalidated -= InputInvalidated;
     }
 
     public IEnumerable<SceneEvalNode> GetAllNodes()
-    {
-        yield return this;
-        foreach (var node in Inputs.SelectMany(n => n.GetAllNodes()))
-            yield return node;
-    }
+        => GetPrimaryDependencyPath().Append(this);
 
     /*
     // TODO: this needs to be tested and validated.

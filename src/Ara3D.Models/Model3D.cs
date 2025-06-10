@@ -22,7 +22,7 @@ namespace Ara3D.Models
             Transforms = transforms;
             ElementStructs = elements;
             DataTable = dataTable;
-            Elements = elements.Select(GetElement);
+            Elements = elements.Select(GetElement);     
         }
 
         public IReadOnlyList<TriangleMesh3D> Meshes { get; }
@@ -94,11 +94,11 @@ namespace Ara3D.Models
             => Elements.Select(n => n.Transform.Value.Translation).Aggregate(
                     Vector3.Zero, (v, p) => v + (Vector3)p) / Elements.Count;
 
-        public Model3D WithMesh(IReadOnlyList<TriangleMesh3D> meshes)
+        public Model3D WithMeshes(IReadOnlyList<TriangleMesh3D> meshes)
             => new(meshes, Materials, Transforms, ElementStructs, DataTable);
 
         public Model3D ModifyMeshes(Func<TriangleMesh3D, TriangleMesh3D> f)
-            => new(Meshes.Select(f), Materials, Transforms, ElementStructs, DataTable);
+            => WithMeshes(Meshes.Select(f));
 
         public static Model3D Create(IEnumerable<Element> elements)
         {

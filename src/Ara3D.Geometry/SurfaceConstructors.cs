@@ -24,6 +24,23 @@ public static class SurfaceConstructors
     public static IReadOnlyList<Point3D> To3D(this IReadOnlyList<Point2D> points)
         => points.Map(p => p.To3D());
 
+    public static IReadOnlyList<Point3D> Transform(this IReadOnlyList<Point3D> points, Transform3D transform)
+        => points.Map(p => p.Transform(transform));
+
+    public static IReadOnlyList<Point3D> Rotate(this IReadOnlyList<Point3D> points, Rotation3D rotation)
+        => points.Transform(rotation);
+
+    public static Angle FractionOfTurn(Number numerator, Number denominator)
+        => (numerator / denominator).Turns;
+
+    public static Rotation3D FractionalTurnAround(Vector3 axis, Number numerator, Number denominator)
+        => Quaternion.CreateFromAxisAngle(axis, FractionOfTurn(numerator, denominator));
+
+    public static QuadGrid3D Revolve(this IReadOnlyList<Point3D> points, Vector3 axis, int count)
+        => count.MapRange(i => points.Rotate(FractionalTurnAround(axis, i, count)))
+            .RowsToArray()
+            .ToQuadGrid3D(false, true);
+
     public static QuadGrid3D Extrude(this IReadOnlyList<Point3D> points, Vector3 vector)
         => RowsToArray([points, points.Translate(vector)]).ToQuadGrid3D(false, false);
 

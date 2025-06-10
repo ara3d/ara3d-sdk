@@ -7,12 +7,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <Import Project="..\Plato.Generated\Plato.Generated.projitems" Label="Shared" />
-
-  <Import Project="..\Plato.Intrinsics\Plato.Intrinsics.projitems" Label="Shared" />
-
   <ItemGroup>
-    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
     <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
   </ItemGroup>
 
