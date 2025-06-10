@@ -109,7 +109,7 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        public static Vector3[] ToNormals(System.Collections.Generic.IReadOnlyList<Vector3> positions, System.Collections.Generic.IReadOnlyList<int> indices)
+        public static Vector3[] ToNormals(IReadOnlyList<Vector3> positions, System.Collections.Generic.IReadOnlyList<int> indices)
         {
             var normals = new Vector3[positions.Count];
             for (var i = 0; i < indices.Count; i += 3)
