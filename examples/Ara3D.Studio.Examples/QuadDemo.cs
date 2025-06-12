@@ -1,13 +1,8 @@
 ﻿namespace Ara3D.Studio.Samples;
 
-public class GridMeshDemo : IModelGenerator
+public class SimpleGridMeshDemo : IModelGenerator
 {
-    [Range(1, 100)] public int Rows = 1;
-    [Range(1, 100)] public int Columns = 1;
     [Range(0f, 10f)] public float Scale = 1f;
-    [Range(-360f, 360f)] public float XRotation;
-    [Range(-360f, 360f)] public float YRotation;
-    [Range(-360f, 360f)] public float ZRotation;
 
     public bool DoubleSided;
     public bool Flip;

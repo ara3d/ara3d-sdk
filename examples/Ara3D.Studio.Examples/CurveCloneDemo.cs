@@ -44,23 +44,11 @@ namespace Ara3D.Studio.Samples
             return Circle; // Default to Circle if index is out of range
         }
 
-        public Model3D Clone(TriangleMesh3D mesh, Material material, IReadOnlyList<Matrix4x4> transforms)
-        {
-            return new Model3D([mesh], [material], transforms,
-                transforms.Count.MapRange(i => new ElementStruct(i, 0, 0, i)), null);
-        }
-
-        public Model3D CloneAlong(TriangleMesh3D mesh, Func<Number, Point3D> curveFunc, Integer count)
-        {
-            var transforms = count.LinearSpaceExclusive.Map(curveFunc).Map(p => Matrix4x4.CreateTranslation(p));
-            return Clone(mesh, Material.Default, transforms);
-        }
-
         public Model3D Eval(EvalContext context)
         {
             var mesh = PlatonicSolids.TriangulatedCube;
             var curve = GetCurve(Curve);
-            return CloneAlong(mesh, curve, Count);
+            return mesh.CloneAlong(curve, Count);
         }
     }
 }

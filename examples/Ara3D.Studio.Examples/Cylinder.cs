@@ -1,4 +1,7 @@
-﻿namespace Ara3D.Studio.Samples;
+﻿using Ara3D.Domo;
+using System.Numerics;
+
+namespace Ara3D.Studio.Samples;
 
 public class Cylinder : IModelGenerator
 {
