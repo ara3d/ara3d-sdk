@@ -38,8 +38,8 @@ namespace Ara3D.Models
                Materials[es.MaterialIndex],
                Transforms[es.TransformIndex]);
 
-        public Model3D Transform(Matrix4x4 matrix)
-            => new(Meshes, Materials, Transforms.Select(t => t * matrix).ToList(), ElementStructs, DataTable);
+        public Model3D Transform(Transform3D transform)
+            => new(Meshes, Materials, Transforms.Select(t => t * transform).ToList(), ElementStructs, DataTable);
 
         public static Integer3 Offset(Integer3 self, Integer offset)
             => (self.A + offset, self.B + offset, self.C + offset);

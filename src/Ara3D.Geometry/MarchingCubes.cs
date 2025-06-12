@@ -1,25 +1,5 @@
-﻿using Ara3D.Collections;
-
-namespace Ara3D.Geometry
+﻿namespace Ara3D.Geometry
 {
-    public struct Voxel
-    {
-        public readonly Vector3 Position;
-        public readonly Number Value;
-
-        public Voxel(Vector3 center, Number value)
-        {
-            Position = center;
-            Value = value;
-        }
-    }
-
-    public interface IVoxels : IReadOnlyList3D<Voxel>
-    {
-        Bounds3D Bounds { get; }
-        Voxel GetVoxel(int i, int j, int k);
-    }
-
     public static unsafe class MarchingCubeExtensions
     {
         public static Number Unlerp(this Number value, Number min, Number max)

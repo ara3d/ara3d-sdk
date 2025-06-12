@@ -160,6 +160,27 @@
             var closestPoint = a + t * (b - a); // Projection falls on the segment
             return (p - closestPoint).Length;
         }
-        
+
+        public static Vector3 InverseLerp(this Vector3 v, Vector3 min, Vector3 max)
+            => (v.X.Unlerp(min.X, max.X),
+                v.Y.Unlerp(min.Y, max.Y),
+                v.Z.Unlerp(min.Z, max.Z));
+
+        public static Vector3 InverseLerp(this Point3D point, Bounds3D bounds)
+            => InverseLerp(point, bounds.Min, bounds.Max);
+
+        public static Vector3 WithComponent(this Vector3 self, Integer component, Number value)
+        {
+            if (component == 0) return self.WithX(value);
+            if (component == 1) return self.WithY(value);
+            if (component == 2) return self.WithZ(value);
+            throw new IndexOutOfRangeException();
+        }
+
+        public static Vector3 AxisVector(this int i)
+            => AxisVector((Integer)i);
+
+        public static Vector3 AxisVector(this Integer i)
+            => Vector3.Zero.WithComponent(i, 1);
     }
 }
