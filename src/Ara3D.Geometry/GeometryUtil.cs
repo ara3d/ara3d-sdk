@@ -182,5 +182,24 @@
 
         public static Vector3 AxisVector(this Integer i)
             => Vector3.Zero.WithComponent(i, 1);
+
+        public static IReadOnlyList<Point3D> GetPoints(this IReadOnlyList<Triangle3D> self)
+        {
+            var points = new List<Point3D>(self.Count * 3);
+            foreach (var triangle in self)
+                points.AddRange(triangle.Points);
+            return points;
+        }
+
+        public static IReadOnlyList<Integer3> GetFaces(this IReadOnlyList<Triangle3D> self)
+        {
+            var faces = new List<Integer3>(self.Count);
+            for (var i = 0; i < self.Count; i++)
+                faces.Add((i * 3, i * 3 + 1, i * 3 + 2));
+            return faces;
+        }
+
+        public static TriangleMesh3D ToTriangleMesh3D(this IReadOnlyList<Triangle3D> self)
+            => new(self.GetPoints(), self.GetFaces());
     }
 }

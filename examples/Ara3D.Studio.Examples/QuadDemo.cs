@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples;
 
-public class SimpleGridMeshDemo : IModelGenerator
+public class QuadDemo : IModelGenerator
 {
     [Range(0f, 10f)] public float Scale = 1f;
 

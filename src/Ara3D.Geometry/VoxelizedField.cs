@@ -20,15 +20,15 @@ public class VoxelizedField : IVoxels
     private readonly Vector3 _size;
     private readonly Func<Point3D, Number> _function;
 
-    public VoxelizedField(Bounds3D bounds, int numColumns, int numRows, int numLayers, Func<Point3D, Number> f)
+    public VoxelizedField(Bounds3D bounds, Integer3 gridSize, Func<Point3D, Number> f)
     {
         Bounds = bounds;
-        NumColumns = numColumns;
-        NumRows = numRows;
-        NumLayers = numLayers;
+        NumColumns = gridSize.A;
+        NumRows = gridSize.B;
+        NumLayers = gridSize.C;
         _function = f;
         _size = bounds.Size;
-        VoxelSize = _size / new Vector3(numColumns, numRows, numLayers);
+        VoxelSize = _size / new Vector3(NumColumns, NumRows, NumLayers);
     }
         
     public Point3D GetVoxelCenter(int i, int j, int k)
