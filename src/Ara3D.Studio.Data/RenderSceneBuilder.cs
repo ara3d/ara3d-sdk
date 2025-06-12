@@ -60,6 +60,10 @@ namespace Ara3D.Studio.Data
             }
         }
 
+        // TODO: can be optimized 
+        public void AddFacetedMesh(TriangleMesh3D mesh)
+            => AddMesh(mesh.Triangles.ToTriangleMesh3D());
+
         // TODO: ideally we would use reinterpret casts 
         public void AddMesh(TriangleMesh3D mesh)
             => AddMesh(
@@ -109,7 +113,7 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        public static Vector3[] ToNormals(IReadOnlyList<Vector3> positions, System.Collections.Generic.IReadOnlyList<int> indices)
+        public static Vector3[] ToNormals(IReadOnlyList<Vector3> positions, IReadOnlyList<int> indices)
         {
             var normals = new Vector3[positions.Count];
             for (var i = 0; i < indices.Count; i += 3)
@@ -145,8 +149,10 @@ namespace Ara3D.Studio.Data
         public void AddModel(Model3D model)
         {
             var meshOffset = MeshList.Count;
+
             foreach (var mesh in model.Meshes)
-                AddMesh(mesh);
+                //AddMesh(mesh);
+                AddFacetedMesh(mesh);
 
             var instances = new List<InstanceStruct>();
             foreach (var node in model.ElementStructs)

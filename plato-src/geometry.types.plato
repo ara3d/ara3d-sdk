@@ -235,15 +235,6 @@ type PolyLine3D
     Closed: Boolean;
 }
 
-// A set of points that implicitly map to a grid of points. Very useful for construction.
-type QuadGrid3D
-    implements IGeometry3D
-{
-    PointGrid: IArray2D<Point3D>; 
-	ClosedX: Boolean;
-    ClosedY: Boolean;
-}
-
 //==
 // # Meshes and Indexed Geometry 
 // Indexed geometry means points can be shared across primitives. 
@@ -267,4 +258,13 @@ type QuadMesh3D
 {
     Points: IArray<Point3D>;
     FaceIndices: IArray<Integer4>;
+}
+
+// A mesh that corresponds to a grid of points 
+type QuadGrid3D
+    implements IGeometry3D
+{
+    PointGrid: IArray2D<Point3D>; 
+	ClosedX: Boolean;
+    ClosedY: Boolean;
 }

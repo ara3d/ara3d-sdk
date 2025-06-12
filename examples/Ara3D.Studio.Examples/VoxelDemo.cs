@@ -57,3 +57,4 @@ public class VoxelDemo : IModelGenerator
         return mesh.Clone(Material.Default, positions);
     }
 }
+
