@@ -1308,6 +1308,18 @@
           }
         }
       },
+      "Ara3D.Geometry/1.0.0": {
+        "dependencies": {
+          "Ara3D.Collections": "1.0.0",
+          "Ara3D.Memory": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.Geometry.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "Ara3D.IO/1.0.0": {
         "dependencies": {
           "Ara3D.Logging": "1.0.0",
@@ -1409,10 +1421,9 @@
         "dependencies": {
           "Ara3D.Collections": "1.0.0",
           "Ara3D.DataTable": "1.0.0",
+          "Ara3D.Geometry": "1.0.0",
           "Ara3D.Memory": "1.0.0",
-          "Ara3D.PropKit": "1.0.0",
-          "Plato.Core": "1.0.0",
-          "Plato.Geometry": "1.0.0"
+          "Ara3D.PropKit": "1.0.0"
         },
         "runtime": {
           "Ara3D.Models.dll": {
@@ -1434,6 +1445,7 @@
       },
       "Ara3D.SceneEval/1.0.0": {
         "dependencies": {
+          "Ara3D.Logging": "1.0.0",
           "Ara3D.PropKit": "1.0.0"
         },
         "runtime": {
@@ -1471,6 +1483,7 @@
         "dependencies": {
           "Ara3D.Logging": "1.0.0",
           "Ara3D.Models": "1.0.0",
+          "Ara3D.SceneEval": "1.0.0",
           "Ara3D.Studio.Data": "1.0.0"
         },
         "runtime": {
@@ -1482,6 +1495,7 @@
       },
       "Ara3D.Studio.Data/1.0.0": {
         "dependencies": {
+          "Ara3D.Geometry": "1.0.0",
           "Ara3D.IO.BFAST": "1.0.0",
           "Ara3D.IO.G3D": "1.0.0",
           "Ara3D.IO.VIM": "1.0.0",
@@ -1489,7 +1503,6 @@
           "Ara3D.Memory": "1.0.0",
           "Ara3D.Models": "1.0.0",
           "Ara3D.Utils": "1.0.0",
-          "Plato.Core": "1.0.0",
           "System.Memory": "4.6.0"
         },
         "runtime": {
@@ -1501,11 +1514,10 @@
       },
       "Ara3D.Studio.Samples/1.0.0": {
         "dependencies": {
+          "Ara3D.Geometry": "1.0.0",
           "Ara3D.Models": "1.0.0",
           "Ara3D.ScriptService": "1.0.0",
-          "Ara3D.Studio.API": "1.0.0",
-          "Plato.Core": "1.0.0",
-          "Plato.Geometry": "1.0.0"
+          "Ara3D.Studio.API": "1.0.0"
         },
         "runtime": {
           "Ara3D.Studio.Samples.dll": {
@@ -1542,25 +1554,6 @@
         },
         "runtime": {
           "Ara3D.Utils.Roslyn.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "Plato.Core/1.0.0": {
-        "runtime": {
-          "Plato.Core.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "Plato.Geometry/1.0.0": {
-        "dependencies": {
-          "Plato.Core": "1.0.0"
-        },
-        "runtime": {
-          "Plato.Geometry.dll": {
             "assemblyVersion": "1.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -2344,6 +2337,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Ara3D.Geometry/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Ara3D.IO/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -2435,16 +2433,6 @@
       "sha512": ""
     },
     "Ara3D.Utils.Roslyn/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Plato.Core/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Plato.Geometry/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

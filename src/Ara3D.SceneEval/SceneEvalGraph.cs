@@ -1,74 +1,49 @@
-﻿namespace Ara3D.SceneEval
+﻿using System.Collections.ObjectModel;
+
+namespace Ara3D.SceneEval
 {
     public class SceneEvalGraph
     {
-        public IReadOnlyList<SceneEvalNode> Roots { get; private set; } = [];
+        public ObservableCollection<SceneEvalNode> Roots { get; } = [];
+        
+        public IEnumerable<SceneEvalNode> GetAllNodes()
+            => Roots.SelectMany(x => x.GetAllNodes());
 
-        private Dictionary<SceneEvalNode, SceneEvalNode> _rootLookup = new();
+        public SceneEvalNode GetRoot(SceneEvalNode node)
+            => Roots.FirstOrDefault(r => r.GetAllNodes().Any(n => n == node));
 
-        public IEnumerable<SceneEvalNode> AllNodes 
-            => _rootLookup.Keys;
-
-        public event EventHandler GraphChanged;
         public event EventHandler GraphInvalidated;
+        public event EventHandler GraphChanged;
 
-        public List<object> Evaluate(EvalContext context)
+        public SceneEvalGraph()
         {
-            return Roots.AsParallel().Select(r => r.Eval(context)).ToList();
-        }
-
-        public void UpdateRoots(IReadOnlyList<SceneEvalNode> newRoots)
-        {
-            foreach (var root in Roots)
-                root.Invalidated -= RootInvalidated;
-            Roots = newRoots;
-            _rootLookup.Clear();
-            foreach (var root in Roots)
-                StoreRootLookupAndValidate(root, root);
-            foreach (var root in Roots)
-                root.Invalidated += RootInvalidated;
-            NotifyGraphChanged();
-        }
-
-        private void StoreRootLookupAndValidate(SceneEvalNode node, SceneEvalNode root)
-        {
-            if (!_rootLookup.TryAdd(node, root))
-                throw new Exception("Cycle detected");
-            foreach (var input in node.Inputs)
-                StoreRootLookupAndValidate(input, root);
-        }
-
-        public void RootInvalidated(object sender, EventArgs args)
-        {
-            NotifyGraphInvalidated();
-        }
-
-        public void NotifyGraphInvalidated()
-        {
-            GraphInvalidated?.Invoke(this, EventArgs.Empty);
+            Roots.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                    foreach (SceneEvalNode node in e.NewItems)
+                        node.Invalidated += NotifyGraphInvalidated;
+                if (e.OldItems != null)
+                    foreach (SceneEvalNode node in e.OldItems)
+                        node.Invalidated -= NotifyGraphInvalidated;
+                NotifyGraphChanged();
+            };
         }
 
         public void NotifyGraphChanged()
         {
             GraphChanged?.Invoke(this, EventArgs.Empty);
-            NotifyGraphInvalidated();
+            GraphInvalidated?.Invoke(this, EventArgs.Empty);
         }
 
-        public SceneEvalNode GetRoot(SceneEvalNode node)
-            => !_rootLookup.TryGetValue(node, out var root)
-                ? throw new Exception("Node is not part of the graph")
-                : root;
-
-        public void AddRoot(SceneEvalNode node)
+        public void ReplaceRoot(SceneEvalNode root, SceneEvalNode node)
         {
-            var newRoots = Roots.Append(node).ToList();
-            UpdateRoots(newRoots);
+            Roots.Add(node);
+            Roots.Remove(root);
         }
 
-        public void ReplaceRoot(SceneEvalNode oldRoot, SceneEvalNode newRoot)
+        public void NotifyGraphInvalidated(object sender, EventArgs args)
         {
-            var newRoots = Roots.Select(r => r == oldRoot ? newRoot : r).ToList();
-            UpdateRoots(newRoots);
+            GraphInvalidated?.Invoke(sender, EventArgs.Empty);
         }
     }
 }

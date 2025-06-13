@@ -310,6 +310,7 @@ library Intrinsics
     //==
     // Number
     //==
+
     Abs(self: Number): Number;
     Acos(self: Number): Angle;
     Acosh(self: Number): Angle;
@@ -349,7 +350,7 @@ library Intrinsics
     Sqrt(self: Number): Number;
     Square(self: Number): Number;
     Truncate(self: Number): Number;
-    
+   
     Add(a: Number, b: Number): Number;
     Subtract(a: Number, b: Number): Number;
     Multiply(a: Number, b: Number): Number;
@@ -371,20 +372,21 @@ library Intrinsics
     //==
 
     Abs(self: Integer): Integer;
-    Sign(self: Integer): Integer;
     Add(a: Integer, b: Integer): Integer;
-    Subtract(a: Integer, b: Integer): Integer;
-    Multiply(a: Integer, b: Integer): Integer;
+    CompareTo(self: Integer, other: Integer): Integer;
     Divide(a: Integer, b: Integer): Integer;
-    Modulo(a: Integer, b: Integer): Integer;
-    Negative(n: Integer): Integer;
-    LessThan(a: Integer, b: Integer): Boolean;
-    LessThanOrEquals(a: Integer, b: Integer): Boolean;
+    GetHashCode(self: Integer): Integer;
     GreaterThan(a: Integer, b: Integer): Boolean;
     GreaterThanOrEquals(a: Integer, b: Integer): Boolean;
-    CompareTo(self: Integer, other: Integer): Integer;
-    GetHashCode(self: Integer): Integer;
+    LessThan(a: Integer, b: Integer): Boolean;
+    LessThanOrEquals(a: Integer, b: Integer): Boolean;
+    Modulo(a: Integer, b: Integer): Integer;
+    Multiply(a: Integer, b: Integer): Integer;
+    Negative(n: Integer): Integer;
+    Number(n: Integer): Number;
     Range(self: Integer): IArray<Integer>;
+    Sign(self: Integer): Integer;
+    Subtract(a: Integer, b: Integer): Integer;
 
     //==
     // Boolean
@@ -392,35 +394,35 @@ library Intrinsics
 
     BitwiseAnd(a: Boolean, b: Boolean): Boolean;
     BitwiseOr(a: Boolean, b: Boolean): Boolean;
-    ExclusiveOr(a: Boolean, b: Boolean): Boolean;
-    Not(b: Boolean): Boolean;
     CompareTo(self: Boolean, other: Boolean): Integer;
+    ExclusiveOr(a: Boolean, b: Boolean): Boolean;
     GetHashCode(self: Boolean): Integer;
+    Not(b: Boolean): Boolean;
 
     //==
     // Angle
     //==
 
+    Add(a: Angle, b: Angle): Angle;
+    CompareTo(self: Angle, other: Angle): Integer;
     Cos(self: Angle): Number;
     Cosh(self: Angle): Number;
+    Divide(a: Angle, x: Number): Angle;
+    GetHashCode(self: Angle): Integer;
+    GreaterThan(a: Angle, b: Angle): Boolean;
+    GreaterThanOrEquals(a: Angle, b: Angle): Boolean;
+    LessThan(a: Angle, b: Angle): Boolean;
+    LessThanOrEquals(a: Angle, b: Angle): Boolean;
+    Multiply(a: Angle, x: Number): Angle;
+    Multiply(x: Number, a: Angle): Angle;
+    Negative(n: Angle): Angle;
+    Radians(self: Angle): Number;
     Sin(self: Angle): Number;
     SinCos(self: Angle): Tuple2<Number, Number>;
     Sinh(self: Angle): Number;
+    Subtract(a: Angle, b: Angle): Angle;
     Tan(self: Angle): Number;
     Tanh(self: Angle): Number;
-    Add(a: Angle, b: Angle): Angle;
-    Subtract(a: Angle, b: Angle): Angle;
-    Multiply(a: Angle, x: Number): Angle;
-    Multiply(x: Number, a: Angle): Angle;
-    Divide(a: Angle, x: Number): Angle;
-    Negative(n: Angle): Angle;
-    LessThan(a: Angle, b: Angle): Boolean;
-    LessThanOrEquals(a: Angle, b: Angle): Boolean;
-    GreaterThan(a: Angle, b: Angle): Boolean;
-    GreaterThanOrEquals(a: Angle, b: Angle): Boolean;
-    CompareTo(self: Angle, other: Angle): Integer;
-    GetHashCode(self: Angle): Integer;
-    Radians(self: Angle): Number;
 
     //==
     // Array
@@ -473,13 +475,13 @@ library Intrinsics
     // Array2D and Array3D
     //==
 
-    Map(xs: IArray2D<$T1>, f: Function1<$T1, $T2>): IArray2D<$T2>;
-    Row(self: IArray2D<$T>, row: Integer): IArray<$T>;
+    At(xs: IArray2D<$T>, i: Integer): $T;  
+    At(xs: IArray3D<$T>, i: Integer): $T;
     Column(self: IArray2D<$T>, col: Integer): IArray<$T>;
-    Rows(self: IArray2D<$T>): IArray<IArray<$T>>;
     Columns(self: IArray2D<$T>): IArray<IArray<$T>>;
     Count(xs: IArray2D<$T>): Integer;
     Count(xs: IArray3D<$T>): Integer;    
-    At(xs: IArray2D<$T>, i: Integer): $T;  
-    At(xs: IArray3D<$T>, i: Integer): $T;
+    Map(xs: IArray2D<$T1>, f: Function1<$T1, $T2>): IArray2D<$T2>;
+    Row(self: IArray2D<$T>, row: Integer): IArray<$T>;
+    Rows(self: IArray2D<$T>): IArray<IArray<$T>>;
 }

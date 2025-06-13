@@ -522,7 +522,7 @@ namespace Ara3D.Collections
         /// <summary>
         /// Concatenates the contents of one array with another.
         /// </summary>
-        public static ReadOnlyList<T> Concatenate<T>(this IReadOnlyList<T> self, IReadOnlyList<T> other)
+        public static ReadOnlyList<T> Concat<T>(this IReadOnlyList<T> self, IReadOnlyList<T> other)
             => Select(self.Count + other.Count, i => i < self.Count ? self[i] : other[i - self.Count]);
 
         /// <summary>
@@ -571,7 +571,7 @@ namespace Ara3D.Collections
         /// Creates a new array that concatenates the given items to itself.
         /// </summary>
         public static ReadOnlyList<T> Append<T>(this IReadOnlyList<T> self, params T[] x)
-            => self.Concatenate(x);
+            => self.Concat(x);
 
         /// <summary>
         /// Creates a new array that concatenates a unit item list of one item before it

@@ -8,9 +8,9 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/ara3d/ara3d-sdk</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ara3d/ara3d-sdk</RepositoryUrl>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <AssemblyFileVersion>1.0.0</AssemblyFileVersion>
+    <Version>1.2.0</Version>
+    <AssemblyVersion>1.2.0</AssemblyVersion>
+    <AssemblyFileVersion>1.2.0</AssemblyFileVersion>
     <Authors>Ara 3D Inc.</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) Ara 3D Inc 2025, Licensed under MIT License</Copyright>
@@ -42,8 +42,7 @@
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>
       <!-- All ReferenceCopyLocalPaths that came from ProjectReference -->
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths&#xD;&#xA;                    -&gt;WithMetadataValue('ReferenceSourceTarget','ProjectReference'))" />
-    </ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths&#xD;&#xA;                    -&gt;WithMetadataValue('ReferenceSourceTarget','ProjectReference'))" />    </ItemGroup>
   </Target>
   <ItemGroup>
     <None Include="ara3d-128x128.png">
@@ -64,10 +63,13 @@
     <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Domo\Ara3D.Domo.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.A3D\Ara3D.IO.A3D.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.IO.BFAST.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.G3D\Ara3D.IO.G3D.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.IO.GltfExporter\Ara3D.IO.GltfExporter.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.IfcParser\Ara3D.IO.IfcParser.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.IO.PLY\Ara3D.IO.PLY.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.VIM\Ara3D.IO.VIM.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" PrivateAssets="All" />
@@ -76,6 +78,7 @@
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.NarwhalDB\Ara3D.NarwhalDB.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.SceneEval\Ara3D.SceneEval.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.ScriptService\Ara3D.ScriptService.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Services\Ara3D.Services.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Studio.API\Ara3D.Studio.API.csproj" PrivateAssets="All" />

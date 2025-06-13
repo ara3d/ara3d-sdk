@@ -1,7 +1,7 @@
 ﻿namespace Ara3D.Geometry;
 
-// TODO: this needs to be moved to the Plato source
-public class ParametricSurface 
+public class ParametricSurface : 
+    IDeformable3D<ParametricSurface>
 {
     public bool ClosedX { get; }
     public bool ClosedY { get; }
@@ -10,17 +10,22 @@ public class ParametricSurface
 
     public ParametricSurface(Func<Vector2, Vector3> func, bool closedX, bool closedY)
     {
-
         ClosedX = closedX;
         ClosedY = closedY;
         Func = func;
     }
-
-    public ParametricSurface TransformInput(Func<Vector2, Vector2> f) => new(x => Eval(f(x)), ClosedX, ClosedY);
 
     public Point3D Eval(Vector2 uv)
         => Func(uv);
 
     public ParametricSurface Deform(Func<Point3D, Point3D> f)
         => new(uv => f(Eval(uv)), ClosedX, ClosedY);
+
+    public ParametricSurface Transform(Transform3D t)
+        => Deform(t.TransformPoint);
 }
+
+/*
+public ParametricSurface TransformInput(Func<Vector2, Vector2> f)
+    => new(x => Eval(f(x)), ClosedX, ClosedY);
+*/

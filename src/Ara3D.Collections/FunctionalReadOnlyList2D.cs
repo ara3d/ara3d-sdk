@@ -17,9 +17,9 @@ namespace Ara3D.Collections
         public FunctionalReadOnlyList2D(int columns, int rows, Func<int, int, T> func)
         {
             Func = func;
-            Data = new ReadOnlyList<T>(Count, i => this[i % NumColumns, i / NumColumns]);
             NumRows = rows;
             NumColumns = columns;
+            Data = new ReadOnlyList<T>(Count, i => this[i % NumColumns, i / NumColumns]);
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -27,5 +27,8 @@ namespace Ara3D.Collections
 
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
+
+        public static FunctionalReadOnlyList2D<T> Default 
+            = new FunctionalReadOnlyList2D<T>(0, 0, (col, row) => default);
     }
 }

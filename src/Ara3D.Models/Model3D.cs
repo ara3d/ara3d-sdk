@@ -22,7 +22,7 @@ namespace Ara3D.Models
             Transforms = transforms;
             ElementStructs = elements;
             DataTable = dataTable;
-            Elements = elements.Select(GetElement);
+            Elements = elements.Select(GetElement);     
         }
 
         public IReadOnlyList<TriangleMesh3D> Meshes { get; }
@@ -38,8 +38,8 @@ namespace Ara3D.Models
                Materials[es.MaterialIndex],
                Transforms[es.TransformIndex]);
 
-        public Model3D Transform(Matrix4x4 matrix)
-            => new(Meshes, Materials, Transforms.Select(t => t * matrix).ToList(), ElementStructs, DataTable);
+        public Model3D Transform(Transform3D transform)
+            => new(Meshes, Materials, Transforms.Select(t => t * transform).ToList(), ElementStructs, DataTable);
 
         public static Integer3 Offset(Integer3 self, Integer offset)
             => (self.A + offset, self.B + offset, self.C + offset);
@@ -84,15 +84,21 @@ namespace Ara3D.Models
             return new TriangleMesh3D(points, indices);
         }
 
-       public Model3D ModifyTransforms(Func<Matrix4x4, Matrix4x4> f)
-            => new(Meshes, Materials, Transforms.Select(f), ElementStructs, DataTable);
+        public Model3D WithTransforms(IReadOnlyList<Matrix4x4> transforms)
+            => new(Meshes, Materials, transforms, ElementStructs, DataTable);
 
-        public Point3D CenterOfNodes
+        public Model3D ModifyTransforms(Func<Matrix4x4, Matrix4x4> f)
+            => WithTransforms(Transforms.Select(f));
+
+        public Point3D NodeCenter
             => Elements.Select(n => n.Transform.Value.Translation).Aggregate(
-                    Vector3.Zero, (v, p) => v + (Vector3)p);
+                    Vector3.Zero, (v, p) => v + (Vector3)p) / Elements.Count;
+
+        public Model3D WithMeshes(IReadOnlyList<TriangleMesh3D> meshes)
+            => new(meshes, Materials, Transforms, ElementStructs, DataTable);
 
         public Model3D ModifyMeshes(Func<TriangleMesh3D, TriangleMesh3D> f)
-            => new(Meshes.Select(f).ToList(), Materials, Transforms, ElementStructs, DataTable);
+            => WithMeshes(Meshes.Select(f));
 
         public static Model3D Create(IEnumerable<Element> elements)
         {

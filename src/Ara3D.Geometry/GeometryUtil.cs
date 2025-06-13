@@ -160,6 +160,46 @@
             var closestPoint = a + t * (b - a); // Projection falls on the segment
             return (p - closestPoint).Length;
         }
-        
+
+        public static Vector3 InverseLerp(this Vector3 v, Vector3 min, Vector3 max)
+            => (v.X.Unlerp(min.X, max.X),
+                v.Y.Unlerp(min.Y, max.Y),
+                v.Z.Unlerp(min.Z, max.Z));
+
+        public static Vector3 InverseLerp(this Point3D point, Bounds3D bounds)
+            => InverseLerp(point, bounds.Min, bounds.Max);
+
+        public static Vector3 WithComponent(this Vector3 self, Integer component, Number value)
+        {
+            if (component == 0) return self.WithX(value);
+            if (component == 1) return self.WithY(value);
+            if (component == 2) return self.WithZ(value);
+            throw new IndexOutOfRangeException();
+        }
+
+        public static Vector3 AxisVector(this int i)
+            => AxisVector((Integer)i);
+
+        public static Vector3 AxisVector(this Integer i)
+            => Vector3.Zero.WithComponent(i, 1);
+
+        public static IReadOnlyList<Point3D> GetPoints(this IReadOnlyList<Triangle3D> self)
+        {
+            var points = new List<Point3D>(self.Count * 3);
+            foreach (var triangle in self)
+                points.AddRange(triangle.Points);
+            return points;
+        }
+
+        public static IReadOnlyList<Integer3> GetFaces(this IReadOnlyList<Triangle3D> self)
+        {
+            var faces = new List<Integer3>(self.Count);
+            for (var i = 0; i < self.Count; i++)
+                faces.Add((i * 3, i * 3 + 1, i * 3 + 2));
+            return faces;
+        }
+
+        public static TriangleMesh3D ToTriangleMesh3D(this IReadOnlyList<Triangle3D> self)
+            => new(self.GetPoints(), self.GetFaces());
     }
 }

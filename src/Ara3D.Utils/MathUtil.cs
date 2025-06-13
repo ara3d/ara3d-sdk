@@ -78,5 +78,6 @@ namespace Ara3D.Utils
         public static float Rem(this float x, float m) => x % m;
         public static double Mod(this double x, double m) => m < 0 ? Mod(x, -m) : (x % m + m) % m;
         public static double Rem(this double x, double m) => x % m;
+
     }
 }

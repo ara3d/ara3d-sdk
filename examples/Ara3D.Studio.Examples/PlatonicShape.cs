@@ -9,10 +9,18 @@ public class PlatonicShape : IModelGenerator
     [Range(0f, 1f)] public float Alpha = 1f;
     [Range(0f, 1f)] public float Metallic = 0f;
     [Range(0f, 1f)] public float Roughness = 0.5f;
+    [Range(-3f, 3f)] public float Push = 0f;
 
     public Material Material =>
         new((Red, Green, Blue, Alpha), Metallic, Roughness);
 
     public Model3D Eval(EvalContext context)
-        => new Element(PlatonicSolids.GetMesh(Shape), Material);
+    {
+        var mesh = PlatonicSolids.GetMesh(Shape);
+        if (MathF.Abs(Push) > 0.001f)
+        {
+            mesh = mesh.PushVertices(Push);
+        }
+        return new Element(mesh, Material);
+    }
 }

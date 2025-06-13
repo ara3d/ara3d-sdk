@@ -370,5 +370,22 @@ namespace Ara3D.Geometry
         {
             [MethodImpl(AggressiveInlining)] get => MathF.Truncate(Value);
         }
+
+        public Number ReciprocalSquareRootEstimate
+        {
+            [MethodImpl(AggressiveInlining)] get => MathF.ReciprocalSqrtEstimate(Value);
+        }
+
+        public static Number MinValue = float.MinValue;
+        public static Number MaxValue = float.MaxValue;
+        public static Number Zero = 0;
+        public static Number One = 1;
+
+        // TODO: Figure out why these aren't being provided by Plato
+
+        public Number Cubic(Number a, Number b, Number c, Number d) => a.Pow3 * this + b.Pow2 * this + c * this + d;
+        public Number Linear(Number a, Number b) => a * this + b;
+        public Number Quadratic(Number a, Number b, Number c) => a.Pow2 * this + b * this + c;
+
     }
 }

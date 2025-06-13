@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Ara3D.Utils;
 
 namespace Ara3D.PropKit;
 
@@ -19,8 +20,15 @@ public static class PropFactory
 
     public static void GetRangeAsFloat(RangeAttribute? rangeAttr, out float def, out float min, out float max)
     {
-        min = (float)(double)(rangeAttr?.Minimum ?? -1000.0);
-        max = (float)(double)(rangeAttr?.Maximum ?? +1000.0);
+        min = (float)(rangeAttr?.Minimum.CastToDouble() ?? -1000.0);
+        max = (float)(rangeAttr?.Maximum.CastToDouble() ?? +1000.0);
+        def = Math.Clamp(0, min, max);
+    }
+
+    public static void GetRangeAsDouble(RangeAttribute? rangeAttr, out double def, out double min, out double max)
+    {
+        min = (rangeAttr?.Minimum.CastToDouble() ?? -1000.0);
+        max = (rangeAttr?.Maximum.CastToDouble() ?? +1000.0);
         def = Math.Clamp(0, min, max);
     }
 

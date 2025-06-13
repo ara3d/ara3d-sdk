@@ -25,18 +25,11 @@
         public static QuadMesh3D ToQuadMesh(this IReadOnlyList<Vector3> self, params (int, int, int, int)[] faces)
             => new(self.Map(v => (Point3D)v), faces.Map(xs => (Integer4)xs));
 
-        public static TriangleMesh3D FlipFaces(this TriangleMesh3D mesh)
-            => new(mesh.Points, mesh.FaceIndices.Map(f => new Integer3(f.C, f.B, f.A)));
-
         public static Integer3 QuadFaceToTriFace(this Integer4 self, bool firstOrSecond)
             => firstOrSecond ? (self.A, self.B, self.C) : (self.C, self.D, self.A);
 
         public static IReadOnlyList<Integer3> QuadFacesToTriFaces(this IReadOnlyList<Integer4> self)
             => (self.Count * 2).MapRange(i => QuadFaceToTriFace(self[i / 2], i % 2 == 0));
-
-        public static TriangleMesh3D Triangulate(this QuadMesh3D mesh)
-            => new(mesh.Points, mesh.FaceIndices.QuadFacesToTriFaces());
-
 
         // https://mathworld.wolfram.com/RegularTetrahedron.html
         // https://github.com/mrdoob/three.js/blob/master/src/geometries/TetrahedronGeometry.js

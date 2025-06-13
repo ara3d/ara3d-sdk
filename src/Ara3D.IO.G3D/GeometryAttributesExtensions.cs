@@ -110,7 +110,7 @@ namespace Ara3D.IO.G3D
             => attributes.ToGeometryAttributes();
 
         public static IGeometryAttributes AddAttributes(this IGeometryAttributes attributes, params GeometryAttribute[] newAttributes)
-            => attributes.Attributes.Concat(newAttributes).ToGeometryAttributes();
+            => Enumerable.Concat(attributes.Attributes, newAttributes).ToGeometryAttributes();
 
         public static IGeometryAttributes SetAttribute(this IGeometryAttributes self, GeometryAttribute attr)
             => self.Attributes.Where(a => !a.Descriptor.Equals(attr.Descriptor)).Append(attr).ToGeometryAttributes();

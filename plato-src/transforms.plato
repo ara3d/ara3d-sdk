@@ -145,7 +145,7 @@ type Transform3D
 type Translation3D
     implements IRigidTransform3D
 {
-    Direction: Vector3;
+    Vector: Vector3;
 }
 
 // A rigid transform wit no translational component
@@ -239,6 +239,16 @@ type Orthographic3D
     Far: Number;
 }
 
+// A frame of reference for a moving particle
+// https://en.wikipedia.org/wiki/Frenet%E2%80%93Serret_formulas
+type FrenetFrame
+{
+    Origin: Point3D;
+    Tangent: Vector3;
+    Normal: Vector3;
+    Binormal: Vector3;
+}
+
 // A transform for projecting points onto a plane, e.g., for shadows.  
 type PlaneProjection3D
     implements ITransform3D
@@ -288,18 +298,6 @@ library Transforms
     Compose(t: ITransform3D, m: Matrix4x4): Transform3D
         => t.Matrix * m;
   
-    // Extracts the rotation component of a transform
-    Rotation(t: ITransform3D): Rotation3D
-        => t.Matrix.Rotation;
-
-    // Extracts the translation component of a transform
-    Translation(t: ITransform3D): Translation3D
-        => t.Matrix.Translation;
-
-    // Converts a transform into a pose
-    Pose(t: ITransform3D): Pose3D
-        => (t.Matrix.Translation, t.Matrix.Rotation);
-
     //==
     // General IRotation3D helpers
 
@@ -321,7 +319,7 @@ library Transforms
 
     // Get the matrix from the 3D translation
     Matrix(t: Translation3D): Matrix4x4
-        => Matrix4x4.CreateTranslation(t.Translation);
+        => Matrix4x4.CreateTranslation(t.Vector);
         
     // An identity translation is a zero vector
     Identity(_: Translation3D): Translation3D

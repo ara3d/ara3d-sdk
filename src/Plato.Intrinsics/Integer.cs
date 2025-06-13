@@ -125,7 +125,22 @@ namespace Ara3D.Geometry
         /// <summary>
         /// Creates a range of integers from 0 to this integer. 
         /// </summary>
-        public System.Collections.Generic.IReadOnlyList<Integer> Range
+        public IReadOnlyList<Integer> Range
             => ArrayExtensions.Range(this);
+
+        /// <summary>
+        /// Implicit conversion to <see cref="Number"/> type.
+        /// </summary>
+        public static implicit operator Number(Integer n)
+            => n.Number;
+
+        /// <summary>
+        /// Conversion function 
+        /// </summary>
+        public Number Number
+        {
+            [MethodImpl(AggressiveInlining)]
+            get => Value;
+        }
     }
 }

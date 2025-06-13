@@ -35,6 +35,9 @@ library ArrayLibrary
 
     At(xs: IArrayLike<$T>, n: Integer): $T
         => xs.Components[n];
+
+    Reverse(xs: IArrayLike<$T>): IArrayLike<$T>
+        => Self.CreateFromComponents(xs.Components.Reverse());
               
     MapComponents(x: IArrayLike<$T>, f: Function1<$T, $T>): IArrayLike<$T>
         => Self.CreateFromComponents(x.Components.Map(f));

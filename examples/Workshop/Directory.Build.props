@@ -1,0 +1,7 @@
+<!-- Directory.Build.props -->
+<Project>
+  <PropertyGroup>
+    <!-- disable the NuGet vulnerability scan for all child projects -->
+    <EnablePackageVulnerabilityScan>false</EnablePackageVulnerabilityScan>
+  </PropertyGroup>
+</Project>

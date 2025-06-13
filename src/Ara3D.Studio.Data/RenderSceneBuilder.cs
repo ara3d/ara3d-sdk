@@ -60,6 +60,10 @@ namespace Ara3D.Studio.Data
             }
         }
 
+        // TODO: can be optimized 
+        public void AddFacetedMesh(TriangleMesh3D mesh)
+            => AddMesh(mesh.Triangles.ToTriangleMesh3D());
+
         // TODO: ideally we would use reinterpret casts 
         public void AddMesh(TriangleMesh3D mesh)
             => AddMesh(
@@ -109,7 +113,7 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        public static Vector3[] ToNormals(System.Collections.Generic.IReadOnlyList<Vector3> positions, System.Collections.Generic.IReadOnlyList<int> indices)
+        public static Vector3[] ToNormals(IReadOnlyList<Vector3> positions, IReadOnlyList<int> indices)
         {
             var normals = new Vector3[positions.Count];
             for (var i = 0; i < indices.Count; i += 3)
@@ -142,32 +146,28 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        public void AddModel(Model3D model3D)
+        public void AddModel(Model3D model)
         {
-            var meshes = new Dictionary<TriangleMesh3D, int>();
+            var meshOffset = MeshList.Count;
 
-            foreach (var node in model3D.Elements)
-            {
-                if (!meshes.ContainsKey(node.Mesh))
-                {
-                    var n = MeshList.Count;
-                    meshes.Add(node.Mesh, n);
-                    AddMesh(node.Mesh);
-                }
-            }
+            foreach (var mesh in model.Meshes)
+                //AddMesh(mesh);
+                AddFacetedMesh(mesh);
 
             var instances = new List<InstanceStruct>();
-            foreach (var node in model3D.Elements)
+            foreach (var node in model.ElementStructs)
             {
-                var meshIndex = meshes[node.Mesh];
-                var (translation, quaternion, scale, success) = node.Transform.Decompose;
-                var color = node.Material.Color;
+                var meshIndex = meshOffset + node.MeshIndex;
+                var transform = model.Transforms[node.TransformIndex];
+                var (translation, quaternion, scale, success) = transform.Decompose;
+                var material = model.Materials[node.MaterialIndex];
+                var color = material.Color;
                 var instance = new InstanceStruct()
                 {
                     MeshIndex = meshIndex,
                     Color = new Vector4(color.R, color.G, color.B, color.A),
-                    Roughness = node.Material.Roughness,
-                    Metallic = node.Material.Metallic,
+                    Roughness = material.Roughness,
+                    Metallic = material.Metallic,
                     Orientation = quaternion,
                     Scale = scale,
                     Position = translation
