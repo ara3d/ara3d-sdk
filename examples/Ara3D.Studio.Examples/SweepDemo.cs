@@ -1,41 +1,33 @@
 ﻿
-namespace Ara3D.Studio.Samples
+namespace Ara3D.Studio.Samples;
+
+/*
+public class SweepDemo
 {
-    public class FrenetFrame
+    [Range(1, 100)] public int SampleCount = 16;
+    [Range(-10, 10)] public float Height = 3;
+    [Range(-10, 10)] public float Revolutions = 3;
+
+    public IReadOnlyList<Pose3D> GetPoses(Curve3D curve, int count)
     {
-        public Point3D Origin { get; }
-        public Vector3 Tangent { get; }
-        public Vector3 Normal { get; }
-        public Vector3 Binormal { get;}
-
-        public FrenetFrame(Point3D origin, Vector3 tangent, Vector3 normal, Vector3 binormal)
+        // NOTE:
+        for (var i = 0; i <= count; i++)
         {
-            Origin = origin;
-            Tangent = tangent;
-            Normal = normal;
-            Binormal = binormal;
+            var 
+            var pos = curve.Eval()
         }
 
-        public Matrix4x4 ToRotationMatrix()
-        {
-            var n = Normal.Normalize;
-            var b = Binormal.Normalize;
-            var t = Tangent.Normalize;
-            return new Matrix4x4(
-                t.X, t.Y, t.Z, 0f,
-                b.X, b.Y, b.Z, 0f,
-                n.X, n.Y, n.Z, 0f,   
-                0f, 0f, 0f, 1f);
-        }
-
-        public Quaternion ToQuaternion()
-            => Quaternion.CreateFromRotationMatrix(ToRotationMatrix());
-
-        public Matrix4x4 Matrix()
-            => ToRotationMatrix().WithTranslation(Origin);
+        var orientation = curve.
     }
-
-    internal class SweepDemo
+    
+    public Model3D Eval(EvalContext context)
     {
+        var profile = Curves.Circle;
+        var path = Curves.Helix(Height, Revolutions);
+
+        var profilePoints = profile.Sample(SampleCount);
+        var pathPoints = path.Sample(SampleCount);
+        var pathFrames = 
     }
 }
+*/

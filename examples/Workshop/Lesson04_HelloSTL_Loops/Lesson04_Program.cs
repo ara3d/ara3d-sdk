@@ -30,7 +30,7 @@ Console.WriteLine("solid pyramid");
 for (var i=0; i < 4; i++)
 {
     var v0 = corners[i];
-    var v1 = corners[(i + 1) % 4];
+    var v1 = corners[(i + 1)];
     WriteFacet(v0, v1, apex);
 }
 Console.WriteLine("endsolid pyramid");

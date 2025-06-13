@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WorkshopUtils\WorkshopUtils.csproj" />
+    <ProjectReference Include="..\Lesson07_WorkshopUtils\Lesson07_WorkshopUtils.csproj" />
   </ItemGroup>
 
 </Project>
