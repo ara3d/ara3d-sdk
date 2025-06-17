@@ -4,13 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>📚 Various C# libraries for efficient data driven applications.</Description>
+    <Description>📚 Various C# libraries for efficient data driven applications and 3D tools.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/ara3d/ara3d-sdk</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ara3d/ara3d-sdk</RepositoryUrl>
-    <Version>1.2.0</Version>
-    <AssemblyVersion>1.2.0</AssemblyVersion>
-    <AssemblyFileVersion>1.2.0</AssemblyFileVersion>
+    <Version>1.2.1</Version>
+    <AssemblyVersion>1.2.1</AssemblyVersion>
+    <AssemblyFileVersion>1.2.1</AssemblyFileVersion>
     <Authors>Ara 3D Inc.</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) Ara 3D Inc 2025, Licensed under MIT License</Copyright>

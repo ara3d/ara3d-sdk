@@ -1,8 +1,13 @@
-﻿namespace Ara3D.Studio.Samples;
+﻿using Ara3D.PropKit;
+
+namespace Ara3D.Studio.Samples;
 
 public class PlatonicShape : IModelGenerator
 {
-    [Range(0, 4)] public int Shape;
+    public List<string> ShapeNames() =>
+        ["Tetrahedron", "Cube", "Octahedron", "Dodecahedron", "Icosahedron"];
+
+    [Options(nameof(ShapeNames))] public int Shape;
     [Range(0f, 1f)] public float Red = 0.2f;
     [Range(0f, 1f)] public float Green = 0.8f;
     [Range(0f, 1f)] public float Blue = 0.1f;

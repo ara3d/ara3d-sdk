@@ -1,4 +1,5 @@
 ﻿using Ara3D.Collections;
+using System.Collections.Generic;
 
 namespace Ara3D.Geometry;
 
@@ -15,11 +16,11 @@ public static class SurfaceConstructors
         return new FunctionalReadOnlyList2D<T>(numColumns, numRows, (col, row) => listOfLists[row][col]);
     }
 
-    public static QuadGrid3D ToQuadGrid3D(this IReadOnlyList2D<Point3D> pointGrid, bool connectedX, bool connectedY)
-        => new(pointGrid, connectedX, connectedY);
+    public static QuadGrid3D ToQuadGrid3D(this IReadOnlyList2D<Point3D> pointGrid, bool connectU, bool connectV)
+        => new(pointGrid, connectU, connectV);
 
-    public static QuadGrid3D ToQuadGrid3D(this IReadOnlyList<Point3D> bottomRow, IReadOnlyList<Point3D> topRow, bool connectX, bool connectY)
-        => ToQuadGrid3D(RowsToArray([bottomRow, topRow]), connectX, connectY);
+    public static QuadGrid3D ToQuadGrid3D(this IReadOnlyList<Point3D> bottomRow, IReadOnlyList<Point3D> topRow, bool connectU, bool connectV)
+        => ToQuadGrid3D(RowsToArray([bottomRow, topRow]), connectU, connectV);
 
     public static IReadOnlyList<Point3D> To3D(this IReadOnlyList<Point2D> points)
         => points.Map(p => p.To3D());
@@ -35,6 +36,9 @@ public static class SurfaceConstructors
 
     public static Rotation3D FractionalTurnAround(Vector3 axis, Number numerator, Number denominator)
         => Quaternion.CreateFromAxisAngle(axis, FractionOfTurn(numerator, denominator));
+
+    public static QuadGrid3D Sweep(this IReadOnlyList<Point3D> points, IReadOnlyList<Transform3D> transforms, bool connectU, bool connectV)
+        => transforms.Map(t => points.Transform(t)).RowsToArray().ToQuadGrid3D(connectU, connectV);
 
     public static QuadGrid3D Revolve(this IReadOnlyList<Point3D> points, Vector3 axis, int count)
         => count.MapRange(i => points.Rotate(FractionalTurnAround(axis, i, count)))

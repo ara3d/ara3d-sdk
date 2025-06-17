@@ -1,9 +1,9 @@
 ﻿
 namespace Ara3D.PropKit;
 
-public class TypedPropDescriptorBool : TypedPropDescriptor<bool>
+public class PropDescriptorBool : TypedPropDescriptor<bool>
 {
-    public TypedPropDescriptorBool(string name, string displayName, string description = "", string units = "",
+    public PropDescriptorBool(string name, string displayName, string description = "", string units = "",
         bool isReadOnly = false, bool isDeprecated = false)
         : base(name, displayName, description, units, isReadOnly, isDeprecated) { }
 
@@ -12,10 +12,8 @@ public class TypedPropDescriptorBool : TypedPropDescriptor<bool>
         PropUpdateType.Min => false,
         PropUpdateType.Max => true,
         PropUpdateType.Default => false,
-        PropUpdateType.SmallInc => true,
-        PropUpdateType.LargeInc => true,
-        PropUpdateType.SmallDec => false,
-        PropUpdateType.LargeDec => false,
+        PropUpdateType.Inc => true,
+        PropUpdateType.Dec => false,
         _ => value
     };
 

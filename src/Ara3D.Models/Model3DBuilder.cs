@@ -96,6 +96,28 @@ public class Model3DBuilder
         }
     }
 
+    public Model3DBuilder Add(Model3D m)
+    {
+        Debug.Assert(!_frozen);
+        var meshOffset = Meshes.Count;
+        var materialOffset = Materials.Count;
+        var transformOffset = Transforms.Count;
+        var elementOffset = ElementRefs.Count;
+        Meshes.AddRange(m.Meshes);
+        Materials.AddRange(m.Materials);
+        Transforms.AddRange(m.Transforms);
+        foreach (var element in m.ElementStructs)
+        {
+            ElementRefs.Add(new ElementStruct(
+                elementIndex: elementOffset + element.ElementIndex,
+                materialIndex: materialOffset + element.MaterialIndex,
+                meshIndex: meshOffset + element.MeshIndex,
+                transformIndex: transformOffset + element.TransformIndex));
+        }
+
+        return this;
+    }
+
     public Model3D Build()
     {
         _frozen = true;

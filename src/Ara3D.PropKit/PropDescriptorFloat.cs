@@ -2,17 +2,16 @@
 
 namespace Ara3D.PropKit;
 
-public class TypedPropDescriptorFloat : TypedPropDescriptor<float>
+public class PropDescriptorFloat : TypedPropDescriptor<float>
 {
     public float MinValue { get; }
     public float MaxValue { get; }
-    public float SmallChange { get; }
-    public float BigChange { get; }
+    public float Delta { get; }
     public float DefaultValue { get; }
 
-    public TypedPropDescriptorFloat(string name, string displayName, string description = "", string units = "",
+    public PropDescriptorFloat(string name, string displayName, string description = "", string units = "",
         bool isReadOnly = false, bool isDeprecated = false, float defaultValue = 0f,
-        float minValue = float.MinValue, float maxValue = float.MaxValue, float smallChange = 0.01f, float bigChange = 0.1f)
+        float minValue = float.MinValue, float maxValue = float.MaxValue, float delta = 0f)
         : base(name, displayName, description, units, isReadOnly, isDeprecated)
     {
         if (minValue > maxValue)
@@ -20,12 +19,10 @@ public class TypedPropDescriptorFloat : TypedPropDescriptor<float>
         if (defaultValue < minValue || defaultValue > maxValue)
             throw new Exception(
                 $"The defaultValue {defaultValue} cannot be less than {minValue} or greater than {maxValue}");
-
+        Delta = delta == 0 ? 0.001f : delta; 
         DefaultValue = defaultValue;
         MinValue = minValue;
         MaxValue = maxValue;
-        SmallChange = smallChange;
-        BigChange = bigChange;
     }
 
     public override float Update(float value, PropUpdateType propUpdate) => Math.Clamp(propUpdate switch
@@ -33,10 +30,8 @@ public class TypedPropDescriptorFloat : TypedPropDescriptor<float>
         PropUpdateType.Min => MinValue,
         PropUpdateType.Max => MaxValue,
         PropUpdateType.Default => DefaultValue,
-        PropUpdateType.SmallInc => value + SmallChange,
-        PropUpdateType.LargeInc => value + BigChange,
-        PropUpdateType.SmallDec => value - SmallChange,
-        PropUpdateType.LargeDec => value - BigChange,
+        PropUpdateType.Inc => value + Delta,
+        PropUpdateType.Dec => value - Delta,
         _ => value
     }, MinValue, MaxValue);
 

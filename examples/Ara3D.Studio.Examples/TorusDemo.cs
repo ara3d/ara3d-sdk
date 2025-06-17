@@ -1,9 +1,9 @@
 ﻿namespace Ara3D.Studio.Samples
 {
-    public class ParametricSurface : IModelGenerator
+    public class TorusDemo : IModelGenerator
     {
         public Vector2 ToUv(int i, int j)
-            => (i / (float)NumColumns, j / (float) NumRows);
+            => (i / (float)NumColumns, j / (float)NumRows);
 
         public Point3D PointOnTorus(int i, int j)
             => SurfaceFunctions.Torus(ToUv(i, j), MajorRadius, MinorRadius);

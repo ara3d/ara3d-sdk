@@ -1,16 +1,14 @@
 ﻿namespace Ara3D.PropKit;
 
-public class TypedPropDescriptorInt : TypedPropDescriptor<int>
+public class PropDescriptorInt : TypedPropDescriptor<int>
 {
     public int MinValue { get; }
     public int MaxValue { get; }
-    public int SmallChange { get; }
-    public int BigChange { get; }
     public int DefaultValue { get; }
 
-    public TypedPropDescriptorInt(string name, string displayName, string description = "", string units = "",
+    public PropDescriptorInt(string name, string displayName, string description = "", string units = "",
         bool isReadOnly = false, bool isDeprecated = false, int defaultValue = 0,
-        int minValue = int.MinValue, int maxValue = int.MaxValue, int smallChange = 1, int bigChange = 10)
+        int minValue = int.MinValue, int maxValue = int.MaxValue)
         : base(name, displayName, description, units, isReadOnly, isDeprecated)
     {
         if (minValue > maxValue)
@@ -21,8 +19,6 @@ public class TypedPropDescriptorInt : TypedPropDescriptor<int>
         DefaultValue = defaultValue;
         MinValue = minValue;
         MaxValue = maxValue;
-        SmallChange = smallChange;
-        BigChange = bigChange;
     }
 
     public override int Update(int value, PropUpdateType propUpdate) => Validate(propUpdate switch
@@ -30,10 +26,8 @@ public class TypedPropDescriptorInt : TypedPropDescriptor<int>
         PropUpdateType.Min => MinValue,
         PropUpdateType.Max => MaxValue,
         PropUpdateType.Default => DefaultValue,
-        PropUpdateType.SmallInc => value + SmallChange,
-        PropUpdateType.LargeInc => value + BigChange,
-        PropUpdateType.SmallDec => value - SmallChange,
-        PropUpdateType.LargeDec => value - BigChange,
+        PropUpdateType.Inc => value + 1,
+        PropUpdateType.Dec => value - 1,
         _ => value
     });
 

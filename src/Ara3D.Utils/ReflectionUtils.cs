@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -225,6 +227,79 @@ namespace Ara3D.Utils
             if (m != null && m.ReturnType.IsAssignableTo(typeof(IEnumerator)))
                 return (IEnumerator)m.Invoke(o, Array.Empty<object>());
             return null;
+        }
+
+        
+        /// <summary>
+        /// Creates a stribgkt-typed delegate of type TDelegate
+        /// for the given MethodInfo. TDelegate must be a delegate type whose Invoke signature
+        /// matches the method’s signature (for instance methods, the first parameter of
+        /// TDelegate must be the instance type).
+        /// </summary>
+        public static TDelegate CreateDelegate<TDelegate>(MethodInfo method)
+            where TDelegate : Delegate
+        {
+            var delegateType = typeof(TDelegate);
+            var invoke = delegateType.GetMethod("Invoke");
+            var callParams = invoke.GetParameters()
+                                   .Select(p => Expression.Parameter(p.ParameterType, p.Name))
+                                   .ToArray();
+
+            Expression instance = null;
+            var parametersForCall = callParams;
+
+            // If this is an instance method, the first parameter must be the target
+            if (!method.IsStatic)
+            {
+                instance = callParams[0];
+                parametersForCall = callParams.Skip(1).ToArray();
+            }
+
+            // Build the call expression
+            var call = Expression.Call(instance, method, parametersForCall);
+
+            // If return types differ (e.g. void → object), convert
+            Expression body = call;
+            if (invoke.ReturnType == typeof(void))
+            {
+                // For void methods, wrap in a block that returns default(TReturn)
+                var @return = Expression.Label(invoke.ReturnType);
+                body = Expression.Block(call, Expression.Label(@return, Expression.Default(invoke.ReturnType)));
+            }
+            else if (call.Type != invoke.ReturnType)
+            {
+                body = Expression.Convert(call, invoke.ReturnType);
+            }
+
+            // Compile to a delegate of the right type
+            var lambda = Expression.Lambda<TDelegate>(body, callParams);
+            return lambda.Compile();
+        }
+
+        public static object GetFieldOrPropOrInvokeMethod(this object obj, string name)
+        {
+            var flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+            var type = obj.GetType();
+            var mi = type.GetMethod(name, flags);
+            if (mi != null)
+            {
+                if (mi.GetParameters().Length != 0)
+                    throw new Exception($"Method {name} must not take any parameters.");
+                return mi.Invoke(obj, null);
+            }
+            var fi = type.GetField(name, flags);
+            if (fi != null)
+            {
+                return fi.GetValue(obj);
+            }
+            var pi = type.GetProperty(name, flags);
+            if (pi != null)
+            {
+                if (!pi.CanRead)
+                    throw new Exception($"Property {name} is not readable.");
+                return pi.GetValue(obj);
+            }
+            throw new Exception($"No method, field or property named {name} found in {type.Name}.");
         }
     }
 }

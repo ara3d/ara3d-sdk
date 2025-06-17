@@ -52,27 +52,39 @@ public static class PropFactory
                 displayName = displayNameAttr.DisplayName;
 
             var rangeAttr = prop.GetCustomAttribute<RangeAttribute>();
-            
+            var optionsAttr = prop.GetCustomAttribute<OptionsAttribute>();
+
             Func<object> getter = () => prop.GetValue(obj);
             Action<object> setter = !isReadOnly ? val => prop.SetValue(obj, val) : null;
 
             if (prop.PropertyType == typeof(int))
             {
-                GetRangeAsInt(rangeAttr, out var def, out var min, out var max);
-                yield return new PropAccessor(
-                    new TypedPropDescriptorInt(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
-                    getter, setter);
+                if (optionsAttr != null)
+                {
+                    var options = optionsAttr.GetOptions(obj);
+                    yield return new PropAccessor(
+                        new PropDescriptorStringList(options, name, displayName, description, units, isReadOnly, isDeprecated),
+                        getter, setter);
+                }
+                else
+                {
+                    GetRangeAsInt(rangeAttr, out var def, out var min, out var max);
+                    yield return new PropAccessor(
+                        new PropDescriptorInt(name, displayName, description, units, isReadOnly, isDeprecated, def, min,
+                            max),
+                        getter, setter);
+                }
             }
             else if (prop.PropertyType == typeof(float))
             {
                 GetRangeAsFloat(rangeAttr, out var def, out var min, out var max);
                 yield return new PropAccessor(
-                    new TypedPropDescriptorFloat(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
+                    new PropDescriptorFloat(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
                     getter, setter);
             }
             else if (prop.PropertyType == typeof(bool))
                 yield return new PropAccessor(
-                    new TypedPropDescriptorBool(name, displayName, description, units, isReadOnly, isDeprecated),
+                    new PropDescriptorBool(name, displayName, description, units, isReadOnly, isDeprecated),
                     getter, setter);
         }
 
@@ -91,27 +103,39 @@ public static class PropFactory
                 displayName = displayNameAttr.DisplayName;
 
             var rangeAttr = field.GetCustomAttribute<RangeAttribute>();
+            var optionsAttr = field.GetCustomAttribute<OptionsAttribute>();
 
             Func<object> getter = () => field.GetValue(obj);
             Action<object> setter = !isReadOnly ? val => field.SetValue(obj, val) : null;
 
             if (field.FieldType == typeof(int))
             {
-                GetRangeAsInt(rangeAttr, out var def, out var min, out var max);
-                yield return new PropAccessor(
-                    new TypedPropDescriptorInt(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
-                    getter, setter);
+                if (optionsAttr != null)
+                {
+                    var options = optionsAttr.GetOptions(obj);
+                    yield return new PropAccessor(
+                        new PropDescriptorStringList(options, name, displayName, description, units, isReadOnly, isDeprecated),
+                        getter, setter);
+                }
+                else
+                {
+                    GetRangeAsInt(rangeAttr, out var def, out var min, out var max);
+                    yield return new PropAccessor(
+                        new PropDescriptorInt(name, displayName, description, units, isReadOnly, isDeprecated, def,
+                            min, max),
+                        getter, setter);
+                }
             }
             else if (field.FieldType == typeof(float))
             {
                 GetRangeAsFloat(rangeAttr, out var def, out var min, out var max);
                 yield return new PropAccessor(
-                    new TypedPropDescriptorFloat(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
+                    new PropDescriptorFloat(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
                     getter, setter);
             }
             else if (field.FieldType == typeof(bool))
                 yield return new PropAccessor(
-                    new TypedPropDescriptorBool(name, displayName, description, units, isReadOnly, isDeprecated),
+                    new PropDescriptorBool(name, displayName, description, units, isReadOnly, isDeprecated),
                     getter, setter);
         }
     }

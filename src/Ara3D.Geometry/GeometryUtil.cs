@@ -7,6 +7,12 @@
         Yz,
     }
 
+    public partial struct Vector3
+    {
+        public Vector3 NormalizedCross(Vector3 other)
+            => Cross(other).Normalize;
+    }
+
     // TODO: many of these functions should live in other places, particular in the math 3D
     public static class GeometryUtil
     {

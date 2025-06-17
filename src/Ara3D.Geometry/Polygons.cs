@@ -1,7 +1,5 @@
 ﻿namespace Ara3D.Geometry
 {
-
-
     public enum CommonPolygonsEnum
     {
         // Regular polygons
@@ -23,8 +21,23 @@
         Decagram,
     }
 
+    public partial struct PolyLine3D : IDeformable3D<PolyLine3D>
+    {
+        public PolyLine3D Transform(Transform3D t)
+            => Deform(t.TransformPoint);
+    }
+
     public static class Polygons
     {
+        public static PolyLine3D ToPolyLine3D(this IReadOnlyList<Point2D> points, bool closed)
+            => new(points.To3D(), closed);
+
+        public static PolyLine3D ToPolyLine3D(this Polygon polygon)
+            => new(polygon.Points.To3D(), polygon.Closed);
+
+        public static PolyLine3D ToPolyLine3D(this RegularPolygon regularPolygon)
+            => new(regularPolygon.Points.To3D(), true);
+
         public static IReadOnlyList<T> SelectEveryNth<T>(this IReadOnlyList<T> self, Integer n)
             => self.Count.MapRange(i => self[(i * n) % self.Count]);
 
