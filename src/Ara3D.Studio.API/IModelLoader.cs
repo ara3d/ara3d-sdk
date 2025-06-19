@@ -6,7 +6,5 @@ namespace Ara3D.Studio.API;
 
 public interface IModelLoader
 {
-    string FileTypeName { get; }
-    string FileFilter { get; }
     Task<Model3D> Import(FilePath filePath, ILogger logger);
 }

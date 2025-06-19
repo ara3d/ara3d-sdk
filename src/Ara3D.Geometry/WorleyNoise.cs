@@ -1,5 +1,4 @@
-﻿
-using Ara3D.Geometry;
+﻿namespace Ara3D.Geometry;
 
 public static class WorleyNoise
 {
@@ -52,25 +51,25 @@ public static class WorleyNoise
 
         // Check neighboring cells
         for (var oy = -1; oy <= 1; oy++)
-            for (var ox = -1; ox <= 1; ox++)
-            {
-                var cx = xi + ox;
-                var cy = yi + oy;
+        for (var ox = -1; ox <= 1; ox++)
+        {
+            var cx = xi + ox;
+            var cy = yi + oy;
 
-                // Generate one pseudo-random point in cell [cx,cy]
-                var h = Hash(cx, cy);
-                var fx = HashToFloat(h);
-                var fy = HashToFloat(h * 15731); // different scramble for y
+            // Generate one pseudo-random point in cell [cx,cy]
+            var h = Hash(cx, cy);
+            var fx = HashToFloat(h);
+            var fy = HashToFloat(h * 15731); // different scramble for y
 
-                var featurePoint = new Vector2(cx + fx, cy + fy);
+            var featurePoint = new Vector2(cx + fx, cy + fy);
 
-                // Compute squared distance
-                var delta = pos - featurePoint;
-                float d2 = delta.LengthSquared();
+            // Compute squared distance
+            var delta = pos - featurePoint;
+            float d2 = delta.LengthSquared();
 
-                if (d2 < minDist2)
-                    minDist2 = d2;
-            }
+            if (d2 < minDist2)
+                minDist2 = d2;
+        }
 
         // Return Euclidean distance
         return MathF.Sqrt(minDist2);
@@ -87,26 +86,26 @@ public static class WorleyNoise
         var minDist2 = float.MaxValue;
 
         for (var oz = -1; oz <= 1; oz++)
-            for (var oy = -1; oy <= 1; oy++)
-                for (var ox = -1; ox <= 1; ox++)
-                {
-                    var cx = xi + ox;
-                    var cy = yi + oy;
-                    var cz = zi + oz;
+        for (var oy = -1; oy <= 1; oy++)
+        for (var ox = -1; ox <= 1; ox++)
+        {
+            var cx = xi + ox;
+            var cy = yi + oy;
+            var cz = zi + oz;
 
-                    var h = Hash(cx, cy, cz);
-                    var fx = HashToFloat(h);
-                    var fy = HashToFloat(h * 15731);
-                    var fz = HashToFloat(h * 789221);
+            var h = Hash(cx, cy, cz);
+            var fx = HashToFloat(h);
+            var fy = HashToFloat(h * 15731);
+            var fz = HashToFloat(h * 789221);
 
-                    var featurePoint = new Vector3(cx + fx, cy + fy, cz + fz);
+            var featurePoint = new Vector3(cx + fx, cy + fy, cz + fz);
 
-                    var delta = pos - featurePoint;
-                    float d2 = delta.LengthSquared();
+            var delta = pos - featurePoint;
+            float d2 = delta.LengthSquared();
 
-                    if (d2 < minDist2)
-                        minDist2 = d2;
-                }
+            if (d2 < minDist2)
+                minDist2 = d2;
+        }
 
         return MathF.Sqrt(minDist2);
     }

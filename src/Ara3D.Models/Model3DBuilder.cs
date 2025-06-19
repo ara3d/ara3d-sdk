@@ -76,6 +76,9 @@ public class Model3DBuilder
     public int AddElement(int meshIndex, int materialIndex, int transformIndex)
     {
         Debug.Assert(!_frozen);
+        Debug.Assert(meshIndex >= 0 && meshIndex < Meshes.Count);
+        Debug.Assert(materialIndex >= 0 && materialIndex < Materials.Count);
+        Debug.Assert(transformIndex >= 0 && transformIndex < Transforms.Count);
         ElementRefs.Add(new ElementStruct(
             elementIndex: ElementRefs.Count, 
             materialIndex: materialIndex, 
