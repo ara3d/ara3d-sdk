@@ -16,33 +16,20 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
 {
     public SceneEvalGraph Graph { get; }
     public SceneEvalNode Input { get; set; }
-    public IPropContainer Properties { get; }
-    public object EvaluatableObject { get; }
-    public string Name { get; }
+    public IPropContainer Properties { get; private set; }
+    public object EvaluatableObject { get; private set; }
+    public string Name { get; private set; }
     public event EventHandler Invalidated;
     private object _cached;
     private object[] _args;
-    private readonly Func<object[], object> _evalFunc;
+    private Func<object[], object> _evalFunc;
     public event PropertyChangedEventHandler PropertyChanged;
 
     public SceneEvalNode(SceneEvalGraph graph, object evaluableObject)
     {
         Graph = graph ?? throw new ArgumentNullException(nameof(graph));
-        EvaluatableObject = evaluableObject ?? throw new ArgumentNullException(nameof(evaluableObject));
         
-        var type = EvaluatableObject.GetType();
-
-        var prop = type.GetProperty("Name");
-        if (prop != null)
-            Name = prop.GetValue(EvaluatableObject)?.ToString();
-        Name ??= type.Name.SplitCamelCase();
-
-        var func = type.GetMethod("Eval");
-        if (func == null)
-            throw new InvalidOperationException($"The object {evaluableObject} does not have an Eval method.");
-
-        _args = new object[func.GetParameters().Length];
-        _evalFunc = (args) => func.Invoke(EvaluatableObject, args);
+        UpdateEvaluatableObject(evaluableObject);
 
         Properties = new PropContainerWrapper(evaluableObject);
         Properties.PropertyChanged += (s, e) => InvalidateCache();
@@ -116,69 +103,43 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
     {
         if (Input != null)
             Input.Invalidated -= InputInvalidated;
+        Properties.Dispose();
     }
 
     public IEnumerable<SceneEvalNode> GetAllNodes()
         => GetPrimaryDependencyPath().Append(this);
 
-    /*
-    // TODO: this needs to be tested and validated.
-    /// <summary>
-    /// Builds a delegate that calls <paramref name="method"/>.  
-    /// The delegate accepts an <c>object[]</c> with the actual arguments
-    /// *and* returns the boxed result (or <c>null</c> for <c>void</c>).
-    ///
-    /// • **Instance methods** → pass the target object in slot 0, followed by the real parameters.  
-    /// • **Static methods**   → slot 0 is *not* reserved, all elements are parameters.
-    /// </summary>
-    public static Func<object[], object> BuildArrayInvoker(MethodInfo method)
+    private string GetName(object obj)
     {
-        if (method == null) throw new ArgumentNullException(nameof(method));
-
-        // parameter: object[] args
-        var arrParam = Expression.Parameter(typeof(object[]), "args");
-
-        // Handle instance target (args[0]) if necessary
-        Expression instance = null;
-        int argOffset = 0;
-
-        if (!method.IsStatic)
-        {
-            if (method.DeclaringType == null)
-                throw new InvalidOperationException("Instance method without declaring type.");
-
-            instance = Expression.Convert(
-                Expression.ArrayIndex(arrParam, Expression.Constant(0)),
-                method.DeclaringType);
-
-            argOffset = 1; // parameter list starts after the target
-        }
-
-        // Convert each element of the array to the parameter’s declared type
-        var paramInfos = method.GetParameters();
-        var callArgs = new Expression[paramInfos.Length];
-
-        for (int i = 0; i < paramInfos.Length; i++)
-        {
-            var valueObj =
-                Expression.ArrayIndex(arrParam, Expression.Constant(i + argOffset));
-
-            callArgs[i] = Expression.Convert(valueObj, paramInfos[i].ParameterType);
-        }
-
-        // Build the call expression
-        Expression call = method.IsStatic
-            ? Expression.Call(method, callArgs)
-            : Expression.Call(instance!, method, callArgs);
-
-        // If the method is void, return null; otherwise box the result
-        Expression body = method.ReturnType == typeof(void)
-            ? Expression.Block(call, Expression.Constant(null, typeof(object)))
-            : Expression.Convert(call, typeof(object));
-
-        // Compile: Func<object?[], object?>
-        return Expression.Lambda<Func<object[], object>>(body, arrParam)
-            .Compile();
+        var type = obj.GetType();
+        var prop = type.GetProperty("Name");
+        var name = prop?.GetValue(obj)?.ToString();
+        return name ?? type.Name.SplitCamelCase();
     }
-    */
+
+    private (object[], Func<object[], object>) GetArgsAndEvalFunction(object obj)
+    {
+        var type = obj.GetType();
+        var func = type.GetMethod("Eval");
+        if (func == null)
+            throw new InvalidOperationException($"The object {obj} does not have an Eval method.");
+        var args = new object[func.GetParameters().Length];
+        return (args, (localArgs) => func.Invoke(EvaluatableObject, localArgs));
+    }
+
+    public void UpdateEvaluatableObject(object obj)
+    {
+        if (obj == null) throw new Exception("Evaluatable object cannot be null.");
+        (_args, _evalFunc) = GetArgsAndEvalFunction(obj);
+        Name = GetName(obj);
+        EvaluatableObject = obj;
+        var newWrapper = new PropContainerWrapper(obj);
+        if (Properties != null)
+        {
+            newWrapper.CopyValuesFrom(Properties);
+            Properties.Dispose();
+        }
+        Properties = newWrapper;
+        Properties.PropertyChanged += (s, e) => InvalidateCache();
+    }
 }

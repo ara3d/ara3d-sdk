@@ -44,6 +44,12 @@ public class PropContainerDictionary : IPropContainer
     public dynamic AsDynamic
         => Provider;
 
+    public void Dispose()
+    {
+        Provider.Dispose();
+        _dict.Clear();
+    }
+
     //==
     // Implementation of IPropContainer is delegated to Provider.
 

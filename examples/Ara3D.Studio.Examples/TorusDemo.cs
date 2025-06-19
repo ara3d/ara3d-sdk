@@ -20,6 +20,8 @@
         [Range(2, 64)] public int NumRows { get; set; } = 16;
         [Range(2, 64)] public int NumColumns { get; set; } = 16;
 
+        public int Happiness = 5;
+
         public bool ClosedX;
         public bool ClosedY;
 

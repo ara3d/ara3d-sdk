@@ -7,7 +7,7 @@ namespace Ara3D.PropKit;
 /// Given a list of property accessors, this class implements IPropContainer.
 /// It also derives from DynamicObject and can be declared as "dynamic" in C#. 
 /// </summary>
-public class PropProvider : DynamicObject, IPropContainer
+public class PropProvider : DynamicObject, IPropContainer, IDisposable
 {
     public IReadOnlyList<PropAccessor> Accessors { get; }
     private readonly Dictionary<string, PropAccessor> _dictionary;
@@ -74,6 +74,11 @@ public class PropProvider : DynamicObject, IPropContainer
 
     public void NotifyPropertyChanged(string name)
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+    public void Dispose()
+    {
+        PropertyChanged = null;
+    }
 
     //==
     // DynamicObject overrides
