@@ -20,13 +20,13 @@ namespace Ara3D.Studio.Data
     // ComputeBounds()
     public class RenderSceneBuilder :  IRenderScene
     {
-        public UnmanagedList<VertexStruct> VertexList = new();
+        public UnmanagedList<Point3D> VertexList = new();
         public UnmanagedList<uint> IndexList = new();
         public UnmanagedList<MeshSliceStruct> MeshList = new();
         public UnmanagedList<InstanceStruct> InstanceList = new();
         public UnmanagedList<InstanceGroupStruct> GroupList = new();
         
-        public IBuffer<VertexStruct> Vertices => VertexList;
+        public IBuffer<Point3D> Vertices => VertexList;
         public IBuffer<uint> Indices => IndexList;
         public IBuffer<MeshSliceStruct> Meshes => MeshList;
         public IBuffer<InstanceStruct> Instances => InstanceList;
@@ -60,18 +60,11 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        // TODO: can be optimized 
-        public void AddFacetedMesh(TriangleMesh3D mesh)
-            => AddMesh(mesh.Triangles.ToTriangleMesh3D());
-
         // TODO: ideally we would use reinterpret casts 
         public void AddMesh(TriangleMesh3D mesh)
             => AddMesh(
                 mesh.Points.Select(p => new Vector3(p.X, p.Y, p.Z)), 
                 GetIndices(mesh));
-
-        public void AddVertex(Vector3 pos, Vector3 normal)
-            => VertexList.Add(new VertexStruct(pos, normal));
 
         public static InstanceStruct CreateInstance(MeshSliceStruct mesh)
             => new InstanceStruct
@@ -133,26 +126,12 @@ namespace Ara3D.Studio.Data
             return normals;
         }
 
-        public static void ComputeVertices(ReadOnlySpan<Vector3> positions, ReadOnlySpan<int> indices, Span<VertexStruct> vertices)
-        {
-            var cnt = positions.Length;
-            var normals = new Vector3[cnt];
-            ComputeNormals(positions, indices, normals.AsSpan());
-            var encNormals = new uint[cnt];
-            NormalEncoder.EncodeNormals(normals, encNormals);
-            for (var i = 0; i < cnt; i++)
-            {
-                vertices[i] = new VertexStruct(positions[i], encNormals[i]);
-            }
-        }
-
         public void AddModel(Model3D model)
         {
             var meshOffset = MeshList.Count;
 
             foreach (var mesh in model.Meshes)
-                //AddMesh(mesh);
-                AddFacetedMesh(mesh);
+                AddMesh(mesh);
 
             var instances = new List<InstanceStruct>();
             foreach (var node in model.ElementStructs)
@@ -197,59 +176,12 @@ namespace Ara3D.Studio.Data
 
             MeshList.Add(meshSlice);
 
-            var vertexStructs = VertexList.AllocateSpan(positions.Length);
-            ComputeVertices(positions, indices, vertexStructs);
-                
+            VertexList.AddRange(MemoryMarshal.Cast<Vector3, Point3D>(positions));
             IndexList.AddRange(MemoryMarshal.Cast<int, uint>(indices));
 
             ComputeBounds(ref meshSlice);
         }
 
-        public static void ComputeNormals(ReadOnlySpan<Vector3> positions, ReadOnlySpan<int> indices, Span<Vector3> normals)
-        {
-            var vCount = positions.Length;
-            var triCount = indices.Length / 3;
-
-            // Accumulate angle-weighted face normals per corner
-            for (var t = 0; t < triCount; t++)
-            {
-                var i0 = indices[3 * t];
-                var i1 = indices[3 * t + 1];
-                var i2 = indices[3 * t + 2];
-
-                var p0 = positions[i0];
-                var p1 = positions[i1];
-                var p2 = positions[i2];
-
-                // Compute and normalize the face normal
-                var faceNorm = Vector3.Cross(p1 - p0, p2 - p0);
-                faceNorm = Vector3.Normalize(faceNorm);
-
-                // Compute unit edge directions for corner angles
-                var e0 = Vector3.Normalize(p1 - p0);
-                var e1 = Vector3.Normalize(p2 - p1);
-                var e2 = Vector3.Normalize(p0 - p2);
-
-                // Compute the three interior angles
-                var angle0 = MathF.Acos(Math.Clamp(Vector3.Dot(e0, Vector3.Normalize(p2 - p0)), -1, 1));
-                var angle1 = MathF.Acos(Math.Clamp(Vector3.Dot(e1, Vector3.Normalize(p0 - p1)), -1, 1));
-                var angle2 = MathF.Acos(Math.Clamp(Vector3.Dot(e2, Vector3.Normalize(p1 - p2)), -1, 1));
-
-                // Accumulate
-                normals[i0] += faceNorm * angle0;
-                normals[i1] += faceNorm * angle1;
-                normals[i2] += faceNorm * angle2;
-            }
-
-            // Normalize per‐vertex
-            for (var i = 0; i < vCount; i++)
-            {
-                normals[i] = Vector3.Normalize(normals[i]);
-            }
-
-            var encodedNormals = new uint[positions.Length];
-            NormalEncoder.EncodeNormals(normals, encodedNormals);
-        }
 
         public void Dispose()
         {
@@ -272,8 +204,8 @@ namespace Ara3D.Studio.Data
             {
                 var index = IndexList[(int)i];
                 var vertex = VertexList[(int)index];
-                min = Vector3.Min(min, vertex.Position);
-                max = Vector3.Max(max, vertex.Position);
+                min = Vector3.Min(min, vertex.Vector3);
+                max = Vector3.Max(max, vertex.Vector3);
             } 
             mesh.Bounds = new Bounds(min, max);
         }

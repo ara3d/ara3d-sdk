@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -50,26 +51,37 @@ namespace Ara3D.Studio.Data
     }
 
 
+    // 64 bytes
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct InstanceStruct2
     {
-        // 12 bytes
-        public float Pos;
+        // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+        // 16-byte block #1: position + pad
+        public Vector3 Pos;      // 12 bytes
+        private float _pad0;   //  4 bytes (to align the next 16-byte field)
 
-        // 16 bytes
-        public Quaternion Orientation;
+        // 16-byte block #2: orientation
+        public Quaternion Orientation; // 16 bytes
 
-        // 12 bytes
-        public Vector3 Scale;
+        // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+        // 16-byte block #3: scale + pad
+        public Vector3 Scale;    // 12 bytes
+        private float _pad1;   //  4 bytes (to align the next 16-byte field)
 
-        // 12 bytes 
-        public Bounds Bounds;
+        // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+        // 16-byte block #4: scene/object indices
+        public uint ObjectIndex; //  4 bytes
+        public uint SceneIndex;  //  4 bytes
+        public uint Color; // 4 bytes
+        public uint MetalRoughness; // 4 bytes
 
-        // 4 bytes
-        public int Color;
+        // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+        // Static properties 
+        public static readonly uint Size = (uint)sizeof(InstanceStruct2);
 
-        // 2 bytes
-        public byte Metallic;
-        public byte Roughness;
+        static InstanceStruct2()
+        {
+            Debug.Assert(Size == 64);
+        }
     }
 }

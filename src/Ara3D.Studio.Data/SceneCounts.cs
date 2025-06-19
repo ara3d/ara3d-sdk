@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Ara3D.Geometry;
 
 namespace Ara3D.Studio.Data
 {
@@ -45,18 +46,12 @@ namespace Ara3D.Studio.Data
         public static int AlignIndexCounts(int indices)
             => indices % 2 == 1 ? indices + 1 : indices;
 
-        public long VerticesSize => NumVertices * VertexStruct.Size;
+        public long VerticesSize => NumVertices * sizeof(Point3D);
         public long IndicesSize => AlignIndexCounts(NumIndices) * sizeof(int);
         public long InstancesSize => NumInstances * InstanceStruct.Size;
         public long MeshesSize => NumMeshes * MeshSliceStruct.Size;
         public long GroupsSize => NumGroups * InstanceGroupStruct.Size;
 
         public long TotalSize => VerticesSize + IndicesSize + InstancesSize + MeshesSize + GroupsSize;
-
-        public Span<VertexStruct> GetVertexSpan(byte* ptr) => new((VertexStruct*)(ptr + VerticesOffset), NumVertices);
-        public Span<uint> GetIndexSpan(byte* ptr) => new((uint*)(ptr + IndicesOffset), NumIndices);
-        public Span<InstanceStruct> GetInstanceSpan(byte* ptr) => new((InstanceStruct*)(ptr + InstancesOffset), NumInstances);
-        public Span<MeshSliceStruct> GetMeshSpan(byte* ptr) => new((MeshSliceStruct*)(ptr + MeshesOffset), NumMeshes);
-        public Span<InstanceGroupStruct> GetGroupSpan(byte* ptr) => new((InstanceGroupStruct*)(ptr + GroupsOffset), NumGroups);
     }
 }

@@ -1,22 +1,23 @@
-﻿using Ara3D.Memory;
+﻿using Ara3D.Geometry;
+using Ara3D.Memory;
 
 namespace Ara3D.Studio.Data
 {
     public class RenderScene(
-        IMemoryOwner<VertexStruct> vertexBlock,
+        IMemoryOwner<Point3D> vertexBlock,
         IMemoryOwner<uint> indexBlock,
         IMemoryOwner<MeshSliceStruct> meshBlock,
         IMemoryOwner<InstanceStruct> instanceBlock,
         IMemoryOwner<InstanceGroupStruct> groupBlock)
         : IRenderScene
     {
-        public IMemoryOwner<VertexStruct> VertexBlock { get; } = vertexBlock;
+        public IMemoryOwner<Point3D> VertexBlock { get; } = vertexBlock;
         public IMemoryOwner<uint> IndexBlock { get; } = indexBlock;
         public IMemoryOwner<MeshSliceStruct> MeshBlock { get; } = meshBlock;
         public IMemoryOwner<InstanceStruct> InstanceBlock { get; } = instanceBlock;
         public IMemoryOwner<InstanceGroupStruct> GroupBlock { get; } = groupBlock;
 
-        public IBuffer<VertexStruct> Vertices => VertexBlock;
+        public IBuffer<Point3D> Vertices => VertexBlock;
         public IBuffer<uint> Indices => IndexBlock;
         public IBuffer<MeshSliceStruct> Meshes => MeshBlock;
         public IBuffer<InstanceStruct> Instances => InstanceBlock;

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Ara3D.Geometry;
 using Ara3D.IO.BFAST;
 using Ara3D.Memory;
 using Ara3D.MemoryMappedFiles;
@@ -28,7 +29,7 @@ namespace Ara3D.Studio.Data
                 renderScene.Groups.GetNumBytes(),
             };
 
-            Debug.Assert(sizes[0] % VertexStruct.Size == 0);
+            Debug.Assert(sizes[0] % sizeof(Point3D) == 0);
             Debug.Assert(sizes[1] % 4 == 0);
             Debug.Assert(sizes[2] % MeshSliceStruct.Size == 0);
             Debug.Assert(sizes[3] % InstanceStruct.Size == 0);
@@ -66,7 +67,7 @@ namespace Ara3D.Studio.Data
 
         public static unsafe IRenderScene Load(FilePath fp)
         {
-            AlignedMemory<VertexStruct> vertices = null;
+            AlignedMemory<Point3D> vertices = null;
             AlignedMemory<uint> indices = null;
             AlignedMemory<MeshSliceStruct> meshes = null;
             AlignedMemory<InstanceStruct> instances = null;
@@ -80,7 +81,7 @@ namespace Ara3D.Studio.Data
                 {
                     IBuffer buffer = index switch
                     {
-                        0 => vertices = new AlignedMemory<VertexStruct>(view.Size / VertexStruct.Size),
+                        0 => vertices = new AlignedMemory<Point3D>(view.Size / sizeof(Point3D)),
                         1 => indices = new AlignedMemory<uint>(view.Size / sizeof(uint)),
                         2 => meshes = new AlignedMemory<MeshSliceStruct>(view.Size / MeshSliceStruct.Size),
                         3 => instances = new AlignedMemory<InstanceStruct>(view.Size / InstanceStruct.Size),

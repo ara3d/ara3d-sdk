@@ -31,7 +31,7 @@ public static unsafe class RenderSceneExtensions
         for (var i=minVertex; i <= maxVertex; i++)
         {
             var vertex = scene.Vertices[(int)i];
-            points.Add(new Point3D(vertex.Position.X, vertex.Position.Y, vertex.Position.Z));
+            points.Add(new Point3D(vertex.X, vertex.Y, vertex.Z));
         }
 
         var faceIndices = new List<Integer3>();
@@ -98,7 +98,7 @@ public static unsafe class RenderSceneExtensions
 
         for (var i = 0; i < self.Vertices.Count; i++)
         {
-            VerifyIsAValidVector(self.Vertices[i].Position, $"Vertex{i}");
+            VerifyIsAValidVector(self.Vertices[i], $"Vertex{i}");
         }
 
         for (var i = 0; i < self.Indices.Count; i++)

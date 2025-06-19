@@ -2,7 +2,7 @@
 {
     public static class StructExtensions
     {
-        public static unsafe List<InstancedMeshStruct> InstancedMeshes(this IRenderScene self)
+        public static List<InstancedMeshStruct> InstancedMeshes(this IRenderScene self)
         {
             var r = new List<InstancedMeshStruct>();
             for (var i=0; i < self.Groups.Count; i++)
