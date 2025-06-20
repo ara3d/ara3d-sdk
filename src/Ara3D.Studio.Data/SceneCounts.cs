@@ -49,7 +49,7 @@ namespace Ara3D.Studio.Data
         public long VerticesSize => NumVertices * sizeof(Point3D);
         public long IndicesSize => AlignIndexCounts(NumIndices) * sizeof(int);
         public long InstancesSize => NumInstances * InstanceStruct.Size;
-        public long MeshesSize => NumMeshes * MeshSliceStruct.Size;
+        public long MeshesSize => NumMeshes * sizeof(MeshSliceStruct);
         public long GroupsSize => NumGroups * InstanceGroupStruct.Size;
 
         public long TotalSize => VerticesSize + IndicesSize + InstancesSize + MeshesSize + GroupsSize;

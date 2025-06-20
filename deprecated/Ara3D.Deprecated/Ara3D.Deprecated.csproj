@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BoundsComputations.cs" />
     <Compile Remove="NormalEncoder.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="BoundsComputations.cs" />
     <None Include="NormalEncoder.cs" />
   </ItemGroup>
 

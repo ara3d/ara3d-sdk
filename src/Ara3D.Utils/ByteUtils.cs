@@ -58,11 +58,12 @@ namespace Ara3D.Utils
             => (0x0000FFFF & x) | (uint)high << 16;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte NormalizedToByte(this float v) 
+        public static byte ToByteFromNormalized(this float v) 
             => (byte)(Math.Min(Math.Max(v, 0f), 1f) * 255f + 0.5f);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float ToNormalizedFloat(this byte b) 
             => b / 255f;
+
     }
 }

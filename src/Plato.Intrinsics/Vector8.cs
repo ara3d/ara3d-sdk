@@ -101,7 +101,7 @@ namespace Ara3D.Geometry
             [MethodImpl(AggressiveInlining)] get => Value.GetUpper();
         }
 
-        public readonly int Count = 8;
+        public const int Count = 8;
 
         [MethodImpl(AggressiveInlining)]
         public Vector8 WithLower(Vector4 lower)

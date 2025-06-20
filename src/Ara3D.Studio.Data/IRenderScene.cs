@@ -6,10 +6,10 @@ namespace Ara3D.Studio.Data
     public interface IRenderScene
         : IDisposable
     {
+        IBuffer<int> Indices { get; }
         IBuffer<Point3D> Vertices { get; }
-        IBuffer<uint> Indices { get; }
         IBuffer<MeshSliceStruct> Meshes { get; }
         IBuffer<InstanceStruct> Instances { get; }
-        IBuffer<InstanceGroupStruct> Groups { get; }
+        IBuffer<InstanceGroupStruct> InstanceGroups { get; }
     }
 }

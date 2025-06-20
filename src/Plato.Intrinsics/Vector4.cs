@@ -54,7 +54,7 @@ namespace Ara3D.Geometry
             get => Value.W;
         }
 
-        public readonly int Count = 4;
+        public const int Count = 4;
 
         // Immutable "setters"
 

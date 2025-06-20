@@ -5,9 +5,9 @@
         public static List<InstancedMeshStruct> InstancedMeshes(this IRenderScene self)
         {
             var r = new List<InstancedMeshStruct>();
-            for (var i=0; i < self.Groups.Count; i++)
+            for (var i=0; i < self.InstanceGroups.Count; i++)
             {
-                var group = self.Groups[i];
+                var group = self.InstanceGroups[i];
                 var mesh = self.Meshes[(int)group.MeshIndex];
 
                 for (var j = 0; j < group.InstanceCount; j++)

@@ -43,7 +43,7 @@ namespace Ara3D.Geometry
             get => Value.Z;
         }
    
-        public readonly int Count = 3;
+        public const int Count = 3;
 
         // Immutable "setters"
 

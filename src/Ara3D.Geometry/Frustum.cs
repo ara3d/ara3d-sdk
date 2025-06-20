@@ -1,6 +1,9 @@
-﻿using System.Numerics;
+﻿using Ara3D.Geometry;
+using Matrix4x4 = System.Numerics.Matrix4x4;
+using Plane = System.Numerics.Plane;
+using Vector3 = System.Numerics.Vector3;
 
-namespace Ara3D.Studio.Data
+namespace Ara3D.Geometry
 {
     public readonly struct Frustum
     {
@@ -17,27 +20,27 @@ namespace Ara3D.Studio.Data
         public Frustum(Matrix4x4 m)
         {
             // Left Plane
-            Left = new Plane(m.M14 + m.M11, m.M24 + m.M21, m.M34 + m.M31, m.M44 + m.M41);
+            Left = new Plane((m.M14 + m.M11, m.M24 + m.M21, m.M34 + m.M31), m.M44 + m.M41);
             Left = NormalizePlane(Left);
 
             // Right Plane
-            Right = new Plane(m.M14 - m.M11, m.M24 - m.M21, m.M34 - m.M31, m.M44 - m.M41);
+            Right = new Plane((m.M14 - m.M11, m.M24 - m.M21, m.M34 - m.M31), m.M44 - m.M41);
             Right = NormalizePlane(Right);
 
             // Bottom Plane
-            Bottom = new Plane(m.M14 + m.M12, m.M24 + m.M22, m.M34 + m.M32, m.M44 + m.M42);
+            Bottom = new Plane((m.M14 + m.M12, m.M24 + m.M22, m.M34 + m.M32), m.M44 + m.M42);
             Bottom = NormalizePlane(Bottom);
 
             // Top Plane
-            Top = new Plane(m.M14 - m.M12, m.M24 - m.M22, m.M34 - m.M32, m.M44 - m.M42);
+            Top = new Plane((m.M14 - m.M12, m.M24 - m.M22, m.M34 - m.M32), m.M44 - m.M42);
             Top = NormalizePlane(Top);
 
             // Near Plane
-            Near = new Plane(m.M14 + m.M13, m.M24 + m.M23, m.M34 + m.M33, m.M44 + m.M43);
+            Near = new Plane((m.M14 + m.M13, m.M24 + m.M23, m.M34 + m.M33), m.M44 + m.M43);
             Near = NormalizePlane(Near);
 
             // Far Plane 
-            Far = new Plane(m.M14 - m.M13, m.M24 - m.M23, m.M34 - m.M33, m.M44 - m.M43);
+            Far = new Plane((m.M14 - m.M13, m.M24 - m.M23, m.M34 - m.M33), m.M44 - m.M43);
             Far = NormalizePlane(Far);
         }
 
@@ -92,7 +95,7 @@ namespace Ara3D.Studio.Data
         /// <summary>
         /// Checks if an axis-aligned bounding box (AABB) is inside the frustum.
         /// </summary>
-        public bool Intersects(Bounds bounds)
+        public bool Intersects(Bounds3D bounds)
         {
             // For each plane, check if the AABB is completely on the negative side
             foreach (var plane in GetPlanes())
@@ -124,6 +127,6 @@ namespace Ara3D.Studio.Data
         /// Computes the signed distance from a plane to a point.
         /// </summary>
         public static float PlaneDistance(Plane plane, Vector3 point)
-            => Vector3.Dot(plane.Normal, point) + plane.D;
+            => plane.Normal.Dot(point) + plane.D;
     }
 }

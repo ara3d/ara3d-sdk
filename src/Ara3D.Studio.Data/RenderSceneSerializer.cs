@@ -22,26 +22,26 @@ namespace Ara3D.Studio.Data
         {
             var sizes = new[]
             {
-                renderScene.Vertices.GetNumBytes(),
-                renderScene.Indices.GetNumBytes(),
-                renderScene.Meshes.GetNumBytes(),
-                renderScene.Instances.GetNumBytes(),
-                renderScene.Groups.GetNumBytes(),
+                renderScene.Vertices.Bytes.Count,
+                renderScene.Indices.Bytes.Count,
+                renderScene.Meshes.Bytes.Count,
+                renderScene.Instances.Bytes.Count,
+                renderScene.InstanceGroups.Bytes.Count,
             };
 
             Debug.Assert(sizes[0] % sizeof(Point3D) == 0);
             Debug.Assert(sizes[1] % 4 == 0);
-            Debug.Assert(sizes[2] % MeshSliceStruct.Size == 0);
+            Debug.Assert(sizes[2] % sizeof(MeshSliceStruct) == 0);
             Debug.Assert(sizes[3] % InstanceStruct.Size == 0);
             Debug.Assert(sizes[4] % InstanceGroupStruct.Size == 0);
 
             var ptrs = new[]             
             {
-                renderScene.Vertices.GetIntPtr(),
-                renderScene.Indices.GetIntPtr(),
-                renderScene.Meshes.GetIntPtr(),
-                renderScene.Instances.GetIntPtr(),
-                renderScene.Groups.GetIntPtr(),
+                renderScene.Vertices.Bytes.Ptr,
+                renderScene.Indices.Bytes.Ptr,
+                renderScene.Meshes.Bytes.Ptr,
+                renderScene.Instances.Bytes.Ptr,
+                renderScene.InstanceGroups.Bytes.Ptr,
             };
 
             long OnBuffer(Stream stream, int index, string name, long bytesToWrite)
@@ -52,7 +52,7 @@ namespace Ara3D.Studio.Data
                 while (true)
                 {
                     var tmp = Math.Min(size, int.MaxValue);
-                    var span = new ReadOnlySpan<byte>(ptr.ToPointer(), (int)tmp);
+                    var span = new ReadOnlySpan<byte>(ptr, (int)tmp);
                     stream.Write(span);
                     size -= tmp;
                     if (size <= 0)
@@ -62,13 +62,13 @@ namespace Ara3D.Studio.Data
                 return bytesToWrite;
             }
 
-            BFast.Write((string)filePath, (IEnumerable<string>)BufferNames, (IEnumerable<long>)sizes, OnBuffer);
+            BFast.Write((string)filePath, BufferNames, sizes.Select(sz => (long)sz), OnBuffer);
         }
 
         public static unsafe IRenderScene Load(FilePath fp)
         {
             AlignedMemory<Point3D> vertices = null;
-            AlignedMemory<uint> indices = null;
+            AlignedMemory<int> indices = null;
             AlignedMemory<MeshSliceStruct> meshes = null;
             AlignedMemory<InstanceStruct> instances = null;
             AlignedMemory<InstanceGroupStruct> groups = null;
@@ -82,8 +82,8 @@ namespace Ara3D.Studio.Data
                     IBuffer buffer = index switch
                     {
                         0 => vertices = new AlignedMemory<Point3D>(view.Size / sizeof(Point3D)),
-                        1 => indices = new AlignedMemory<uint>(view.Size / sizeof(uint)),
-                        2 => meshes = new AlignedMemory<MeshSliceStruct>(view.Size / MeshSliceStruct.Size),
+                        1 => indices = new AlignedMemory<int>(view.Size / sizeof(uint)),
+                        2 => meshes = new AlignedMemory<MeshSliceStruct>(view.Size / sizeof(MeshSliceStruct)),
                         3 => instances = new AlignedMemory<InstanceStruct>(view.Size / InstanceStruct.Size),
                         4 => groups = new AlignedMemory<InstanceGroupStruct>(view.Size / InstanceGroupStruct.Size),
                         _ => throw new Exception("Unrecognized memory buffer")

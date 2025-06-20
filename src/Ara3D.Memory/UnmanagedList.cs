@@ -89,6 +89,13 @@ namespace Ara3D.Memory
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetCount(int n)
+        {
+            Accomodate(n);
+            Count = n;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Clear()
             => Count = 0;
 

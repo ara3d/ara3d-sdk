@@ -207,5 +207,14 @@
 
         public static TriangleMesh3D ToTriangleMesh3D(this IReadOnlyList<Triangle3D> self)
             => new(self.GetPoints(), self.GetFaces());
+
+        public static IReadOnlyList<Integer> CornerIndices(this LineMesh3D self)
+            => self.FaceIndices.FlatMap(x => (x.A, x.B));
+
+        public static IReadOnlyList<Integer> CornerIndices(this TriangleMesh3D self)
+            => self.FaceIndices.FlatMap(x => (x.A, x.B, x.C));
+
+        public static IReadOnlyList<Integer> CornerIndices(this QuadMesh3D self)
+            => self.FaceIndices.FlatMap(x => (x.A, x.B, x.C, x.D));
     }
 }
