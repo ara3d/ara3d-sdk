@@ -106,26 +106,6 @@ namespace Ara3D.Studio.Data
             }
         }
 
-        public static Vector3[] ToNormals(IReadOnlyList<Vector3> positions, IReadOnlyList<int> indices)
-        {
-            var normals = new Vector3[positions.Count];
-            for (var i = 0; i < indices.Count; i += 3)
-            {
-                var a = indices[i];
-                var b = indices[i + 1];
-                var c = indices[i + 2];
-                var pa = positions[a];
-                var pb = positions[b];
-                var pc = positions[c];
-                var n = Vector3.Normalize(Vector3.Cross(pb - pa, pc - pa));
-                normals[a] += n;
-                normals[b] += n;
-                normals[c] += n;
-            }
-
-            return normals;
-        }
-
         public void AddModel(Model3D model)
         {
             var meshOffset = MeshList.Count;
