@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="NormalEncoder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NormalEncoder.cs" />
+  </ItemGroup>
+
 </Project>

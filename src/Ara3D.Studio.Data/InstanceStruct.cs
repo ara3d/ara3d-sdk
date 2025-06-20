@@ -51,10 +51,18 @@ namespace Ara3D.Studio.Data
     }
 
 
-    // 64 bytes
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct InstanceStruct2
     {
+        // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+        // Static properties 
+        public static readonly uint Size = (uint)sizeof(InstanceStruct2);
+
+        // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+        // Static initializer - for debugging 
+        static InstanceStruct2()
+            => Debug.Assert(Size == 64);
+
         // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
         // 16-byte block #1: position + pad
         public Vector3 Pos;      // 12 bytes
@@ -74,14 +82,5 @@ namespace Ara3D.Studio.Data
         public uint SceneIndex;  //  4 bytes
         public uint Color; // 4 bytes
         public uint MetalRoughness; // 4 bytes
-
-        // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-        // Static properties 
-        public static readonly uint Size = (uint)sizeof(InstanceStruct2);
-
-        static InstanceStruct2()
-        {
-            Debug.Assert(Size == 64);
-        }
     }
 }

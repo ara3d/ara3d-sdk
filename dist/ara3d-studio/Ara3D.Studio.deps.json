@@ -141,6 +141,14 @@
           }
         }
       },
+      "BitMiracle.LibTiff.NET/2.4.660": {
+        "runtime": {
+          "lib/netstandard2.0/BitMiracle.LibTiff.NET.dll": {
+            "assemblyVersion": "2.4.660.0",
+            "fileVersion": "2.4.660.0"
+          }
+        }
+      },
       "MahApps.Metro.IconPacks/5.1.0": {
         "dependencies": {
           "MahApps.Metro.IconPacks.BootstrapIcons": "5.1.0",
@@ -1320,6 +1328,17 @@
           }
         }
       },
+      "Ara3D.IfcLoader/1.0.0": {
+        "dependencies": {
+          "Ara3D.IO.IfcParser": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.IfcLoader.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "Ara3D.IO/1.0.0": {
         "dependencies": {
           "Ara3D.Logging": "1.0.0",
@@ -1359,6 +1378,30 @@
           }
         }
       },
+      "Ara3D.IO.IfcParser/1.0.0": {
+        "dependencies": {
+          "Ara3D.IO.StepParser": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.IO.IfcParser.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.IO.StepParser/1.0.0": {
+        "dependencies": {
+          "Ara3D.Logging": "1.0.0",
+          "Ara3D.Memory": "1.0.0",
+          "Ara3D.Utils": "1.0.0"
+        },
+        "runtime": {
+          "Ara3D.IO.StepParser.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "Ara3D.IO.VIM/1.0.0": {
         "dependencies": {
           "Ara3D.IO.BFAST": "1.0.0",
@@ -1374,10 +1417,12 @@
       },
       "Ara3D.IO.Windows/1.0.0": {
         "dependencies": {
+          "Ara3D.IfcLoader": "1.0.0",
           "Ara3D.Models": "1.0.0",
           "Ara3D.Studio.API": "1.0.0",
           "Ara3D.Utils": "1.0.0",
           "AssimpNetter": "5.4.3.3",
+          "BitMiracle.LibTiff.NET": "2.4.660",
           "Xbim.Essentials": "6.0.521"
         },
         "runtime": {
@@ -1616,6 +1661,13 @@
       "sha512": "sha512-GX/W7nIBt9wKieCYE5/uXkSnHQqVU3QDZXWmJU8x64Y29KK7I/ABZ5ya62i46Dj121L7dLfwBOkcXUhNSEXmew==",
       "path": "awssdk.securitytoken/4.0.0.2",
       "hashPath": "awssdk.securitytoken.4.0.0.2.nupkg.sha512"
+    },
+    "BitMiracle.LibTiff.NET/2.4.660": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Drd0fDFVrR3v19IJtqiDVnjgcVZoGlzFw/CYni1OQ5/xVYvjPNp18E9eu+dH/RmpIUw6Pn/JhE/H+Yc3kHI89A==",
+      "path": "bitmiracle.libtiff.net/2.4.660",
+      "hashPath": "bitmiracle.libtiff.net.2.4.660.nupkg.sha512"
     },
     "MahApps.Metro.IconPacks/5.1.0": {
       "type": "package",
@@ -2342,6 +2394,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Ara3D.IfcLoader/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Ara3D.IO/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -2353,6 +2410,16 @@
       "sha512": ""
     },
     "Ara3D.IO.G3D/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.IO.IfcParser/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.IO.StepParser/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
