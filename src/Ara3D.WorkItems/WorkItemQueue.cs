@@ -9,6 +9,8 @@ namespace Ara3D.WorkItems
         public IWorkItemListener Listener;
 
         private bool _disposed;
+
+        // It is worth considering that maybe this might be improved by being replaced with a Blocking Collection. 
         private readonly Channel<WorkItem> _channel;
         private readonly Thread? _thread;
         private CancellationTokenSource _cts = new();

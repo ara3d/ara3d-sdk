@@ -5,7 +5,7 @@ using Ara3D.Logging;
 
 namespace Ara3D.Studio.Data
 {
-    public class RenderSceneBuilder : IRenderScene
+    public class RenderSceneBuilder : IDisposable, IRenderScene
     {
         public UnmanagedList<Point3D> VertexList = new();
         public UnmanagedList<int> IndexList = new();
@@ -48,7 +48,6 @@ namespace Ara3D.Studio.Data
             logger.Log($"Adding {model.Meshes.Count} meshes with a total of {newPointCount} more points, and {newIndexCount} more indices");
             VertexList.AccomodateMore(newPointCount);
             IndexList.AccomodateMore(newIndexCount);
-
 
             foreach (var mesh in model.Meshes)
                 AddMesh(mesh);
@@ -98,6 +97,15 @@ namespace Ara3D.Studio.Data
             VertexList.Dispose();
             InstanceList.Dispose();
             InstanceGroupList.Dispose();
+        }
+
+        public void Clear()
+        {
+            MeshList.Clear();
+            IndexList.Clear();
+            VertexList.Clear();
+            InstanceList.Clear();
+            InstanceGroupList.Clear();
         }
     }
 }

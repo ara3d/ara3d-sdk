@@ -11,11 +11,11 @@ namespace Ara3D.Studio.Data
     {
         public static string[] BufferNames = new[]
         {
-            nameof(RenderScene.VertexBlock),
-            nameof(RenderScene.IndexBlock),
-            nameof(RenderScene.MeshBlock),
-            nameof(RenderScene.InstanceBlock),
-            nameof(RenderScene.GroupBlock),
+            nameof(RenderScene.Vertices),
+            nameof(RenderScene.Indices),
+            nameof(RenderScene.Meshes),
+            nameof(RenderScene.Instances),
+            nameof(RenderScene.InstanceGroups),
         };
 
         public static unsafe void Save(IRenderScene renderScene, FilePath filePath)

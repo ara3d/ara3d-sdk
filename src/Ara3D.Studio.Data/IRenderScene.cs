@@ -4,7 +4,6 @@ using Ara3D.Memory;
 namespace Ara3D.Studio.Data
 {
     public interface IRenderScene
-        : IDisposable
     {
         IBuffer<int> Indices { get; }
         IBuffer<Point3D> Vertices { get; }
