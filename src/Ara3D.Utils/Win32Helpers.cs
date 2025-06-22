@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Ara3D.Utils.Win32
+namespace Ara3D.Utils
 {
     public static class Win32Helpers
     {

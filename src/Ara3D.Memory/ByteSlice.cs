@@ -133,7 +133,7 @@ namespace Ara3D.Memory
         public bool IsEmpty
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Count == 0;
+            get => Length == 0;
         }
 
         public bool IsNull

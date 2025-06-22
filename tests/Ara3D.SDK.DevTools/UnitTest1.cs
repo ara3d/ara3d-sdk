@@ -147,5 +147,19 @@ namespace Ara3D.SDK.DevTools
             var sb = ExtractCode(dir);
             Console.WriteLine(sb.ToString());
         }
+
+        public static string ProjectMarkdownPrompt =
+            "I have included the source code summary of a C# project below, including the key types and functions." +
+            "I want you to create a markdown file that explains what the project is, when someone might want to use it, " +
+            "what are the pros and cons related to other approaches. I want you to explain how to use it at a high-level," +
+            "and then go down into the details of how each class works. If you are able to deduce accurate and useful examples, then provide them." +
+            "The explanation should be clear enough for someone who is a junior C# programmer and should be interesting and " +
+            "appealing. It should also be educational.";
+
+        [Test, Explicit]
+        public static void CreateProjectReadme()
+        {
+            var dir = @"..\..\..\..\..\src\Ara3D.PropKit\";
+        }
     }
 }

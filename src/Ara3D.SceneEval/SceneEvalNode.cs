@@ -35,6 +35,9 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
         Properties.PropertyChanged += (s, e) => InvalidateCache();
     }
 
+    public object GetCachedObject()
+        => _cached;
+
     public object Eval(EvalContext context)
     {
         if (context.CancellationToken.IsCancellationRequested)

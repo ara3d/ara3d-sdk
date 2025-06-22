@@ -1,6 +1,7 @@
 ﻿using Ara3D.Memory;
 using Ara3D.Models;
 using Ara3D.Geometry;
+using Ara3D.Logging;
 
 namespace Ara3D.Studio.Data
 {
@@ -35,12 +36,24 @@ namespace Ara3D.Studio.Data
             return meshIndex;
         }
 
-        public void AddModel(Model3D model)
+        public void AddModel(Model3D model, ILogger logger)
         {
+            logger.LogDebug("Adding a model");
+
             var meshOffset = MeshList.Count;
+            
+            var newPointCount = model.Meshes.Sum(m => m.Points.Count);
+            var newIndexCount = model.Meshes.Sum(m => m.FaceIndices.Count * 3);
+
+            logger.Log($"Adding {model.Meshes.Count} meshes with a total of {newPointCount} more points, and {newIndexCount} more indices");
+            VertexList.AccomodateMore(newPointCount);
+            IndexList.AccomodateMore(newIndexCount);
+
+
             foreach (var mesh in model.Meshes)
                 AddMesh(mesh);
 
+            logger.LogDebug("Computing instances");
             var instanceGroups = model.Meshes.Count.MapRange(_ => new List<InstanceStruct>()).ToArray();
             
             foreach (var node in model.ElementStructs)
@@ -53,6 +66,7 @@ namespace Ara3D.Studio.Data
                 instanceGroups[node.MeshIndex].Add(instance);
             }
 
+            logger.LogDebug("Computing instance groups");
             foreach (var group in instanceGroups)
             {
                 var meshIndex = meshOffset++;
@@ -73,6 +87,8 @@ namespace Ara3D.Studio.Data
 
                 InstanceGroupList.Add(instanceGroupStruct);
             }
+
+            logger.LogDebug("Completed creating scene");
         }
 
         public void Dispose()

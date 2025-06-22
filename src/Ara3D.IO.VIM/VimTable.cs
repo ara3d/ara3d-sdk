@@ -17,7 +17,7 @@ namespace Ara3D.IO.VIM
         {
             (Document, Table) = (document, table);
             var buffers = table.DataColumns.Concat(table.StringColumns).Concat(table.IndexColumns).ToArray();
-            Count = buffers.FirstOrDefault()?.ElementCount() ?? 0;
+            Count = (int)(buffers.FirstOrDefault()?.ElementCount() ?? 0);
             if (buffers.Any(b => b.ElementCount() != Count))
                 throw new Exception("Not all columns are the same length");
             Columns = buffers.Select((c, i) => new VimColumn(this, c, i)).ToArray();

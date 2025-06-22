@@ -9,7 +9,7 @@ namespace Ara3D.Memory
     public static unsafe class BufferExtensions
     {
         public static long Length(this IBuffer buffer)
-            => buffer.Bytes.Count;
+            => buffer.Bytes.Length;
 
         public static byte* GetPointer(this IBuffer buffer)
             => buffer.Bytes.Begin;
@@ -45,13 +45,13 @@ namespace Ara3D.Memory
         public static NamedBuffer<T> Reinterpret<T>(this INamedBuffer xs) where T : unmanaged
             => ((IBuffer)xs).Reinterpret<T>().Rename(xs.Name);
 
-        public static Buffer<T> Slice<T>(this IBuffer<T> xs, int start, int count) where T : unmanaged
+        public static Buffer<T> Slice<T>(this IBuffer<T> xs, long start, long count) where T : unmanaged
             => xs.Bytes.Slice(start * Marshal.SizeOf<T>(), count * Marshal.SizeOf<T>()).ToBuffer<T>();
 
-        public static Buffer<T> Skip<T>(this IBuffer<T> xs, int start) where T : unmanaged
+        public static Buffer<T> Skip<T>(this IBuffer<T> xs, long start) where T : unmanaged
             => xs.Slice(start, xs.Count - start);
 
-        public static Buffer<T> Take<T>(this IBuffer<T> xs, int count) where T : unmanaged
+        public static Buffer<T> Take<T>(this IBuffer<T> xs, long count) where T : unmanaged
             => xs.Slice(0, count);
 
         public static NamedBuffer ToNamedBuffer(this IBuffer buffer, string name = "") 
@@ -69,16 +69,16 @@ namespace Ara3D.Memory
         public static MemoryOwner<T> Reinterpret<T>(this IMemoryOwner self) where T : unmanaged
             => new(self);
 
-        public static int ElementSize(this ITypedBuffer buffer)
+        public static long ElementSize(this ITypedBuffer buffer)
             => Marshal.SizeOf(buffer.Type);
 
-        public static int ElementCount(this ITypedBuffer buffer)
+        public static long ElementCount(this ITypedBuffer buffer)
             => buffer.Bytes.Count / buffer.ElementSize();
 
-        public static IntPtr ElementPointer(this ITypedBuffer buffer, int n)
+        public static IntPtr ElementPointer(this ITypedBuffer buffer, long n)
             => new(buffer.GetPointer() + n * buffer.ElementSize());
 
-        public static object GetElement(this ITypedBuffer buffer, int n)
+        public static object GetElement(this ITypedBuffer buffer, long n)
             => Marshal.PtrToStructure(buffer.ElementPointer(n), buffer.Type);
 
         public static INamedMemoryOwner ToNamedMemoryOwner(this byte[] bytes, string name)

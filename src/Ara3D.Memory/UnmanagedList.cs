@@ -89,6 +89,10 @@ namespace Ara3D.Memory
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void AccomodateMore(int n)
+            => Accomodate(Count + n);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetCount(int n)
         {
             Accomodate(n);
@@ -135,7 +139,8 @@ namespace Ara3D.Memory
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
 
-        public ByteSlice Bytes => Memory.Bytes.Take(Count * ElementTypeSize);
+        public ByteSlice Bytes 
+            => Memory.Bytes.Take((long)Count * ElementTypeSize);
 
         public Type Type => typeof(T);
 

@@ -76,7 +76,7 @@ namespace Ara3D.IO.VIM
         public override Type PropertyType
             => ColumnType;
 
-        public int Count 
+        public long Count 
             => Buffer.ElementCount();
 
         public object this[int n]
