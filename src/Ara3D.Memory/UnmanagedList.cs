@@ -34,7 +34,7 @@ namespace Ara3D.Memory
         public long Capacity
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Memory.Length() / ElementTypeSize;
+            get => Memory.NumBytes / ElementTypeSize;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -494,7 +494,7 @@ namespace Ara3D.IO.BFAST
         public static void WriteBFast(this FilePath filePath, IEnumerable<INamedBuffer> buffers)
         {
             var bs = buffers.ToList();
-            var sizes = bs.Select(b => b.Length()).ToArray();
+            var sizes = bs.Select(b => b.NumBytes()).ToArray();
             var names = bs.Select(b => b.Name).ToArray();
 
             long OnBuffer(Stream stream, int index, string name, long bytesToWrite)
@@ -503,7 +503,7 @@ namespace Ara3D.IO.BFAST
                 Debug.Assert(bytesToWrite == sizes[index]);
                 var buffer = bs[index];
                 Debug.Assert(buffer.Name == name);
-                Debug.Assert(buffer.Length() == bytesToWrite);
+                Debug.Assert(buffer.NumBytes() == bytesToWrite);
                 stream.WriteBuffer(buffer);
                 stream.Flush();
                 return bytesToWrite;

@@ -12,5 +12,5 @@ public class BufferAsBFastComponent : IBFastComponent
         => Buffer = buffer;
     public IBuffer Buffer { get; }
     public void Write(Stream stream) => stream.WriteBuffer(Buffer);
-    public long GetSize() => Buffer.Length();
+    public long GetSize() => Buffer.NumBytes();
 }

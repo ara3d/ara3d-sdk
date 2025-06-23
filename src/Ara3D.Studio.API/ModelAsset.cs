@@ -12,7 +12,7 @@ public class ModelAsset : IModelAsset
     public IModelLoader Loader { get; set; }
     public Model3D? Model { get; set; }
 
-    public ModelAsset(FilePath filePath, IModelLoader loader)
+    public  ModelAsset(FilePath filePath, IModelLoader loader)
     {
         FilePath = filePath;
         Name = FilePath.GetFileName();

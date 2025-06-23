@@ -44,12 +44,12 @@ namespace Ara3D.IO.StepParser
             logger.Log($"Loading {filePath.GetFileSizeAsString()} of data from {filePath.GetFileName()}");
             Data = Serializer.ReadAllBytesAligned(filePath);
             DataStart = Data.GetPointer();
-            DataEnd = DataStart + Data.Length();
+            DataEnd = DataStart + Data.NumBytes();
 
             logger.Log($"Computing the start of each line");
             // NOTE: this estimates that the average line length is at least 32 characters. 
             // This minimize the number of allocations that happen
-            var cap = Data.Length() / 32;
+            var cap = Data.NumBytes() / 32;
             LineOffsets = new List<int>(checked((int)cap));
 
             // We are going to report the beginning of the lines, while the "ComputeLines" function

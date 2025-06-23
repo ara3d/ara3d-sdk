@@ -38,6 +38,7 @@
       $(TargetsForTfmSpecificBuildOutput);
       CopyProjectReferencesToPackage
     </TargetsForTfmSpecificBuildOutput>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>

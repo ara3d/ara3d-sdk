@@ -8,7 +8,7 @@ namespace Ara3D.Memory
     /// </summary>
     public static unsafe class BufferExtensions
     {
-        public static long Length(this IBuffer buffer)
+        public static long NumBytes(this IBuffer buffer)
             => buffer.Bytes.Length;
 
         public static byte* GetPointer(this IBuffer buffer)
