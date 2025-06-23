@@ -29,6 +29,7 @@
           "Ara3D.Studio.WpfControls": "1.0.0",
           "Ara3D.Utils": "1.0.0",
           "Ara3D.Utils.Roslyn": "1.0.0",
+          "Ara3D.WorkItems": "1.0.0",
           "MahApps.Metro.IconPacks": "5.1.0",
           "MaterialDesignThemes": "5.2.1",
           "Microsoft.Extensions.Configuration": "9.0.5",
@@ -1297,10 +1298,6 @@
         }
       },
       "Ara3D.DataTable/1.0.0": {
-        "dependencies": {
-          "Ara3D.Memory": "1.0.0",
-          "Ara3D.PropKit": "1.0.0"
-        },
         "runtime": {
           "Ara3D.DataTable.dll": {
             "assemblyVersion": "1.0.0",
@@ -1599,6 +1596,14 @@
         },
         "runtime": {
           "Ara3D.Utils.Roslyn.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Ara3D.WorkItems/1.0.0": {
+        "runtime": {
+          "Ara3D.WorkItems.dll": {
             "assemblyVersion": "1.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -2500,6 +2505,11 @@
       "sha512": ""
     },
     "Ara3D.Utils.Roslyn/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ara3D.WorkItems/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

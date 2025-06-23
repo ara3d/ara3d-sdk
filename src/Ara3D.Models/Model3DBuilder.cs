@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Ara3D.DataTable;
 using Ara3D.Geometry;
 
 namespace Ara3D.Models;
@@ -11,7 +12,7 @@ public class Model3DBuilder
     public List<Material> Materials { get; } = [];
     public List<Matrix4x4> Transforms { get; } = [];
     public List<ElementStruct> ElementRefs { get; } = [];
-
+    public DataTableBuilder Table { get; } = new(null, 0, "");
     public Material DefaultMaterial;
 
     public Model3DBuilder(Material? defaultMaterial = null)
@@ -122,6 +123,6 @@ public class Model3DBuilder
     public Model3D Build()
     {
         _frozen = true;
-        return new Model3D(Meshes, Materials, Transforms, ElementRefs, null);
+        return new Model3D(Meshes, Materials, Transforms, ElementRefs, Table);
     }
 }

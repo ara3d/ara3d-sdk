@@ -23,7 +23,7 @@ namespace Ara3D.DataTable
             _NumRows++;
         }
 
-        public void AddColumn(IReadOnlyList<object> values, string name, Type type)
+        public DataColumnBuilder AddColumn(IReadOnlyList<object> values, string name, Type type)
         {
             if (Columns.Count != 0)
             {
@@ -32,11 +32,13 @@ namespace Ara3D.DataTable
             }
 
             var descriptor = new DataDescriptor(name, type, Columns.Count);
-            _columnBuilders.Add(new DataColumnBuilder(values, descriptor));
+            var r = new DataColumnBuilder(values, descriptor);
+            _columnBuilders.Add(r);
             if (Columns.Count == 1)
                 _NumRows = values.Count;
 
             Debug.Assert(Columns.All(c => c.Values.Count == _NumRows));
+            return r;
         }
 
         public IDataRow GetRow(int rowIndex)
