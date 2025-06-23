@@ -15,10 +15,8 @@ public class Model3DBuilder
     public Material DefaultMaterial;
 
     public Model3DBuilder(Material? defaultMaterial = null)
-    {
-        DefaultMaterial = defaultMaterial ?? Material.Default;
-    }
-
+        => DefaultMaterial = defaultMaterial ?? Material.Default;
+    
     public int AddElement(TriangleMesh3D mesh)
         => AddElement(new Element(mesh, DefaultMaterial, Matrix4x4.Identity));
 
