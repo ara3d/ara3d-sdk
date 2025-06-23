@@ -2,6 +2,7 @@ namespace Ara3D.DataTable;
 
 public interface IDataRow
 {
-    IDataSchema Schema { get; }
+    int RowIndex { get; }
+    IDataTable DataTable { get; }
     IReadOnlyList<object> Values { get; }
 }

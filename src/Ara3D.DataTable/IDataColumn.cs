@@ -1,9 +1,8 @@
-using Ara3D.Memory;
-
 namespace Ara3D.DataTable;
 
 public interface IDataColumn
 {
+    int ColumnIndex { get; }
     IDataDescriptor Descriptor { get; }
-    IBuffer Data { get; }
+    IReadOnlyList<object> Values { get; }
 }
