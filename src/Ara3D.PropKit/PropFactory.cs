@@ -36,8 +36,13 @@ public static class PropFactory
         => new(obj, new PropProvider(obj.GetPropAccessors()));
 
     public static IEnumerable<PropAccessor> GetPropAccessors(this object obj)
+        => obj.GetType().GetPropAccessors(obj);
+
+    public static PropProvider GetPropProvider(this Type type)
+        => new(GetPropAccessors(type));
+
+    public static IEnumerable<PropAccessor> GetPropAccessors(this Type type, object hostObj = null)
     {
-        var type = obj.GetType();
         var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
         foreach (var prop in props)
         {
@@ -63,7 +68,7 @@ public static class PropFactory
             {
                 if (optionsAttr != null)
                 {
-                    var options = optionsAttr.GetOptions(obj);
+                    var options = optionsAttr.GetOptions(hostObj);
                     yield return new PropAccessor(
                         new PropDescriptorStringList(options, name, displayName, description, units, isReadOnly),
                         getter, setter);
@@ -113,7 +118,7 @@ public static class PropFactory
             {
                 if (optionsAttr != null)
                 {
-                    var options = optionsAttr.GetOptions(obj);
+                    var options = optionsAttr.GetOptions(hostObj);
                     yield return new PropAccessor(
                         new PropDescriptorStringList(options, name, displayName, description, units, isReadOnly),
                         getter, setter);

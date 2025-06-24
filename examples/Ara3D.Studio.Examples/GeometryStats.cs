@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ara3D.Studio.Samples
+﻿namespace Ara3D.Studio.Samples
 {
     public class GeometryStats : IModelModifier
     {
@@ -36,9 +30,9 @@ namespace Ara3D.Studio.Samples
         public Model3D Eval(Model3D model, EvalContext context)
         {
             var table = model.DataTable as DataTableBuilder;
-            var boundingAreas = new List<int>();
-            var stats = model.Meshes.Select(GetMeshStats);
-            table.AddColumnsFromFieldsAndProperties(stats);
+            var statsByMesh = model.Meshes.Select(GetMeshStats);
+            var statsByElement = model.ElementStructs.Select(es => statsByMesh[es.MeshIndex]);
+            table?.AddColumnsFromFieldsAndProperties(statsByElement);
             return model;
         }
     }
