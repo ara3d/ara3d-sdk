@@ -5,25 +5,25 @@
 /// </summary>
 public record PropAccessor(
     PropDescriptor Descriptor,
-    Func<object> Getter,
-    Action<object>? Setter)
+    Func<object, object> Getter,
+    Action<object, object>? Setter)
 {
-    public PropValue GetValue() 
-        => new(Getter(), Descriptor);
+    public PropValue GetValue(object host) 
+        => new(Getter(host), Descriptor);
 
-    public void SetValue(object value)
+    public void SetValue(object host, object value)
     {
         if (Descriptor.IsReadOnly)
             throw new Exception("Read only accessor");
         if (Setter == null)
             throw new Exception("No setter provided");
-        Setter(Descriptor.Validate(value));
+        Setter(host, Descriptor.Validate(value));
     }
 
-    public void SetValue(PropValue propValue)
+    public void SetValue(object host, PropValue propValue)
     {
         if (propValue.Descriptor != Descriptor)
             throw new Exception("Incorrect descriptor");
-        SetValue(propValue.Value);
+        SetValue(host, propValue.Value);
     }
 }

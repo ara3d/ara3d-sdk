@@ -16,10 +16,9 @@ public abstract class PropDescriptor
     public string Description { get; }
     public string Units { get; }
     public bool IsReadOnly { get; }
-    public bool IsDeprecated { get; }
 
     protected PropDescriptor(Type type, string name = null, string displayName = null, string description = null, string units = null,
-        bool isReadOnly = false, bool isDeprecated = false, Dictionary<string, string> tags = null)
+        bool isReadOnly = false, Dictionary<string, string> tags = null)
     {
         Name = name ?? type.Name;
         DisplayName = displayName ?? name.SplitCamelCase();
@@ -27,7 +26,6 @@ public abstract class PropDescriptor
         Description = description ?? "";
         Units = units ?? "";
         IsReadOnly = isReadOnly;
-        IsDeprecated = isDeprecated;
         Tags = tags ?? [];
     }
 

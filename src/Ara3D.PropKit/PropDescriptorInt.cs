@@ -7,9 +7,9 @@ public class PropDescriptorInt : TypedPropDescriptor<int>
     public int DefaultValue { get; }
 
     public PropDescriptorInt(string name, string displayName, string description = "", string units = "",
-        bool isReadOnly = false, bool isDeprecated = false, int defaultValue = 0,
+        bool isReadOnly = false, int defaultValue = 0,
         int minValue = int.MinValue, int maxValue = int.MaxValue)
-        : base(name, displayName, description, units, isReadOnly, isDeprecated)
+        : base(name, displayName, description, units, isReadOnly)
     {
         if (minValue > maxValue)
             throw new Exception($"The minValue {minValue} cannot be greater than maxValue {maxValue}");

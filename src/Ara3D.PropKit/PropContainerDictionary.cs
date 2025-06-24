@@ -23,9 +23,9 @@ public class PropContainerDictionary : IPropContainer
             if (name != kv.Key)
                 throw new Exception("Name does not match dictionary key");
             if (desc.IsReadOnly)
-                yield return new PropAccessor(desc, () => dictionary[name].Value, null);
+                yield return new PropAccessor(desc, _ => dictionary[name].Value, null);
             else 
-                yield return new PropAccessor(desc, () => dictionary[name].Value, val => dictionary[name] = new(val, desc));
+                yield return new PropAccessor(desc, _ => dictionary[name].Value, (_, val)=> dictionary[name] = new(val, desc));
         }
     }
 
@@ -41,8 +41,8 @@ public class PropContainerDictionary : IPropContainer
         remove => Provider.PropertyChanged -= value;
     }
 
-    public dynamic AsDynamic
-        => Provider;
+    public IReadOnlyList<PropDescriptor> GetDescriptors()
+        => Provider.GetDescriptors();
 
     public void Dispose()
     {
@@ -50,40 +50,7 @@ public class PropContainerDictionary : IPropContainer
         _dict.Clear();
     }
 
-    //==
-    // Implementation of IPropContainer is delegated to Provider.
+    public IReadOnlyList<PropValue> GetValues(object obj) => Provider.GetValues(obj);
 
-    public AttributeCollection GetAttributes() => Provider.GetAttributes();
-
-    public string? GetClassName() => Provider.GetClassName();
-
-    public string? GetComponentName() => Provider.GetComponentName();
-
-    public TypeConverter? GetConverter() => Provider.GetConverter();
-
-    public EventDescriptor? GetDefaultEvent() => Provider.GetDefaultEvent();
-
-    public PropertyDescriptor? GetDefaultProperty() => Provider.GetDefaultProperty();
-
-    public object? GetEditor(Type editorBaseType) => Provider.GetEditor(editorBaseType);
-
-    public EventDescriptorCollection GetEvents() => Provider.GetEvents();
-
-    public EventDescriptorCollection GetEvents(Attribute[]? attributes) => Provider.GetEvents(attributes);
-
-    public PropertyDescriptorCollection GetProperties() => Provider.GetProperties();
-
-    public PropertyDescriptorCollection GetProperties(Attribute[]? attributes) => Provider.GetProperties(attributes);
-
-    public object? GetPropertyOwner(PropertyDescriptor? pd) => Provider.GetPropertyOwner(pd);
-
-    public IReadOnlyList<PropValue> GetValues() => Provider.GetValues();
-
-    public void SetValues(IEnumerable<PropValue> values) => Provider.SetValues(values);
-
-    public object this[string name]
-    {
-        get => Provider[name];
-        set => Provider[name] = value;
-    }
+    public void SetValues(object obj, IEnumerable<PropValue> values) => Provider.SetValues(obj, values);
 }

@@ -3,9 +3,8 @@ namespace Ara3D.PropKit;
 
 public class PropDescriptorBool : TypedPropDescriptor<bool>
 {
-    public PropDescriptorBool(string name, string displayName, string description = "", string units = "",
-        bool isReadOnly = false, bool isDeprecated = false)
-        : base(name, displayName, description, units, isReadOnly, isDeprecated) { }
+    public PropDescriptorBool(string name, string displayName, string description = "", string units = "", bool isReadOnly = false)
+        : base(name, displayName, description, units, isReadOnly) { }
 
     public override bool Update(bool value, PropUpdateType propUpdate) => propUpdate switch
     {

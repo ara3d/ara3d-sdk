@@ -2,9 +2,10 @@
 
 namespace Ara3D.PropKit;
 
-public interface IPropContainer : INotifyPropertyChanged, ICustomTypeDescriptor, IDisposable
+public interface IPropContainer 
+    : INotifyPropertyChanged, IDisposable
 {
-    IReadOnlyList<PropValue> GetValues();
-    void SetValues(IEnumerable<PropValue> values);
-    object this[string name] { get; set; }
+    IReadOnlyList<PropDescriptor> GetDescriptors();
+    IReadOnlyList<PropValue> GetValues(object obj);
+    void SetValues(object obj, IEnumerable<PropValue> values);
 }

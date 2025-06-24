@@ -32,7 +32,10 @@ public static class PropFactory
         def = Math.Clamp(0, min, max);
     }
 
-    public static IEnumerable<PropAccessor> CreateFromObject(object obj)
+    public static PropProviderWrapper GetBoundPropProvider(this object obj)
+        => new(obj, new PropProvider(obj.GetPropAccessors()));
+
+    public static IEnumerable<PropAccessor> GetPropAccessors(this object obj)
     {
         var type = obj.GetType();
         var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
@@ -45,7 +48,6 @@ public static class PropFactory
             var description = "";
             var units = "";
             var isReadOnly = !prop.CanWrite;
-            var isDeprecated = false;
 
             var displayNameAttr = prop.GetCustomAttribute<DisplayNameAttribute>();
             if (displayNameAttr != null)
@@ -54,8 +56,8 @@ public static class PropFactory
             var rangeAttr = prop.GetCustomAttribute<RangeAttribute>();
             var optionsAttr = prop.GetCustomAttribute<OptionsAttribute>();
 
-            Func<object> getter = () => prop.GetValue(obj);
-            Action<object> setter = !isReadOnly ? val => prop.SetValue(obj, val) : null;
+            Func<object, object> getter = prop.GetValue;
+            Action<object, object> setter = !isReadOnly ? prop.SetValue : null;
 
             if (prop.PropertyType == typeof(int))
             {
@@ -63,14 +65,14 @@ public static class PropFactory
                 {
                     var options = optionsAttr.GetOptions(obj);
                     yield return new PropAccessor(
-                        new PropDescriptorStringList(options, name, displayName, description, units, isReadOnly, isDeprecated),
+                        new PropDescriptorStringList(options, name, displayName, description, units, isReadOnly),
                         getter, setter);
                 }
                 else
                 {
                     GetRangeAsInt(rangeAttr, out var def, out var min, out var max);
                     yield return new PropAccessor(
-                        new PropDescriptorInt(name, displayName, description, units, isReadOnly, isDeprecated, def, min,
+                        new PropDescriptorInt(name, displayName, description, units, isReadOnly, def, min,
                             max),
                         getter, setter);
                 }
@@ -79,12 +81,12 @@ public static class PropFactory
             {
                 GetRangeAsFloat(rangeAttr, out var def, out var min, out var max);
                 yield return new PropAccessor(
-                    new PropDescriptorFloat(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
+                    new PropDescriptorFloat(name, displayName, description, units, isReadOnly, def, min, max),
                     getter, setter);
             }
             else if (prop.PropertyType == typeof(bool))
                 yield return new PropAccessor(
-                    new PropDescriptorBool(name, displayName, description, units, isReadOnly, isDeprecated),
+                    new PropDescriptorBool(name, displayName, description, units, isReadOnly),
                     getter, setter);
         }
 
@@ -96,7 +98,6 @@ public static class PropFactory
             var description = "";
             var units = "";
             var isReadOnly = field.IsInitOnly;
-            var isDeprecated = false;
 
             var displayNameAttr = field.GetCustomAttribute<DisplayNameAttribute>();
             if (displayNameAttr != null)
@@ -105,8 +106,8 @@ public static class PropFactory
             var rangeAttr = field.GetCustomAttribute<RangeAttribute>();
             var optionsAttr = field.GetCustomAttribute<OptionsAttribute>();
 
-            Func<object> getter = () => field.GetValue(obj);
-            Action<object> setter = !isReadOnly ? val => field.SetValue(obj, val) : null;
+            Func<object, object> getter = field.GetValue;
+            Action<object, object> setter = !isReadOnly ? field.SetValue : null;
 
             if (field.FieldType == typeof(int))
             {
@@ -114,14 +115,14 @@ public static class PropFactory
                 {
                     var options = optionsAttr.GetOptions(obj);
                     yield return new PropAccessor(
-                        new PropDescriptorStringList(options, name, displayName, description, units, isReadOnly, isDeprecated),
+                        new PropDescriptorStringList(options, name, displayName, description, units, isReadOnly),
                         getter, setter);
                 }
                 else
                 {
                     GetRangeAsInt(rangeAttr, out var def, out var min, out var max);
                     yield return new PropAccessor(
-                        new PropDescriptorInt(name, displayName, description, units, isReadOnly, isDeprecated, def,
+                        new PropDescriptorInt(name, displayName, description, units, isReadOnly, def,
                             min, max),
                         getter, setter);
                 }
@@ -130,12 +131,12 @@ public static class PropFactory
             {
                 GetRangeAsFloat(rangeAttr, out var def, out var min, out var max);
                 yield return new PropAccessor(
-                    new PropDescriptorFloat(name, displayName, description, units, isReadOnly, isDeprecated, def, min, max),
+                    new PropDescriptorFloat(name, displayName, description, units, isReadOnly, def, min, max),
                     getter, setter);
             }
             else if (field.FieldType == typeof(bool))
                 yield return new PropAccessor(
-                    new PropDescriptorBool(name, displayName, description, units, isReadOnly, isDeprecated),
+                    new PropDescriptorBool(name, displayName, description, units, isReadOnly),
                     getter, setter);
         }
     }

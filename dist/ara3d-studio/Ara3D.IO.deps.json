@@ -27,6 +27,9 @@
         }
       },
       "Ara3D.DataTable/1.0.0": {
+        "dependencies": {
+          "Ara3D.PropKit": "1.0.0"
+        },
         "runtime": {
           "Ara3D.DataTable.dll": {
             "assemblyVersion": "1.0.0",

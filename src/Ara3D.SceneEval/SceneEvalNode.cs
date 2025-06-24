@@ -1,7 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using System.ComponentModel;
 using Ara3D.PropKit;
 using Ara3D.Utils;
 
@@ -16,7 +13,7 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
 {
     public SceneEvalGraph Graph { get; }
     public SceneEvalNode Input { get; set; }
-    public IPropContainer Properties { get; private set; }
+    public PropProviderWrapper Properties { get; private set; }
     public object EvaluatableObject { get; private set; }
     public string Name { get; private set; }
     public event EventHandler Invalidated;
@@ -31,7 +28,7 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
         
         UpdateEvaluatableObject(evaluableObject);
 
-        Properties = new PropContainerWrapper(evaluableObject);
+        Properties = evaluableObject.GetBoundPropProvider();
         Properties.PropertyChanged += (s, e) => InvalidateCache();
     }
 
@@ -135,11 +132,12 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
         if (obj == null) throw new Exception("Evaluatable object cannot be null.");
         (_args, _evalFunc) = GetArgsAndEvalFunction(obj);
         Name = GetName(obj);
+        var old = EvaluatableObject;
         EvaluatableObject = obj;
-        var newWrapper = new PropContainerWrapper(obj);
+        var newWrapper = obj.GetBoundPropProvider();
         if (Properties != null)
         {
-            newWrapper.CopyValuesFrom(Properties);
+            newWrapper.CopyValuesFrom(Properties, old, obj);
             Properties.Dispose();
         }
         Properties = newWrapper;

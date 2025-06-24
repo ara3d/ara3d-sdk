@@ -36,7 +36,6 @@ You can use a `PropContainerWrapper` as a dynamic view model around any class, a
 * `IPropContainer` - An interface inheriting `INotifyPropertyChanged` and `ICustomTypeProvider` to provide access to get or set values individually by name, or in bulk as collections of `PropValue`
 * `PropProvider` - Implements `IPropContainer` by wrapping a collection of `PropAccessor`s.
 * `PropContainerDictionary` - Implements `IPropContainer`. This is a generic key/value collection that stores `PropValue`. 
-* `PropContainerWrapper` - Implements `IPropContainer`. Provides a wrapper around any C# object to provide `IPropContainer` access to its properties and fields. 
 
 ## License
 

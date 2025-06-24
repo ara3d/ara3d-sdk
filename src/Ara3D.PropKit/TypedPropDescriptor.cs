@@ -2,9 +2,8 @@
 
 public abstract class TypedPropDescriptor<T> : PropDescriptor
 {
-    protected TypedPropDescriptor(string name, string displayName, string description, string units, bool isReadOnly,
-        bool isDeprecated, Dictionary<string, string> tags = null)
-        : base(typeof(T), name, displayName, description, units, isReadOnly, isDeprecated, tags) { }
+    protected TypedPropDescriptor(string name, string displayName, string description, string units, bool isReadOnly, Dictionary<string, string> tags = null)
+        : base(typeof(T), name, displayName, description, units, isReadOnly, tags) { }
 
     public abstract T Update(T value, PropUpdateType propUpdate);
     public abstract T Validate(T value);
