@@ -8,8 +8,11 @@ public record PropAccessor(
     Func<object, object> Getter,
     Action<object, object>? Setter)
 {
-    public PropValue GetValue(object host) 
-        => new(Getter(host), Descriptor);
+    public object GetValue(object host)
+        => Getter(host);
+
+    public PropValue GetPropValue(object host) 
+        => new(GetValue(host), Descriptor);
 
     public void SetValue(object host, object value)
     {

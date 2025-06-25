@@ -13,7 +13,7 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
 {
     public SceneEvalGraph Graph { get; }
     public SceneEvalNode Input { get; set; }
-    public PropProviderWrapper Properties { get; private set; }
+    public PropProviderWrapper PropProvider { get; private set; }
     public object EvaluatableObject { get; private set; }
     public string Name { get; private set; }
     public event EventHandler Invalidated;
@@ -28,8 +28,8 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
         
         UpdateEvaluatableObject(evaluableObject);
 
-        Properties = evaluableObject.GetBoundPropProvider();
-        Properties.PropertyChanged += (s, e) => InvalidateCache();
+        PropProvider = evaluableObject.GetBoundPropProvider();
+        PropProvider.PropertyChanged += (s, e) => InvalidateCache();
     }
 
     public object GetCachedObject()
@@ -103,7 +103,7 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
     {
         if (Input != null)
             Input.Invalidated -= InputInvalidated;
-        Properties.Dispose();
+        PropProvider.Dispose();
     }
 
     public IEnumerable<SceneEvalNode> GetAllNodes()
@@ -132,15 +132,17 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
         if (obj == null) throw new Exception("Evaluatable object cannot be null.");
         (_args, _evalFunc) = GetArgsAndEvalFunction(obj);
         Name = GetName(obj);
-        var old = EvaluatableObject;
-        EvaluatableObject = obj;
         var newWrapper = obj.GetBoundPropProvider();
-        if (Properties != null)
+        if (PropProvider != null)
         {
-            newWrapper.CopyValuesFrom(Properties, old, obj);
-            Properties.Dispose();
+            var props = PropProvider.GetPropValues();
+            foreach (var prop in props)
+                newWrapper.TrySetValue(prop.Descriptor, prop.Value);
+
+            PropProvider.Dispose();
         }
-        Properties = newWrapper;
-        Properties.PropertyChanged += (s, e) => InvalidateCache();
+        EvaluatableObject = obj;
+        PropProvider = newWrapper;
+        PropProvider.PropertyChanged += (s, e) => InvalidateCache();
     }
 }

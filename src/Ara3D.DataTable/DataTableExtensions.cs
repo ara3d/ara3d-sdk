@@ -14,7 +14,7 @@ public static class DataTableExtensions
 
         foreach (var value in values)
         {
-            var row = propSet.GetValues(value);
+            var row = propSet.GetPropValues(value);
             for (var i = 0; i < row.Count; i++)
             {
                 var propVal = row[i];

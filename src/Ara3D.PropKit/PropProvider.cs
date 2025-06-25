@@ -22,11 +22,8 @@ public class PropProvider : IPropContainer
     public IReadOnlyList<PropDescriptor> GetDescriptors()
         => Accessors.Select(acc => acc.Descriptor).ToList();
 
-    public IReadOnlyList<PropValue> GetValues(object obj)
-        => Accessors.Select(acc => acc.GetValue(obj)).ToList();
-
-    public PropValue GetValue(object obj, string name)
-        => GetAccessor(name).GetValue(obj);
+    public IReadOnlyList<PropValue> GetPropValues(object obj)
+        => Accessors.Select(acc => acc.GetPropValue(obj)).ToList();
 
     public PropAccessor GetAccessor(PropDescriptor propDesc)
     {
@@ -37,32 +34,34 @@ public class PropProvider : IPropContainer
     }
 
     public PropAccessor GetAccessor(string name)
-        => (!_dictionary.TryGetValue(name, out var accessor) 
-                ? throw new Exception($"Could not find {name}") 
-                : accessor)!;
+        => _dictionary.GetValueOrDefault(name);
 
-    public PropValue GetValue(object obj, PropDescriptor propDesc)
-        => GetAccessor(propDesc).GetValue(obj);
+    public PropValue GetPropValue(object obj, string name)
+        => GetAccessor(name).GetPropValue(obj);
 
-    public void SetValue(object obj, string name, object value)
+    public PropDescriptor GetDescriptor(string name)
+        => GetAccessor(name).Descriptor;
+
+    public bool TrySetValue(object obj, string name, object value)
     {
-        GetAccessor(name).SetValue(obj, value);
+        var acc = GetAccessor(name);
+        if (acc == null)
+            return false;
+        var cur = acc.GetValue(obj);
+        if (cur.Equals(value))
+            return true;
+        acc.SetValue(obj, value);
         NotifyPropertyChanged(name);
+        return true;
     }
 
-    public void SetValue(object obj, PropDescriptor descriptor, object value)
-    {
-        GetAccessor(descriptor).SetValue(obj, value);
-        NotifyPropertyChanged(descriptor.Name);
-    }
+    public bool TrySetValue(object obj, PropDescriptor descriptor, object value)
+        => TrySetValue(obj, descriptor.Name, value);
 
-    public void SetValue(object obj, PropValue value)
-        => SetValue(obj, value.Descriptor, value.Value);
-
-    public void SetValues(object obj, IEnumerable<PropValue> values)
+    public void SetPropValues(object obj, IEnumerable<PropValue> values)
     {
         foreach (var value in values)
-            SetValue(obj,value);
+            TrySetValue(obj, value.Descriptor, value.Value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -71,8 +70,6 @@ public class PropProvider : IPropContainer
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
     public void Dispose()
-    {
-        PropertyChanged = null;
-    }
+        => PropertyChanged = null;
 
 }

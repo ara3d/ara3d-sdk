@@ -6,6 +6,8 @@ public interface IPropContainer
     : INotifyPropertyChanged, IDisposable
 {
     IReadOnlyList<PropDescriptor> GetDescriptors();
-    IReadOnlyList<PropValue> GetValues(object obj);
-    void SetValues(object obj, IEnumerable<PropValue> values);
+    IReadOnlyList<PropValue> GetPropValues(object host);
+    void SetPropValues(object host, IEnumerable<PropValue> values);
+    PropValue GetPropValue(object host, string name);
+    PropDescriptor GetDescriptor(string name);
 }

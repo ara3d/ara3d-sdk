@@ -28,6 +28,7 @@
       },
       "Ara3D.DataTable/1.0.0": {
         "dependencies": {
+          "Ara3D.Collections": "1.0.0",
           "Ara3D.PropKit": "1.0.0"
         },
         "runtime": {

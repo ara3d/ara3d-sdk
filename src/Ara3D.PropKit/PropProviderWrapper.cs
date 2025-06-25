@@ -10,7 +10,8 @@ namespace Ara3D.PropKit;
 /// It is designed to allow you to change the wrapped object, which allows you to
 /// reuse a set of properties. 
 /// </summary>
-public class PropProviderWrapper : DynamicObject, ICustomTypeDescriptor, IPropContainer
+public class PropProviderWrapper : 
+    DynamicObject, IBoundPropContainer
 {
     public object Wrapped { get; private set; }
     public PropProvider Props { get; }
@@ -24,13 +25,18 @@ public class PropProviderWrapper : DynamicObject, ICustomTypeDescriptor, IPropCo
     public void UpdateWrappedObject(object bound)
     {
         Wrapped = bound;
-        Props.NotifyPropertyChanged(string.Empty);
+        NotifyPropertyChanged();
+    }
+
+    public void NotifyPropertyChanged(string propName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName ?? string.Empty));
     }
 
     public dynamic AsDynamic
         => this;
 
-    public override bool TryGetMember(GetMemberBinder binder, out object? result)
+    public override bool TryGetMember(GetMemberBinder binder, out object result)
     {
         try
         {
@@ -44,12 +50,11 @@ public class PropProviderWrapper : DynamicObject, ICustomTypeDescriptor, IPropCo
         }
     }
 
-    public override bool TrySetMember(SetMemberBinder binder, object? value)
+    public override bool TrySetMember(SetMemberBinder binder, object value)
     {
         try
         {
-            Props.SetValue(Wrapped, binder.Name, value);
-            return true;
+            return TrySetValue(binder.Name, value);
         }
         catch
         {
@@ -57,21 +62,44 @@ public class PropProviderWrapper : DynamicObject, ICustomTypeDescriptor, IPropCo
         }
     }
 
+    public bool TrySetValue(PropDescriptor desc, object value)
+        => TrySetValue(desc.Name, value);
+
+    public bool TrySetValue(string name, object value)
+    {
+        if (!Props.TrySetValue(Wrapped, name, value))
+            return false;
+        NotifyPropertyChanged(name);
+        return true;
+    }
+
+    public object GetValue(string name)
+        => Props.GetValue(Wrapped, name);
+
+    public object GetValue(PropDescriptor descriptor)
+        => GetValue(descriptor.Name);
+
+    public IReadOnlyList<PropValue> GetPropValues()
+        => Props.GetPropValues(Wrapped);
+
     public override IEnumerable<string> GetDynamicMemberNames()
         => Props.Accessors.Select(acc => acc.Descriptor.Name);
 
-    public event PropertyChangedEventHandler PropertyChanged
+    public PropValue GetPropValue(object host, string name)
     {
-        add => Props.PropertyChanged += value;
-        remove => Props.PropertyChanged -= value;
+        return Props.GetPropValue(host, name);
     }
 
+    public PropDescriptor GetDescriptor(string name)
+        => Props.GetDescriptor(name);
+
+    public event PropertyChangedEventHandler PropertyChanged;
 
     //== 
     // ICustomTypeDescriptor implementation
 
     public AttributeCollection GetAttributes() => AttributeCollection.Empty;
-    public string GetClassName() => nameof(PropProvider);
+    public string GetClassName() => nameof(PropProviderWrapper);
     public string GetComponentName() => null;
     public TypeConverter GetConverter() => new();
     public EventDescriptor GetDefaultEvent() => null;
@@ -80,7 +108,7 @@ public class PropProviderWrapper : DynamicObject, ICustomTypeDescriptor, IPropCo
     public EventDescriptorCollection GetEvents(Attribute[] attributes) => EventDescriptorCollection.Empty;
     public EventDescriptorCollection GetEvents() => EventDescriptorCollection.Empty;
     public PropertyDescriptorCollection GetProperties(Attribute[] attributes) => new(Props.GetDescriptors().Select(CreateAdapter).ToArray());
-    public PropertyDescriptor CreateAdapter(PropDescriptor desc) => new ComponentModelAdapter(Props, desc);
+    public PropertyDescriptor CreateAdapter(PropDescriptor desc) => new ComponentModelAdapter(this, desc);
     public PropertyDescriptorCollection GetProperties() => GetProperties([]);
     public object GetPropertyOwner(PropertyDescriptor pd) => this;
 
@@ -89,16 +117,17 @@ public class PropProviderWrapper : DynamicObject, ICustomTypeDescriptor, IPropCo
     /// </summary>
     private class ComponentModelAdapter : PropertyDescriptor
     {
-        private readonly PropProvider _provider;
+        private readonly PropProviderWrapper _provider;
         private readonly PropDescriptor _desc;
 
-        public ComponentModelAdapter(PropProvider provider, PropDescriptor desc) : base(desc.Name, null)
+        public ComponentModelAdapter(PropProviderWrapper provider, PropDescriptor desc) 
+            : base(desc.Name, null)
         {
             _provider = provider;
             _desc = desc;
         }
 
-        public override Type ComponentType => typeof(PropProvider);
+        public override Type ComponentType => typeof(PropProviderWrapper);
         public override bool IsReadOnly => _desc.IsReadOnly;
         public override Type PropertyType => _desc.Type;
         public override bool CanResetValue(object component) => true;
@@ -107,16 +136,17 @@ public class PropProviderWrapper : DynamicObject, ICustomTypeDescriptor, IPropCo
         {
             if (obj is not PropProviderWrapper ppw)
                 throw new Exception($"Internal error: expected a {nameof(PropProviderWrapper)}");
-            return _provider.GetValue(ppw.Wrapped, _desc).Value;
+            return _provider.GetValue(_desc);
         }
 
-        public override void ResetValue(object component) => SetValue(component, _desc.Default);
+        public override void ResetValue(object component) 
+            => SetValue(component, _desc.Default);
 
         public override void SetValue(object obj, object value)
         {
             if (obj is not PropProviderWrapper ppw)
                 throw new Exception($"Internal error: expected a {nameof(PropProviderWrapper)}");
-            _provider.SetValue(ppw.Wrapped, _desc, value);
+           _provider.TrySetValue(_desc, value);
         }
 
         public override bool ShouldSerializeValue(object component) => false;
@@ -132,15 +162,10 @@ public class PropProviderWrapper : DynamicObject, ICustomTypeDescriptor, IPropCo
     public IReadOnlyList<PropDescriptor> GetDescriptors()
         => Props.GetDescriptors();
 
-    public IReadOnlyList<PropValue> GetValues(object obj)
-        => Props.GetValues(obj);
+    public IReadOnlyList<PropValue> GetPropValues(object host)
+        => Props.GetPropValues(host);
+    
 
-    public IReadOnlyList<PropValue> GetValues()
-        => GetValues(Wrapped);
-
-    public void SetValues(object obj, IEnumerable<PropValue> values)
-        => Props.SetValues(obj, values);
-
-    public void SetValues(IEnumerable<PropValue> values)
-        => SetValues(Wrapped, values);
+    public void SetPropValues(object host, IEnumerable<PropValue> values)
+        => Props.SetPropValues(host, values);
 }
