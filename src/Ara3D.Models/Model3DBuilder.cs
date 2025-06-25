@@ -11,8 +11,8 @@ public class Model3DBuilder
     public List<TriangleMesh3D> Meshes { get; } = [];
     public List<Material> Materials { get; } = [];
     public List<Matrix4x4> Transforms { get; } = [];
-    public List<ElementStruct> ElementRefs { get; } = [];
-    public DataTableBuilder Table { get; } = new(null, 0, "");
+    public List<ElementStruct> ElementStructs { get; } = [];
+    public DataSetBuilder DataSet { get; } = new();
     public Material DefaultMaterial;
 
     public Model3DBuilder(Material? defaultMaterial = null)
@@ -78,12 +78,12 @@ public class Model3DBuilder
         Debug.Assert(meshIndex >= 0 && meshIndex < Meshes.Count);
         Debug.Assert(materialIndex >= 0 && materialIndex < Materials.Count);
         Debug.Assert(transformIndex >= 0 && transformIndex < Transforms.Count);
-        ElementRefs.Add(new ElementStruct(
-            elementIndex: ElementRefs.Count, 
+        ElementStructs.Add(new ElementStruct(
+            elementIndex: ElementStructs.Count, 
             materialIndex: materialIndex, 
             meshIndex: meshIndex, 
             transformIndex: transformIndex));
-        return ElementRefs.Count - 1;
+        return ElementStructs.Count - 1;
     }
 
     public void AddElements(IEnumerable<Element> elements)
@@ -104,13 +104,13 @@ public class Model3DBuilder
         var meshOffset = Meshes.Count;
         var materialOffset = Materials.Count;
         var transformOffset = Transforms.Count;
-        var elementOffset = ElementRefs.Count;
+        var elementOffset = ElementStructs.Count;
         Meshes.AddRange(m.Meshes);
         Materials.AddRange(m.Materials);
         Transforms.AddRange(m.Transforms);
         foreach (var element in m.ElementStructs)
         {
-            ElementRefs.Add(new ElementStruct(
+            ElementStructs.Add(new ElementStruct(
                 elementIndex: elementOffset + element.ElementIndex,
                 materialIndex: materialOffset + element.MaterialIndex,
                 meshIndex: meshOffset + element.MeshIndex,
@@ -123,6 +123,6 @@ public class Model3DBuilder
     public Model3D Build()
     {
         _frozen = true;
-        return new Model3D(Meshes, Materials, Transforms, ElementRefs, Table);
+        return new Model3D(Meshes, Materials, Transforms, ElementStructs, DataSet);
     }
 }

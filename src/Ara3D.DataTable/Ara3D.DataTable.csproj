@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
   </ItemGroup>
 

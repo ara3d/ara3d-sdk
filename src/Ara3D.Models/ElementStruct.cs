@@ -4,7 +4,7 @@ namespace Ara3D.Models;
 
 /// <summary>
 /// An element is a part of a 3D model. It has a mesh, a material, and a transformation.
-/// It uses indices to reference the data stored in the parent model.
+/// The element struct uses indices to reference the data stored in the parent model.
 /// </summary>
 public readonly struct ElementStruct
 {

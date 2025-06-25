@@ -6,22 +6,24 @@ using Ara3D.Collections;
 namespace Ara3D.Models
 {
     /// <summary>
-    /// A model is a collection of elements, meshes, and materials.
+    /// A model is a collection of elements, meshes, transforms, materials, and meta-data.
     /// Elements are the parts of a model. They may share references to meshes, materials, and transforms.
     /// If multiple elements share a reference to a transform, then they are intended to move together.
-    /// A data table is optional and may be used to access additional structured
-    /// data associated with elements of a model.
     /// </summary>
     public class Model3D : ITransformable3D<Model3D>
     {
-        public Model3D(IReadOnlyList<TriangleMesh3D> meshes, IReadOnlyList<Material> materials, IReadOnlyList<Matrix4x4> transforms, IReadOnlyList<ElementStruct> elements, 
-            IDataTable? dataTable)
+        public Model3D(
+            IReadOnlyList<TriangleMesh3D> meshes, 
+            IReadOnlyList<Material> materials, 
+            IReadOnlyList<Matrix4x4> transforms, 
+            IReadOnlyList<ElementStruct> elements, 
+            IDataSet? dataSet = null)
         {
             Meshes = meshes;
             Materials = materials;
             Transforms = transforms;
             ElementStructs = elements;
-            DataTable = dataTable;
+            DataSet = dataSet ?? new ReadOnlyDataSet([]);
             Elements = elements.Select(GetElement);     
         }
 
@@ -30,7 +32,7 @@ namespace Ara3D.Models
         public IReadOnlyList<Matrix4x4> Transforms { get; }
         public IReadOnlyList<ElementStruct> ElementStructs { get; }
         public IReadOnlyList<Element> Elements { get; }
-        public IDataTable? DataTable { get; }
+        public IDataSet DataSet { get; }
 
         public Element GetElement(ElementStruct es)
             => new(
@@ -39,7 +41,7 @@ namespace Ara3D.Models
                Transforms[es.TransformIndex]);
 
         public Model3D Transform(Transform3D transform)
-            => new(Meshes, Materials, Transforms.Select(t => t * transform).ToList(), ElementStructs, DataTable);
+            => new(Meshes, Materials, Transforms.Select(t => t * transform).ToList(), ElementStructs, DataSet);
 
         public static Integer3 Offset(Integer3 self, Integer offset)
             => (self.A + offset, self.B + offset, self.C + offset);
@@ -85,7 +87,10 @@ namespace Ara3D.Models
         }
 
         public Model3D WithTransforms(IReadOnlyList<Matrix4x4> transforms)
-            => new(Meshes, Materials, transforms, ElementStructs, DataTable);
+            => new(Meshes, Materials, transforms, ElementStructs, DataSet);
+
+        public Model3D WithDataSet(IDataSet dataSet)
+            => new(Meshes, Materials, Transforms, ElementStructs, dataSet);
 
         public Model3D ModifyTransforms(Func<Matrix4x4, Matrix4x4> f)
             => WithTransforms(Transforms.Select(f));
@@ -95,7 +100,7 @@ namespace Ara3D.Models
                     Vector3.Zero, (v, p) => v + (Vector3)p) / Elements.Count;
 
         public Model3D WithMeshes(IReadOnlyList<TriangleMesh3D> meshes)
-            => new(meshes, Materials, Transforms, ElementStructs, DataTable);
+            => new(meshes, Materials, Transforms, ElementStructs, DataSet);
 
         public Model3D ModifyMeshes(Func<TriangleMesh3D, TriangleMesh3D> f)
             => WithMeshes(Meshes.Select(f));
@@ -118,5 +123,11 @@ namespace Ara3D.Models
 
         public static implicit operator Model3D(TriangleMesh3D m)
             => new Element(m, Material.Default, Matrix4x4.Identity);
+
+        public Model3D AddColumnsToTable(string tableName, IReadOnlyList<IDataColumn> columns)
+            => WithDataSet(DataSet.AddColumnsToTable(tableName, columns));
+
+        public Model3D MergeTable(IDataTable table)
+            => WithDataSet(DataSet.AddColumnsToTable(table.Name, table.Columns));
     }
 }

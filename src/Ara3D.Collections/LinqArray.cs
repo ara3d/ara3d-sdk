@@ -921,5 +921,8 @@ namespace Ara3D.Collections
 
         public static ReadOnlyList<T> Shift<T>(this IReadOnlyList<T> self, int shift)
             => new ReadOnlyList<T>(self.Count, i => self.AtModulo(i + shift));
+
+        public static ReadOnlyList<T> Replace<T>(this IReadOnlyList<T> self, T src, T dest)
+            => self.Select(x => x.Equals(self) ? dest : x);
     }
 }

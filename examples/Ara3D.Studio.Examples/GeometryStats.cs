@@ -29,11 +29,10 @@
 
         public Model3D Eval(Model3D model, EvalContext context)
         {
-            var table = model.DataTable as DataTableBuilder;
-            var statsByMesh = model.Meshes.Select(GetMeshStats);
-            var statsByElement = model.ElementStructs.Select(es => statsByMesh[es.MeshIndex]);
-            table?.AddColumnsFromFieldsAndProperties(statsByElement);
-            return model;
+            var table = new DataTableBuilder("Meshes");
+            var stats = model.Meshes.Select(GetMeshStats);
+            table.AddColumnsFromFieldsAndProperties(stats);
+            return model.MergeTable(table);
         }
     }
 }

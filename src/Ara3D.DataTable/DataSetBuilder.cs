@@ -4,7 +4,7 @@ public class DataSetBuilder : IDataSet
 {
     public DataTableBuilder AddTable(string name)
     {
-        var r = new DataTableBuilder(this, _tableBuilders.Count, name);
+        var r = new DataTableBuilder(name);
         _tableBuilders.Add(r);
         return r;
     }

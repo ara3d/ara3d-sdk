@@ -1,16 +1,14 @@
 ﻿using System.Diagnostics;
+using Ara3D.Collections;
 
 namespace Ara3D.DataTable
 {
     public class DataTableBuilder : IDataTable
     {
-        public int TableIndex { get; }
         public string Name { get; }
-        IDataSet IDataTable.DataSet => DataSet;
-        public DataSetBuilder DataSet { get; }
         private int _NumRows = 0;
 
-        public IReadOnlyList<IDataRow> Rows => Enumerable.Range(0, _NumRows).Select(GetRow).ToList();
+        public IReadOnlyList<IDataRow> Rows => _NumRows.Select(this.GetRow);
         public IReadOnlyList<IDataColumn> Columns => _columnBuilders.Cast<IDataColumn>().ToList();
         private List<DataColumnBuilder> _columnBuilders { get; } = new();
 
@@ -41,16 +39,8 @@ namespace Ara3D.DataTable
             return r;
         }
 
-        public IDataRow GetRow(int rowIndex)
-            => new DataRowBuilder(this, rowIndex);
-
-        public List<object> GetRowValues(int row)
-            => _columnBuilders.Select(c => c.Values[row]).ToList();
-
-        public DataTableBuilder(DataSetBuilder dataSet, int tableIndex, string tableName)
+        public DataTableBuilder(string tableName)
         {
-            DataSet = dataSet;
-            TableIndex = tableIndex;
             Name = tableName;
         }
     }
