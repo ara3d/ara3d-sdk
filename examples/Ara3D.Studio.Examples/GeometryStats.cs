@@ -4,6 +4,7 @@
     {
         public class MeshStats
         {
+            public float Ratio { get; set; }
             public float BoundingVolume { get; set; }
             public float MinBindingSide { get; set; }
             public float MaxBoundingSide { get; set; }
@@ -23,7 +24,8 @@
                 NumTriangles = mesh.Triangles.Count,
                 MinBindingSide = extent.MinComponent,
                 MaxBoundingSide = extent.MaxComponent,
-                SurfaceArea = mesh.Triangles.Aggregate(0f, (sum, t) => sum + t.Area)
+                Ratio = extent.MinComponent / extent.MaxComponent,
+		SurfaceArea = mesh.Triangles.Aggregate(0f, (sum, t) => sum + t.Area)
             };
         }
 

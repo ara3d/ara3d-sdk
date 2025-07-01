@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using Ara3D.PropKit;
 using Ara3D.Utils;
 
@@ -11,6 +12,21 @@ namespace Ara3D.SceneEval;
 /// </summary>
 public class SceneEvalNode : IDisposable, INotifyPropertyChanged
 {
+    private bool _enabled = true; 
+    public bool Enabled
+    {
+        get => _enabled;
+        set
+        {
+            if (_enabled == value) 
+                return;
+            _enabled = value;
+            InvalidateCache();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Enabled)));
+            Graph.NotifyGraphChanged();
+        }
+    }
+
     public SceneEvalGraph Graph { get; }
     public SceneEvalNode Input { get; set; }
     public PropProviderWrapper PropProvider { get; private set; }
@@ -25,9 +41,7 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
     public SceneEvalNode(SceneEvalGraph graph, object evaluableObject)
     {
         Graph = graph ?? throw new ArgumentNullException(nameof(graph));
-        
         UpdateEvaluatableObject(evaluableObject);
-
         PropProvider = evaluableObject.GetBoundPropProvider();
         PropProvider.PropertyChanged += (s, e) => InvalidateCache();
     }
@@ -62,8 +76,24 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
     private object EvalCore(EvalContext context)
     {
         if (Input != null)
-            _args[0] = Input.Eval(context);
+        {
+            Debug.Assert(_args.Length >= 2);
+            var inputVal = Input.Eval(context);
+            _args[0] = inputVal;
+            if (inputVal == null)
+                return null;
+        }
+
         _args[^1] = context;
+
+        if (!Enabled)
+        {
+            if (_args.Length >= 2)
+                return _args[0];
+            else
+                return null;
+        }
+
         return _cached = _evalFunc(_args);
     }
 
