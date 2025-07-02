@@ -129,5 +129,8 @@ namespace Ara3D.Models
 
         public Model3D MergeTable(IDataTable table)
             => WithDataSet(DataSet.AddColumnsToTable(table.Name, table.Columns));
+
+        public Model3D WithStructs(IReadOnlyList<ElementStruct> structs)
+            => new(Meshes, Materials, Transforms, structs, DataSet);
     }
 }

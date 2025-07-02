@@ -19,6 +19,9 @@ public static class DataSetExtensions
     public static IDataTable? GetTable(this IDataSet self, string name)
         => self.Tables.FirstOrDefault(t => t.Name == name);
 
+    public static IDataColumn? GetColumn(this IDataTable self, string name)
+        => self.Columns.FirstOrDefault(c => c.Descriptor.Name == name);
+
     public static ReadOnlyDataSet AddColumnsToTable(this IDataSet self, string tableName,
         IReadOnlyList<IDataColumn> columns)
     {

@@ -1,4 +1,4 @@
-﻿    namespace Ara3D.Studio.Samples
+﻿namespace Ara3D.Studio.Samples
 {
     public class TorusDemo : IModelGenerator
     {
@@ -19,10 +19,10 @@
 
         [Range(2, 64)] public int NumRows { get; set; } = 16;
         [Range(2, 64)] public int NumColumns { get; set; } = 16;
-
+        
         public bool ClosedX;
         public bool ClosedY;
-
+        
         public Model3D Eval(EvalContext context)
             => GetQuadGrid().Triangulate();
     }

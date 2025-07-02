@@ -1,4 +1,6 @@
-﻿namespace Ara3D.Studio.Samples
+﻿using System.Linq;
+
+namespace Ara3D.Studio.Samples
 {
     public class GeometryStats : IModelModifier
     {
@@ -25,7 +27,7 @@
                 MinBindingSide = extent.MinComponent,
                 MaxBoundingSide = extent.MaxComponent,
                 Ratio = extent.MinComponent / extent.MaxComponent,
-		SurfaceArea = mesh.Triangles.Aggregate(0f, (sum, t) => sum + t.Area)
+        		SurfaceArea = mesh.Triangles.Aggregate(0f, (sum, t) => sum + t.Area)
             };
         }
 

@@ -311,21 +311,14 @@ namespace Ara3D.Collections
         /// An IArray is not created automatically because it is an expensive operation that is potentially unneeded.
         /// </summary>
         public static IEnumerable<int> IndicesWhere<T>(this IReadOnlyList<T> self, Func<T, int, bool> f)
-            => self.IndicesWhere(i => f(self[i], i));
-
-        /// <summary>
-        /// Returns an IEnumerable containing only indices of the array for which the function satisfies a specific predicate.
-        /// An IArray is not created automatically because it is an expensive operation that is potentially unneeded.
-        /// </summary>
-        public static IEnumerable<int> IndicesWhere<T>(this IReadOnlyList<T> self, Func<int, bool> f)
-            => self.Indices().Where(i => f(i));
+            => self.Indices().Where(i => f(self[i], i));
 
         /// <summary>
         /// Returns an IEnumerable containing only indices of the array for which booleans in the mask are true.
         /// An IArray is not created automatically because it is an expensive operation that is potentially unneeded.
         /// </summary>
         public static IEnumerable<int> IndicesWhere<T>(this IReadOnlyList<T> self, IReadOnlyList<bool> mask)
-            => self.IndicesWhere(mask.ToPredicate());
+            => self.Indices().Where(mask.ToPredicate());
 
         /// <summary>
         /// Shortcut for ToEnumerable.Aggregate()
@@ -512,6 +505,7 @@ namespace Ara3D.Collections
         /// </summary>
         public static IntegerRange Indices<T>(this IReadOnlyList<T> self)
             => self.Count.Range();
+
 
         /// <summary>
         /// Converts an array of elements into a string representation
