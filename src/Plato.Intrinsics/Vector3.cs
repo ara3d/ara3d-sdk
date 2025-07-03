@@ -104,18 +104,6 @@ namespace Ara3D.Geometry
         public static Vector3 operator -(Vector3 value) => -value.Value;
         
         /// <summary>
-        /// Returns the dot product of two <see cref="Vector3"/> instances.
-        /// </summary>
-        [MethodImpl(AggressiveInlining)]
-        public Number Dot(Vector3 right) => SNVector3.Dot(Value, right);
-
-        /// <summary>
-        /// Returns the dot product of two <see cref="Vector3"/> instances.
-        /// </summary>
-        [MethodImpl(AggressiveInlining)]
-        public Vector3 Cross(Vector3 right) => SNVector3.Cross(Value, right);
-
-        /// <summary>
         /// Returns the Euclidean distance between two <see cref="Vector3"/> instances.
         /// </summary>
         [MethodImpl(AggressiveInlining)]
@@ -208,5 +196,18 @@ namespace Ara3D.Geometry
         /// </summary>
         [MethodImpl(AggressiveInlining)]
         public Vector3 Min(Vector3 value2) => SNVector3.Min(Value, value2);
+
+        /// <summary>
+        /// Returns the dot product of two <see cref="Vector3"/> instances.
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static Number Dot(Vector3 left, Vector3 right) => SNVector3.Dot(left, right);
+
+        /// <summary>
+        /// Returns the dot product of two <see cref="Vector3"/> instances.
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static Vector3 Cross(Vector3 left, Vector3 right) => SNVector3.Cross(left, right);
+
     }
 }
