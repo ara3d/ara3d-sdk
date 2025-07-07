@@ -2,11 +2,10 @@
 
 public class MeshBoxes : IModelModifier
 {
-    public bool Oriented;
-    public bool Disabled;
-    public bool ApplyRotation;
-    public bool TransposeMatrix;
-    public bool SortEigenValues;
+    public bool Oriented = true;
+    public bool Disabled = false;
+    public bool ApplyRotation = true;
+    public bool TransposeMatrix = false;
 
     public TriangleMesh3D ToBoundsMesh(TriangleMesh3D mesh)
     {

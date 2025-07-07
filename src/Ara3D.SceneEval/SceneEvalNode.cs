@@ -99,8 +99,7 @@ public class SceneEvalNode : IDisposable, INotifyPropertyChanged
 
     public void InvalidateCache()
     {
-        if (_cached == null)
-            return;
+        //if (_cached == null) return;
         _cached = null;
         Invalidated?.Invoke(this, EventArgs.Empty);
     }

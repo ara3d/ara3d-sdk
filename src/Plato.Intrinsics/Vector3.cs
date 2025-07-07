@@ -208,6 +208,20 @@ namespace Ara3D.Geometry
         /// </summary>
         [MethodImpl(AggressiveInlining)]
         public static Vector3 Cross(Vector3 left, Vector3 right) => SNVector3.Cross(left, right);
+    }
 
+    public static class Vector3_Extensions
+    {
+        [MethodImpl(AggressiveInlining)]
+        public static Vector3 Cross(this Vector3 self, Vector3 right) => SNVector3.Cross(self, right);
+
+        [MethodImpl(AggressiveInlining)]
+        public static Vector3 Cross(this SNVector3 self, Vector3 right) => SNVector3.Cross(self, right);
+
+        [MethodImpl(AggressiveInlining)] 
+        public static Number Dot(this Vector3 self, Vector3 right) => SNVector3.Dot(self, right);
+
+        [MethodImpl(AggressiveInlining)] 
+        public static Number Dot(this SNVector3 self, Vector3 right) => SNVector3.Dot(self, right);
     }
 }

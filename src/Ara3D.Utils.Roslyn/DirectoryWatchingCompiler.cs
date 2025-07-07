@@ -42,7 +42,7 @@ namespace Ara3D.Utils.Roslyn
             Log("Creating directory compiler");
             Options = options ?? CompilerOptions.CreateDefault();
             if (!inputDir.Exists())
-                throw new System.Exception($"Directory {inputDir} does not exist");
+                throw new Exception($"Directory {inputDir} does not exist");
             LibsDirectoryPath = libsDir;
 
             var dirFile = inputDir.RelativeFile("dir.txt");
