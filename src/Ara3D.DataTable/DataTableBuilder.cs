@@ -5,6 +5,9 @@ namespace Ara3D.DataTable
 {
     public class DataTableBuilder : IDataTable
     {
+        public DataTableBuilder(string tableName)
+            => Name = tableName;
+
         public string Name { get; }
         private int _NumRows = 0;
 
@@ -39,9 +42,7 @@ namespace Ara3D.DataTable
             return r;
         }
 
-        public DataTableBuilder(string tableName)
-        {
-            Name = tableName;
-        }
+        public object this[int column, int row] 
+            => Columns[column].Values[row];
     }
 }

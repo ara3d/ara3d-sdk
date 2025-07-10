@@ -48,4 +48,3 @@ public abstract class PropDescriptor
     public PropValue MinPropValue => new(Min, this);
     public PropValue MaxPropValue => new(Max, this);
 }
-

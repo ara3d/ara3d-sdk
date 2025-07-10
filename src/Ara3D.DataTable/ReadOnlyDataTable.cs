@@ -16,4 +16,7 @@ public class ReadOnlyDataTable : IDataTable
             ? dataColumns[0].Values.Count.Select(i => new DataRow(this, i))
             : [];
     }
+
+    public object this[int column, int row] 
+        => Columns[column].Values[row];
 }

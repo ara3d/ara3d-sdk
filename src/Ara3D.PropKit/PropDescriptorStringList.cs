@@ -2,9 +2,9 @@
 
 public class PropDescriptorStringList : TypedPropDescriptor<int>
 {
-    public List<string> Options { get; }
+    public IReadOnlyList<string> Options { get; }
 
-    public PropDescriptorStringList(List<string> options, string name, string displayName, string description = "", string units = "", bool isReadOnly = false)
+    public PropDescriptorStringList(IReadOnlyList<string> options, string name, string displayName, string description = "", string units = "", bool isReadOnly = false)
         : base(name, displayName, description, units, isReadOnly)
     {
         Options = options;
