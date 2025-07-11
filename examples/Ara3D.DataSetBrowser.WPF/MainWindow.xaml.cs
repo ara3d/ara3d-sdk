@@ -14,7 +14,7 @@ namespace Ara3D.DataSetBrowser.WPF
             InitializeComponent();
             var fp = new FilePath(
                 @"C:\Users\cdigg\AppData\Local\Temp\477d45ba-22d8-44c3-bb1a-1d5daadf8e59\parameters.mpz");
-            var mp = Serialization.LoadBimDataFromMessagePack(fp);
+            var mp = Serialization.ReadBimDataFromMessagePack(fp);
             var dataSet = mp.ToDataSet();
             foreach (var t in dataSet.Tables)
             {
