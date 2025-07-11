@@ -1,6 +1,7 @@
 using Ara3D.DataSetBrowser.WPF;
 using Ara3D.Utils;
 using BIMOpenSchema;
+using System.Diagnostics;
 
 namespace Ara3D.BIMOpenSchema.Tests
 {
@@ -17,6 +18,20 @@ namespace Ara3D.BIMOpenSchema.Tests
             var stats = Serialization.Write(data,
                 (fp, bd) => Serialization.WriteDuckDB(bd, fp), outputFile);
             OutputStats(data, stats);
+        }
+
+        [Test]
+        public static void TestParquet()
+        {
+            var outputFolder = OutputFolder.RelativeFolder("parquet");
+            outputFolder.CreateAndClearDirectory();
+            var data = GetData();
+            var dataSet = data.ToDataSet();
+            var sw = Stopwatch.StartNew();
+            var tasks = dataSet.Tables.Select((t, i) => t.WriteParquetAsync(outputFolder.RelativeFile($"{t.Name}_{i}.parquet")));
+            Task.WaitAll(tasks);
+            Console.WriteLine($"Finished in {sw.Elapsed.Seconds:F} seconds");
+            Console.WriteLine($"Total size of files = {PathUtil.BytesToString(outputFolder.GetDirectorySizeInBytes())}");
         }
 
         [Test]

@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using Ara3D.DataTable;
+using Ara3D.Utils;
 using Parquet;
 using Parquet.Data;
 using Parquet.Schema;
@@ -7,26 +9,25 @@ namespace Ara3D.DataSetBrowser.WPF;
 
 public static class ParquetUtils
 {
-    public static async Task WriteParquetAsync<T>(
-        IReadOnlyList<T> rows,
-        ParquetSchema schema,
-        string filePath,
-        params Func<T, Array>[] getters)
+    public static async Task WriteParquetAsync(
+        this IDataTable table,
+        FilePath filePath)
     {
-        using var fs = File.Create(filePath);
-        using var writer = await ParquetWriter.CreateAsync(schema, fs);
+        var dataFields = table.Columns.Select(c => new DataField(c.Descriptor.Name, c.Descriptor.Type)).ToList();
+        var schema = new ParquetSchema(dataFields);
+        
+        await using var fs = File.Create(filePath);
+        await using var writer = await ParquetWriter.CreateAsync(schema, fs);
 
-        // one big row group; split if you hit memory limits
         using var rg = writer.CreateRowGroup();
-        for (int c = 0; c < getters.Length; ++c)
+        foreach (var c in table.Columns)
         {
-            var data = getters[c](default!);         // probe for element type
-            var vector = Array.CreateInstance(data.GetType().GetElementType()!, rows.Count);
-
-            for (int i = 0; i < rows.Count; ++i)
-                vector.SetValue(getters[c](rows[i]).GetValue(0), i);
-
-            await rg.WriteColumnAsync(new DataColumn(schema.DataFields[c], vector));
+            var df = dataFields[c.ColumnIndex];
+            var array = Array.CreateInstance(c.Descriptor.Type, c.Values.Count);
+            for (int i = 0; i < c.Values.Count; i++)
+                array.SetValue(c.Values[i], i);
+            var dc = new DataColumn(df, array);
+            await rg.WriteColumnAsync(dc);
         }
     }
 }
