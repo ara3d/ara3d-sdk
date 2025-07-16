@@ -15,4 +15,5 @@ public class Clone : IModelModifier
         var points = AtFaceCenters ? mergedMesh.Triangles.Map(f => f.Center) : mergedMesh.Points;
         return Model3D.Create(points.Select(p => ToElement(instancedMesh, p, mat)));
     }
+
 }

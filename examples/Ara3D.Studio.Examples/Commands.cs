@@ -8,7 +8,7 @@ using Ara3D.ScriptService;
 /// </summary>
 public class HelloWorld : IScriptedCommand
 {
-    public string Name => "Hello Prevu3D!";
+    public string Name => "Hello World!";
 
     public void Execute()
         => MessageBox.Show(Name);

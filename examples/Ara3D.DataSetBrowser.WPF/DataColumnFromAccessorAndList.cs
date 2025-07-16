@@ -7,7 +7,7 @@ namespace Ara3D.DataSetBrowser.WPF;
 public class DataColumnFromAccessorAndList<T>
     : IDataColumn
 {
-    private IReadOnlyList<T> _values;
+        private IReadOnlyList<T> _values;
     public int ColumnIndex { get; }
     public IDataDescriptor Descriptor { get; }
 

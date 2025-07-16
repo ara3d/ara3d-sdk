@@ -1,6 +1,4 @@
-﻿using Ara3D.Geometry;
-
-namespace Ara3D.Models;
+﻿namespace Ara3D.Models;
 
 /// <summary>
 /// An element is a part of a 3D model. It has a mesh, a material, and a transformation.

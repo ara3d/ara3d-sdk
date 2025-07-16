@@ -9,30 +9,13 @@ namespace Ara3D.DataSetBrowser.WPF
 {
     public static class BimToDataSet
     {
-        public static System.Type[] BIMSchemaTypes =
-        [
-            typeof(BIMData),
-            typeof(ParameterData),
-            typeof(PropDescriptor),
-            typeof(Entity),
-            typeof(Descriptor),
-            typeof(ParameterInt),
-            typeof(ParameterDouble),
-            typeof(ParameterString),
-            typeof(ParameterEntity),
-            typeof(BoundsComponent),
-            typeof(Point),
-            typeof(LocationComponent),
-            typeof(Level),
-            typeof(LevelRelation),
-            typeof(Room),
-            typeof(Document),
-            typeof(TypeRelation),
-        ];
-
         public static ReadOnlyDataTable CreateDataTable<T>(string name, IReadOnlyList<T> values)
         {
             var props = typeof(T).GetPropProvider();
+
+            if (typeof(T).IsPrimitive || typeof(T) == typeof(string))
+                return new ReadOnlyDataTable(name, [new ReadOnlyDataColumn<T>(0, values)]);
+
             var columns = props.Accessors.Select(
                 (acc, i) => new DataColumnFromAccessorAndList<T>(i, acc, values))
                 .ToList();
@@ -42,19 +25,15 @@ namespace Ara3D.DataSetBrowser.WPF
         public static IDataSet ToDataSet(this BIMData self)
             => new ReadOnlyDataSet([
                 CreateDataTable(nameof(self.Points), self.Points),
-                CreateDataTable(nameof(self.Bounds), self.Bounds),
+                CreateDataTable(nameof(self.Strings), self.Strings),
                 CreateDataTable(nameof(self.Descriptors), self.Descriptors),
                 CreateDataTable(nameof(self.Documents), self.Documents),
                 CreateDataTable(nameof(self.Entities), self.Entities),
-                CreateDataTable(nameof(self.LevelRelations), self.LevelRelations),
-                CreateDataTable(nameof(self.Levels), self.Levels),
-                CreateDataTable(nameof(self.Locations), self.Locations),
-                CreateDataTable(nameof(self.Rooms), self.Rooms),
-                CreateDataTable(nameof(self.Types), self.Types),
-                CreateDataTable(nameof(self.ParameterData.Integers), self.ParameterData.Integers),
-                CreateDataTable(nameof(self.ParameterData.Doubles), self.ParameterData.Doubles),
-                CreateDataTable(nameof(self.ParameterData.Entities), self.ParameterData.Entities),
-                CreateDataTable(nameof(self.ParameterData.Strings), self.ParameterData.Strings)
+                CreateDataTable(nameof(self.DoubleParameters), self.DoubleParameters),
+                CreateDataTable(nameof(self.IntegerParameters), self.IntegerParameters),
+                CreateDataTable(nameof(self.StringParameters), self.StringParameters),
+                CreateDataTable(nameof(self.EntityParameters), self.EntityParameters),
+                CreateDataTable(nameof(self.PointParameters), self.PointParameters),
             ]);
     }
 }

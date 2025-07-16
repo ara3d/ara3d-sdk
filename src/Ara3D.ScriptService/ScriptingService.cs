@@ -100,7 +100,7 @@ namespace Ara3D.ScriptService
 
         public void UpdateDataModel()
         {
-            Types = Compiler?.ExportedTypes.ToArray() ?? Array.Empty<Type>();
+            Types = Compiler?.ExportedTypes.ToArray() ?? [];
             Objects = CreateObjects(Types);
 
             Repository.Value = new ScriptingDataModel()

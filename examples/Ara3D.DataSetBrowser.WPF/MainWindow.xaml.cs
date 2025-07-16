@@ -12,8 +12,7 @@ namespace Ara3D.DataSetBrowser.WPF
         public MainWindow()
         {
             InitializeComponent();
-            var fp = new FilePath(
-                @"C:\Users\cdigg\AppData\Local\Temp\477d45ba-22d8-44c3-bb1a-1d5daadf8e59\parameters.mpz");
+            var fp = new FilePath(@"C:\Users\cdigg\AppData\Local\Temp\6428f1c7-28b6-4b4c-bf8f-9292ca00c754\bimdata.mpz");
             var mp = Serialization.ReadBimDataFromMessagePack(fp);
             var dataSet = mp.ToDataSet();
             foreach (var t in dataSet.Tables)
@@ -23,4 +22,4 @@ namespace Ara3D.DataSetBrowser.WPF
             }
         }
     }
-}
+}   
