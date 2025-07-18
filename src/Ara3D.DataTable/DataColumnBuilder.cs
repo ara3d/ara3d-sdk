@@ -2,15 +2,16 @@
 
 public class DataColumnBuilder : IDataColumn
 {
-    public int ColumnIndex => Descriptor.Index;
-    IDataDescriptor IDataColumn.Descriptor => Descriptor;
-    IReadOnlyList<object> IDataColumn.Values => Values;
-    public DataDescriptor Descriptor { get; }
-    public List<object> Values { get; } 
-
-    public DataColumnBuilder(IReadOnlyList<object> values, DataDescriptor descriptor)
+    public int ColumnIndex { get; }
+    public IDataDescriptor Descriptor { get; }
+    public List<object> Values { get; }
+    public int Count => Values.Count;
+    public object this[int index] => Values[index];
+    public DataColumnBuilder(IDataDescriptor descriptor, int index)
     {
-        Values = new List<object>(values);
+        Values = new();
         Descriptor = descriptor;
+        ColumnIndex = index;
     }
+    public Array AsArray() => Values.ToArray();
 }

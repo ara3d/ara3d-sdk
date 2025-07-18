@@ -13,10 +13,10 @@ public class ReadOnlyDataTable : IDataTable
         Name = name;
         Columns = dataColumns;
         Rows = dataColumns.Count > 0 
-            ? dataColumns[0].Values.Count.Select(i => new DataRow(this, i))
+            ? dataColumns[0].Count.Select(i => new DataRow(this, i))
             : [];
     }
 
     public object this[int column, int row] 
-        => Columns[column].Values[row];
+        => Columns[column][row];
 }

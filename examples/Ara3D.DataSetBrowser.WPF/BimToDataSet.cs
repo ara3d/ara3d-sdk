@@ -9,31 +9,19 @@ namespace Ara3D.DataSetBrowser.WPF
 {
     public static class BimToDataSet
     {
-        public static ReadOnlyDataTable CreateDataTable<T>(string name, IReadOnlyList<T> values)
-        {
-            var props = typeof(T).GetPropProvider();
-
-            if (typeof(T).IsPrimitive || typeof(T) == typeof(string))
-                return new ReadOnlyDataTable(name, [new ReadOnlyDataColumn<T>(0, values)]);
-
-            var columns = props.Accessors.Select(
-                (acc, i) => new DataColumnFromAccessorAndList<T>(i, acc, values))
-                .ToList();
-            return new ReadOnlyDataTable(name, columns);
-        }
-
         public static IDataSet ToDataSet(this BIMData self)
             => new ReadOnlyDataSet([
-                CreateDataTable(nameof(self.Points), self.Points),
-                CreateDataTable(nameof(self.Strings), self.Strings),
-                CreateDataTable(nameof(self.Descriptors), self.Descriptors),
-                CreateDataTable(nameof(self.Documents), self.Documents),
-                CreateDataTable(nameof(self.Entities), self.Entities),
-                CreateDataTable(nameof(self.DoubleParameters), self.DoubleParameters),
-                CreateDataTable(nameof(self.IntegerParameters), self.IntegerParameters),
-                CreateDataTable(nameof(self.StringParameters), self.StringParameters),
-                CreateDataTable(nameof(self.EntityParameters), self.EntityParameters),
-                CreateDataTable(nameof(self.PointParameters), self.PointParameters),
+                self.Points.ToDataTable(nameof(self.Points)),
+                self.Strings.ToDataTable(nameof(self.Strings)),
+                self.Descriptors.ToDataTable(nameof(self.Descriptors)),
+                self.Documents.ToDataTable(nameof(self.Documents)),
+                self.Entities.ToDataTable(nameof(self.Entities)),
+                self.Relations.ToDataTable(nameof(self.Relations)),
+                self.DoubleParameters.ToDataTable(nameof(self.DoubleParameters)),
+                self.IntegerParameters.ToDataTable(nameof(self.IntegerParameters)),
+                self.StringParameters.ToDataTable(nameof(self.StringParameters)),
+                self.EntityParameters.ToDataTable(nameof(self.EntityParameters)),
+                self.PointParameters.ToDataTable(nameof(self.PointParameters)),
             ]);
     }
 }

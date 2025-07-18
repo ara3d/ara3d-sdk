@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace BIMOpenSchema;
 
@@ -10,8 +11,7 @@ namespace BIMOpenSchema;
 /// without having to go through APIs, or ad-hoc representations.
 ///
 /// It is optimized for space and load-times, not ease of queries.
-///
-/// A typical workflow would be to ingest this  into a database then to use SQL to
+/// A typical workflow would be to ingest this into a database then to use SQL to
 /// create denormalized (wide) tables depending on an end-user's specific use-case
 /// and what data they are interested in.  
 /// 
@@ -43,13 +43,14 @@ public class BIMData
 //==
 // Enumerations used for indexing tables. Provides type-safety and convenience in code
 //
-// The choice of long is to provide future proofing. 
+// The choice of long provides future proofing. 
 
 public enum EntityIndex : long { }
 public enum PointIndex : long { }
 public enum DocumentIndex : long { }
 public enum DescriptorIndex : long { }
 public enum StringIndex : long { }
+public enum RelationIndex : long { }
 
 //==
 // Main data type 
@@ -90,12 +91,27 @@ public record Point(
     double Z);
 
 /// <summary>
+/// Important for grouping the different kinds of parameter data ...
+/// otherwise we can have two parameter with the same name, but different units. 
+/// </summary>
+public enum ParameterType
+{
+    Long, 
+    Double,
+    Entity,
+    String,
+    Point,
+}
+
+/// <summary>
 /// Meta-information for understanding a parameter 
 /// </summary>
 public record ParameterDescriptor(
     StringIndex Name,
     StringIndex Units,
-    StringIndex Group);
+    StringIndex Group,
+    ParameterType Type
+    );
 
 //==
 // Parameter data 
@@ -152,37 +168,37 @@ public record ParameterPoint(
 public record EntityRelation(
     EntityIndex EntityA,
     EntityIndex EntityB,
-    RelationType RelationTypeIndex);
+    RelationType RelationType);
 
-public enum RelationType : byte
+public enum RelationType : int
 {
-    // For parts or members of a set. Represents both aggregation and composition 
-    MemberOf = 0,
+    // For parts of a whole. Represents composition.
+    PartOf = 0,
+
+    // For elements of a group of set. Represents aggregations. 
+    ElementOf = 1,
 
     // Represents spatial relationships. Like part of a level, or a room.  
-    ContainedIn = 1,
+    ContainedIn = 2,
 
     // Used to express family instance to family type relationship  
-    InstanceOf = 2,
+    InstanceOf = 3,
 
     // For parts or openings that occur within a host (such as windows or doorways). 
-    HostedBy = 3,
+    HostedBy = 4,
 
-    // Represents relationship of compound structures and their consitutents 
-    HasLayer = 4,
+    // For parent-child relationships in a graph (e.g. sub-categories)
+    ChildOf = 5,
 
-    // Represents different kinds of material relationshipss
-    HasMaterial = 5,
+    // Represents relationship of compound structures and their constituents 
+    HasLayer = 6,
 
-    // For parent-child relationships of categories 
-    SubcategoryOf = 6,
-
-    // NOTE: the following are currently not used 
+    // Represents different kinds of material relationships
+    HasMaterial = 7,
 
     // Two-way connectivity relationship. Can assume that only one direction is stored in DB 
-    ConnectsTo = 7,
+    ConnectsTo = 8,
 
     // MEP networks and connection manager
     HasConnector = 8,
-
 }

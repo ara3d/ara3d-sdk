@@ -6,6 +6,7 @@ using BIMOpenSchema;
 using MessagePack;
 using MessagePack.Resolvers;
 using System.Text.Json;
+using Ara3D.DataTable;
 
 namespace Ara3D.DataSetBrowser.WPF;
 
@@ -76,23 +77,47 @@ public static class Serialization
 
     public static void WriteBIMDataToMessagePack(BIMData data, FilePath fp, bool useLz4, bool useGZip)
     {
-        // Choose resolver + (optional) LZ4 compression inside MessagePack itself
         var opts = MessagePackSerializerOptions.Standard
             .WithResolver(ContractlessStandardResolver.Instance);
-        if (useLz4) opts = opts.WithCompression(MessagePackCompression.Lz4Block);
-
-        var memStream = new MemoryStream();
-
+        if (useLz4) 
+            opts = opts.WithCompression(MessagePackCompression.Lz4Block);
         using var file = fp.OpenWrite();
         Stream target = file;
-
         if (useGZip)
             target = new GZipStream(file, CompressionMode.Compress, leaveOpen: false);
-
-        MessagePackSerializer.Serialize(target, data, opts);   // write direct
+        MessagePackSerializer.Serialize(target, data, opts);   
         target.Flush();
     }
 
     public static void WriteDuckDB(BIMData data, FilePath fp)
         => data.ToDataSet().WriteToDuckDB(fp);
+
+    public static void WriteToExcel(BIMData data, FilePath fp)
+        => data.ToDataSet().WriteToExcel(fp);
+
+    public static void AddTable<T>(IDataSet set, List<T> list, string name)
+    {
+        var table = set.GetTable(name);
+        if (table == null)
+            throw new Exception($"Could not find table {name}");
+        var vals = table.ToArray<T>();
+        list.AddRange(vals);
+    }
+
+    public static BIMData ToBimData(this IDataSet set)
+    {
+        var r = new BIMData();
+        AddTable(set, r.Points, nameof(r.Points));
+        AddTable(set, r.DoubleParameters, nameof(r.DoubleParameters));
+        AddTable(set, r.EntityParameters, nameof(r.EntityParameters));
+        AddTable(set, r.IntegerParameters, nameof(r.IntegerParameters));
+        AddTable(set, r.PointParameters, nameof(r.PointParameters));
+        AddTable(set, r.Relations, nameof(r.Relations));
+        AddTable(set, r.StringParameters, nameof(r.StringParameters));
+        AddTable(set, r.Strings, nameof(r.Strings));
+        AddTable(set, r.Descriptors, nameof(r.Descriptors));
+        AddTable(set, r.Documents, nameof(r.Documents));
+        AddTable(set, r.Entities, nameof(r.Entities));
+        return r;
+    }
 }

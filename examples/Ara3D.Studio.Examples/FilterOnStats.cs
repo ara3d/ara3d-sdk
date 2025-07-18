@@ -11,7 +11,7 @@ public class FilterOnStats : IModelModifier
         var column = table.GetColumn("NumTriangles");
         if (column == null) return model;
         var meshesToExclude = new HashSet<int>(
-            column.Values.IndicesWhere(v => v is int n && n < MinTriangles));
+            column.GetValues().IndicesWhere(v => v is int n && n < MinTriangles));
         var newStructs = model.ElementStructs.Where(s => 
             !meshesToExclude.Contains(s.MeshIndex)).ToList();
         return model.WithStructs(newStructs);

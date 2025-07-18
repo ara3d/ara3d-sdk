@@ -33,16 +33,17 @@ namespace Ara3D.DataTable
             }
 
             var descriptor = new DataDescriptor(name, type, Columns.Count);
-            var r = new DataColumnBuilder(values, descriptor);
+            var r = new DataColumnBuilder(descriptor, descriptor.Index);
+            r.Values.AddRange(values);
             _columnBuilders.Add(r);
             if (Columns.Count == 1)
                 _NumRows = values.Count;
 
-            Debug.Assert(Columns.All(c => c.Values.Count == _NumRows));
+            Debug.Assert(Columns.All(c => c.Count == _NumRows));
             return r;
         }
 
         public object this[int column, int row] 
-            => Columns[column].Values[row];
+            => Columns[column][row];
     }
 }
