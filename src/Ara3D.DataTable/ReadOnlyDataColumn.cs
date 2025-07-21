@@ -9,11 +9,11 @@ namespace Ara3D.DataTable
         public object this[int n] => _values[n];
         public int Count => _values.Count;
         public int ColumnIndex { get; }
-        public ReadOnlyDataColumn(int index, IReadOnlyList<T> values)
+        public ReadOnlyDataColumn(int index, IReadOnlyList<T> values, string name)
         {
             ColumnIndex = index;
             _values = values;
-            Descriptor = new DataDescriptor(typeof(T).Name, typeof(T), index);
+            Descriptor = new DataDescriptor(name, typeof(T), index);
         }
 
         public Array AsArray()

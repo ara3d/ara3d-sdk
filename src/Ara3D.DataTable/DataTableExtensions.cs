@@ -1,4 +1,5 @@
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Ara3D.Collections;
@@ -8,6 +9,18 @@ namespace Ara3D.DataTable;
 
 public static class DataTableExtensions
 {
+    public static IDataTable ToDataTable(this DbDataReader ddr, string name = "")
+    {
+        var n = ddr.FieldCount;
+        var r = new DataTableBuilder(name);
+        for (var i = 0; i < n; i++)
+            r.AddColumn(ddr.GetName(i), ddr.GetFieldType(i));
+        while (ddr.Read())
+            for (var i = 0; i < n; i++)
+                r.ColumnBuilders[i].Values.Add(ddr[i]);
+        return r;
+    }
+
     public static DataRow GetRow(this IDataTable self, int rowIndex)
         => new(self, rowIndex);
 
@@ -157,7 +170,7 @@ public static class DataTableExtensions
         var props = typeof(T).GetPropProvider();
 
         if (typeof(T).IsPrimitive || typeof(T) == typeof(string))
-            return new ReadOnlyDataTable(name, [new ReadOnlyDataColumn<T>(0, values)]);
+            return new ReadOnlyDataTable(name, [new ReadOnlyDataColumn<T>(0, values, name)]);
 
         var columns = props.Accessors.Select(
                 (acc, i) => new DataColumnFromAccessorAndList<T>(i, acc, values))

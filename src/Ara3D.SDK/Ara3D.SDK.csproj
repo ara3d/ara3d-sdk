@@ -8,9 +8,9 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/ara3d/ara3d-sdk</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ara3d/ara3d-sdk</RepositoryUrl>
-    <Version>1.3.1</Version>
-    <AssemblyVersion>1.3.1</AssemblyVersion>
-    <AssemblyFileVersion>1.3.1</AssemblyFileVersion>
+    <Version>1.4.1</Version>
+    <AssemblyVersion>1.4.1</AssemblyVersion>  
+    <AssemblyFileVersion>1.4.1</AssemblyFileVersion>
     <Authors>Ara 3D Inc.</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) Ara 3D Inc 2025, Licensed under MIT License</Copyright>
@@ -29,6 +29,8 @@
     <IncludeReferencedProjects>true</IncludeReferencedProjects>
     <PackageIcon>ara3d-128x128.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageOutputPath>$(MSBuildProjectDirectory)\..\..\artifacts</PackageOutputPath>
+
     <!-- Hook our target into the packaging pipeline https://github.com/novotnyllc/MSBuildSdkExtras/issues/227?utm_source=chatgpt.com 
       
       https://josef.codes/dotnet-pack-include-referenced-projects/
@@ -64,6 +66,7 @@
     <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Domo\Ara3D.Domo.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Events\Ara3D.Events.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.A3D\Ara3D.IO.A3D.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.IO.BFAST.csproj" PrivateAssets="All" />
@@ -84,7 +87,8 @@
     <ProjectReference Include="..\Ara3D.Services\Ara3D.Services.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Studio.API\Ara3D.Studio.API.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Studio.Data\Ara3D.Studio.Data.csproj" PrivateAssets="All" />
-    <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Ara3D.WorkItems\Ara3D.WorkItems.csproj" PrivateAssets="All" />
   </ItemGroup>
 </Project>

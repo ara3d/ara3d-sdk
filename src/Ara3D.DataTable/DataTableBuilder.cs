@@ -12,17 +12,20 @@ namespace Ara3D.DataTable
         private int _NumRows = 0;
 
         public IReadOnlyList<IDataRow> Rows => _NumRows.Select(this.GetRow);
-        public IReadOnlyList<IDataColumn> Columns => _columnBuilders.Cast<IDataColumn>().ToList();
-        private List<DataColumnBuilder> _columnBuilders { get; } = new();
+        public IReadOnlyList<IDataColumn> Columns => ColumnBuilders.Cast<IDataColumn>().ToList();
+        public List<DataColumnBuilder> ColumnBuilders { get; } = new();
 
         public void AddRow(IReadOnlyList<object> values)
         {
             if (values.Count != Columns.Count)
                 throw new Exception($"Number of values in row ({values.Count}) must match number of columns {Columns.Count}");
-            for (var i = 0; i < _columnBuilders.Count; i++)
-                _columnBuilders[i].Values.Add(values[i]);
+            for (var i = 0; i < ColumnBuilders.Count; i++)
+                ColumnBuilders[i].Values.Add(values[i]);
             _NumRows++;
         }
+
+        public DataColumnBuilder AddColumn(string name, Type type)
+            => AddColumn([], name, type);
 
         public DataColumnBuilder AddColumn(IReadOnlyList<object> values, string name, Type type)
         {
@@ -35,7 +38,7 @@ namespace Ara3D.DataTable
             var descriptor = new DataDescriptor(name, type, Columns.Count);
             var r = new DataColumnBuilder(descriptor, descriptor.Index);
             r.Values.AddRange(values);
-            _columnBuilders.Add(r);
+            ColumnBuilders.Add(r);
             if (Columns.Count == 1)
                 _NumRows = values.Count;
 
