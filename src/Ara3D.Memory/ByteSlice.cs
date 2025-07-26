@@ -72,7 +72,7 @@ namespace Ara3D.Memory
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string ToAsciiString()
-            => Encoding.ASCII.GetString(Ptr, CheckedLength);
+            => Ptr == null ? null : Encoding.ASCII.GetString(Ptr, CheckedLength);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string ToUtf8String()

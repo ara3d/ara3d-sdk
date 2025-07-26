@@ -9,10 +9,10 @@ namespace Ara3D.IO.IfcParser
     /// </summary>
     public class IfcRelation : IfcEntity
     {
-        public StepId From { get; }
-        public StepList To { get; }
+        public StepValueId From { get; }
+        public StepValueList To { get; }
 
-        public IfcRelation(IfcGraph graph, StepInstance lineData, StepId from, StepList to)
+        public IfcRelation(IfcGraph graph, StepDefinition lineData, StepValueId from, StepValueList to)
             : base(graph, lineData)
         {
             if (!IsIfcRoot)

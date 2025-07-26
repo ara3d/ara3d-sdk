@@ -1,11 +1,11 @@
 ﻿namespace Ara3D.IO.StepParser
 {
+
     public enum StepTokenType : byte
     {
         None,
-        Identifier,
-        SingleQuotedString,
-        DoubleQuotedString,
+        Ident,
+        String,
         Whitespace,
         Number,
         Symbol,
@@ -17,6 +17,7 @@
         Unknown,
         BeginGroup,
         EndGroup,
+        LineBreak,
         EndOfLine,
         Definition,
     }

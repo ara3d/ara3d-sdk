@@ -3,6 +3,7 @@ using Ara3D.IO.StepParser;
 
 namespace Ara3D.IfcGeometry;
 
+/*
 public class IfcFactory
 {
     public Dictionary<uint, StepInstance> StepInstances  = new Dictionary<uint, StepInstance>();
@@ -44,6 +45,6 @@ public class IfcFactory
             if (ic == null)
                 throw new Exception($"Unable to create instance of {type}");
             IfcInstances.Add(inst.Id, ic);
-            */
     }
 }
+*/

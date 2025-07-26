@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Ara3D.Memory
 {
@@ -16,6 +15,7 @@ namespace Ara3D.Memory
         public int Count { get; private set; }
         public AlignedMemory Memory { get; private set; }
         private T* _pointer;
+        private int _capacity;
 
         // Constructor to allocate initial capacity in unmanaged memory
         public UnmanagedList(int capacity = 0, int count = 0)
@@ -27,20 +27,21 @@ namespace Ara3D.Memory
                 throw new ArgumentOutOfRangeException(nameof(count), "Count must be non-negative.");
             if (count > capacity)
                 throw new ArgumentOutOfRangeException(nameof(count), "Count must be less than or equal to capacity.");
-            Memory = new AlignedMemory(capacity * ElementTypeSize);
+            _capacity = capacity; 
+            Memory = new AlignedMemory(_capacity * ElementTypeSize);
             _pointer = Memory.Bytes.GetPointer<T>();
         }
 
         public long Capacity
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Memory.NumBytes / ElementTypeSize;
+            get => _capacity;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(T item)
         {
-            if (Count == Capacity)
+            if (Count == _capacity)
                 Accomodate(Count + 1);
             this[Count++] = item;
         }
@@ -77,14 +78,13 @@ namespace Ara3D.Memory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Accomodate(int count)
         {
-            if (Capacity > count)
+            if (_capacity > count)
                 return;
-            var newCapacity = Capacity;
-            if (newCapacity < 64)
-                newCapacity = 64;
-            while (newCapacity < count)
-                newCapacity *= 2;   
-            Memory.Reallocate(newCapacity * ElementTypeSize);
+            if (_capacity < 64)
+                _capacity = 64;
+            while (_capacity < count)
+                _capacity *= 2;   
+            Memory.Reallocate(_capacity * ElementTypeSize);
             _pointer = Memory.Bytes.GetPointer<T>();
         }
 
@@ -145,6 +145,6 @@ namespace Ara3D.Memory
         public Type Type => typeof(T);
 
         public static int ElementTypeSize 
-            => Marshal.SizeOf<T>();
+            => sizeof(T);
     }
 }

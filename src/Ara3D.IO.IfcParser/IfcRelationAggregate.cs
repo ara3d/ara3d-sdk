@@ -4,7 +4,7 @@ namespace Ara3D.IO.IfcParser
 {
     public class IfcRelationAggregate : IfcRelation
     {
-        public IfcRelationAggregate(IfcGraph graph, StepInstance lineData, StepId from, StepList to)
+        public IfcRelationAggregate(IfcGraph graph, StepDefinition lineData, StepValueId from, StepValueList to)
             : base(graph, lineData, from, to)
         {
         }

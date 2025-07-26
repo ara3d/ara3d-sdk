@@ -1367,17 +1367,6 @@
           }
         }
       },
-      "Ara3D.IfcLoader/1.0.0": {
-        "dependencies": {
-          "Ara3D.IO.IfcParser": "1.0.0"
-        },
-        "runtime": {
-          "Ara3D.IfcLoader.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "Ara3D.IO/1.0.0": {
         "dependencies": {
           "Ara3D.Logging": "1.0.0",
@@ -1418,30 +1407,6 @@
           }
         }
       },
-      "Ara3D.IO.IfcParser/1.0.0": {
-        "dependencies": {
-          "Ara3D.IO.StepParser": "1.0.0"
-        },
-        "runtime": {
-          "Ara3D.IO.IfcParser.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "Ara3D.IO.StepParser/1.0.0": {
-        "dependencies": {
-          "Ara3D.Logging": "1.0.0",
-          "Ara3D.Memory": "1.0.0",
-          "Ara3D.Utils": "1.0.0"
-        },
-        "runtime": {
-          "Ara3D.IO.StepParser.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "Ara3D.IO.VIM/1.0.0": {
         "dependencies": {
           "Ara3D.IO.BFAST": "1.0.0",
@@ -1457,7 +1422,6 @@
       },
       "Ara3D.IO.Windows/1.0.0": {
         "dependencies": {
-          "Ara3D.IfcLoader": "1.0.0",
           "Ara3D.Models": "1.0.0",
           "Ara3D.Studio.API": "1.0.0",
           "Ara3D.Utils": "1.0.0",
@@ -2476,11 +2440,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Ara3D.IfcLoader/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "Ara3D.IO/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -2492,16 +2451,6 @@
       "sha512": ""
     },
     "Ara3D.IO.G3D/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Ara3D.IO.IfcParser/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Ara3D.IO.StepParser/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

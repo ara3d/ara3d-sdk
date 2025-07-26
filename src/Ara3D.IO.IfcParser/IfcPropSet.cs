@@ -12,15 +12,15 @@ namespace Ara3D.IO.IfcParser
     // https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/ifcproductextension/lexical/ifcelementquantity.htm
     public class IfcPropSet : IfcNode
     {
-        public readonly StepList PropertyIdList;
+        public readonly StepValueList PropertyIdValueList;
 
-        public IfcPropSet(IfcGraph graph, StepInstance lineData, StepList propertyIdList)
+        public IfcPropSet(IfcGraph graph, StepDefinition lineData, StepValueList propertyIdValueList)
             : base(graph, lineData)
         {
             Debug.Assert(IsIfcRoot);
             Debug.Assert(lineData.AttributeValues.Count is 5 or 6);
             Debug.Assert(Type is "IFCPROPERTYSET" or "IFCELEMENTQUANTITY");
-            PropertyIdList = propertyIdList;
+            PropertyIdValueList = propertyIdValueList;
         }
 
         public IEnumerable<IfcProp> GetProperties()
@@ -37,7 +37,7 @@ namespace Ara3D.IO.IfcParser
 
         public bool IsQuantity => LineData.AttributeValues.Count == 6;
         public string MethodOfMeasurement => IsQuantity ? this[4].AsString() : null;
-        public int NumProperties => PropertyIdList.Values.Count;
-        public uint PropertyId(int i) => PropertyIdList.Values[i].AsId();
+        public int NumProperties => PropertyIdValueList.Values.Count;
+        public uint PropertyId(int i) => PropertyIdValueList.Values[i].AsId();
     }
 }

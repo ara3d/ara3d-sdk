@@ -4,7 +4,7 @@ namespace Ara3D.IO.IfcParser
 {
     public class IfcNode : IfcEntity
     {
-        public IfcNode(IfcGraph graph, StepInstance lineData)
+        public IfcNode(IfcGraph graph, StepDefinition lineData)
             : base(graph, lineData)
         {
         }

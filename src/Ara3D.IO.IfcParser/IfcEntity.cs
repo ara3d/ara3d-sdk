@@ -13,12 +13,12 @@ namespace Ara3D.IO.IfcParser
     /// </summary>
     public class IfcEntity
     {
-        public StepInstance LineData { get; }
+        public StepDefinition LineData { get; }
         public IfcGraph Graph { get; }
         public uint Id => (uint)LineData.Id;
         public string Type => LineData?.EntityType ?? "";
 
-        public IfcEntity(IfcGraph graph, StepInstance lineData)
+        public IfcEntity(IfcGraph graph, StepDefinition lineData)
         {
             Graph = graph;
             LineData = lineData;
@@ -39,23 +39,23 @@ namespace Ara3D.IO.IfcParser
 
         public bool IsIfcRoot
             => Count >= 4
-               && this[0] is StepString str
-               && (this[1] is StepId) || (this[1] is StepUnassigned);
+               && this[0] is StepValueString str
+               && (this[1] is StepValueId) || (this[1] is StepValueUnassigned);
             // Modern IFC files conform to this, but older ones have been observed to have different length IDs.
             // Leaving as a comment for now. 
             //&& str.Value.Length == 22;
 
         public string Guid
-            => IsIfcRoot ? (this[0] as StepString)?.Value.ToString() : null;
+            => IsIfcRoot ? (this[0] as StepValueString)?.Value.ToString() : null;
 
         public uint OwnerId
-            => IsIfcRoot ? (this[1] as StepId)?.Id ?? 0 : 0;
+            => IsIfcRoot ? (this[1] as StepValueId)?.Id ?? 0 : 0;
 
         public string Name
-            => IsIfcRoot ? (this[2] as StepString)?.AsString() : null;
+            => IsIfcRoot ? (this[2] as StepValueString)?.AsString() : null;
 
         public string Description
-            => IsIfcRoot ? (this[3] as StepString)?.AsString() : null;
+            => IsIfcRoot ? (this[3] as StepValueString)?.AsString() : null;
 
         public int Count 
             => LineData.Count;

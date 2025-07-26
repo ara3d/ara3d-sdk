@@ -5,7 +5,7 @@ namespace Ara3D.IO.IfcParser
     // https://standards.buildingsmart.org/IFC/RELEASE/IFC2x3/TC1/HTML/ifckernel/lexical/ifcreldefinesbyproperties.htm
     public class IfcPropSetRelation : IfcRelation
     {
-        public IfcPropSetRelation(IfcGraph graph, StepInstance lineData, StepId from, StepList to)
+        public IfcPropSetRelation(IfcGraph graph, StepDefinition lineData, StepValueId from, StepValueList to)
             : base(graph, lineData, from, to)
         {
         }

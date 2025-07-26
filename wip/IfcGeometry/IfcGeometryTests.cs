@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using Ara3D.IfcLoader;
 using Ara3D.IO.StepParser;
 using Ara3D.Logging;
@@ -25,59 +26,181 @@ namespace Ara3D.IfcGeometry
             logger.Log($"Graph roots: {file.Graph.RootIds.Count}");
             logger.Log($"Property sets: {file.Graph.GetPropSets().Count()}");
             logger.Log($"Property values: {file.Graph.GetProps().Count()}");
-            logger.Log($"Express ids: {file.Document.NumRawInstances}");
+            logger.Log($"Express ids: {file.Document.Definitions.Count}");
             logger.Log($"Geometry loaded: {file.GeometryDataLoaded}");
             logger.Log($"Num geometries loaded: {file.Model?.GetNumGeometries()}");
             logger.Log($"Num meshes loaded: {file.Model?.GetGeometries().Select(g => g.GetNumMeshes()).Sum()}");
         }
+
+        public static string GeometryTypesMerged = @"IfcAdvancedBrep
+IfcAdvancedBrepWithVoids
+IfcAdvancedFace
+IfcArbitraryClosedProfileDef
+IfcArbitraryOpenProfileDef
+IfcArbitraryProfileDefWithVoids
+IfcAsymmetricIShapeProfileDef
+IfcAxis1Placement
+IfcAxis2Placement2D
+IfcAxis2Placement3D
+IfcBSplineCurve
+IfcBSplineCurveWithKnots
+IfcBSplineSurface
+IfcBSplineSurfaceWithKnots
+IfcBlock
+IfcBooleanClippingResult
+IfcBooleanResult
+IfcBoxedHalfSpace
+IfcCShapeProfileDef
+IfcCartesianPoint
+IfcCartesianTransformationOperator
+IfcCartesianTransformationOperator2D
+IfcCartesianTransformationOperator2DnonUniform
+IfcCartesianTransformationOperator3D
+IfcCartesianTransformationOperator3DnonUniform
+IfcCircle
+IfcCircleHollowProfileDef
+IfcClosedShell
+IfcCompositeCurve
+IfcCompositeCurveSegment
+IfcCompositeProfileDef
+IfcConic
+IfcConicalSurface
+IfcConnectedFaceSet
+IfcCoordinateReferenceSystem
+IfcCurve
+IfcCurveBoundedPlane
+IfcCurveBoundedSurface
+IfcCsgPrimitive3D
+IfcCsgSolid
+IfcDerivedProfileDef
+IfcDirection
+IfcEdge
+IfcEdgeCurve
+IfcEdgeLoop
+IfcElementarySurface
+IfcEllipse
+IfcEllipseProfileDef
+IfcExtrudedAreaSolid
+IfcExtrudedDiskSolid
+IfcFace
+IfcFaceBasedSurfaceModel
+IfcFaceBound
+IfcFaceOuterBound
+IfcFaceSurface
+IfcFacetedBrep
+IfcFacetedBrepWithVoids
+IfcGeometricCurveSet
+IfcGeometricRepresentationContext
+IfcGeometricRepresentationItem
+IfcGeometricRepresentationSubContext
+IfcGeometricSet
+IfcHalfSpaceSolid
+IfcIShapeProfileDef
+IfcIndexedPolyCurve
+IfcIndexedPolygonalFace
+IfcIndexedPolygonalFaceWithVoids
+IfcIsoscelesTrapezoidProfileDef
+IfcLine
+IfcLocalPlacement
+IfcLoop
+IfcLShapeProfileDef
+IfcMappedItem
+IfcManifoldSolidBrep
+IfcObjectPlacement
+IfcOffsetCurve2D
+IfcOffsetCurve3D
+IfcOpenShell
+IfcOrientedEdge
+IfcParameterizedProfileDef
+IfcParabola
+IfcPlacement
+IfcPlane
+IfcPoint
+IfcPointOnCurve
+IfcPointOnSurface
+IfcPolygonalBoundedHalfSpace
+IfcPolygonalFaceSet
+IfcPolyline
+IfcPolyLoop
+IfcProfileDef
+IfcRationalBSplineCurveWithKnots
+IfcRationalBSplineSurfaceWithKnots
+IfcRectangleProfileDef
+IfcRectangularPyramid
+IfcRectangularTrimmedSurface
+IfcRepresentation
+IfcRepresentationContext
+IfcRepresentationItem
+IfcRepresentationMap
+IfcRhombusProfileDef
+IfcRightCircularCone
+IfcRightCircularCylinder
+IfcRightTriangularProfileDef
+IfcRoundedRectangleProfileDef
+IfcSectionedSolid
+IfcSectionedSolidHorizontal
+IfcSegment
+IfcShapeAspect
+IfcShapeRepresentation
+IfcShellBasedSurfaceModel
+IfcSolidModel
+IfcSphere
+IfcSphericalSurface
+IfcSweptAreaSolid
+IfcSweptDiskSolid
+IfcSweptDiskSolidPolygonal
+IfcSweptSurface
+IfcSurface
+IfcSurfaceCurveSweptAreaSolid
+IfcSurfaceOfLinearExtrusion
+IfcSurfaceOfRevolution
+IfcTessellatedFaceSet
+IfcTessellatedItem
+IfcTopologicalRepresentationItem
+IfcToroidalSurface
+IfcTShapeProfileDef
+IfcTriangulatedFaceSet
+IfcTriangularPrism
+IfcTrimmedCurve
+IfcUShapeProfileDef
+IfcVector
+IfcVertex
+IfcVertexPoint
+IfcZShapeProfileDef
+IfcZeeProfileDef";
+
+        public static IReadOnlyList<string> GeometryTypes = GeometryTypesMerged.Split(['\n', '\r', ' '],
+            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
         [Test]
-        public static void Test1()
+        public static void TestLoadTimes()
         {
             var logger = Logger.Console;
-            var (rd, file) = RunDetails.LoadGraph(InputFile, false, logger);
-            OutputDetails(file, logger);
-            Console.WriteLine(rd.Header());
-            Console.WriteLine(rd.RowData());
-            var localTypes = GetLocalTypes();
-            var doc = file.Document;
-            var numbers = new List<double>();
-            var f = new IfcFactory();
-            var d = new Dictionary<string, List<StepInstance>>();
-            var cnt = 0;
-            foreach (var rawInstance in file.Document.RawInstances)
+            var dir = new DirectoryPath(@"C:\Users\cdigg\data\Ara3D\impraria\0000100120-093 - OXAGON ADVANCED HEALTH CENTER\STAGE 3A - CONCEPT DESIGN");
+            var files = dir.GetFiles("*.ifc", true).ToList();
+            foreach (var filePath in files.Take(1))
             {
-                if (rawInstance.Type.IsNull)
-                    continue;
-
-                var str = rawInstance.Type.ToString().ToUpperInvariant();
-                if (!localTypes.Contains(str))
-                    continue;
-
-                var inst = doc.GetInstanceWithData(rawInstance);
-                GatherNumbers(inst.AttributeValues, numbers);
-                cnt++;
-
-                f.AddValue(inst);
-
-                if (!d.ContainsKey(str))
-                    d[str] = new List<StepInstance>() { inst };
-                else
-                    d[str].Add(inst);
+                var doc = StepDocument.Create(filePath);
+                logger.Log($"Loaded {filePath.GetFileName()}");
             }
-
-            Console.WriteLine($"Found a total of {cnt} instances, and {numbers.Count} numbers");
-            foreach (var kv in d.OrderBy(kv => kv.Key))
-                Console.WriteLine($"{kv.Key} = {kv.Value.Count}");
         }
 
-        public static void GatherNumbers(List<StepValue> list, List<double> numbers)
+        [Test]
+        public static void TestEcho()
         {
-            foreach (var tmp in list)
+            var logger = Logger.Console;
+            //var (rd, file) = RunDetails.LoadGraph(InputFile, false, logger);
+            //OutputDetails(file, logger);
+            //Console.WriteLine(rd.Header());
+            //Console.WriteLine(rd.RowData());
+            var doc = new StepDocument(InputFile, logger);
+            logger.Log($"Loaded {doc.FilePath.GetFileName()}");
+            var cnt = 0;
+            foreach (var kv in doc.Definitions)
             {
-                if (tmp is StepNumber n)
-                    numbers.Add(n.Value);
-                else if (tmp is StepList stepList)
-                    GatherNumbers(stepList.Values, numbers);
+                var def = kv.Value;
+                Debug.Assert(kv.Key == def.Id);
+                //Console.WriteLine($"#{def.Id}= {def}");
             }
         }
     }

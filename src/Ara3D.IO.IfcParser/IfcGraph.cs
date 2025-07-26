@@ -125,40 +125,40 @@ namespace Ara3D.IO.IfcParser
                 else if (inst.Type.Equals("IFCPROPERTYSET"))
                 {
                     var e = d.GetInstanceWithData(inst);
-                    AddNode(new IfcPropSet(this, e, (StepList)e[4]));
+                    AddNode(new IfcPropSet(this, e, (StepValueList)e[4]));
                 }
                 else if (inst.Type.Equals("IFCELEMENTQUANTITY"))
                 {
                     var e = d.GetInstanceWithData(inst);
-                    AddNode(new IfcPropSet(this, e, (StepList)e[5]));
+                    AddNode(new IfcPropSet(this, e, (StepValueList)e[5]));
                 }
 
                 // Aggregate relation
                 else if (inst.Type.Equals("IFCRELAGGREGATES"))
                 {
                     var e = d.GetInstanceWithData(inst);
-                    AddRelation(new IfcRelationAggregate(this, e, (StepId)e[4], (StepList)e[5]));
+                    AddRelation(new IfcRelationAggregate(this, e, (StepValueId)e[4], (StepValueList)e[5]));
                 }
 
                 // Spatial relation
                 else if (inst.Type.Equals("IFCRELCONTAINEDINSPATIALSTRUCTURE"))
                 {
                     var e = d.GetInstanceWithData(inst);
-                    AddRelation(new IfcRelationSpatial(this, e, (StepId)e[5], (StepList)e[4]));
+                    AddRelation(new IfcRelationSpatial(this, e, (StepValueId)e[5], (StepValueList)e[4]));
                 }
 
                 // Property set relations
                 else if (inst.Type.Equals("IFCRELDEFINESBYPROPERTIES"))
                 {
                     var e = d.GetInstanceWithData(inst);
-                    AddRelation(new IfcPropSetRelation(this, e, (StepId)e[5], (StepList)e[4]));
+                    AddRelation(new IfcPropSetRelation(this, e, (StepValueId)e[5], (StepValueList)e[4]));
                 }
 
                 // Type relations
                 else if (inst.Type.Equals("IFCRELDEFINESBYTYPE"))
                 {
                     var e = d.GetInstanceWithData(inst);
-                    AddRelation(new IfcRelationType(this, e, (StepId)e[5], (StepList)e[4]));
+                    AddRelation(new IfcRelationType(this, e, (StepValueId)e[5], (StepValueList)e[4]));
                 }
 
                 // Everything else 
@@ -196,7 +196,7 @@ namespace Ara3D.IO.IfcParser
         public IEnumerable<IfcNode> GetNodes(IEnumerable<uint> ids)
             => ids.Select(GetNode);
 
-        public IfcNode GetOrCreateNode(StepInstance lineData, int arg)
+        public IfcNode GetOrCreateNode(StepDefinition lineData, int arg)
         {
             if (arg < 0 || arg >= lineData.AttributeValues.Count)
                 throw new Exception("Argument index out of range");
@@ -204,7 +204,7 @@ namespace Ara3D.IO.IfcParser
         }
 
         public IfcNode GetOrCreateNode(StepValue o)
-            => GetOrCreateNode(o is StepId id 
+            => GetOrCreateNode(o is StepValueId id 
                 ? (uint)id.Id
                 : throw new Exception($"Expected a StepId value, not {o}"));
 
@@ -220,17 +220,17 @@ namespace Ara3D.IO.IfcParser
         public List<IfcNode> GetOrCreateNodes(List<StepValue> list)
             => list.Select(GetOrCreateNode).ToList();
 
-        public List<IfcNode> GetOrCreateNodes(StepInstance line, int arg)
+        public List<IfcNode> GetOrCreateNodes(StepDefinition line, int arg)
         {
             if (arg < 0 || arg >= line.AttributeValues.Count)
                 throw new Exception("Argument out of range");
-            if (!(line.AttributeValues[arg] is StepList agg))
+            if (!(line.AttributeValues[arg] is StepValueList agg))
                 throw new Exception("Expected a list");
             return GetOrCreateNodes(agg.Values);
         }
 
-        public IfcNode GetNode(StepId id)
-            => GetNode(id.Id);
+        public IfcNode GetNode(StepValueId valueId)
+            => GetNode(valueId.Id);
 
         public IfcNode GetNode(uint id)
         {
