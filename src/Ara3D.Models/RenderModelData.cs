@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
-using Ara3D.Collections;
+﻿using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Memory;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Ara3D.Models;
 
@@ -13,19 +14,35 @@ namespace Ara3D.Models;
 /// </summary>
 public class RenderModelData : IDisposable
 {
-    public int PrimitiveSize { get; set; }
-    public Bounds3D TotalBounds { get; private set; }
-    
+    // 48 bytes
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct MetaData
+    {
+        // 6 floats = 24 bytes
+        public Bounds3D TotalBounds;
+        // 8 bytes
+        public long TotalVertexCount;
+        // 8 bytes
+        public long TotalFaceCount;
+        // 4 bytes 
+        public int PrimitiveSize;
+        // 4 bytes 
+        public int Unused;
+    }
+
+    public MetaData Meta;
     public UnmanagedList<float> VertexBuffer { get; private set; }
     public UnmanagedList<uint> IndexBuffer { get; private set; }
     public UnmanagedList<MeshSliceStruct> MeshBuffer { get; private set; }
-    public UnmanagedList<InstanceStruct> InstanceBuffer { get; private set; } 
+    public UnmanagedList<InstanceStruct> InstanceBuffer { get; private set; }
     public UnmanagedList<Bounds3D> MeshBounds { get; }
     public UnmanagedList<Bounds3D> InstanceBounds { get; }
 
-    public long TotalVertexCount { get; private set; }
-    public long TotalFaceCount { get; private set; }
 
+    public int PrimitiveSize => Meta.PrimitiveSize;
+    public Bounds3D TotalBounds => Meta.TotalBounds;
+    public long TotalVertexCount => Meta.TotalVertexCount;
+    public long TotalFaceCount => Meta.TotalFaceCount;
     public int VertexCount => VertexBuffer.Count;
     public int IndexCount => IndexBuffer.Count;
     public int FaceCount => IndexCount / PrimitiveSize;
@@ -37,7 +54,7 @@ public class RenderModelData : IDisposable
         if (primSize < 1 || primSize > 4)
             throw new Exception($"Render model data primitive size ({primSize}) must be from 1 to 4 inclusive");
 
-        PrimitiveSize = primSize;
+        Meta.PrimitiveSize = primSize;
         VertexBuffer = new();
         IndexBuffer = new();
         MeshBuffer = new();
@@ -74,7 +91,7 @@ public class RenderModelData : IDisposable
         IndexBuffer?.Clear();
         MeshBuffer?.Clear();
         InstanceBuffer?.Clear();
-        TotalBounds = Bounds3D.Empty;
+        Meta.TotalBounds = Bounds3D.Empty;
     }
 
     public void Update(
@@ -102,7 +119,7 @@ public class RenderModelData : IDisposable
 
     public void Update(RenderModelData data)
     {
-        PrimitiveSize = data.PrimitiveSize; 
+        Meta.PrimitiveSize = data.PrimitiveSize; 
         UpdateVertexBuffer(data.VertexBuffer);
         UpdateIndexBuffer(data.IndexBuffer);
         UpdateMeshBuffer(data.MeshBuffer);
@@ -112,14 +129,14 @@ public class RenderModelData : IDisposable
         MeshBounds.AddRange(data.MeshBounds);
         InstanceBounds.Clear();
         InstanceBounds.AddRange(data.InstanceBounds);
-        TotalBounds = data.TotalBounds;
-        TotalVertexCount = data.TotalVertexCount;
-        TotalFaceCount = data.TotalFaceCount;
+        Meta.TotalBounds = data.TotalBounds;
+        Meta.TotalVertexCount = data.TotalVertexCount;
+        Meta.TotalFaceCount = data.TotalFaceCount;
     }
 
     public void Update(IModel3D model)
     {
-        PrimitiveSize = 3;
+        Meta.PrimitiveSize = 3;
 
         if (!IsModel3D)
             throw new Exception("Not a model 3D");
@@ -163,12 +180,12 @@ public class RenderModelData : IDisposable
 
         InstanceBuffer.AddRange(model.Instances);
         ValidateMeshSlices();
-        RecomputeBounds();
+        ComputeBounds();
     }
 
     public void Update(IEnumerable<RenderModelData> models)
     {
-        PrimitiveSize = 3;
+        Meta.PrimitiveSize = 3;
 
         if (!IsModel3D)
             throw new Exception("Not a model 3D");
@@ -191,12 +208,12 @@ public class RenderModelData : IDisposable
                 InstanceBuffer.Add(i.WithMeshIndex(i.MeshIndex + meshOffset));
         }
 
-        RecomputeBounds();
+        ComputeBounds();
     }
 
     public void Update(LineMesh3D lines, Matrix4x4 transform, Material material)
     {
-        PrimitiveSize = 2;
+        Meta.PrimitiveSize = 2;
 
         VertexBuffer.Clear();
         IndexBuffer.Clear();
@@ -233,7 +250,7 @@ public class RenderModelData : IDisposable
 
         InstanceBuffer.Add(inst);
         ValidateMeshSlices();
-        RecomputeBounds();
+        ComputeBounds();
     }
 
     public void ValidateMeshSlices()
@@ -284,8 +301,8 @@ public class RenderModelData : IDisposable
 
     public void RecomputeInstanceBounds()
     {
-        TotalFaceCount = 0;
-        TotalVertexCount = 0;
+        Meta.TotalFaceCount = 0;
+        Meta.TotalVertexCount = 0;
         InstanceBounds.Clear();
         foreach (var inst in InstanceBuffer)
         {
@@ -296,12 +313,12 @@ public class RenderModelData : IDisposable
             var meshBounds = MeshBounds[inst.MeshIndex];
             var transformed = meshBounds.FastTransform(inst.Matrix4x4);
             InstanceBounds.Add(transformed);
-            TotalVertexCount += mesh.VertexCount;
-            TotalFaceCount += mesh.IndexCount / PrimitiveSize;
+            Meta.TotalVertexCount += mesh.VertexCount;
+            Meta.TotalFaceCount += mesh.IndexCount / PrimitiveSize;
         }
     }
 
-    public void RecomputeBounds()
+    public void ComputeBounds()
     {
         RecomputeMeshBounds();
         RecomputeInstanceBounds();
@@ -310,7 +327,7 @@ public class RenderModelData : IDisposable
 
     public void RecomputeTotalBounds()
     {
-        TotalBounds = InstanceBounds.GetTotalBoundsTrimOutliers();
+        Meta.TotalBounds = InstanceBounds.GetTotalBoundsTrimOutliers();
     }
 
     public TriangleMesh3D GetMesh(MeshSliceStruct meshSlice)

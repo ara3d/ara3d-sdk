@@ -12,6 +12,9 @@ public class RenderableAsset : IAsset
     public RenderableAsset()
         => RenderData = new RenderModelData(3);
 
+    public RenderableAsset(RenderModelData data)
+        => RenderData = data;
+
     public void Update(IModel3D model)
         => RenderData.Update(model);
 

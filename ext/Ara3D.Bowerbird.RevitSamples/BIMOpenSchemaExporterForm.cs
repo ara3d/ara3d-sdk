@@ -24,7 +24,7 @@ namespace Ara3D.BIMOpenSchema.Revit2025
         public BIMOpenSchemaExporterForm()
         {
             InitializeComponent();
-                
+
             Settings = BimOpenSchemaExportSettings.LoadDefaultOrCreate();
             Settings.Folder = DefaultFolder;
             DefaultFolder.Create();
@@ -61,23 +61,6 @@ namespace Ara3D.BIMOpenSchema.Revit2025
             Show();
         }
 
-        private void linkLabel1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var url = @"https://github.com/ara3d/bim-open-schema";
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to open link: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void chooseFolderButton_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.InitialDirectory = Settings.Folder.GetFullPath();
@@ -103,13 +86,13 @@ namespace Ara3D.BIMOpenSchema.Revit2025
             Settings.Folder = exportDirTextBox.Text;
             Settings.IncludeLinks = checkBoxIncludeLinks.Checked;
             Settings.IncludeGeometry = checkBoxMeshGeometry.Checked;
-            Settings.DetailLevel 
+            Settings.DetailLevel
                 = comboBoxLod.SelectedIndex == 0 ? BimOpenSchemaExportSettings.DetailLevelEnum.Coarse
                 : comboBoxLod.SelectedIndex == 1 ? BimOpenSchemaExportSettings.DetailLevelEnum.Medium
                 : BimOpenSchemaExportSettings.DetailLevelEnum.Fine;
             return Settings;
         }
-        
+
         public void Log(string s)
         {
             richTextBox1.BeginInvoke(() =>
@@ -131,7 +114,7 @@ namespace Ara3D.BIMOpenSchema.Revit2025
         public bool DoExport()
         {
             richTextBox1.Clear();
-            
+
             var settings = GetExportSettingsFromControls();
 
             var folder = settings.Folder;
@@ -162,7 +145,7 @@ namespace Ara3D.BIMOpenSchema.Revit2025
                 var logWriter = LogWriter.Create(Log);
                 var logger = new Logger(logWriter, "BOS Exporter");
 
-                RevitWorkQueue.QueueWork(uiApp => 
+                RevitWorkQueue.QueueWork(uiApp =>
                     _ = new BimOpenSchemaExporter(uiApp, CurrentDocument, settings, logger, false));
             }
             catch (Exception ex)
@@ -188,5 +171,22 @@ namespace Ara3D.BIMOpenSchema.Revit2025
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         { }
+
+        private void buttonHelp_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var url = @"www.bim-open-schema";
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to open link: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

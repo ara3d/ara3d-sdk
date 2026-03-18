@@ -171,7 +171,7 @@ public static class BimGeometryExtensions
         }
 
         data.ValidateMeshSlices();
-        data.RecomputeBounds();
+        data.ComputeBounds();
 
         return data;
     }
