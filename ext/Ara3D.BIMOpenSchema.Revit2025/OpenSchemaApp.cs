@@ -77,7 +77,7 @@ namespace Ara3D.BIMOpenSchema.Revit2025
             if (autoExport == "TRUE")
             {
                 var form = new BIMOpenSchemaExporterForm();
-                form.Show();
+                form.Show(UiApp, e.Document);
                 form.DoExport();
                 UiApp.PostCommand(RevitCommandId.LookupPostableCommandId(PostableCommand.ExitRevit));
             }
