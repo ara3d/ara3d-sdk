@@ -97,11 +97,8 @@ namespace Ara3D.BIMOpenSchema.Tests
             Console.WriteLine($"# descriptors = {bd.Descriptors.Count}");
             Console.WriteLine($"# points = {bd.Points.Count}");
             Console.WriteLine($"# string = {bd.Strings.Count}");
-            Console.WriteLine($"# string parameters = {bd.StringParameters.Count}");
-            Console.WriteLine($"# point parameters  = {bd.PointParameters.Count}");
-            Console.WriteLine($"# integer parameters = {bd.IntegerParameters.Count}");
-            Console.WriteLine($"# single parameters = {bd.SingleParameters.Count}");
-            Console.WriteLine($"# entity parameters = {bd.EntityParameters.Count}");
+            Console.WriteLine($"# numbers = {bd.Numbers.Count}");
+            Console.WriteLine($"# parameters = {bd.Parameters.Count}");
             Console.WriteLine($"# relations = {bd.Relations.Count}");
         }
 

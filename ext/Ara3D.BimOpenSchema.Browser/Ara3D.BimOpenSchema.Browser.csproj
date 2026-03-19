@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Ara3D.IO.GltfExporter\Ara3D.IO.GltfExporter.csproj" />
     <ProjectReference Include="..\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
   </ItemGroup>
 
   <ItemGroup>

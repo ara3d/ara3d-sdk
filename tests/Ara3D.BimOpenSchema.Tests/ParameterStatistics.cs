@@ -55,34 +55,10 @@ public static class ParameterStatisticsExtensions
     {
         var r = new Dictionary<DescriptorIndex, ParameterStatistics>();
 
-        foreach (var p in self.SingleParameters)
+        foreach (var p in self.Parameters)
         {
             var stats = self.GetOrCreate<ParameterDoubleStats>(r, p.Descriptor);
             stats.Values.Add(p.Value);
-        }
-
-        foreach (var p in self.StringParameters)
-        {
-            var stats = self.GetOrCreate<ParameterStringStats>(r, p.Descriptor);
-            stats.Values.Add(self.Get(p.Value));
-        }
-
-        foreach (var p in self.IntegerParameters)
-        {
-            var stats = self.GetOrCreate<ParameterLongStats>(r, p.Descriptor);
-            stats.Values.Add(p.Value);
-        }
-
-        foreach (var p in self.PointParameters)
-        {
-            var stats = self.GetOrCreate<ParameterLongStats>(r, p.Descriptor);
-            stats.Values.Add((long)p.Value);
-        }
-
-        foreach (var p in self.EntityParameters)
-        {
-            var stats = self.GetOrCreate<ParameterLongStats>(r, p.Descriptor);
-            stats.Values.Add((long)p.Value);
         }
 
         foreach (var stats in r.Values)

@@ -61,19 +61,7 @@ namespace Ara3D.BimOpenSchema
 
             Descriptors.AddRange(Data.DescriptorIndices().Select(di => Create(di,Data.Get(di))));
 
-            foreach (var p in Data.SingleParameters)
-                AddParameter(p.Entity, Create(p));
-
-            foreach (var p in Data.IntegerParameters)
-                AddParameter(p.Entity, Create(p));
-
-            foreach (var p in Data.StringParameters)
-                AddParameter(p.Entity, Create(p));
-
-            foreach (var p in Data.PointParameters)
-                AddParameter(p.Entity, Create(p));
-
-            foreach (var p in Data.EntityParameters)
+            foreach (var p in Data.Parameters)
                 AddParameter(p.Entity, Create(p));
 
             foreach (var r in Data.Relations)
@@ -111,11 +99,8 @@ namespace Ara3D.BimOpenSchema
             e.Parameters.Add(pm);
         }
 
-        public ParameterModel Create(ParameterSingle p) => new(p.Value, Get(p.Descriptor));
-        public ParameterModel Create(ParameterInt p) => new(p.Value, Get(p.Descriptor));
-        public ParameterModel Create(ParameterString p) => new(Get(p.Value), Get(p.Descriptor));
-        public ParameterModel Create(ParameterEntity p) => new(Get(p.Value), Get(p.Descriptor));
-        public ParameterModel Create(ParameterPoint p) => new(Get(p.Value), Get(p.Descriptor));
+        public ParameterModel Create(Parameter p) 
+            => new(p.Value, Get(p.Descriptor));
     }
 
     public class EntityModel

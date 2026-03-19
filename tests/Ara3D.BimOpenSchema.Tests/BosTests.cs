@@ -95,14 +95,10 @@ public static class BosTests
         logger.Log($"# diagnostics = {bd.Diagnostics.Count}");
         logger.Log($"# descriptors = {bd.Descriptors.Count}");
         logger.Log($"# points = {bd.Points.Count}");
+        logger.Log($"# numbers = {bd.Numbers.Count}");
         logger.Log($"# string = {bd.Strings.Count}");
         logger.Log($"# relations = {bd.Relations.Count}");
-        logger.Log($"# total parameters = {bd.GetNumParameters()}");
-        logger.Log($"  # string parameters = {bd.StringParameters.Count}");
-        logger.Log($"  # point parameters  = {bd.PointParameters.Count}");
-        logger.Log($"  # integer parameters = {bd.IntegerParameters.Count}");
-        logger.Log($"  # single parameters = {bd.SingleParameters.Count}");
-        logger.Log($"  # entity parameters = {bd.EntityParameters.Count}");
+        logger.Log($"# parameters = {bd.GetNumParameters()}");
 
         logger.Log($" entities with no element {bd.Entities.Count(e => e.LocalId < 0)}");
         /*

@@ -4,9 +4,9 @@ using Ara3D.IO.GltfExporter;
 using Ara3D.Models;
 using Ara3D.Utils;
 using System.IO;
-using System.IO.Compression;
 using System.Windows;
-using System.Windows.Controls;
+using Ara3D.Utils.Wpf;
+using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
@@ -67,16 +67,7 @@ namespace Ara3D.BimOpenSchema.Browser
 
         public static DirectoryPath DefaultSaveLocation()
             => SpecialFolders.MyDocuments.RelativeFolder("BIM Open Schema");
-
-        public static void SaveToGltf(BimModel3D model, FilePath filePath)
-        {
-            var builder = new GltfBuilder();
-            builder.SetModel(model.RenderModelData.ToModel3D());
-            var bytes = new List<byte>();
-            var data = builder.Build(bytes);
-            data.Export(bytes, filePath);
-        }
-
+        
         public async Task OpenFile(FilePath fp)
         {
             if (!fp.Exists())
@@ -202,12 +193,21 @@ namespace Ara3D.BimOpenSchema.Browser
             if (!folder.Exists())
                 return;
 
-            using var waitContext = new WpfWaitContext();
-
-            foreach (var t in Tables)
+            try
             {
-                var fp = folder.RelativeFile(t.Name.ToValidFileName() + ".xlsx");
-                t.WriteToExcel(fp);
+                using var waitContext = new WpfWaitContext();
+
+                foreach (var t in Tables)
+                {
+                    var fp = folder.RelativeFile(t.Name.ToValidFileName() + ".xlsx");
+                    t.WriteToExcel(fp);
+                }
+
+                CommonDialogs.FolderExportCompleted(folder);
+            }
+            catch (Exception ex)
+            {
+                CommonDialogs.Error("Error occured when exporting excel files", ex);
             }
         }
         
@@ -223,15 +223,24 @@ namespace Ara3D.BimOpenSchema.Browser
             if (!folder.Exists())
                 return;
 
-            using var waitContext = new WpfWaitContext();
-
-            foreach (var g in GroupedEntities)
+            try
             {
-                var fp = folder.RelativeFile(g.Key.ToValidFileName() + ".glb");
-                SaveGltf(g, fp);
+                using var waitContext = new WpfWaitContext();
+
+                foreach (var g in GroupedEntities)
+                {
+                    var fp = folder.RelativeFile(g.Key.ToValidFileName() + ".glb");
+                    SaveGltf(g, fp);
+                }
+
+                CommonDialogs.FolderExportCompleted(folder);
+            }
+            catch (Exception ex)
+            {
+                CommonDialogs.Error("Error occured when exporting gltf files", ex);
             }
         }
-        
+
         public void SaveGltf(IEnumerable<EntityModel> entities, FilePath fp)
         {
             var entityIndices = entities.Select(em => (int)em.Index).ToHashSet();
@@ -242,29 +251,18 @@ namespace Ara3D.BimOpenSchema.Browser
 
         private async void ExportParquet_Click(object sender, RoutedEventArgs e)
         {
-            var folder = ChooseFolder();
-            if (folder.Exists())
+            if (!File.Exists(CurrentFile))
                 return;
 
-            if (!File.Exists(CurrentFile))
+            var folder = ChooseFolder();
+            if (!folder.Exists())
                 return;
 
             try
             {
                 using var waitContext = new WpfWaitContext();
-
-                var fs = new FileStream(CurrentFile, FileMode.Open, FileAccess.Read, FileShare.Read);
-                using var zip = new ZipArchive(fs, ZipArchiveMode.Read, leaveOpen: false);
-
-                foreach (var entry in zip.Entries
-                             .Where(e => e.Name.EndsWith(".parquet", StringComparison.OrdinalIgnoreCase))
-                             .OrderBy(e => e.FullName))
-                {
-                    var newFile = folder.RelativeFile(entry.Name);
-                    await using var outFileStream = newFile.OpenWrite();
-                    await using var entryStream = entry.Open();
-                    await entryStream.CopyToAsync(outFileStream);
-                }
+                CurrentFile.UnzipAll(folder);
+                CommonDialogs.FolderExportCompleted(folder);
             }
             catch (Exception ex)
             {
@@ -297,6 +295,35 @@ namespace Ara3D.BimOpenSchema.Browser
         private async void IncludeParamsMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             await UpdateTables();
+        }
+
+        private void ExportDuckDB_OnClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!CurrentFile.Exists())
+                {
+                    MessageBox.Show("No file loaded", "Error");
+                    return;
+                }
+
+                var dlg = new SaveFileDialog();
+                dlg.DefaultExt = ".duckdb";
+                dlg.FileName = CurrentFile.GetFileNameWithoutExtension();
+                dlg.Filter = "DuckDB files (*.duckdb)|*.duckdb|All files (*.*)|*.*";
+                if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                    return;
+                var duckDbPath = new FilePath(dlg.FileName);
+                using var waitContext = new WpfWaitContext();
+
+                CurrentFile.BosToDuckDB(duckDbPath);
+                CommonDialogs.FileExportCompleted(duckDbPath);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error occured while exporting duck DB: " + ex.Message, "Error");
+            }
         }
     }
 }   

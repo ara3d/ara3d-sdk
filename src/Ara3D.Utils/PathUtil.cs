@@ -691,5 +691,8 @@ namespace Ara3D.Utils
             
         public static bool IsSameFile(this FilePath path, FilePath other)
             => path.GetFullPath().Value.ToLowerInvariant() == other.GetFullPath().Value.ToLowerInvariant();
+
+        public static DirectoryPath ToTempFolderName(this FilePath filePath)
+            => SpecialFolders.Temp.RelativeFolder(filePath.GetFileName().ToIdentifier() + "_" + DateTime.Now.ToTimeStamp());
     }
 }

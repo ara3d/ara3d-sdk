@@ -66,6 +66,13 @@ namespace Ara3D.Utils
         }
 
         /// <summary>
+        /// Unzips all entries in an archive to a designated folder.
+        /// </summary>
+        public static void UnzipAll(this FilePath zipFilePath, DirectoryPath dir)
+        {
+            ZipFile.ExtractToDirectory(zipFilePath.OpenRead(), dir);
+        }
+        /// <summary>
         /// Unzips the first entry in an archive into a temp generated file, returning that file path
         /// </summary>
         public static FilePath Unzip(this FilePath zipFilePath)

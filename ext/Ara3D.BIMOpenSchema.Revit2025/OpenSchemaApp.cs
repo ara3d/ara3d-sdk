@@ -5,6 +5,7 @@ using Autodesk.Revit.UI;
 using System;
 using System.Reflection;
 using System.Windows.Media.Imaging;
+using Ara3D.BimOpenSchema;
 
 namespace Ara3D.BIMOpenSchema.Revit2025
 {
@@ -15,7 +16,7 @@ namespace Ara3D.BIMOpenSchema.Revit2025
         public UIApplication UiApp { get; private set; }
         public CommandExecutor CommandExecutor { get; set; }
         public BIMOpenSchemaExporterForm Form { get; private set; }
-
+        public Autodesk.Revit.DB.Document OpenedDocument { get; private set; }
         public Result OnShutdown(UIControlledApplication application)
             => Result.Succeeded;
 
@@ -72,15 +73,21 @@ namespace Ara3D.BIMOpenSchema.Revit2025
 
         private void ControlledApplicationOnDocumentOpened(object sender, DocumentOpenedEventArgs e)
         {
+            OpenedDocument = e.Document;
             var autoExport = Environment.GetEnvironmentVariable("ARA3D_BOS_AUTO_EXPORT");
 
             if (autoExport == "TRUE")
             {
-                var form = new BIMOpenSchemaExporterForm();
-                form.Show(UiApp, e.Document);
-                form.DoExport();
-                UiApp.PostCommand(RevitCommandId.LookupPostableCommandId(PostableCommand.ExitRevit));
+                UicApp.Idling += NextIdle_AutoExport;
             }
+        }
+
+        private void NextIdle_AutoExport(object sender, Autodesk.Revit.UI.Events.IdlingEventArgs e)
+        {
+            var form = new BIMOpenSchemaExporterForm();
+            form.Show(UiApp, OpenedDocument);
+            form.DoExport(true);
+            UicApp.Idling -= NextIdle_AutoExport;
         }
 
         public void Run(UIApplication application)

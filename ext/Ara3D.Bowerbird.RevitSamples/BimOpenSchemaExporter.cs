@@ -17,7 +17,7 @@ public class BimOpenSchemaExporter
     public int ProcessedCount;
     public ExportProgressForm ExportProgressForm;
 
-    public BimOpenSchemaExporter(UIApplication app, Document doc, BimOpenSchemaExportSettings settings, ILogger logger, bool dryRun)
+    public BimOpenSchemaExporter(UIApplication app, Document doc, BimOpenSchemaExportSettings settings, ILogger logger, bool dryRun, bool shutDownOnCompletion)
     {
         UIApp = app;
 
@@ -67,6 +67,11 @@ public class BimOpenSchemaExporter
             logger.Log($"Exporting BIM Open Schema");
             BosRevitBuilder.ExportBimOpenSchema(settings, logger);
             logger.Log($"Completed export");
+
+            if (shutDownOnCompletion)
+            {
+                UIApp.PostCommand(RevitCommandId.LookupPostableCommandId(PostableCommand.ExitRevit));
+            }
         }
     }
 

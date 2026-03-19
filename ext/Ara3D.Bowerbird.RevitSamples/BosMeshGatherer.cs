@@ -61,6 +61,8 @@ public class BosMeshGatherer
 
     public Models.Material? GetMaterial(Element e, GeometryElement ge)
     {
+        if (ge.MaterialElement == null)
+            return null;
         var matId = ge.MaterialElement.Id;
         if (BosDocumentBuilder.MaterialLookup.TryGetValue(matId.Value, out var r))
             return r;

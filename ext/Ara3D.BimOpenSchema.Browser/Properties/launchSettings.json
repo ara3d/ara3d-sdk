@@ -2,7 +2,7 @@
   "profiles": {
     "Ara3D.BimOpenSchema.Browser": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\dev\\BIMLakehouse\\demo\\gen\\_MAIN-STADIUM-R20-A_MMPS_FURNITURE-R20.bos\""
+      "commandLineArgs": "\"C:\\Users\\cdigg\\OneDrive\\Documents\\BIM Open Schema\\racadvancedsampleproject.bos\""
     }
   }
 }

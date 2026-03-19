@@ -34,39 +34,42 @@
             toolTip1 = new System.Windows.Forms.ToolTip(components);
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            groupBox4 = new System.Windows.Forms.GroupBox();
-            button3 = new System.Windows.Forms.Button();
-            button4 = new System.Windows.Forms.Button();
-            label4 = new System.Windows.Forms.Label();
-            groupBox2 = new System.Windows.Forms.GroupBox();
-            button2 = new System.Windows.Forms.Button();
-            checkBox2 = new System.Windows.Forms.CheckBox();
-            checkBox1 = new System.Windows.Forms.CheckBox();
-            button1 = new System.Windows.Forms.Button();
-            textBox1 = new System.Windows.Forms.TextBox();
+            groupBoxLog = new System.Windows.Forms.GroupBox();
+            richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            groupBoxExport = new System.Windows.Forms.GroupBox();
+            buttonRunExport = new System.Windows.Forms.Button();
+            labelExportInstructions = new System.Windows.Forms.Label();
+            groupBoxSettings = new System.Windows.Forms.GroupBox();
+            buttonAdvancedSettings = new System.Windows.Forms.Button();
+            checkBoxIncludeGeometry = new System.Windows.Forms.CheckBox();
+            checkBoxIncludeLinks = new System.Windows.Forms.CheckBox();
+            buttonBrowse = new System.Windows.Forms.Button();
+            textBoxOutputFolder = new System.Windows.Forms.TextBox();
             label2 = new System.Windows.Forms.Label();
             groupBox1 = new System.Windows.Forms.GroupBox();
             label1 = new System.Windows.Forms.Label();
-            groupBox3 = new System.Windows.Forms.GroupBox();
-            button8 = new System.Windows.Forms.Button();
-            label3 = new System.Windows.Forms.Label();
-            groupBox5 = new System.Windows.Forms.GroupBox();
-            button6 = new System.Windows.Forms.Button();
-            button7 = new System.Windows.Forms.Button();
-            label5 = new System.Windows.Forms.Label();
-            richTextBox1 = new System.Windows.Forms.RichTextBox();
-            groupBox6 = new System.Windows.Forms.GroupBox();
+            splitContainer2 = new System.Windows.Forms.SplitContainer();
+            groupBoxAbout = new System.Windows.Forms.GroupBox();
+            buttonMoreInfo = new System.Windows.Forms.Button();
+            labelAbout = new System.Windows.Forms.Label();
+            groupBoxPostExport = new System.Windows.Forms.GroupBox();
+            buttonLaunch = new System.Windows.Forms.Button();
+            labelLaunch = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
-            groupBox4.SuspendLayout();
-            groupBox2.SuspendLayout();
+            groupBoxLog.SuspendLayout();
+            groupBoxExport.SuspendLayout();
+            groupBoxSettings.SuspendLayout();
             groupBox1.SuspendLayout();
-            groupBox3.SuspendLayout();
-            groupBox5.SuspendLayout();
-            groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            groupBoxAbout.SuspendLayout();
+            groupBoxPostExport.SuspendLayout();
             SuspendLayout();
             // 
             // folderBrowserDialog1
@@ -85,18 +88,18 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(groupBox3);
-            splitContainer1.Size = new System.Drawing.Size(846, 609);
-            splitContainer1.SplitterDistance = 505;
+            splitContainer1.Panel2.Controls.Add(splitContainer2);
+            splitContainer1.Size = new System.Drawing.Size(1016, 609);
+            splitContainer1.SplitterDistance = 590;
             splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel1.Controls.Add(groupBox6, 0, 3);
-            tableLayoutPanel1.Controls.Add(groupBox4, 0, 2);
-            tableLayoutPanel1.Controls.Add(groupBox2, 0, 1);
+            tableLayoutPanel1.Controls.Add(groupBoxLog, 0, 3);
+            tableLayoutPanel1.Controls.Add(groupBoxExport, 0, 2);
+            tableLayoutPanel1.Controls.Add(groupBoxSettings, 0, 1);
             tableLayoutPanel1.Controls.Add(groupBox1, 0, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel1.ImeMode = System.Windows.Forms.ImeMode.AlphaFull;
@@ -108,130 +111,143 @@
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 163F));
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 133F));
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(505, 609);
+            tableLayoutPanel1.Size = new System.Drawing.Size(590, 609);
             tableLayoutPanel1.TabIndex = 1;
             // 
-            // groupBox4
+            // groupBoxLog
             // 
-            groupBox4.Controls.Add(button3);
-            groupBox4.Controls.Add(button4);
-            groupBox4.Controls.Add(label4);
-            groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupBox4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox4.Location = new System.Drawing.Point(3, 264);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new System.Drawing.Size(499, 157);
-            groupBox4.TabIndex = 3;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Export";
+            groupBoxLog.Controls.Add(richTextBoxLog);
+            groupBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            groupBoxLog.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            groupBoxLog.Location = new System.Drawing.Point(3, 427);
+            groupBoxLog.Name = "groupBoxLog";
+            groupBoxLog.Padding = new System.Windows.Forms.Padding(8);
+            groupBoxLog.Size = new System.Drawing.Size(584, 179);
+            groupBoxLog.TabIndex = 5;
+            groupBoxLog.TabStop = false;
+            groupBoxLog.Text = "Log";
             // 
-            // button3
+            // richTextBoxLog
             // 
-            button3.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
-            button3.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            button3.AutoEllipsis = true;
-            button3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            button3.Location = new System.Drawing.Point(3, 106);
-            button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(493, 41);
-            button3.TabIndex = 5;
-            button3.Text = "Run Export";
-            button3.UseVisualStyleBackColor = true;
+            richTextBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            richTextBoxLog.Font = new System.Drawing.Font("Segoe UI", 9F);
+            richTextBoxLog.Location = new System.Drawing.Point(8, 30);
+            richTextBoxLog.Name = "richTextBoxLog";
+            richTextBoxLog.Size = new System.Drawing.Size(568, 141);
+            richTextBoxLog.TabIndex = 2;
+            richTextBoxLog.Text = "";
             // 
-            // button4
+            // groupBoxExport
             // 
-            button4.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
-            button4.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            button4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            button4.Location = new System.Drawing.Point(1517, 52);
-            button4.Name = "button4";
-            button4.Size = new System.Drawing.Size(75, 29);
-            button4.TabIndex = 2;
-            button4.Text = "Browse ...";
-            button4.UseVisualStyleBackColor = true;
+            groupBoxExport.Controls.Add(buttonRunExport);
+            groupBoxExport.Controls.Add(labelExportInstructions);
+            groupBoxExport.Dock = System.Windows.Forms.DockStyle.Fill;
+            groupBoxExport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            groupBoxExport.Location = new System.Drawing.Point(3, 264);
+            groupBoxExport.Name = "groupBoxExport";
+            groupBoxExport.Size = new System.Drawing.Size(584, 157);
+            groupBoxExport.TabIndex = 3;
+            groupBoxExport.TabStop = false;
+            groupBoxExport.Text = "Export";
             // 
-            // label4
+            // buttonRunExport
             // 
-            label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            label4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label4.Location = new System.Drawing.Point(3, 25);
-            label4.Name = "label4";
-            label4.Padding = new System.Windows.Forms.Padding(5);
-            label4.Size = new System.Drawing.Size(493, 129);
-            label4.TabIndex = 0;
-            label4.Text = resources.GetString("label4.Text");
-            label4.Click += label4_Click;
+            buttonRunExport.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
+            buttonRunExport.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            buttonRunExport.AutoEllipsis = true;
+            buttonRunExport.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            buttonRunExport.Location = new System.Drawing.Point(3, 106);
+            buttonRunExport.Name = "buttonRunExport";
+            buttonRunExport.Size = new System.Drawing.Size(573, 41);
+            buttonRunExport.TabIndex = 5;
+            buttonRunExport.Text = "Run Export";
+            buttonRunExport.UseVisualStyleBackColor = true;
+            buttonRunExport.Click += buttonRunExport_Click;
             // 
-            // groupBox2
+            // labelExportInstructions
             // 
-            groupBox2.Controls.Add(button2);
-            groupBox2.Controls.Add(checkBox2);
-            groupBox2.Controls.Add(checkBox1);
-            groupBox2.Controls.Add(button1);
-            groupBox2.Controls.Add(textBox1);
-            groupBox2.Controls.Add(label2);
-            groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupBox2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox2.Location = new System.Drawing.Point(3, 88);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(499, 170);
-            groupBox2.TabIndex = 2;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Settings";
+            labelExportInstructions.Dock = System.Windows.Forms.DockStyle.Fill;
+            labelExportInstructions.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            labelExportInstructions.Location = new System.Drawing.Point(3, 25);
+            labelExportInstructions.Name = "labelExportInstructions";
+            labelExportInstructions.Padding = new System.Windows.Forms.Padding(5);
+            labelExportInstructions.Size = new System.Drawing.Size(578, 129);
+            labelExportInstructions.TabIndex = 0;
+            labelExportInstructions.Text = resources.GetString("labelExportInstructions.Text");
             // 
-            // button2
+            // groupBoxSettings
             // 
-            button2.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
-            button2.AutoEllipsis = true;
-            button2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            button2.Location = new System.Drawing.Point(9, 136);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(155, 23);
-            button2.TabIndex = 5;
-            button2.Text = "Advanced Settings ...";
-            button2.UseVisualStyleBackColor = true;
+            groupBoxSettings.Controls.Add(buttonAdvancedSettings);
+            groupBoxSettings.Controls.Add(checkBoxIncludeGeometry);
+            groupBoxSettings.Controls.Add(checkBoxIncludeLinks);
+            groupBoxSettings.Controls.Add(buttonBrowse);
+            groupBoxSettings.Controls.Add(textBoxOutputFolder);
+            groupBoxSettings.Controls.Add(label2);
+            groupBoxSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            groupBoxSettings.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            groupBoxSettings.Location = new System.Drawing.Point(3, 88);
+            groupBoxSettings.Name = "groupBoxSettings";
+            groupBoxSettings.Size = new System.Drawing.Size(584, 170);
+            groupBoxSettings.TabIndex = 2;
+            groupBoxSettings.TabStop = false;
+            groupBoxSettings.Text = "Settings";
             // 
-            // checkBox2
+            // buttonAdvancedSettings
             // 
-            checkBox2.AutoSize = true;
-            checkBox2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            checkBox2.Location = new System.Drawing.Point(9, 111);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new System.Drawing.Size(137, 19);
-            checkBox2.TabIndex = 4;
-            checkBox2.Text = "Include 3D Geometry";
-            checkBox2.UseVisualStyleBackColor = true;
+            buttonAdvancedSettings.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
+            buttonAdvancedSettings.AutoEllipsis = true;
+            buttonAdvancedSettings.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            buttonAdvancedSettings.Location = new System.Drawing.Point(9, 136);
+            buttonAdvancedSettings.Name = "buttonAdvancedSettings";
+            buttonAdvancedSettings.Size = new System.Drawing.Size(155, 23);
+            buttonAdvancedSettings.TabIndex = 5;
+            buttonAdvancedSettings.Text = "Advanced Settings ...";
+            buttonAdvancedSettings.UseVisualStyleBackColor = true;
+            buttonAdvancedSettings.Click += buttonAdvancedSettings_Click;
             // 
-            // checkBox1
+            // checkBoxIncludeGeometry
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            checkBox1.Location = new System.Drawing.Point(9, 87);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new System.Drawing.Size(95, 19);
-            checkBox1.TabIndex = 3;
-            checkBox1.Text = "Include Links";
-            checkBox1.UseVisualStyleBackColor = true;
+            checkBoxIncludeGeometry.AutoSize = true;
+            checkBoxIncludeGeometry.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            checkBoxIncludeGeometry.Location = new System.Drawing.Point(9, 111);
+            checkBoxIncludeGeometry.Name = "checkBoxIncludeGeometry";
+            checkBoxIncludeGeometry.Size = new System.Drawing.Size(137, 19);
+            checkBoxIncludeGeometry.TabIndex = 4;
+            checkBoxIncludeGeometry.Text = "Include 3D Geometry";
+            checkBoxIncludeGeometry.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // checkBoxIncludeLinks
             // 
-            button1.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
-            button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            button1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            button1.Location = new System.Drawing.Point(418, 87);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(75, 29);
-            button1.TabIndex = 2;
-            button1.Text = "Browse ...";
-            button1.UseVisualStyleBackColor = true;
+            checkBoxIncludeLinks.AutoSize = true;
+            checkBoxIncludeLinks.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            checkBoxIncludeLinks.Location = new System.Drawing.Point(9, 87);
+            checkBoxIncludeLinks.Name = "checkBoxIncludeLinks";
+            checkBoxIncludeLinks.Size = new System.Drawing.Size(95, 19);
+            checkBoxIncludeLinks.TabIndex = 3;
+            checkBoxIncludeLinks.Text = "Include Links";
+            checkBoxIncludeLinks.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // buttonBrowse
             // 
-            textBox1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            textBox1.Location = new System.Drawing.Point(6, 52);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new System.Drawing.Size(487, 29);
-            textBox1.TabIndex = 1;
+            buttonBrowse.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
+            buttonBrowse.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            buttonBrowse.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            buttonBrowse.Location = new System.Drawing.Point(503, 87);
+            buttonBrowse.Name = "buttonBrowse";
+            buttonBrowse.Size = new System.Drawing.Size(75, 29);
+            buttonBrowse.TabIndex = 2;
+            buttonBrowse.Text = "Browse ...";
+            buttonBrowse.UseVisualStyleBackColor = true;
+            buttonBrowse.Click += buttonBrowse_Click;
+            // 
+            // textBoxOutputFolder
+            // 
+            textBoxOutputFolder.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBoxOutputFolder.Font = new System.Drawing.Font("Segoe UI", 9F);
+            textBoxOutputFolder.Location = new System.Drawing.Point(6, 52);
+            textBoxOutputFolder.Name = "textBoxOutputFolder";
+            textBoxOutputFolder.Size = new System.Drawing.Size(570, 23);
+            textBoxOutputFolder.TabIndex = 1;
             // 
             // label2
             // 
@@ -240,7 +256,7 @@
             label2.Location = new System.Drawing.Point(3, 25);
             label2.Name = "label2";
             label2.Padding = new System.Windows.Forms.Padding(5);
-            label2.Size = new System.Drawing.Size(493, 142);
+            label2.Size = new System.Drawing.Size(578, 142);
             label2.TabIndex = 0;
             label2.Text = "Output Folder Location";
             // 
@@ -251,7 +267,7 @@
             groupBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             groupBox1.Location = new System.Drawing.Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(499, 79);
+            groupBox1.Size = new System.Drawing.Size(584, 79);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = ".BOS Exporter";
@@ -263,125 +279,110 @@
             label1.Location = new System.Drawing.Point(3, 25);
             label1.Name = "label1";
             label1.Padding = new System.Windows.Forms.Padding(5);
-            label1.Size = new System.Drawing.Size(493, 51);
+            label1.Size = new System.Drawing.Size(578, 51);
             label1.TabIndex = 0;
             label1.Text = "Export Revit models to a high-performance .BOS package\r\nfor fast viewing, querying, analysis, and transformation.";
             // 
-            // groupBox3
+            // splitContainer2
             // 
-            groupBox3.Controls.Add(groupBox5);
-            groupBox3.Controls.Add(button8);
-            groupBox3.Controls.Add(label3);
-            groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupBox3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox3.Location = new System.Drawing.Point(0, 0);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new System.Drawing.Size(337, 609);
-            groupBox3.TabIndex = 5;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "About BIM Open Schema";
+            splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer2.IsSplitterFixed = true;
+            splitContainer2.Location = new System.Drawing.Point(0, 0);
+            splitContainer2.Name = "splitContainer2";
+            splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // button8
+            // splitContainer2.Panel1
             // 
-            button8.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            button8.Cursor = System.Windows.Forms.Cursors.No;
-            button8.DialogResult = System.Windows.Forms.DialogResult.Ignore;
-            button8.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            button8.Location = new System.Drawing.Point(8, 768);
-            button8.Name = "button8";
-            button8.Size = new System.Drawing.Size(501, 23);
-            button8.TabIndex = 1;
-            button8.Text = "More info ..";
-            button8.UseVisualStyleBackColor = true;
+            splitContainer2.Panel1.Controls.Add(groupBoxAbout);
             // 
-            // label3
+            // splitContainer2.Panel2
             // 
-            label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label3.Location = new System.Drawing.Point(3, 25);
-            label3.Name = "label3";
-            label3.Padding = new System.Windows.Forms.Padding(5);
-            label3.Size = new System.Drawing.Size(331, 581);
-            label3.TabIndex = 0;
-            label3.Text = resources.GetString("label3.Text");
+            splitContainer2.Panel2.Controls.Add(groupBoxPostExport);
+            splitContainer2.Size = new System.Drawing.Size(422, 609);
+            splitContainer2.SplitterDistance = 441;
+            splitContainer2.TabIndex = 0;
             // 
-            // groupBox5
+            // groupBoxAbout
             // 
-            groupBox5.Controls.Add(button6);
-            groupBox5.Controls.Add(button7);
-            groupBox5.Controls.Add(label5);
-            groupBox5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            groupBox5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox5.Location = new System.Drawing.Point(3, 475);
-            groupBox5.Name = "groupBox5";
-            groupBox5.Size = new System.Drawing.Size(331, 131);
-            groupBox5.TabIndex = 5;
-            groupBox5.TabStop = false;
-            groupBox5.Text = "Post Export";
+            groupBoxAbout.Controls.Add(buttonMoreInfo);
+            groupBoxAbout.Controls.Add(labelAbout);
+            groupBoxAbout.Dock = System.Windows.Forms.DockStyle.Fill;
+            groupBoxAbout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            groupBoxAbout.Location = new System.Drawing.Point(0, 0);
+            groupBoxAbout.Name = "groupBoxAbout";
+            groupBoxAbout.Size = new System.Drawing.Size(422, 441);
+            groupBoxAbout.TabIndex = 7;
+            groupBoxAbout.TabStop = false;
+            groupBoxAbout.Text = "About BIM Open Schema";
             // 
-            // button6
+            // buttonMoreInfo
             // 
-            button6.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
-            button6.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            button6.AutoEllipsis = true;
-            button6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            button6.Location = new System.Drawing.Point(44, 75);
-            button6.Name = "button6";
-            button6.Size = new System.Drawing.Size(232, 41);
-            button6.TabIndex = 5;
-            button6.Text = "Launch Ara 3D Studio ...";
-            button6.UseVisualStyleBackColor = true;
+            buttonMoreInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            buttonMoreInfo.Cursor = System.Windows.Forms.Cursors.No;
+            buttonMoreInfo.DialogResult = System.Windows.Forms.DialogResult.Ignore;
+            buttonMoreInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            buttonMoreInfo.Location = new System.Drawing.Point(85, 274);
+            buttonMoreInfo.Name = "buttonMoreInfo";
+            buttonMoreInfo.Size = new System.Drawing.Size(231, 25);
+            buttonMoreInfo.TabIndex = 2;
+            buttonMoreInfo.Text = "More info ..";
+            buttonMoreInfo.UseVisualStyleBackColor = true;
+            buttonMoreInfo.Click += buttonMoreInfo_Click;
             // 
-            // button7
+            // labelAbout
             // 
-            button7.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
-            button7.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            button7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            button7.Location = new System.Drawing.Point(2037, 52);
-            button7.Name = "button7";
-            button7.Size = new System.Drawing.Size(75, 29);
-            button7.TabIndex = 2;
-            button7.Text = "Browse ...";
-            button7.UseVisualStyleBackColor = true;
+            labelAbout.Dock = System.Windows.Forms.DockStyle.Fill;
+            labelAbout.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            labelAbout.Location = new System.Drawing.Point(3, 25);
+            labelAbout.Name = "labelAbout";
+            labelAbout.Padding = new System.Windows.Forms.Padding(5);
+            labelAbout.Size = new System.Drawing.Size(416, 413);
+            labelAbout.TabIndex = 0;
+            labelAbout.Text = resources.GetString("labelAbout.Text");
             // 
-            // label5
+            // groupBoxPostExport
             // 
-            label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            label5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label5.Location = new System.Drawing.Point(3, 25);
-            label5.Name = "label5";
-            label5.Padding = new System.Windows.Forms.Padding(5);
-            label5.Size = new System.Drawing.Size(325, 103);
-            label5.TabIndex = 0;
-            label5.Text = "Launch Ara 3D Studio to view your model or for additional workflows.";
+            groupBoxPostExport.Controls.Add(buttonLaunch);
+            groupBoxPostExport.Controls.Add(labelLaunch);
+            groupBoxPostExport.Dock = System.Windows.Forms.DockStyle.Fill;
+            groupBoxPostExport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            groupBoxPostExport.Location = new System.Drawing.Point(0, 0);
+            groupBoxPostExport.Name = "groupBoxPostExport";
+            groupBoxPostExport.Size = new System.Drawing.Size(422, 164);
+            groupBoxPostExport.TabIndex = 9;
+            groupBoxPostExport.TabStop = false;
+            groupBoxPostExport.Text = "Post Export";
             // 
-            // richTextBox1
+            // buttonLaunch
             // 
-            richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            richTextBox1.Location = new System.Drawing.Point(8, 30);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new System.Drawing.Size(483, 141);
-            richTextBox1.TabIndex = 2;
-            richTextBox1.Text = "";
+            buttonLaunch.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
+            buttonLaunch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            buttonLaunch.AutoEllipsis = true;
+            buttonLaunch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            buttonLaunch.Location = new System.Drawing.Point(75, 71);
+            buttonLaunch.Name = "buttonLaunch";
+            buttonLaunch.Size = new System.Drawing.Size(280, 40);
+            buttonLaunch.TabIndex = 5;
+            buttonLaunch.Text = "Launch Ara 3D Studio ...";
+            buttonLaunch.UseVisualStyleBackColor = true;
+            buttonLaunch.Click += buttonLaunch_Click;
             // 
-            // groupBox6
+            // labelLaunch
             // 
-            groupBox6.Controls.Add(richTextBox1);
-            groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupBox6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            groupBox6.Location = new System.Drawing.Point(3, 427);
-            groupBox6.Name = "groupBox6";
-            groupBox6.Padding = new System.Windows.Forms.Padding(8);
-            groupBox6.Size = new System.Drawing.Size(499, 179);
-            groupBox6.TabIndex = 5;
-            groupBox6.TabStop = false;
-            groupBox6.Text = "Log";
+            labelLaunch.Dock = System.Windows.Forms.DockStyle.Fill;
+            labelLaunch.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            labelLaunch.Location = new System.Drawing.Point(3, 25);
+            labelLaunch.Name = "labelLaunch";
+            labelLaunch.Padding = new System.Windows.Forms.Padding(5);
+            labelLaunch.Size = new System.Drawing.Size(416, 136);
+            labelLaunch.TabIndex = 0;
+            labelLaunch.Text = "Launch Ara 3D Studio to view your model or for additional workflows.";
             // 
             // BIMOpenSchemaExporterForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(846, 609);
+            ClientSize = new System.Drawing.Size(1016, 609);
             Controls.Add(splitContainer1);
             MinimumSize = new System.Drawing.Size(300, 300);
             Name = "BIMOpenSchemaExporterForm";
@@ -392,13 +393,17 @@
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
-            groupBox4.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
+            groupBoxLog.ResumeLayout(false);
+            groupBoxExport.ResumeLayout(false);
+            groupBoxSettings.ResumeLayout(false);
+            groupBoxSettings.PerformLayout();
             groupBox1.ResumeLayout(false);
-            groupBox3.ResumeLayout(false);
-            groupBox5.ResumeLayout(false);
-            groupBox6.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            groupBoxAbout.ResumeLayout(false);
+            groupBoxPostExport.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -410,25 +415,24 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.GroupBox groupBoxExport;
+        private System.Windows.Forms.Button buttonRunExport;
+        private System.Windows.Forms.Label labelExportInstructions;
+        private System.Windows.Forms.GroupBox groupBoxSettings;
+        private System.Windows.Forms.Button buttonAdvancedSettings;
+        private System.Windows.Forms.CheckBox checkBoxIncludeGeometry;
+        private System.Windows.Forms.CheckBox checkBoxIncludeLinks;
+        private System.Windows.Forms.Button buttonBrowse;
+        private System.Windows.Forms.TextBox textBoxOutputFolder;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBoxLog;
+        private System.Windows.Forms.RichTextBox richTextBoxLog;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.GroupBox groupBoxAbout;
+        private System.Windows.Forms.Button buttonMoreInfo;
+        private System.Windows.Forms.Label labelAbout;
+        private System.Windows.Forms.GroupBox groupBoxPostExport;
+        private System.Windows.Forms.Button buttonLaunch;
+        private System.Windows.Forms.Label labelLaunch;
     }
 }

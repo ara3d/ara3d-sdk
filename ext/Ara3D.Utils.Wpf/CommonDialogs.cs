@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
 
@@ -41,10 +42,27 @@ namespace Ara3D.Utils.Wpf
                 : null;
         }
 
-        public static MessageBoxResult YesNo(string message, string caption)
-            => MessageBox.Show(message, caption, MessageBoxButton.YesNo);
+        public static bool YesNo(string message, string caption)
+            => MessageBox.Show(message, caption, MessageBoxButton.YesNo) == MessageBoxResult.Yes;
 
-        public static MessageBoxResult OkCancel(string message, string caption)
-            => MessageBox.Show(message, caption, MessageBoxButton.OKCancel);
+        public static bool OkCancel(string message, string caption)
+            => MessageBox.Show(message, caption, MessageBoxButton.OKCancel) == MessageBoxResult.OK;
+
+        public static void Error(string message, Exception ex)
+            => MessageBox.Show(message + $": {ex.Message}", "Error");
+
+        public static void FolderExportCompleted(DirectoryPath path)
+        {
+            if (YesNo($"Export completed. Files saved to:\n{path}. Do you want to open the folder?",
+                    "Export Completed"))
+                path.OpenFolderInExplorer();
+        }
+
+        public static void FileExportCompleted(FilePath path)
+        {
+            if (YesNo($"Export completed. File saved to:\n{path}. Do you want to open the folder?",
+                    "Export Completed"))
+                path.GetDirectory().OpenFolderInExplorer();
+        }
     }
 }

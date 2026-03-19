@@ -30,7 +30,6 @@ namespace Ara3D.BIMOpenSchema.Revit2025
             DefaultFolder.Create();
             UpdateControlsFromSettings();
 
-            buttonLanchAra3D.Enabled = true;
             FormClosing += (_, args) =>
             {
                 args.Cancel = true;
@@ -61,61 +60,40 @@ namespace Ara3D.BIMOpenSchema.Revit2025
             Show();
         }
 
-        private void chooseFolderButton_Click(object sender, EventArgs e)
-        {
-            folderBrowserDialog1.InitialDirectory = Settings.Folder.GetFullPath();
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                exportDirTextBox.Text = folderBrowserDialog1.SelectedPath;
-            }
-        }
-
         public void UpdateControlsFromSettings()
         {
-            exportDirTextBox.Text = Settings.Folder;
+            textBoxOutputFolder.Text = Settings.Folder;
             checkBoxIncludeLinks.Checked = Settings.IncludeLinks;
-            checkBoxMeshGeometry.Checked = Settings.IncludeGeometry;
-            comboBoxLod.SelectedIndex =
-                Settings.DetailLevel == BimOpenSchemaExportSettings.DetailLevelEnum.Coarse ? 0 :
-                Settings.DetailLevel == BimOpenSchemaExportSettings.DetailLevelEnum.Medium ? 1 :
-                2;
+            checkBoxIncludeGeometry.Checked = Settings.IncludeGeometry;
         }
 
-        public BimOpenSchemaExportSettings GetExportSettingsFromControls()
+        public BimOpenSchemaExportSettings GetExportSettingsFromFileAndControls()
         {
-            Settings.Folder = exportDirTextBox.Text;
+            Settings = BimOpenSchemaExportSettings.LoadDefaultOrCreate();
+            Settings.Folder = textBoxOutputFolder.Text;
             Settings.IncludeLinks = checkBoxIncludeLinks.Checked;
-            Settings.IncludeGeometry = checkBoxMeshGeometry.Checked;
-            Settings.DetailLevel
-                = comboBoxLod.SelectedIndex == 0 ? BimOpenSchemaExportSettings.DetailLevelEnum.Coarse
-                : comboBoxLod.SelectedIndex == 1 ? BimOpenSchemaExportSettings.DetailLevelEnum.Medium
-                : BimOpenSchemaExportSettings.DetailLevelEnum.Fine;
+            Settings.IncludeGeometry = checkBoxIncludeGeometry.Checked;
             return Settings;
         }
 
         public void Log(string s)
         {
-            richTextBox1.BeginInvoke(() =>
+            richTextBoxLog.BeginInvoke(() =>
             {
                 try
                 {
-                    richTextBox1.AppendText(s + Environment.NewLine);
+                    richTextBoxLog.AppendText(s + Environment.NewLine);
                 }
                 catch
                 { }
             });
         }
 
-        private void buttonExport_Click(object sender, EventArgs e)
+        public bool DoExport(bool shutDownOnCompletion)
         {
-            DoExport();
-        }
+            richTextBoxLog.Clear();
 
-        public bool DoExport()
-        {
-            richTextBox1.Clear();
-
-            var settings = GetExportSettingsFromControls();
+            var settings = GetExportSettingsFromFileAndControls();
 
             var folder = settings.Folder;
             try
@@ -146,7 +124,7 @@ namespace Ara3D.BIMOpenSchema.Revit2025
                 var logger = new Logger(logWriter, "BOS Exporter");
 
                 RevitWorkQueue.QueueWork(uiApp =>
-                    _ = new BimOpenSchemaExporter(uiApp, CurrentDocument, settings, logger, false));
+                    _ = new BimOpenSchemaExporter(uiApp, CurrentDocument, settings, logger, false, shutDownOnCompletion));
             }
             catch (Exception ex)
             {
@@ -158,25 +136,30 @@ namespace Ara3D.BIMOpenSchema.Revit2025
             return true;
         }
 
-        private void buttonLaunchAra3D_Click(object sender, EventArgs e)
+        private void buttonAdvancedSettings_Click(object sender, EventArgs e)
         {
-            if (!Ara3dStudioExePath.Exists())
-                MessageBox.Show("Could not find Ara 3D Studio");
-
-            if (CurrentFilePath.Exists())
-                Ara3dStudioExePath.Execute(CurrentFilePath.Value.Quote());
-            else
-                Ara3dStudioExePath.Execute();
+            ProcessUtil.OpenFile(BimOpenSchemaExportSettings.GetUserSettingsPath());
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        { }
+        private void buttonBrowse_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialog1.InitialDirectory = Settings.Folder.GetFullPath();
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                textBoxOutputFolder.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
 
-        private void buttonHelp_Click(object sender, EventArgs e)
+        private void buttonRunExport_Click(object sender, EventArgs e)
+        {
+            DoExport(false);
+        }
+
+        private void buttonMoreInfo_Click(object sender, EventArgs e)
         {
             try
             {
-                var url = @"www.bim-open-schema";
+                var url = @"https://www.bimopenschema.com";
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                 {
                     FileName = url,
@@ -189,39 +172,15 @@ namespace Ara3D.BIMOpenSchema.Revit2025
             }
         }
 
-        private void textBoxOverview_TextChanged(object sender, EventArgs e)
+        private void buttonLaunch_Click(object sender, EventArgs e)
         {
+            if (!Ara3dStudioExePath.Exists())
+                MessageBox.Show("Could not find Ara 3D Studio");
 
-        }
-
-        private void labelSubtitle_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
+            if (CurrentFilePath.Exists())
+                Ara3dStudioExePath.Execute(CurrentFilePath.Value.Quote());
+            else
+                Ara3dStudioExePath.Execute();
         }
     }
 }

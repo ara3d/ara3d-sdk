@@ -142,6 +142,20 @@ namespace Ara3D.Utils.Wpf
         public static MenuItem Add(this ContextMenu menu, string text, Action action = null)
             => menu.Items.Add(text, action);
 
+        public static void ClearAllItems(this MenuItem self)
+        {
+            foreach (var item in self.Items.OfType<MenuItem>())
+                item.ClearAllItems();
+            self.Items.Clear();
+        }
+
+        public static void ClearAllItems(this Menu self)
+        {
+            foreach (var item in self.Items.OfType<MenuItem>())
+                item.ClearAllItems();
+            self.Items.Clear();
+        }
+
         public static int GetItemIndex(this ListBox self, object value)
             => self.ItemContainerGenerator.IndexFromContainer(self.ItemContainerGenerator.ContainerFromItem(value));
 

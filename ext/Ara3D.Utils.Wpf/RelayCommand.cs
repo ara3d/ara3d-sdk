@@ -17,18 +17,13 @@ public class RelayCommand : ICommand
     }
 
     public bool CanExecute(object parameter)
-    {
-        return _canExecute == null || _canExecute();
-    }
+        => _canExecute == null || _canExecute();
 
     public void Execute(object parameter)
-    {
-        _execute();
-    }
+        => _execute();
 
-    public event EventHandler CanExecuteChanged
-    {
-        add => CommandManager.RequerySuggested += value;
-        remove => CommandManager.RequerySuggested -= value;
-    }
+    public event EventHandler CanExecuteChanged;
+
+    public void RaiseCanExecuteChanged()
+        => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }

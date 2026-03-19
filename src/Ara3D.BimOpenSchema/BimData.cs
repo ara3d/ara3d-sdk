@@ -7,11 +7,8 @@ public class BimData : IBimData
     public Manifest Manifest { get; set; } = new();
     public IReadOnlyList<Diagnostic> Diagnostics { get; set; } = [];
     public IReadOnlyList<ParameterDescriptor> Descriptors { get; set; } = [];
-    public IReadOnlyList<ParameterInt> IntegerParameters { get; set; } = [];
-    public IReadOnlyList<ParameterSingle> SingleParameters { get; set; } = [];
-    public IReadOnlyList<ParameterString> StringParameters { get; set; } = [];
-    public IReadOnlyList<ParameterEntity> EntityParameters { get; set; } = [];
-    public IReadOnlyList<ParameterPoint> PointParameters { get; set; } = [];
+    public IReadOnlyList<Parameter> Parameters { get; set; } = [];
+    public IReadOnlyList<float> Numbers { get; set; } = [];
     public IReadOnlyList<Document> Documents { get; set; } = [];
     public IReadOnlyList<Entity> Entities { get; set; } = [];
     public IReadOnlyList<string> Strings { get; set; } = [];

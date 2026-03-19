@@ -17,10 +17,8 @@
 				</MenuItem>
 				<MenuItem Header="_Export Raw Parquet …" Click="ExportParquet_Click">
 				</MenuItem>
-				<!--
-				<MenuItem Header="_Export Split BOS …" Click="ExportSplitBOS_Click">
+				<MenuItem Header="_Export DuckDB …" Click="ExportDuckDB_OnClick">
 				</MenuItem>
-				-->
 				<MenuItem Header="_Export Excel …" Click="ExportExcel_Click">
 				</MenuItem>
 				<MenuItem Header="_Export GLB …" Click="ExportGLB_Click">

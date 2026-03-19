@@ -46,19 +46,7 @@ public class FilterParameters : IModifier
                 _selectedDescriptors.Add(i);
         }
 
-        foreach (var p in _data.PointParameters)
-            if (_selectedDescriptors.Contains((int)p.Descriptor))
-                _selectedEntities.Add(p.Entity);
-        foreach (var p in _data.EntityParameters)
-            if (_selectedDescriptors.Contains((int)p.Descriptor))
-                _selectedEntities.Add(p.Entity);
-        foreach (var p in _data.IntegerParameters)
-            if (_selectedDescriptors.Contains((int)p.Descriptor))
-                _selectedEntities.Add(p.Entity);
-        foreach (var p in _data.StringParameters)
-            if (_selectedDescriptors.Contains((int)p.Descriptor))
-                _selectedEntities.Add(p.Entity);
-        foreach (var p in _data.SingleParameters)
+        foreach (var p in _data.Parameters)
             if (_selectedDescriptors.Contains((int)p.Descriptor))
                 _selectedEntities.Add(p.Entity);
 
@@ -101,19 +89,7 @@ public class FilterParameters : IModifier
         }
 
         // Get only the descriptors that are used by actual parameters
-        foreach (var p in _data.PointParameters)
-            if (_geometricEntities.Contains(p.Entity))
-                _descriptors.Add(p.Descriptor);
-        foreach (var p in _data.EntityParameters)
-            if (_geometricEntities.Contains(p.Entity))
-                _descriptors.Add(p.Descriptor);
-        foreach (var p in _data.IntegerParameters)
-            if (_geometricEntities.Contains(p.Entity))
-                _descriptors.Add(p.Descriptor);
-        foreach (var p in _data.StringParameters)
-            if (_geometricEntities.Contains(p.Entity))
-                _descriptors.Add(p.Descriptor);
-        foreach (var p in _data.SingleParameters)
+        foreach (var p in _data.Parameters)
             if (_geometricEntities.Contains(p.Entity))
                 _descriptors.Add(p.Descriptor);
 

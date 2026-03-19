@@ -1,7 +1,10 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Cursor = System.Windows.Input.Cursor;
 using Cursors = System.Windows.Input.Cursors;
+
+namespace Ara3D.Utils.Wpf;
 
 public sealed class WpfWaitContext : IDisposable
 {

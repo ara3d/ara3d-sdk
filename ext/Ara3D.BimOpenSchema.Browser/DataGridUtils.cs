@@ -3,6 +3,7 @@ using Ara3D.DataTable;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Binding = System.Windows.Data.Binding;
+using DataGrid = System.Windows.Controls.DataGrid;
 
 namespace Ara3D.BimOpenSchema.Browser;
 

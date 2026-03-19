@@ -56,19 +56,12 @@ public static class BimDataExtension
             self.Documents.ToDataTable(nameof(self.Documents)),
             self.Entities.ToDataTable(nameof(self.Entities)),
             self.Relations.ToDataTable(nameof(self.Relations)),
-            self.SingleParameters.ToDataTable(nameof(self.SingleParameters)),
-            self.IntegerParameters.ToDataTable(nameof(self.IntegerParameters)),
-            self.StringParameters.ToDataTable(nameof(self.StringParameters)),
-            self.EntityParameters.ToDataTable(nameof(self.EntityParameters)),
-            self.PointParameters.ToDataTable(nameof(self.PointParameters)),
+            self.Parameters.ToDataTable(nameof(self.Parameters)),
+            self.Numbers.ToDataTable(nameof(self.Numbers)),
         ]);
 
     public static long GetNumParameters(this IBimData self)
-        => self.SingleParameters.Count
-           + self.IntegerParameters.Count
-           + self.StringParameters.Count
-           + self.EntityParameters.Count
-           + self.PointParameters.Count;
+        => self.Parameters.Count;
 
     public static List<T> ReadTable<T>(this IDataSet set, Func<IDataRow, T> f, string name)
     {
@@ -91,23 +84,14 @@ public static class BimDataExtension
     public static Point ToPoint(IDataRow row)
         => new((float)row[0], (float)row[1], (float)row[2]);
 
+    public static float ToNumber(IDataRow row)
+        => (float)row[0];
+
     public static string ToString(IDataRow row)
         => new((string)row[0]);
 
-    public static ParameterSingle ToParameterSingle(IDataRow row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (float)row[2]);
-
-    public static ParameterEntity ToParameterEntity(IDataRow row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (EntityIndex)row[2]);
-
-    public static ParameterPoint ToParameterPoint(IDataRow row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (PointIndex)row[2]);
-
-    public static ParameterInt ToParameterInt(IDataRow row)
+    public static Parameter ToParameter(IDataRow row)
         => new((EntityIndex)row[0], (DescriptorIndex)row[1], (int)row[2]);
-
-    public static ParameterString ToParameterString(IDataRow row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (StringIndex)row[2]);
 
     public static EntityRelation ToRelation(IDataRow row)
         => new((EntityIndex)row[0], (EntityIndex)row[1], (RelationType)row[2]);
@@ -126,11 +110,8 @@ public static class BimDataExtension
         var r = new BimData();
         r.Diagnostics = ReadTable(set, ToDiagnostic, nameof(r.Diagnostics));
         r.Points = ReadTable(set, ToPoint, nameof(r.Points));
-        r.SingleParameters = ReadTable(set, ToParameterSingle, nameof(r.SingleParameters));
-        r.EntityParameters = ReadTable(set, ToParameterEntity, nameof(r.EntityParameters));
-        r.IntegerParameters = ReadTable(set, ToParameterInt, nameof(r.IntegerParameters));
-        r.PointParameters = ReadTable(set, ToParameterPoint, nameof(r.PointParameters));
-        r.StringParameters = ReadTable(set, ToParameterString, nameof(r.StringParameters));
+        r.Parameters = ReadTable(set, ToParameter, nameof(r.Parameters));
+        r.Numbers = ReadTable(set, ToNumber, nameof(r.Numbers));
         r.Relations = ReadTable(set, ToRelation, nameof(r.Relations));
         r.Strings = ReadTable(set, ToString, nameof(r.Strings));
         r.Descriptors = ReadTable(set, ToDescriptor, nameof(r.Descriptors));

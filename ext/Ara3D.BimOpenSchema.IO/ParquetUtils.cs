@@ -171,8 +171,7 @@ public static class ParquetUtils
 
     public static IDataSet ReadParquetFromZip(this FilePath filePath)
         => Task.Run(() => filePath.ReadParquetFromZipAsync()).GetAwaiter().GetResult();
-
-
+    
     public static void WriteParquetToZip(this BimGeometry bg, FilePath file,
         CompressionMethod parquetCompressionMethod = CompressionMethod.Brotli,
         CompressionLevel parquetCompressionLevel = CompressionLevel.Optimal,
@@ -367,20 +366,11 @@ public static class ParquetUtils
     public static Point ToPoint(object[] row)
         => new((float)row[0], (float)row[1], (float)row[2]);
 
-    public static ParameterSingle ToParameterSingle(object[] row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (float)row[2]);
+    public static float ToNumber(object[] row)
+        => (float)row[0];
 
-    public static ParameterEntity ToParameterEntity(object[] row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (EntityIndex)row[2]);
-
-    public static ParameterPoint ToParameterPoint(object[] row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (PointIndex)row[2]);
-
-    public static ParameterInt ToParameterInt(object[] row)
+    public static Parameter ToParameter(object[] row)
         => new((EntityIndex)row[0], (DescriptorIndex)row[1], (int)row[2]);
-
-    public static ParameterString ToParameterString(object[] row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (StringIndex)row[2]);
 
     public static EntityRelation ToRelation(object[] row)
         => new((EntityIndex)row[0], (EntityIndex)row[1], (RelationType)row[2]);
@@ -406,11 +396,8 @@ public static class ParquetUtils
             case nameof(BimData.Diagnostics): return async (stream, data) => data.Diagnostics = await ReadParquetAsync(stream, name, ToDiagnostic);
             case nameof(BimData.Documents): return async (stream, data) => data.Documents = await ReadParquetAsync(stream, name, ToDocument);
             case nameof(BimData.Points): return async (stream, data) => data.Points = await ReadParquetAsync(stream, name, ToPoint);
-            case nameof(BimData.SingleParameters): return async (stream, data) => data.SingleParameters = await ReadParquetAsync(stream, name, ToParameterSingle);
-            case nameof(BimData.EntityParameters): return async (stream, data) => data.EntityParameters = await ReadParquetAsync(stream, name, ToParameterEntity);
-            case nameof(BimData.IntegerParameters): return async (stream, data) => data.IntegerParameters = await ReadParquetAsync(stream, name, ToParameterInt);
-            case nameof(BimData.PointParameters): return async (stream, data) => data.PointParameters = await ReadParquetAsync(stream, name, ToParameterPoint);
-            case nameof(BimData.StringParameters): return async (stream, data) => data.StringParameters = await ReadParquetAsync(stream, name, ToParameterString);
+            case nameof(BimData.Numbers): return async (stream, data) => data.Numbers = await ReadParquetAsync(stream, name, ToNumber);
+            case nameof(BimData.Parameters): return async (stream, data) => data.Parameters = await ReadParquetAsync(stream, name, ToParameter);
             case nameof(BimData.Relations): return async (stream, data) => data.Relations = await ReadParquetAsync(stream, name, ToRelation);
             case nameof(BimData.Descriptors): return async (stream, data) => data.Descriptors = await ReadParquetAsync(stream, name, ToDescriptor);
             case nameof(BimData.Entities): return async (stream, data) => data.Entities = await ReadParquetAsync(stream, name, ToEntity);
