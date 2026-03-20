@@ -1,4 +1,5 @@
-﻿using Autodesk.Revit.UI;
+﻿using Ara3D.Utils;
+using Autodesk.Revit.UI;
 
 namespace Ara3D.Bowerbird.RevitSamples
 {
@@ -12,7 +13,7 @@ namespace Ara3D.Bowerbird.RevitSamples
             if (uidoc == null) return;
             var doc = uidoc.Document;
             doc.WriteSchedulesAsJson(Config.OutputDir);
-            Ara3D.Utils.ProcessUtil.OpenFolderInExplorer(Config.OutputDir);
+            Config.OutputDir.OpenFolderInExplorer();
         }
     }
 }

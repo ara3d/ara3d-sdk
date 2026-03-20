@@ -62,7 +62,7 @@ namespace Ara3D.Utils.Wpf
         {
             if (YesNo($"Export completed. File saved to:\n{path}. Do you want to open the folder?",
                     "Export Completed"))
-                path.GetDirectory().OpenFolderInExplorer();
+                path.OpenFileInExplorer();
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Text;
 using System.Windows.Forms;
 using Ara3D.Logging;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using FilePath = Ara3D.Utils.FilePath;
 
 namespace Ara3D.Bowerbird.RevitSamples;
 
@@ -14,6 +14,7 @@ public class BimOpenSchemaExporter
 {
     public UIApplication UIApp;
     public BosRevitBuilder BosRevitBuilder;
+    public FilePath OutputFilePath;
     public int ProcessedCount;
     public ExportProgressForm ExportProgressForm;
 
@@ -65,7 +66,7 @@ public class BimOpenSchemaExporter
             logger.Log($"Building Geometry");
             BosRevitBuilder.BuildGeometry();
             logger.Log($"Exporting BIM Open Schema");
-            BosRevitBuilder.ExportBimOpenSchema(settings, logger);
+            OutputFilePath = BosRevitBuilder.ExportBimOpenSchema(settings, logger);
             logger.Log($"Completed export");
 
             if (shutDownOnCompletion)

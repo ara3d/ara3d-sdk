@@ -36,7 +36,7 @@ namespace Ara3D.Utils
                 UseShellExecute = false
             });
 
-        public static Process SelectFileInExplorer(this FilePath filePath)
+        public static Process OpenFileInExplorer(this FilePath filePath)
             => Process.Start(new ProcessStartInfo
             {
                 FileName = "explorer.exe",
@@ -79,7 +79,7 @@ namespace Ara3D.Utils
             }
 
             // If that didn't work, show the file in explorer.
-            return filePath.SelectFileInExplorer();
+            return filePath.OpenFileInExplorer();
         }
 
         /// <summary>

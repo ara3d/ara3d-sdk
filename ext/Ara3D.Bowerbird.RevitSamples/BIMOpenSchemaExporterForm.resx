@@ -136,13 +136,14 @@
   <data name="labelAbout.Text" xml:space="preserve">
     <value>BOS files are zipped packages of Parquet files. Apache Parquet is a compact, high-performance, columnar format with broad industry support.
 
-With Ara 3D Studio you can:
+Ara 3D Studio is a free companion tool included with this exporter and supports a wide range of workflows including: 
 
-🔎 Explore and view the 3D geometry  
-📋 Browse the underlying data tables  
-📦 Extract the Parquet files  
-🗄 Create a DuckDB analytical database  
-📊 Export the data to Excel  
-🌐 Convert the model to .GLB files (binary glTF)</value>
+  • Explore and view 3D geometry  
+  • Browse underlying data tables  
+  • Extract Parquet files  
+  • Create DuckDB analytical databases  
+  • Export data to Excel  
+  • Convert models to .GLB (binary glTF)
+  </value>
   </data>
 </root>

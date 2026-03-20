@@ -33,7 +33,7 @@ namespace Ara3D.Bowerbird.RevitSamples
                 exporter.Export(view3D);
             }
 
-            outputFilePath.SelectFileInExplorer();
+            outputFilePath.OpenFileInExplorer();
         }
     }
 }

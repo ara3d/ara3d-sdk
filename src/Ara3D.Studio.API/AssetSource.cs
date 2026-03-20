@@ -19,6 +19,7 @@ public class AssetSource : IAssetSource
     public long NumPoints { get; private set; }
     public long NumFaces { get; private set; }
     public string FileType => FilePath.GetExtension();
+    public Action OpenFileInExplorer => () => FilePath.OpenFileInExplorer();
 
     public AssetSource(FilePath filePath, ILoader loader)
     {
