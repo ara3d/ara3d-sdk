@@ -5,6 +5,7 @@ using Ara3D.Models;
 using Ara3D.Utils;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using Ara3D.Utils.Wpf;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -40,6 +41,9 @@ namespace Ara3D.BimOpenSchema.Browser
             Category,
             CategoryType,
             Type, 
+            CategoryWithParameters,
+            ClassWithParameters,
+            TypeWithParameters,
         }
 
         public MainWindow()
@@ -86,9 +90,14 @@ namespace Ara3D.BimOpenSchema.Browser
             GroupingMenuItem.Items.Clear();
             foreach (var val in Enum.GetValues(typeof(Grouping)))
             {
+                // Add a separator before CategoryWithParameters 
+                if (val.Equals(Grouping.CategoryWithParameters))
+                    GroupingMenuItem.Items.Add(new Separator());
+                
+                var name = Enum.GetName(typeof(Grouping), val).SplitCamelCase();
                 var tmp = new MenuItem()
                 {
-                    Header = Enum.GetName(typeof(Grouping), val),
+                    Header = name,
                     IsCheckable = true,
                 };
                 if (CurrentGrouping == (Grouping)val)
@@ -144,6 +153,7 @@ namespace Ara3D.BimOpenSchema.Browser
                 case Grouping.AlphaName:
                     return ObjectModel.Entities.GroupBy(e => e.Name.IsNullOrEmpty() ? " " : e.Name[0].ToString());
                 case Grouping.Category:
+                case Grouping.CategoryWithParameters:
                     return ObjectModel.Entities.GroupBy(e => e.Category);
                 case Grouping.CategoryType:
                     return ObjectModel.Entities.GroupBy(e => e.CategoryType);
@@ -152,12 +162,14 @@ namespace Ara3D.BimOpenSchema.Browser
                 case Grouping.Group:
                     return ObjectModel.Entities.GroupBy(e => e.GroupName);
                 case Grouping.Class:
+                case Grouping.ClassWithParameters:
                     return ObjectModel.Entities.GroupBy(e => e.ClassName);
                 case Grouping.Room:
                     return ObjectModel.Entities.GroupBy(e => e.RoomName);
                 case Grouping.Document:
                     return ObjectModel.Entities.GroupBy(e => e.DocumentTitle);
                 case Grouping.Type:
+                case Grouping.TypeWithParameters:
                     return ObjectModel.Entities.GroupBy(e => e.Type);
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -270,8 +282,13 @@ namespace Ara3D.BimOpenSchema.Browser
             }
         }
 
+        public bool IncludeParameters()
+        {
+            return CurrentGrouping.ToString().EndsWith("Parameters");
+        }
+
         public DataTableFromEntities CreateTable(IGrouping<string, EntityModel> entities)
-            => new (entities.ToList(), entities.Key, IncludeParamsMenuItem.IsChecked && CurrentGrouping != Grouping.None);
+            => new (entities.ToList(), entities.Key, IncludeParameters());
 
         private async Task UpdateTables()
         {

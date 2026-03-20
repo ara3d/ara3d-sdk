@@ -49,6 +49,16 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="RemoveUnwantedFiles" AfterTargets="Build">
+    <Delete Files="$(OutDir)RevitAPI.dll" />
+    <Delete Files="$(OutDir)RevitAPIUI.dll" />
+    <Delete Files="$(OutDir)AdWindows.dll" />
+    <Delete Files="$(OutDir)UIFramework.dll" />
+    <Delete Files="$(OutDir)runtimes\**\*.*" />
+    <Delete Files="$(OutDir)*.pdb" />
+    <RemoveDir Directories="$(OutDir)runtimes" />
+  </Target>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call post-build.bat $(OutDir)" />
   </Target>

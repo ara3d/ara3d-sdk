@@ -15,11 +15,6 @@ if /I "%~1"=="-clean" goto :clean
 
 :: -------- 3)  Normal install --------------------------------
 
-:: Remove superfluous runtime folders
-rd /S /Q "%1\runtimes\linux-arm64"
-rd /S /Q "%1\runtimes\linux-x64"
-rd /S /Q "%1\runtimes\osx-arm64"
-
 :: Run ilrepack tool (must have been previously installed using dotnet ) 
 :: This prevents conflicts with other older versions of Ara3D tools
 pushd %1

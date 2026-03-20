@@ -391,12 +391,12 @@ public static class ParquetUtils
         {
             // Tables with single columns
             case nameof(BimData.Strings): return async (stream, data) => data.Strings = await ReadParquetColumnAsync<string>(stream);
+            case nameof(BimData.Numbers): return async (stream, data) => data.Numbers = await ReadParquetColumnAsync<float>(stream);
 
             // Compound tables
             case nameof(BimData.Diagnostics): return async (stream, data) => data.Diagnostics = await ReadParquetAsync(stream, name, ToDiagnostic);
             case nameof(BimData.Documents): return async (stream, data) => data.Documents = await ReadParquetAsync(stream, name, ToDocument);
             case nameof(BimData.Points): return async (stream, data) => data.Points = await ReadParquetAsync(stream, name, ToPoint);
-            case nameof(BimData.Numbers): return async (stream, data) => data.Numbers = await ReadParquetAsync(stream, name, ToNumber);
             case nameof(BimData.Parameters): return async (stream, data) => data.Parameters = await ReadParquetAsync(stream, name, ToParameter);
             case nameof(BimData.Relations): return async (stream, data) => data.Relations = await ReadParquetAsync(stream, name, ToRelation);
             case nameof(BimData.Descriptors): return async (stream, data) => data.Descriptors = await ReadParquetAsync(stream, name, ToDescriptor);

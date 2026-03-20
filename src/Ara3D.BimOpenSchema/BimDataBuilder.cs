@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace Ara3D.BimOpenSchema;
 
@@ -13,6 +12,7 @@ public class BimDataBuilder : IBimData
     private readonly Dictionary<Point, int> _pointLookup = new();
     private readonly Dictionary<ParameterDescriptor, int> _descriptorLookup = new();
     private readonly Dictionary<string, int> _stringLookup = new();
+    private readonly Dictionary<float, int> _numberLookup = new();
 
     private readonly List<ParameterDescriptor> _descriptors = [];
     private readonly List<Parameter> _parameters = [];
@@ -83,10 +83,7 @@ public class BimDataBuilder : IBimData
         => (StringIndex)Add(_stringLookup, _strings, name ?? "");
 
     public NumberIndex AddNumber(double val)
-    {
-        _numbers.Add((float)val);
-        return (NumberIndex)(_numbers.Count - 1);
-    }
+        => (NumberIndex)Add(_numberLookup, _numbers, (float)val);
 
     public void AddParameter(EntityIndex e, double val, DescriptorIndex d)
         => _parameters.Add(new(e, d, (int)AddNumber(val)));

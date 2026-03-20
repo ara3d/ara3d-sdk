@@ -2,7 +2,7 @@
   "profiles": {
     "Ara3D.BimOpenSchema.Browser": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\cdigg\\OneDrive\\Documents\\BIM Open Schema\\racadvancedsampleproject.bos\""
+      "commandLineArgs": "\"C:\\Users\\cdigg\\OneDrive\\Documents\\BIM Open Schema\\rac_basic_sample_project-2025.bos\""
     }
   }
 }

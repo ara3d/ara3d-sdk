@@ -26,7 +26,7 @@ public class BosRevitBuilder
         BimDataBuilder.Manifest = new();
 
         BimDataBuilder.Manifest.GeneratorApplication = "Revit 2025 BIM Open Schema Parquet Exporter";
-        BimDataBuilder.Manifest.GeneratorVersion = "";
+        BimDataBuilder.Manifest.GeneratorVersion = "0.9.5";
         BimDataBuilder.Manifest.ExportOptions = Settings;
         CreateCommonDescriptors();
 
@@ -44,7 +44,8 @@ public class BosRevitBuilder
         }
     }
 
-    public FilePath InputPath => new FilePath(InitialDocument.PathName);
+    public FilePath InputPath 
+        => new FilePath(InitialDocument.PathName);
 
     public void CreateCommonDescriptors()
     {

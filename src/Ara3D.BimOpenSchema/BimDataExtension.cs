@@ -20,6 +20,12 @@ public static class BimDataExtension
     public static Point Get(this IBimData self, PointIndex index) 
         => self.Points[(int)index];
 
+    public static float Get(this IBimData self, NumberIndex index)
+        => self.Numbers[(int)index];
+
+    public static Parameter Get(this IBimData self, ParameterIndex index)
+        => self.Parameters[(int)index];
+    
     public static EntityRelation Get(this IBimData self, RelationIndex index) 
         => self.Relations[(int)index];
 

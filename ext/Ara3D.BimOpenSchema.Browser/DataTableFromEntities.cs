@@ -54,6 +54,17 @@ public class DataTableFromEntities : IDataTable
         return r;
     }
 
+    public static Type GetColumnDotNetType(ParameterType pt)
+        => pt switch
+        {
+            ParameterType.String => typeof(string),
+            ParameterType.Number => typeof(float),
+            ParameterType.Entity => typeof(int),
+            ParameterType.Int => typeof(int),
+            // TEMP: Points are skipped, for now.
+            _ => null
+        };
+
     public DataTableFromEntities(IReadOnlyList<EntityModel> entities, string name, bool includeParameters)
     {
         Entities = entities;
@@ -75,7 +86,7 @@ public class DataTableFromEntities : IDataTable
         //var categoryTypeColumn = AddColumn("CategoryType", typeof(string));
 
         var nonParameterColumnCount = ColumnLookup.Count;
-
+        
         // Create the parameter columns
         foreach (var e in Entities)
         {
@@ -83,16 +94,11 @@ public class DataTableFromEntities : IDataTable
             {
                 foreach (var pm in e.Parameters)
                 {
-                    // TODO: temporary. These type can't be converted to Parquet 
-                    if (pm.Descriptor.ParameterType == ParameterType.Point)
+                    var pt = pm.Descriptor.ParameterType;
+                    var paramType = GetColumnDotNetType(pt);
+                    if (paramType == null)
                         continue;
-
-                    var paramType = pm.Descriptor.DotNetType;
                     var paramName = pm.Descriptor.Name;
-
-                    if (pm.Descriptor.ParameterType == ParameterType.Entity)
-                        paramType = typeof(int);
-
                     AddColumn(paramName, paramType);
                 }
             }
@@ -125,14 +131,17 @@ public class DataTableFromEntities : IDataTable
 
                 if (e.ParameterValues.TryGetValue(column.Name, out var val) && val != null) 
                 {
+                    // EntityModel is just stored as an integer
                     if (val is EntityModel em)
                     {
-                        column.Values.Add($"{(int)em.Index}({nameof(BimGeometryTableName.Materials)})");
+                        column.Values.Add((int)em.Index);
                     }
+                    // String, Int, Float
                     else if (val.GetType() == column.Type)
                     {
                         column.Values.Add(val);
                     }
+                    // Default to the default value if the type is wrong (e.g., a string value for a number parameter)
                     else
                     {
                         column.Values.Add(column.DefaultValue);

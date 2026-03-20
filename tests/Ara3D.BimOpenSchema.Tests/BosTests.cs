@@ -11,8 +11,9 @@ public static class BosTests
     public static DirectoryPath InputDir => SpecialFolders.MyDocuments.RelativeFolder("BIM Open Schema");
     //public static string TestFileName = "Autodesk_Hospital_Metric_Architectural_Central.bos";
     public static string TestFileName = "Snowdon Towers Sample Architectural.bos";
-    public static FilePath TestFile => InputDir.RelativeFile(TestFileName);
-
+    //public static FilePath TestFile => InputDir.RelativeFile(TestFileName);
+    public static FilePath TestFile => @"C:\Users\cdigg\OneDrive\Documents\BIM Open Schema\rac_basic_sample_project-2025.bos";
+    
     [Test]
     public static void TestLoadBimDataAndBimGeometry()
     {
@@ -43,8 +44,19 @@ public static class BosTests
         GroupAndCountBy("Category", em => em.Category, bom);
         GroupAndCountBy("CategoryType", em => em.CategoryType, bom);
         GroupAndCountBy("BuiltInCategory", em => em.BuiltInCategory, bom);
+
+        OutputSomeParameters(bom);
     }
 
+    public static void OutputSomeParameters(BimObjectModel bom)
+    {
+        Console.WriteLine("Some parameters:");
+        var i = 0;
+        foreach (var p in bom.Entities.Take(20).SelectMany(e => e.ParameterValues))
+        {
+            Console.WriteLine($"  {i++}. {p.Key} = {p.Value}");
+        }
+    }
 
     public static void GroupAndCountBy(string groupType, Func<EntityModel, string> f, BimObjectModel bom)
     {
