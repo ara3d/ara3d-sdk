@@ -8,6 +8,7 @@ public interface ISubscriber
 /// Filtering of events is done by the bus, only subscribed events are ever sent.
 /// </summary>
 public interface ISubscriber<in T> : ISubscriber
+    where T: IEvent
 {
     void OnEvent(T evt);
 }

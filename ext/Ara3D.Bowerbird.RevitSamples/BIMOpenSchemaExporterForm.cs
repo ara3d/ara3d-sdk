@@ -177,7 +177,12 @@ namespace Ara3D.BIMOpenSchema.Revit2025
             }
         }
 
-        private void buttonLaunch_Click(object sender, EventArgs e)
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            CurrentFilePath.OpenFileInExplorer();
+        }
+
+        private void buttonLaunch_Click_1(object sender, EventArgs e)
         {
             if (!Ara3dStudioExePath.Exists())
                 MessageBox.Show("Could not find Ara 3D Studio");
@@ -186,11 +191,6 @@ namespace Ara3D.BIMOpenSchema.Revit2025
                 Ara3dStudioExePath.Execute(CurrentFilePath.Value.Quote());
             else
                 Ara3dStudioExePath.Execute();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            CurrentFilePath.OpenFileInExplorer();
         }
     }
 }

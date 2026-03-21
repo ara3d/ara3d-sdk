@@ -20,6 +20,22 @@ public class AssetSource : IAssetSource
     public long NumFaces { get; private set; }
     public string FileType => FilePath.GetExtension();
     public Action OpenFileInExplorer => () => FilePath.OpenFileInExplorer();
+    
+    public Action OpenFileInBimOpenSchemaBrowser
+    {
+        get
+        {
+            if (!FilePath.GetExtension().Equals(".bos", StringComparison.OrdinalIgnoreCase))
+                return null;
+
+            var exeDir = new DirectoryPath(AppContext.BaseDirectory);
+            var app = exeDir.RelativeFile("browser", "Ara3D.BimOpenSchema.Browser.exe");
+            if (!app.Exists())
+                return null;
+
+            return () => app.Execute(FilePath.Value.Quote());
+        }
+    }
 
     public AssetSource(FilePath filePath, ILoader loader)
     {

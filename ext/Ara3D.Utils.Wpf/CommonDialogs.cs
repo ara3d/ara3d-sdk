@@ -49,7 +49,7 @@ namespace Ara3D.Utils.Wpf
             => MessageBox.Show(message, caption, MessageBoxButton.OKCancel) == MessageBoxResult.OK;
 
         public static void Error(string message, Exception ex)
-            => MessageBox.Show(message + $": {ex.Message}", "Error");
+            => MessageBox.Show(message + $": {ex?.Message}", "Error");
 
         public static void FolderExportCompleted(DirectoryPath path)
         {
