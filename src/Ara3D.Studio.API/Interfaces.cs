@@ -17,6 +17,9 @@ public interface IHostApplication
     ILogger Logger { get; }
     void Invalidate(object obj);
     void RebuildUI(object obj);
+    void AnimateCameraTo(CameraState cameraState);
+    void SetCameraState(CameraState cameraState);
+    CameraState GetCameraState();
 }
 
 // Implementing this interface assures that your script is called on a regular phases
@@ -92,4 +95,13 @@ public interface IModelCommand : IScriptedCommand
     string Name { get; }
     void Execute(FlowObject fo);
     bool CanExecute(FlowObject fo);
+}
+
+/// <summary>
+/// A modeless tool, usually with a UI.
+/// </summary>
+public interface ITool : IScriptedComponent
+{
+    bool CanExecute(EvalContext context);
+    void Execute(EvalContext context);
 }

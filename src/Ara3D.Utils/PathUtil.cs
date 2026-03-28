@@ -133,7 +133,13 @@ namespace Ara3D.Utils
         /// Appends a time stamp to the time stamped filename and extension.
         /// </summary>
         public static FilePath ToTimeStampedFileName(this FilePath filePath)
-            => TransformName(filePath, name => $"{name}-{GetTimeStamp()}");
+            => filePath.AddSuffixToName("-" + GetTimeStamp());
+
+        /// <summary>
+        /// Appends a time stamp to the time stamped filename and extension.
+        /// </summary>
+        public static FilePath AddSuffixToName(this FilePath filePath, string suffix)
+            => TransformName(filePath, name => $"{name}{suffix}");
 
         /// <summary>
         /// Appends a time stamp to the time stamped filename and extension.

@@ -112,8 +112,8 @@ namespace Ara3D.Utils.Wpf
         public static MenuItem? FindMenuItem(this ItemCollection items, string text)
             => items.OfType<MenuItem>().FirstOrDefault(x => FindMenuItem(x, text) != null);
 
-        public static MenuItem ToMenuItem(this RelayCommand command)
-            => new()  { Header = command.Name, Command = command };
+        public static MenuItem ToMenuItem(this ICommand command, string text)
+            => new()  { Header = text, Command = command };
 
         public static MenuItem Add(this MenuItem menu, MenuItem child)
         {
@@ -130,8 +130,8 @@ namespace Ara3D.Utils.Wpf
         public static void AddSeparator(this MenuItem menu)
             => menu.Items.Add(new Separator());
 
-        public static MenuItem Add(this MenuItem menu, RelayCommand command)
-            => menu.Add(command.ToMenuItem());
+        public static MenuItem Add(this MenuItem menu, ICommand command, string text)
+            => menu.Add(command.ToMenuItem(text));
 
         public static MenuItem Add(this MenuItem menu, string text, Action action = null)
             => menu.Items.Add(text, action);

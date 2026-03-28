@@ -1,4 +1,6 @@
 ﻿using Ara3D.Studio.Samples;
+using Microsoft.CodeAnalysis;
+using Color = Ara3D.Geometry.Color;
 
 namespace Ara3D.Studio.Samples.Demos;
 

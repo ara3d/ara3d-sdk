@@ -82,7 +82,8 @@
 
         // Returns the distance between two lines
         // t and u are the distances if the intersection points along the two lines 
-        public static float LineLineDistance(Line2D line1, Line2D line2, out float t, out float u, float epsilon = 0.0000001f)
+        public static float LineLineDistance(Line2D line1, Line2D line2, out float t, out float u,
+            float epsilon = 0.0000001f)
         {
             var x1 = line1.A.X;
             var y1 = line1.A.Y;
@@ -307,7 +308,7 @@
         public static QuadGrid3D Subdivide(this Quad3D q, int xSegments, int ySegments)
         {
             var leftSidePoints = q.A.Sample(q.D, ySegments + 1);
-            var rightSidePoints = q.B.Sample(q.C, ySegments + 1 );
+            var rightSidePoints = q.B.Sample(q.C, ySegments + 1);
             var rows = (ySegments + 1).MapRange(i => leftSidePoints[i].Sample(rightSidePoints[i], xSegments + 1));
             return rows.RowsToArray().ToQuadGrid3D(false, false);
         }
@@ -435,13 +436,13 @@
 
         public static Matrix4x4 ToBoxTransform(this Line3D line, float thickness, float height)
             => Matrix4x4.CreateScale(line.Length, thickness, height)
-                   * Vector3.UnitX.RotateTo(line.Direction)
-                   * Matrix4x4.CreateTranslation(line.Center);
+               * Vector3.UnitX.RotateTo(line.Direction)
+               * Matrix4x4.CreateTranslation(line.Center);
 
         public static Matrix4x4 AlignZAxisTransform(this Line3D line)
             => Matrix4x4.CreateScale(1, 1, line.Length)
-                * Vector3.UnitZ.RotateTo(line.Direction)
-                * Matrix4x4.CreateTranslation(line.A);
+               * Vector3.UnitZ.RotateTo(line.Direction)
+               * Matrix4x4.CreateTranslation(line.A);
 
         public static LineMesh3D ToLineMesh(this IReadOnlyList<Point3D> points, bool closed)
         {
@@ -482,10 +483,13 @@
             var zs = new float[pts.Count];
             for (int i = 0; i < pts.Count; i++)
             {
-                xs[i] = pts[i].X; ys[i] = pts[i].Y; zs[i] = pts[i].Z;
+                xs[i] = pts[i].X;
+                ys[i] = pts[i].Y;
+                zs[i] = pts[i].Z;
             }
-            Array.Sort(xs); 
-            Array.Sort(ys); 
+
+            Array.Sort(xs);
+            Array.Sort(ys);
             Array.Sort(zs);
             int mid = pts.Count / 2;
             return new Vector3(xs[mid], ys[mid], zs[mid]);
@@ -512,14 +516,15 @@
             return total;
         }
 
-        public static Bounds3D GetTotalBoundsTrimOutliers(this IReadOnlyList<Bounds3D> bounds, float trimFraction = 0.1f)
+        public static Bounds3D GetTotalBoundsTrimOutliers(this IReadOnlyList<Bounds3D> bounds,
+            float trimFraction = 0.1f)
         {
             if (bounds.Count < 5)
                 return bounds.GetTotalBounds();
 
             var center = GetMedianCenter(bounds);
             var distances = bounds.Map(b => b.Center.Vector3.Distance(center).Value);
-            
+
             // Find distance cutoff at (1-trimFraction) quantile
             var cutoff = Quantile(distances, 1.0f - trimFraction);
 
@@ -539,7 +544,7 @@
         }
 
         //==
-        
+
         public static QuadMesh3D Subdivide(this QuadMesh3D self, int n)
         {
             if (n <= 0) throw new ArgumentOutOfRangeException(nameof(n), "n must be >= 1.");
@@ -612,10 +617,10 @@
                         else if (u == 0 && v == n) idx = GetOrAddVertex(id);
 
                         // Edges (reuse across faces)
-                        else if (v == 0) idx = GetOrAddEdgePoint(ia, ib, u);         // A->B
-                        else if (u == n) idx = GetOrAddEdgePoint(ib, ic, v);         // B->C
-                        else if (v == n) idx = GetOrAddEdgePoint(id, ic, u);         // D->C (left->right along top edge)
-                        else if (u == 0) idx = GetOrAddEdgePoint(ia, id, v);         // A->D
+                        else if (v == 0) idx = GetOrAddEdgePoint(ia, ib, u); // A->B
+                        else if (u == n) idx = GetOrAddEdgePoint(ib, ic, v); // B->C
+                        else if (v == n) idx = GetOrAddEdgePoint(id, ic, u); // D->C (left->right along top edge)
+                        else if (u == 0) idx = GetOrAddEdgePoint(ia, id, v); // A->D
 
                         // Interior (unique to this face)
                         else
@@ -654,7 +659,8 @@
         public static QuadMesh3D Cap(this QuadMesh3D mesh, IReadOnlyList<int> indices, int segments)
         {
             if (indices == null) throw new ArgumentNullException(nameof(indices));
-            if (indices.Count < 3) throw new ArgumentException("Need at least 3 indices to form a polygon.", nameof(indices));
+            if (indices.Count < 3)
+                throw new ArgumentException("Need at least 3 indices to form a polygon.", nameof(indices));
             if (segments < 1) throw new ArgumentOutOfRangeException(nameof(segments), "segments must be >= 1.");
 
             var (srcPoints, srcFaces) = mesh;
@@ -669,8 +675,11 @@
             for (var i = 0; i < indices.Count; i++)
             {
                 var p = srcPoints[indices[i]];
-                cx += p.X; cy += p.Y; cz += p.Z;
+                cx += p.X;
+                cy += p.Y;
+                cz += p.Z;
             }
+
             var inv = 1.0f / indices.Count;
             var center = new Point3D(cx * inv, cy * inv, cz * inv);
 
@@ -716,6 +725,5 @@
 
             return builder.ToQuadMesh3D();
         }
-
     }
 }

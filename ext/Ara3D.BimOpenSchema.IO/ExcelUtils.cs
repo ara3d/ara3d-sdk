@@ -86,5 +86,8 @@ namespace Ara3D.BimOpenSchema.IO
 
             return finalName;
         }
+
+        public static void WriteToExcel(this IBimData data, FilePath fp)
+            => data.ToDataSet().WriteToExcel(fp);
     }
 }

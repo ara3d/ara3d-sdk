@@ -1,4 +1,5 @@
 using System.Windows;
+using MessageBox = System.Windows.MessageBox;
 
 public class Command_0 : IScriptedCommand
 {

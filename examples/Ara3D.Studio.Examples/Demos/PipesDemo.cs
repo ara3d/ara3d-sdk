@@ -1,4 +1,6 @@
-﻿namespace Ara3D.Studio.Samples.Demos;
+﻿using Color = Ara3D.Geometry.Color;
+
+namespace Ara3D.Studio.Samples.Demos;
 
 [Category(nameof(Categories.Demos))]
 public class PipesDemo : IGenerator, IAnimated
@@ -22,7 +24,7 @@ public class PipesDemo : IGenerator, IAnimated
 
     private bool[,,] occupied;
     private List<List<Integer3>> pipes;
-    private List<Color> colors;
+    private List<Geometry.Color> colors;
 
     public void Reset(EvalContext context)
     {

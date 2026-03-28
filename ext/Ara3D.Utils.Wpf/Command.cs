@@ -3,13 +3,13 @@ using System.Windows.Input;
 
 namespace Ara3D.Utils.Wpf;
 
-public class RelayCommand : ICommand
+public class Command : ICommand
 {
     public string Name;
     private readonly Action _execute;
     private readonly Func<bool> _canExecute;
 
-    public RelayCommand(Action execute, Func<bool> canExecute = null, string name = null)
+    public Command(Action execute, Func<bool> canExecute = null, string name = null)
     {
         _execute = execute ?? throw new ArgumentNullException(nameof(execute));
         _canExecute = canExecute;

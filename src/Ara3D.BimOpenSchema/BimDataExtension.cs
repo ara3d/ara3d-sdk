@@ -34,6 +34,9 @@ public static class BimDataExtension
 
     public static string GetEntityName(this IBimData self, EntityIndex index)
         => index >= 0 ? self.Get(self.Get(index).Name) : "null";
+    
+    public static string GetCategoryName(this IBimData self, EntityIndex index)
+        => self.GetEntityName(self.Get(index).Category);
 
     public static string GetEntityLabel(this IBimData self, EntityIndex index)
         => $"{self.GetEntityName(index)}[{index}]";

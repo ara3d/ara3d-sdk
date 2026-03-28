@@ -1,4 +1,6 @@
-﻿namespace Ara3D.Studio.Samples.Demos;
+﻿using Color = Ara3D.Geometry.Color;
+
+namespace Ara3D.Studio.Samples.Demos;
 
 public class CloningDemo : IGenerator
 {

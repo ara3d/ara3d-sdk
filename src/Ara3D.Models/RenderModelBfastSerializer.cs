@@ -21,7 +21,7 @@ public static class RenderModelBfastSerializer
         nameof(RenderModelData.Meta)
     };
 
-    public static unsafe void Save(RenderModelData renderModelData, FilePath filePath)
+    public static unsafe void Write(this RenderModelData renderModelData, FilePath filePath)
     {
         var sizes = new[]
         {
