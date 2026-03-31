@@ -37,20 +37,14 @@ public class FacadeGenerator : IGenerator
         var len = q.GetBottomLength();
         var lenSegments = (int)Math.Ceiling(len / (WindowWidth + MinWindowSpacing));
 
-        var grid = q.Subdivide(lenSegments, HeightSegments);
-        var bldr = new QuadMesh3DBuilder(); ;
-        bldr.Points.AddRange(grid.Points);
+        var bldr = q.Subdivide(lenSegments, HeightSegments).ToBuilder();
         var voids = new List<Quad3D>();
 
-        foreach (var f in grid.FaceIndices)
+        foreach (var f in bldr.GetFaces())
         {
-            var q1 = grid.Points.GetQuad(f);
-            var q2 = GetWindowQuadFromSegment(q1);
-            var newFace = bldr.InsertFace(f, q2);
-            bldr.DeleteLastFace();
-            bldr.ExtrudeFace(newFace, -WindowInset);
-            voids.Add(bldr.GetLastQuad());
-            bldr.DeleteLastFace();
+            var q2 = GetWindowQuadFromSegment(f.Quad);
+            var newFace = f.Insert(q2).Extrude(-WindowInset);
+            voids.Add(newFace.Quad);
         }
 
         return (bldr.ToQuadMesh3D(), voids);

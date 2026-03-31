@@ -38,6 +38,7 @@ public class Stairs : IGenerator
 
         var risers = new List<InstanceStruct>();
         var treads = new List<InstanceStruct>();
+        var landings = new List<InstanceStruct>();
 
         var profile = new List<Point3D>();
 
@@ -63,7 +64,10 @@ public class Stairs : IGenerator
             if (HasRiser)
                 risers.Add(new InstanceStruct(0, riserMatrix, 0, RiserMaterial, 0));
 
-            treads.Add(new InstanceStruct(0, treadMatrix, 0, TreadMaterial, 0));
+            if (i < Count - 1)
+            {
+                treads.Add(new InstanceStruct(0, treadMatrix, 0, TreadMaterial, 0));
+            }
             
             profile.Add((0, riserBack, riserBottom));
             profile.Add((0, riserBack, riserTop));

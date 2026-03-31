@@ -1,0 +1,94 @@
+﻿using Ara3D.BimOpenSchema;
+
+namespace Ara3D.Studio.Samples.Demos;
+
+[Category(nameof(Categories.Demos))]
+public class SimulateSequence2 : IModifier
+{
+    public List<byte> OriginalFlags { get; private set; }
+    public List<Matrix4x4> OriginalTransforms { get; private set; }
+    public List<float> StartTimes { get; private set; }
+    public List<Bounds3D> InstanceBounds { get; private set; }
+    public Bounds3D TotalBounds { get; private set; }
+    [Range(0f,1f)] public float LerpAmount { get; set; }
+    [Range(0f, 0.1f)] public float TimeToPosition { get; set; } = 0.05f;
+    [Range(0, 100)] public int DistanceZ { get; set; } = 50;
+    [Range(0, 2)] public float XYMultiplier { get; set; } = 3f;
+
+    public int NumObjects => OriginalTransforms?.Count ?? 0;
+
+    public float GetStartTime(Bounds3D localBounds, Bounds3D totalBounds)
+        => localBounds.Min.Z.InverseLerp(totalBounds.Min.Z, totalBounds.Max.Z);
+
+    /// <summary>
+    /// Returns two positions: the start position, and an intermediate position
+    /// </summary>
+    public (Matrix4x4 A, Matrix4x4 B) GetPositions(Bounds3D bounds, Matrix4x4 o)
+    {
+        var p = o.Translation;
+        var c = bounds.Center;
+        var d = bounds.DistanceFromZAxis(p);
+        var xOffset = p.X - c.X;
+        var yOffset = p.Y - c.Y;
+        var x0 = c.X + xOffset * XYMultiplier;
+        var y0 = c.Y + yOffset * XYMultiplier;
+        var m1 = o * Matrix4x4.CreateTranslation(new(x0, y0, -DistanceZ));
+        var m2 = o * Matrix4x4.CreateTranslation(new(x0, y0, 0));
+        return (m1, m2);
+    }
+    
+    public FlowObject Eval(FlowObject obj, EvalContext context)
+    {
+        if (obj.Value is not RenderModelData rmd)
+            return obj;
+
+        if (OriginalTransforms == null)
+        {
+            InstanceBounds = rmd.InstanceBounds.ToList();
+            OriginalTransforms = rmd.InstanceBuffer.Select(i => i.Matrix4x4).ToList();
+            OriginalFlags = rmd.InstanceBuffer.Select(i => i.Flags).ToList();
+            TotalBounds = rmd.TotalBounds;
+            StartTimes = InstanceBounds.Select(b => GetStartTime(b, TotalBounds)).ToList();
+        }
+
+        for (var i=0; i < rmd.InstanceBuffer.Count; i++)
+        {
+            var start = StartTimes[i];
+            var end = start + TimeToPosition;
+
+            if (LerpAmount < start)
+            {
+                rmd.InstanceBuffer[i].Flags = 1;
+            }
+            else 
+            {
+                rmd.InstanceBuffer[i].Flags = OriginalFlags[i];
+            }
+
+            var dest = OriginalTransforms[i];
+
+            if (LerpAmount >= end)
+            {
+                rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(dest);
+            }
+            else
+            {
+                var (srcA, srcB) = GetPositions(TotalBounds, dest);
+                var amount = (LerpAmount - start) * 10f;
+
+                if (amount < 0.5f)
+                {
+                    var lerpedMatrix = srcA.Lerp(srcB, amount * 2f);
+                    rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(lerpedMatrix);
+                }
+                else
+                {
+                    var lerpedMatrix = srcB.Lerp(dest, (amount - 0.5f) * 2f);
+                    rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(lerpedMatrix);
+                }
+            }
+        }
+
+        return obj;
+    }
+}

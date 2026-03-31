@@ -1,4 +1,6 @@
-﻿namespace Ara3D.Geometry
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Ara3D.Geometry
 {
     public enum StandardPlane
     {
@@ -184,6 +186,44 @@
         public static Vector3 InverseLerp(this Point3D point, Bounds3D bounds)
             => InverseLerp(point, bounds.Min, bounds.Max);
 
+        public static Vector3 InverseLerp(this Point3D point, Line3D line)
+            => InverseLerp(point, line.A, line.B);
+
+        public static Point3D CenterBottom(this Bounds3D self)
+            => self.Center.WithZ(self.Min.Z);
+
+        public static Point3D CenterTop(this Bounds3D self)
+            => self.Center.WithZ(self.Max.Z);
+
+        public static Line3D CenterZAxis(this Bounds3D bounds)
+        {
+            var c = bounds.Center;
+            return ((c.X, c.Y, bounds.Min.Z), (c.X, c.Y, bounds.Max.Z));
+        }
+
+        public static Line3D CenterYAxis(this Bounds3D bounds)
+        {
+            var c = bounds.Center;
+            return ((c.X, bounds.Min.Y, c.Z), (c.X, bounds.Max.Y, c.Z));
+        }
+
+        public static Number DistanceFromZAxis(this Bounds3D bounds, Vector3 p)
+        {
+            var c = bounds.Center;
+            var x = p.X - c.X;
+            var y = p.Y - c.Y;
+            return MathF.Sqrt(x * x + y * y);
+        }
+
+        public static Number InverseLerp(this Number self, Number a, Number b)
+            => self.Unlerp(a, b);
+
+        public static Line3D CenterXAxis(this Bounds3D bounds)
+        {
+            var c = bounds.Center;
+            return ((bounds.Min.X, c.Y, c.Z), (bounds.Max.X, c.Y, c.Z));
+        }
+
         public static Vector3 WithComponent(this Vector3 self, Integer component, Number value)
         {
             if (component == 0) return self.WithX(value);
@@ -280,30 +320,10 @@
         public static Triangle3D GetTriangle(this IReadOnlyList<Point3D> points, Integer3 face)
             => (points[face.A], points[face.B], points[face.C]);
 
-        public static Quad3D PushQuad(this Quad3D q, float distance)
+        public static Quad3D Push(this Quad3D q, float distance)
             => q.Translate(q.Normal * distance);
 
-        public static Integer4 InsertFace(this QuadMesh3DBuilder self, Integer4 f, Quad3D q)
-        {
-            var n = self.Points.Count;
-            self.Points.AddRange([q.A, q.B, q.C, q.D]);
-            var f0 = new Integer4(f.A, f.B, n + 1, n);
-            var f1 = new Integer4(f.B, f.C, n + 2, n + 1);
-            var f2 = new Integer4(f.C, f.D, n + 3, n + 2);
-            var f3 = new Integer4(f.D, f.A, n, n + 3);
-            var f4 = new Integer4(n, n + 1, n + 2, n + 3);
-            self.Faces.AddRange([f0, f1, f2, f3, f4]);
-            return f4;
-        }
-
-        public static Integer4 ExtrudeFace(this QuadMesh3DBuilder self, Integer4 f, float amount)
-            => self.InsertFace(f, PushQuad(self.Points.GetQuad(f), amount));
-
-        public static void DeleteLastFace(this QuadMesh3DBuilder self)
-            => self.Faces.RemoveAt(self.Faces.Count - 1);
-
-        public static Quad3D GetLastQuad(this QuadMesh3DBuilder self)
-            => self.Points.GetQuad(self.Faces[^1]);
+       
 
         public static QuadGrid3D Subdivide(this Quad3D q, int xSegments, int ySegments)
         {
@@ -645,7 +665,7 @@
                         var b = grid[u + 1, v];
                         var c = grid[u + 1, v + 1];
                         var d = grid[u, v + 1];
-                        builder.Faces.Add(new Integer4(a, b, c, d));
+                        builder.AddFace(new Integer4(a, b, c, d));
                     }
                 }
             }
@@ -668,7 +688,7 @@
             // Start with a copy of the input mesh (so we "add a cap" onto it)
             var builder = new QuadMesh3DBuilder();
             builder.Points.AddRange(srcPoints);
-            builder.Faces.AddRange(srcFaces);
+            builder.AddFaces(srcFaces);
 
             // Compute polygon center as average of boundary vertices
             float cx = 0, cy = 0, cz = 0;
@@ -717,7 +737,7 @@
                     var c = currRing[iNext];
                     var d = currRing[i];
 
-                    builder.Faces.Add(new Integer4(a, b, c, d));
+                    builder.AddFace(new Integer4(a, b, c, d));
                 }
 
                 prevRing = currRing;

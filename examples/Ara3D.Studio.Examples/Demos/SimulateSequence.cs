@@ -3,7 +3,7 @@
 namespace Ara3D.Studio.Samples.Demos;
 
 [Category(nameof(Categories.Demos))]
-public class SimulateConstructionSequence : IModifier
+public class SimulateSequence : IModifier
 {
     public List<byte> OriginalFlags { get; private set; }
     public List<Matrix4x4> OriginalTransforms { get; private set; }

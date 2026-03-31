@@ -1,6 +1,4 @@
-﻿using Ara3D.Studio.Samples;
-using Microsoft.CodeAnalysis;
-using Color = Ara3D.Geometry.Color;
+﻿using Color = Ara3D.Geometry.Color;
 
 namespace Ara3D.Studio.Samples.Demos;
 
@@ -16,21 +14,14 @@ public class Window : IGenerator
     
     public static (QuadMesh3D Frame, QuadMesh3D Pane) CreateWindow(Quad3D q, int xSegments, int ySegments, float mullionWidth, float paneInset)
     {
-        var grid = q.Subdivide(xSegments, ySegments);
-        var bldr = new QuadMesh3DBuilder();;
-        bldr.Points.AddRange(grid.Points);
+        var bldr = q.Subdivide(xSegments, ySegments).ToBuilder();
 
         var pane = new List<Quad3D>();
 
-        foreach (var f in grid.FaceIndices)
+        foreach (var f in bldr.GetFaces())
         {
-            var q1 = grid.Points.GetQuad(f);
-            var q2 = q1.Inset(mullionWidth);
-            var newFace = bldr.InsertFace(f, q2);
-            bldr.DeleteLastFace();
-            bldr.ExtrudeFace(newFace, -paneInset);
-            pane.Add(bldr.GetLastQuad());
-            bldr.DeleteLastFace();
+            var newFace = f.Inset(mullionWidth).Extrude(-paneInset);
+            pane.Add(newFace.Quad);
         }
 
         return (bldr.ToQuadMesh3D(), pane.ToQuadMesh3D());
