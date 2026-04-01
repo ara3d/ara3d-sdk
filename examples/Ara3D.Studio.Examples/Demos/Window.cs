@@ -22,6 +22,7 @@ public class Window : IGenerator
         {
             var newFace = f.Inset(mullionWidth).Extrude(-paneInset);
             pane.Add(newFace.Quad);
+            newFace.Delete();
         }
 
         return (bldr.ToQuadMesh3D(), pane.ToQuadMesh3D());

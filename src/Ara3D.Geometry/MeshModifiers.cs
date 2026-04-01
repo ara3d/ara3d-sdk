@@ -54,8 +54,20 @@ public static class MeshModifiers
     public static IReadOnlyList<Point3D> Translate(this IReadOnlyList<Point3D> points, Vector3 vector)
         => points.Transform(vector.ToTranslation3D());
 
+    public static IReadOnlyList<Point3D> Scale(this IReadOnlyList<Point3D> points, float amount)
+        => points.Map(p => p.Multiply(amount));
+
+    public static IReadOnlyList<Point3D> Scale(this IReadOnlyList<Point3D> points, Vector3 amount)
+        => points.Map(p => p.Multiply(amount));
+
     public static IReadOnlyList<Point3D> Translate(this IReadOnlyList<Point3D> points, IReadOnlyList<Vector3> vectors)
         => points.Transform(vectors.Translations());
+
+    public static IReadOnlyList<Point3D> Rotate(this IReadOnlyList<Point3D> points, Angle angle, Vector3 axis, Vector3 offset)
+        => points.Transform(
+            Matrix4x4.CreateTranslation(offset) * 
+            Matrix4x4.CreateFromAxisAngle(axis, angle) * 
+            Matrix4x4.CreateTranslation(-offset));
 
     public static TriangleMesh3D PushVertices(this TriangleMesh3D mesh, Number amount)
         => mesh.WithPoints(mesh.Points.Translate(mesh.VertexNormals().Map(n => n * amount)));

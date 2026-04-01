@@ -1,9 +1,11 @@
-﻿namespace Ara3D.Studio.Samples.Demos;
+﻿using System.Reflection.Metadata;
+
+namespace Ara3D.Studio.Samples.Demos;
 
 [Category(nameof(Categories.Demos))]
 public class Door : IGenerator
 {
-    [Range(0f, 5f)] public float Height = 3f;
+    [Range(0f, 5f)] public float Height = 2.4f;
     [Range(0f, 5f)] public float Width = 1f;
     [Range(0f, 0.5f)] public float Thickness = 0.07f;
     [Range(0f, 1f)] public float PanelMargin = 0.15f;
@@ -19,7 +21,10 @@ public class Door : IGenerator
     [Range(0, 100f)] public float FirstHorizontalPercentage = 40;
     [Range(0, 100f)] public float SecondHorizontalPercentage = 60;
 
-    public const int FaceNumber = 3;
+    [Range(0, 3f)] public float HandleHeight = 1f;
+    [Range(0, 1f)] public float HandleInset = 0.10f;
+
+    //[Range(0, 5)] public int NextFace { get; set; } = 0;
 
     public void BuildPanels(Quad3DFaceHandle f, Panel panelBuilder)
     {
@@ -68,9 +73,13 @@ public class Door : IGenerator
         }
     }
 
-    public TriangleMesh3D Eval(EvalContext context)
+    public IModel3D Eval()
     {
-        var bldr = PlatonicSolids.Cube.Scale((Width, Thickness, Height)).ToBuilder();
+        var bldr = PlatonicSolids
+            .Cube
+            .Scale((Width, Thickness, Height))
+            .Translate((0, 0, Height / 2))
+            .ToBuilder();
 
         if (HasPanels)
         {
@@ -83,12 +92,37 @@ public class Door : IGenerator
                 RaisedPanel = RaisedPanel
             };
 
-            var f = bldr.GetFace(FaceNumber);
-            f.FaceData.CornerIndices = f.FaceData.CornerIndices.RotateLeft();
-            BuildPanels(f, panelBuilder);
+            {
+                var f = bldr.GetFace(3);
+                f.FaceData.CornerIndices = f.FaceData.CornerIndices.RotateLeft();
+                BuildPanels(f, panelBuilder);
+            }
+            {
+                var f = bldr.GetFace(1);
+                f.FaceData.CornerIndices = f.FaceData.CornerIndices.RotateLeft();
+                BuildPanels(f, panelBuilder);
+            }
         }
 
-        return bldr.ToTriangleMesh3D();
+        var x = Width / 2 - HandleInset;
+        var y = Thickness / 2;
+        var z = HandleHeight;
+        var doorMesh = bldr.ToQuadMesh3D();
+
+        var handleMesh1 = new DoorHandle().Eval().Translate((x, y, z));
+        var handleMesh2 = handleMesh1.MirrorXZ();
+
+        var mb = new Model3DBuilder();
+        var doorColor = new Color(1, 1, 1, 1);
+        var doorMaterial = new Material(doorColor, 0, 0.9f);
+
+        var handleColor = new Color(0.85f, 0.85f, 0.85f, 1f);
+        var handleMaterial = new Material(handleColor, 1f, 0.3f);
+
+        mb.AddInstance(doorMesh.Triangulate(), doorMaterial);
+        mb.AddInstance(handleMesh1.Triangulate(), handleMaterial);
+        mb.AddInstance(handleMesh2.Triangulate(), handleMaterial);
+        return mb.Build();
     }
 }
 
@@ -99,4 +133,13 @@ public static class Helpers
 
     public static Integer4 RotateRight(this Integer4 self)
         => (self.D, self.A, self.B, self.C);
+
+    public static QuadMesh3D MirrorXZ(this QuadMesh3D mesh)
+        => mesh.Deform(p => (p.X, -p.Y, p.Z));
+
+    public static QuadMesh3D MirrorXY(this QuadMesh3D mesh)
+        => mesh.Deform(p => (p.X, p.Y, -p.Z));
+    
+    public static QuadMesh3D MirrorYZ(this QuadMesh3D mesh)
+        => mesh.Deform(p => (-p.X, p.Y, p.Z));
 }
