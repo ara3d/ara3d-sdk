@@ -1,10 +1,11 @@
-﻿using Ara3D.Collections;
+﻿using System.Diagnostics;
+using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Memory;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Ara3D.Models;
+
 
 /// <summary>
 /// This is a long-lived data structure that contains the memory data buffers that contain
@@ -33,11 +34,10 @@ public class RenderModelData : IDisposable
     public MetaData Meta;
     public UnmanagedList<float> VertexBuffer { get; private set; }
     public UnmanagedList<uint> IndexBuffer { get; private set; }
-    public UnmanagedList<MeshSliceStruct> MeshBuffer { get; private set; }
+    public UnmanagedList<MeshSliceStruct> MeshSliceBuffer { get; private set; }
     public UnmanagedList<InstanceStruct> InstanceBuffer { get; private set; }
     public UnmanagedList<Bounds3D> MeshBounds { get; }
     public UnmanagedList<Bounds3D> InstanceBounds { get; }
-
 
     public int PrimitiveSize => Meta.PrimitiveSize;
     public Bounds3D TotalBounds => Meta.TotalBounds;
@@ -46,7 +46,7 @@ public class RenderModelData : IDisposable
     public int VertexCount => VertexBuffer.Count;
     public int IndexCount => IndexBuffer.Count;
     public int FaceCount => IndexCount / PrimitiveSize;
-    public int MeshCount => MeshBuffer.Count;
+    public int MeshCount => MeshSliceBuffer.Count;
     public int InstanceCount => InstanceBuffer.Count;
 
     public RenderModelData(int primSize)
@@ -57,7 +57,7 @@ public class RenderModelData : IDisposable
         Meta.PrimitiveSize = primSize;
         VertexBuffer = new();
         IndexBuffer = new();
-        MeshBuffer = new();
+        MeshSliceBuffer = new();
         InstanceBuffer = new();
         MeshBounds = new();
         InstanceBounds = new();
@@ -69,7 +69,7 @@ public class RenderModelData : IDisposable
     public Model3D ToModel3D()
     {
         if (PrimitiveSize != 3) throw new Exception("Not a triangle mesh");
-        var meshes = MeshBuffer.Select(GetMesh);
+        var meshes = MeshSliceBuffer.Select(GetMesh);
         return new Model3D(meshes, InstanceBuffer);
     }
 
@@ -77,11 +77,11 @@ public class RenderModelData : IDisposable
     {
         VertexBuffer?.Dispose();
         IndexBuffer?.Dispose();
-        MeshBuffer?.Dispose();
+        MeshSliceBuffer?.Dispose();
         InstanceBuffer?.Dispose();
         VertexBuffer = null;
         IndexBuffer = null;
-        MeshBuffer = null;
+        MeshSliceBuffer = null;
         InstanceBuffer = null;
     }
 
@@ -89,7 +89,7 @@ public class RenderModelData : IDisposable
     {
         VertexBuffer?.Clear();
         IndexBuffer?.Clear();
-        MeshBuffer?.Clear();
+        MeshSliceBuffer?.Clear();
         InstanceBuffer?.Clear();
         Meta.TotalBounds = Bounds3D.Empty;
     }
@@ -102,19 +102,19 @@ public class RenderModelData : IDisposable
     {
         VertexBuffer.CopyFrom(vertexBuffer);
         IndexBuffer.CopyFrom(indexBuffer);
-        MeshBuffer.CopyFrom(meshSlices);
+        MeshSliceBuffer.CopyFrom(meshSlices);
         InstanceBuffer.CopyFrom(instances);
         RecomputeTotalBounds();
     }
 
     public void UpdateVertexBuffer(IBuffer<float> vertexBuffer) => VertexBuffer.CopyFrom(vertexBuffer);
     public void UpdateIndexBuffer(IBuffer<uint> indexBuffer) => IndexBuffer.CopyFrom(indexBuffer);
-    public void UpdateMeshBuffer(IBuffer<MeshSliceStruct> meshBuffer) => MeshBuffer.CopyFrom(meshBuffer);
+    public void UpdateMeshBuffer(IBuffer<MeshSliceStruct> meshBuffer) => MeshSliceBuffer.CopyFrom(meshBuffer);
     public void UpdateInstanceBuffer(IBuffer<InstanceStruct> instanceBuffer) => InstanceBuffer.CopyFrom(instanceBuffer);
 
     public void UpdateVertexBuffer(IReadOnlyList<float> vertexBuffer) => VertexBuffer.CopyFrom(vertexBuffer);
     public void UpdateIndexBuffer(IReadOnlyList<uint> indexBuffer) => IndexBuffer.CopyFrom(indexBuffer);
-    public void UpdateMeshBuffer(IReadOnlyList<MeshSliceStruct> meshBuffer) => MeshBuffer.CopyFrom(meshBuffer);
+    public void UpdateMeshBuffer(IReadOnlyList<MeshSliceStruct> meshBuffer) => MeshSliceBuffer.CopyFrom(meshBuffer);
     public void UpdateInstanceBuffer(IReadOnlyList<InstanceStruct> instanceBuffer) => InstanceBuffer.CopyFrom(instanceBuffer);
 
     public void Update(RenderModelData data)
@@ -122,7 +122,7 @@ public class RenderModelData : IDisposable
         Meta.PrimitiveSize = data.PrimitiveSize; 
         UpdateVertexBuffer(data.VertexBuffer);
         UpdateIndexBuffer(data.IndexBuffer);
-        UpdateMeshBuffer(data.MeshBuffer);
+        UpdateMeshBuffer(data.MeshSliceBuffer);
         UpdateInstanceBuffer(data.InstanceBuffer);
         ValidateMeshSlices();
         MeshBounds.Clear();
@@ -143,7 +143,7 @@ public class RenderModelData : IDisposable
 
         VertexBuffer.Clear();
         IndexBuffer.Clear();
-        MeshBuffer.Clear();
+        MeshSliceBuffer.Clear();
         InstanceBuffer.Clear();
 
         foreach (var mesh in model.Meshes)
@@ -159,7 +159,7 @@ public class RenderModelData : IDisposable
                 VertexCount = points.Count
             };
 
-            MeshBuffer.Add(meshSlice);
+            MeshSliceBuffer.Add(meshSlice);
 
             // TODO: optimization opportunity 
 
@@ -192,18 +192,18 @@ public class RenderModelData : IDisposable
 
         VertexBuffer.Clear();
         IndexBuffer.Clear();
-        MeshBuffer.Clear();
+        MeshSliceBuffer.Clear();
         InstanceBuffer.Clear();
 
         foreach (var model in models)
         {
-            if (model.PrimitiveSize != model.PrimitiveSize)
+            if (model.PrimitiveSize != Meta.PrimitiveSize)
                 continue;
 
             VertexBuffer.AddRange(model.VertexBuffer);
             IndexBuffer.AddRange(model.IndexBuffer);
-            var meshOffset = MeshBuffer.Count;
-            MeshBuffer.AddRange(model.MeshBuffer);
+            var meshOffset = MeshSliceBuffer.Count;
+            MeshSliceBuffer.AddRange(model.MeshSliceBuffer);
             foreach (var i in model.InstanceBuffer)
                 InstanceBuffer.Add(i.WithMeshIndex(i.MeshIndex + meshOffset));
         }
@@ -217,7 +217,7 @@ public class RenderModelData : IDisposable
 
         VertexBuffer.Clear();
         IndexBuffer.Clear();
-        MeshBuffer.Clear();
+        MeshSliceBuffer.Clear();
         InstanceBuffer.Clear();
 
         var points = lines.Points;
@@ -231,7 +231,7 @@ public class RenderModelData : IDisposable
             VertexCount = points.Count
         };
 
-        MeshBuffer.Add(meshSlice);
+        MeshSliceBuffer.Add(meshSlice);
 
         foreach (var point3D in points)
         {
@@ -256,9 +256,9 @@ public class RenderModelData : IDisposable
     public void ValidateMeshSlices()
     {
 #if DEBUG
-        for (var i = 0; i < MeshBuffer.Count; i++)
+        for (var i = 0; i < MeshSliceBuffer.Count; i++)
         {
-            var meshSlice = MeshBuffer[i];
+            var meshSlice = MeshSliceBuffer[i];
             Debug.Assert(meshSlice.BaseVertex >= 0);
             Debug.Assert(meshSlice.BaseVertex <= VertexBuffer.Count);
             Debug.Assert(meshSlice.VertexCount + meshSlice.BaseVertex <= VertexBuffer.Count);
@@ -295,7 +295,7 @@ public class RenderModelData : IDisposable
     public void RecomputeMeshBounds()
     {
         MeshBounds.Clear();
-        foreach (var meshSlice in MeshBuffer)
+        foreach (var meshSlice in MeshSliceBuffer)
             MeshBounds.Add(ComputeBounds(meshSlice));
     }
 
@@ -309,7 +309,7 @@ public class RenderModelData : IDisposable
             if (inst.MeshIndex < 0 && inst.IsVisible)
                 continue;
 
-            var mesh = MeshBuffer[inst.MeshIndex];
+            var mesh = MeshSliceBuffer[inst.MeshIndex];
             var meshBounds = MeshBounds[inst.MeshIndex];
             var transformed = meshBounds.FastTransform(inst.Matrix4x4);
             InstanceBounds.Add(transformed);
@@ -344,4 +344,4 @@ public class RenderModelData : IDisposable
 
     public IBuffer<int> GetIndices(MeshSliceStruct meshSlice)
         => BufferExtensions.Slice(IndexBuffer?.Reinterpret<int>(), meshSlice.FirstIndex, meshSlice.IndexCount);
-    }
+}

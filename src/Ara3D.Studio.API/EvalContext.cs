@@ -8,11 +8,14 @@ public class EvalContext
     public IHostApplication Application { get; }
     public double AnimationTime { get; }
     public FlowObject Input { get; }
-    
+
     public EvalContext(FlowObject input, IHostApplication application, double animationTime)
     {
         Input = input;
         Application = application;
         AnimationTime = animationTime;
     }
+
+    public EvalContext WithInput(FlowObject newInput)
+        => new(newInput, Application, AnimationTime);
 }

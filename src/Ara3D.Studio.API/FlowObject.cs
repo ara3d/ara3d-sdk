@@ -3,44 +3,9 @@ using Ara3D.Models;
 
 namespace Ara3D.Studio.API;
 
-public enum AttributeDomain
-{
-    Object,
-    Instance,
-    Primitive,
-    Point,
-}
-
-public enum AttributeSemantics
-{
-    Normal,
-    Color,
-    Selection,
-    Distance,
-    Material,
-    Id,
-    Custom,
-}
-
-public record FlowAttribute
-{
-    public AttributeDomain Domain { get; }
-    public AttributeSemantics Semantics { get; }
-    public int Index { get; }
-    public Type Type { get; }
-    public int Count { get; }
-    public int Arity { get; }
-}
-
-public record FlowAttribute<T> : FlowAttribute
-{
-    public IReadOnlyList<T> Values { get; }
-}
-
 /// <summary>
-/// This is the primary type of object that flows through the modifier stack and interflow graphs
-/// in Ara 3D Studio. Interflow is a 3D geometric graph system inspired by Houdini, Grasshopper, Dynamo, and MCG.
-/// A FlowObject is transient. I
+/// This is the primary type of object that flows through the modifier stack and graphs.
+/// It can have attachments and be transformed. 
 /// </summary>
 public sealed class FlowObject : ITransformable3D<FlowObject>
 {
@@ -53,35 +18,28 @@ public sealed class FlowObject : ITransformable3D<FlowObject>
 
     // Attachments are workflow specific
     public IReadOnlyList<object> Attachments { get; }
-
-    // NOTE: selection, UVs, Normals, VertexColors, and more are stored as attributes. 
-    public IReadOnlyList<FlowAttribute> Attributes { get; }
-
-    public FlowObject(object? value, RenderSettings? renderSettings, Material material, bool overrideMaterial, IReadOnlyList<FlowAttribute> attributes, IReadOnlyList<object> attachments)
+    
+    public FlowObject(object? value, RenderSettings? renderSettings, Material material, bool overrideMaterial, IReadOnlyList<object> attachments)
     {
         Type = value?.GetType();
         Value = value;
         RenderSettings = renderSettings;
-        Attributes = attributes ?? [];
         Material = material;
         OverrideMaterial = overrideMaterial;
         Attachments = attachments ?? [];
     }
 
     public FlowObject WithNewValue(object value)
-        => new(value, RenderSettings, Material, OverrideMaterial, Attributes, Attachments);
+        => new(value, RenderSettings, Material, OverrideMaterial, Attachments);
 
     public FlowObject WithNewRenderSettings(RenderSettings renderSettings)
-        => new(Value, renderSettings, Material, OverrideMaterial, Attributes, Attachments);
-
-    public FlowObject WithNewAttributes(IReadOnlyList<FlowAttribute> attributes)
-        => new(Value, RenderSettings, Material, OverrideMaterial, attributes, Attachments);
+        => new(Value, renderSettings, Material, OverrideMaterial, Attachments);
 
     public FlowObject WithMaterial(Material material)
-        => new(Value, RenderSettings, material, true, Attributes, Attachments);
+        => new(Value, RenderSettings, material, true, Attachments);
 
     public FlowObject WithNewAttachments(IReadOnlyList<object> attachments)
-        => new(Value, RenderSettings, Material, OverrideMaterial, Attributes, attachments);
+        => new(Value, RenderSettings, Material, OverrideMaterial, attachments);
 
     public bool HasObject
         => Value != null;

@@ -164,10 +164,10 @@ public static class BimGeometryExtensions
             data.InstanceBuffer[i] = GetInstanceStruct(self, i);
         }
 
-        data.MeshBuffer.SetCount(self.GetNumMeshes());
+        data.MeshSliceBuffer.SetCount(self.GetNumMeshes());
         for (int i = 0, n = self.GetNumMeshes(); i < n; i++)
         {
-            data.MeshBuffer[i] = GetMeshSlice(self, i);
+            data.MeshSliceBuffer[i] = GetMeshSlice(self, i);
         }
 
         data.ValidateMeshSlices();

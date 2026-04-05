@@ -14,7 +14,7 @@ public static class RenderModelBfastSerializer
     {
         nameof(RenderModelData.VertexBuffer),
         nameof(RenderModelData.IndexBuffer),
-        nameof(RenderModelData.MeshBuffer),
+        nameof(RenderModelData.MeshSliceBuffer),
         nameof(RenderModelData.InstanceBuffer),
         nameof(RenderModelData.MeshBounds),
         nameof(RenderModelData.InstanceBounds),
@@ -27,7 +27,7 @@ public static class RenderModelBfastSerializer
         {
             renderModelData.VertexBuffer.Bytes.Count,
             renderModelData.IndexBuffer.Bytes.Count,
-            renderModelData.MeshBuffer.Bytes.Count,
+            renderModelData.MeshSliceBuffer.Bytes.Count,
             renderModelData.InstanceBuffer.Bytes.Count,
             renderModelData.MeshBounds.Bytes.Count,
             renderModelData.InstanceBounds.Bytes.Count,
@@ -45,7 +45,7 @@ public static class RenderModelBfastSerializer
             {
                 renderModelData.VertexBuffer.Bytes.Ptr,
                 renderModelData.IndexBuffer.Bytes.Ptr,
-                renderModelData.MeshBuffer.Bytes.Ptr,
+                renderModelData.MeshSliceBuffer.Bytes.Ptr,
                 renderModelData.InstanceBuffer.Bytes.Ptr,
                 renderModelData.MeshBounds.Bytes.Ptr,
                 renderModelData.InstanceBounds.Bytes.Ptr,
@@ -103,7 +103,7 @@ public static class RenderModelBfastSerializer
                         r.IndexBuffer.AddRange(srcPointer, view.Size); 
                         break;
                     case 2: 
-                        r.MeshBuffer.AddRange(srcPointer, view.Size); 
+                        r.MeshSliceBuffer.AddRange(srcPointer, view.Size); 
                         break;
                     case 3: 
                         r.InstanceBuffer.AddRange(srcPointer, view.Size); 

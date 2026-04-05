@@ -1,0 +1,32 @@
+public record FlowAttribute
+{
+    public AttributeDomain Domain { get; }
+    public AttributeSemantics Semantics { get; }
+    public int Index { get; }
+    public Type Type { get; }
+    public int Count { get; }
+    public int Arity { get; }
+}
+public record FlowAttribute<T> : FlowAttribute
+{
+    public IReadOnlyList<T> Values { get; }
+}
+
+
+public enum AttributeDomain
+{
+    Object,
+    Instance,
+    Primitive,
+    Point,
+}
+public enum AttributeSemantics
+{
+    Normal,
+    Color,
+    Selection,
+    Distance,
+    Material,
+    Id,
+    Custom,
+}
