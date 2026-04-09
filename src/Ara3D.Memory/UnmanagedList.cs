@@ -105,6 +105,10 @@ namespace Ara3D.Memory
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void ZeroMemory()
+            => this.AsSpan().Clear();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Clear()
             => Count = 0;
 

@@ -10,24 +10,26 @@ public class SimulateSequence2 : IModifier
     public List<float> StartTimes { get; private set; }
     public List<Bounds3D> InstanceBounds { get; private set; }
     public Bounds3D TotalBounds { get; private set; }
-    [Range(0f,1f)] public float LerpAmount { get; set; }
-    [Range(0f, 0.1f)] public float TimeToPosition { get; set; } = 0.05f;
+    [Range(0f,100f)] public float LerpAmount { get; set; }
+    [Range(0f, 0.2f)] public float TimeToPosition { get; set; } = 0.05f;
     [Range(0, 100)] public int DistanceZ { get; set; } = 50;
-    [Range(0, 2)] public float XYMultiplier { get; set; } = 3f;
+    [Range(0, 20)] public float XYMultiplier { get; set; } = 3f;
 
     public int NumObjects => OriginalTransforms?.Count ?? 0;
 
     public float GetStartTime(Bounds3D localBounds, Bounds3D totalBounds)
-        => localBounds.Min.Z.InverseLerp(totalBounds.Min.Z, totalBounds.Max.Z);
+        => localBounds.Max.Z.InverseLerp(totalBounds.Min.Z, totalBounds.Max.Z);
 
     /// <summary>
     /// Returns two positions: the start position, and an intermediate position
+    /// The start position is far from the center and down.
+    /// The desire is for object to move up into position, and then move towards the inside until
+    /// it arrives in position
     /// </summary>
     public (Matrix4x4 A, Matrix4x4 B) GetPositions(Bounds3D bounds, Matrix4x4 o)
     {
         var p = o.Translation;
         var c = bounds.Center;
-        var d = bounds.DistanceFromZAxis(p);
         var xOffset = p.X - c.X;
         var yOffset = p.Y - c.Y;
         var x0 = c.X + xOffset * XYMultiplier;
@@ -51,12 +53,13 @@ public class SimulateSequence2 : IModifier
             StartTimes = InstanceBounds.Select(b => GetStartTime(b, TotalBounds)).ToList();
         }
 
+        var lerpAmount = (LerpAmount / 100f) * (1f + TimeToPosition);
         for (var i=0; i < rmd.InstanceBuffer.Count; i++)
         {
             var start = StartTimes[i];
             var end = start + TimeToPosition;
 
-            if (LerpAmount < start)
+            if (lerpAmount < start)
             {
                 rmd.InstanceBuffer[i].Flags = 1;
             }
@@ -67,23 +70,23 @@ public class SimulateSequence2 : IModifier
 
             var dest = OriginalTransforms[i];
 
-            if (LerpAmount >= end)
+            if (lerpAmount >= end)
             {
                 rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(dest);
             }
             else
             {
                 var (srcA, srcB) = GetPositions(TotalBounds, dest);
-                var amount = (LerpAmount - start) * 10f;
+                var localLerpAmount = (lerpAmount - start) / TimeToPosition;
 
-                if (amount < 0.5f)
+                if (localLerpAmount < 0.5f)
                 {
-                    var lerpedMatrix = srcA.Lerp(srcB, amount * 2f);
+                    var lerpedMatrix = srcA.Lerp(srcB, localLerpAmount * 2f);
                     rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(lerpedMatrix);
                 }
                 else
                 {
-                    var lerpedMatrix = srcB.Lerp(dest, (amount - 0.5f) * 2f);
+                    var lerpedMatrix = srcB.Lerp(dest, (localLerpAmount - 0.5f) * 2f);
                     rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(lerpedMatrix);
                 }
             }

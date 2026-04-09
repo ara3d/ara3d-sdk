@@ -1,7 +1,4 @@
 ﻿using Ara3D.Geometry;
-using System;
-using Matrix4x4 = System.Numerics.Matrix4x4;
-using Vector3 = System.Numerics.Vector3;
 
 namespace Ara3D.Studio;
 
@@ -38,24 +35,24 @@ public readonly record struct CameraState
                 Pitch.Sin).Normalize();
 
     public Vector3 Right 
-        => Vector3.Normalize(Vector3.Cross(Forward, Up));
+        => Forward.NormalizedCross(Up);
 
-    public CameraState SetYawPitch(Angle yaw, Angle pitch)
+    public CameraState WithYawPitch(Angle yaw, Angle pitch)
         => new(yaw, pitch, Position);
 
     public CameraState AddYawPitch(Angle yaw, Angle pitch)
-        => SetYawPitch(Yaw + yaw, Pitch + pitch);
+        => WithYawPitch(Yaw + yaw, Pitch + pitch);
 
-    public CameraState SetPosition(Vector3 position)
+    public CameraState WithPosition(Vector3 position)
         => new(Yaw, Pitch, position);
 
     public CameraState Translate(Vector3 translation)
-        => SetPosition(Position + translation);
+        => WithPosition(Position + translation);
 
-    public CameraState SetTarget(Vector3 target)
+    public CameraState WithTarget(Vector3 target)
     {
         // Direction from the camera to the point of interest
-        var dir = Vector3.Normalize(target - Position);
+        var dir = target - Position;
 
         // --- Pitch (rotation around Right axis) ------------------------------
         // sin(pitch) = z‑component of the forward vector
@@ -69,11 +66,15 @@ public readonly record struct CameraState
         // Keep yaw in [0, 360) simply for convenience
         if (yaw < 0) yaw += 1.Turns();
 
-        return SetYawPitch(yaw, pitch);
+        return WithYawPitch(yaw, pitch);
     }
 
     public CameraState Lerp(CameraState other, float t)
         => new(Yaw.AngularLerp(other.Yaw, t), 
             Pitch.Lerp(other.Pitch, t),
             Position.Lerp(other.Position, t));
+
+    public CameraState RotateAroundPoint(Vector2 pt, Angle a)
+        => WithPosition(Matrix4x4.CreateFromAxisAngleWithPivot(Vector3.UnitZ, a, (Position - pt.Vector3))
+            .Transform(Position));
 }

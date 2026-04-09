@@ -66,10 +66,10 @@ public class FilterCategoryWithUI : IModifier
         return _selectedNames.Contains(cat);
     }
 
-    public IModel3D Eval(IModel3D model3D, EvalContext context)
+    public FilteredModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
-        if (bimData == null) return model3D;
+        if (bimData == null) return model3D.Where((InstanceStruct _) => true);
         RecomputeCategoryNames(bimData, context);
         return model3D.Where(IsSelected);
     }

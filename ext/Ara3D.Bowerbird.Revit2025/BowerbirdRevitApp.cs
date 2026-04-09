@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -110,6 +111,9 @@ namespace Ara3D.Bowerbird.Revit
                 "Ara 3D", AppName, "Scripts");
             var libsFolder = SpecialFolders.LocalApplicationData.RelativeFolder(
                 "Ara 3D", AppName, "Libraries");
+
+            // Try to force loading of "RangeAttribute".
+            var tmp = typeof(RangeAttribute);
 
             Options = new ScriptingOptions(AppName, scriptsFolder, libsFolder);
             BowerbirdService = new BowerbirdService(Options, logger);

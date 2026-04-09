@@ -116,7 +116,7 @@ namespace Ara3D.Studio.Tools
             var z = state.Position.Z;
             //var text = $"Yaw = {yaw:N0}, Pitch = {pitch:N0}, X = {x:N2}, Y = {y:N2}, Z = {z:N2}";
             var text = "No room";
-            var pt = state.Position.Point3D();
+            var pt = state.Position;
             foreach (var roomData in Rooms)
             {
                 if (roomData.Bounds.Contains(pt))
@@ -131,7 +131,7 @@ namespace Ara3D.Studio.Tools
         private void OnRoomClicked(RoomData room)
         {
             var state = App.GetCameraState();
-            App.AnimateCameraTo(state.SetPosition(room.Center));
+            App.AnimateCameraTo(state.WithPosition(room.Center));
         }
     }
 }

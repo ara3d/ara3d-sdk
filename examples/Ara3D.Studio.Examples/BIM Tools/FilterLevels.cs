@@ -11,8 +11,14 @@ public class FilterLevels : IModifier
     
     public List<string> LevelNames { get; private set; }
 
+    private int _level; 
+
     [ComputedRange(nameof(_numLevels))]
-    public int Level { get; set; }
+    public int Level
+    {
+        get => int.Clamp(_level, 0, LevelNames?.Count ?? 0);
+        set => _level = value;
+    }
 
     private int _numLevels => LevelNames.Count;
     private List<(string Name, float Elevation)> _levelData;
@@ -42,10 +48,10 @@ public class FilterLevels : IModifier
         return em.LevelName == CurLevelName && (Math.Abs(em.Elevation - CurLevelElevation) < 0.0001);
     }
 
-    public IModel3D Eval(IModel3D model3D, EvalContext context)
+    public FilteredModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
-        if (bimData == null) return model3D;
+        if (bimData == null) return new(model3D);
         RecomputeLevels(bimData, context);
         return model3D.Where(FilterLevel);
     }

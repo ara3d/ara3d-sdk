@@ -41,6 +41,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Xml" Version="8.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2025.0.0" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 		<PackageReference Include="System.Drawing.Common" Version="8.0.6" />
 		<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
 	</ItemGroup>	
@@ -50,6 +51,7 @@
 	  <ProjectReference Include="..\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
 	  <ProjectReference Include="..\Ara3D.Bowerbird.Demo\Ara3D.Bowerbird.Demo.csproj" />
 	  <ProjectReference Include="..\Ara3D.Bowerbird\Ara3D.Bowerbird.csproj" />
+	  <ProjectReference Include="..\Ara3D.Studio.WpfControls\Ara3D.Studio.WpfControls.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="AdWindows">

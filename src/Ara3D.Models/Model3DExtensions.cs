@@ -105,8 +105,8 @@ public static class Model3DExtensions
     public static IModel3D WithInstances(this IModel3D self, Func<InstanceStruct, InstanceStruct> f)
         => self.WithInstances(self.Instances.Select(f));
 
-    public static IModel3D Where(this IModel3D self, Func<InstanceStruct, bool> f)
-        => self.WithInstances(self.Instances.Where(f).ToList());
+    public static FilteredModel3D Where(this IModel3D self, Func<InstanceStruct, bool> f)
+        => new(self, f);
 
     public static IModel3D Where(this IModel3D self, Func<TriangleMesh3D, bool> f)
         => self.WithInstances(self.Instances.Where(i => f(self.GetMesh(i))).ToList());

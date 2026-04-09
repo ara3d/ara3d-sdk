@@ -6,7 +6,6 @@ namespace Ara3D.Studio.Samples.BIM_Tools;
 public class FilterParameters : IModifier
 {
     public Action ShowWindow => ShowWindowImpl;
-    public int InstanceCount { get; private set; }
 
     public void ShowWindowImpl()
     {
@@ -110,13 +109,11 @@ public class FilterParameters : IModifier
         return _selectedEntities.Contains(ei);
     }
 
-    public IModel3D Eval(IModel3D model3D, EvalContext context)
+    public FilteredModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
-        if (bimData == null) return model3D;
+        if (bimData == null) return model3D.Where((InstanceStruct _) => true);
         RecomputeParameterNamesIfNeeded(bimData, context);
-        var r = model3D.Where(IsSelected);
-        InstanceCount = r.Instances.Count;
-        return r;
+        return model3D.Where(IsSelected);
     }
 }

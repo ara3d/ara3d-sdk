@@ -229,6 +229,13 @@ namespace Ara3D.Geometry
             => SNMatrix4x4.CreateFromAxisAngle(axis, angle);
 
         /// <summary>
+        /// Creates a rotation matrix from a specified axis and angle.
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static Matrix4x4 CreateFromAxisAngleWithPivot(Vector3 axis, Angle angle, Vector3 pivot)
+            => CreateFromAxisAngle(axis, angle).WithPivot(pivot);
+
+        /// <summary>
         /// Creates a rotation matrix from a quaternion.
         /// </summary>
         [MethodImpl(AggressiveInlining)]
@@ -297,5 +304,12 @@ namespace Ara3D.Geometry
         [MethodImpl(AggressiveInlining)]
         public static Matrix4x4 CreateWorld(Vector3 position, Vector3 forward, Vector3 up)
             => SNMatrix4x4.CreateWorld(position, forward, up);
+
+        //==
+
+        [MethodImpl(AggressiveInlining)]
+        public Matrix4x4 WithPivot(Vector3 pivot)
+            => CreateTranslation(pivot) * this * CreateTranslation(-pivot);
+
     }
 }

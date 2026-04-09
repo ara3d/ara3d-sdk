@@ -17,5 +17,7 @@ namespace Ara3D.Geometry
 [MethodImpl(AggressiveInlining)] public static Triangle3D Triangle(this IReadOnlyList<Point3D> self, Integer3 index) => (self[index.A], self[index.B], self[index.C]);
 [MethodImpl(AggressiveInlining)] public static Quad3D Quad(this IReadOnlyList<Point3D> self, Integer4 index) => (self[index.A], self[index.B], self[index.C], self[index.D]);
 [MethodImpl(AggressiveInlining)] public static IReadOnlyList2D<Integer4> AllQuadFaceIndices<_T0>(this IReadOnlyList2D<_T0> xs, Boolean closedX, Boolean closedY) => xs.NumColumns.AllQuadFaceIndices(xs.NumRows, closedX, closedY);
-}
+
+public static Angle Degrees(this Number n) => n.Value.Degrees();
+    }
 }

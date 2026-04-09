@@ -8,9 +8,9 @@ using View = Autodesk.Revit.DB.View;
 
 namespace Ara3D.Bowerbird.RevitSamples
 {
-    public class CommandDirectContextDemo : NamedCommand, IDirectContext3DServer
+    public class CommandDirectContextDemoArrow : NamedCommand, IDirectContext3DServer
     {
-        public string Name => "Direct Context Demo";
+        public override string Name => "Direct Context Demo - Draw Arrow";
 
         public Guid Guid { get; } = Guid.NewGuid();
         public Outline m_boundingBox;

@@ -17,6 +17,7 @@
     <ProjectReference Include="..\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
     <ProjectReference Include="..\Ara3D.Bowerbird.Revit2025\Ara3D.Bowerbird.Revit2025.csproj" />
     <ProjectReference Include="..\Ara3D.Bowerbird\Ara3D.Bowerbird.csproj" />
+    <ProjectReference Include="..\Ara3D.Studio.WpfControls\Ara3D.Studio.WpfControls.csproj" />
   </ItemGroup>
 
   <ItemGroup>

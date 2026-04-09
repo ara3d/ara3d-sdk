@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.PropKit\Ara3D.PropKit.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
+  </ItemGroup>
+
+</Project>

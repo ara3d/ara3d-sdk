@@ -48,6 +48,7 @@ Ara3D.SDK.dll
 Ara3D.Services.dll
 Ara3D.Studio.API.dll
 Ara3D.Studio.Data.dll
+Ara3D.Studio.WpfControls.dll
 Ara3D.Utils.dll
 Ara3D.Utils.Roslyn.dll
 Ara3D.WorkItems.dll
@@ -79,3 +80,5 @@ System.Drawing.Common.dll
 System.IO.Packaging.dll
 UIFramework.dll
 ZstdSharp.dll
+System.ComponentModel.Annotations.dll
+System.ComponentModel.DataAnnotations.dll

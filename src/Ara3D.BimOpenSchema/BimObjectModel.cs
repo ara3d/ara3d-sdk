@@ -49,6 +49,8 @@ namespace Ara3D.BimOpenSchema
                 }
             }
 
+            Descriptors.AddRange(Data.DescriptorIndices().Select(di => Create(di, Data.Get(di))));
+
             if (computeParametersAndRelations)
                 ComputeParametersAndRelations();
         }
@@ -58,8 +60,6 @@ namespace Ara3D.BimOpenSchema
             // This is probably a mistake 
             Debug.Assert(!_parametersComputed);
             _parametersComputed = true;
-
-            Descriptors.AddRange(Data.DescriptorIndices().Select(di => Create(di,Data.Get(di))));
 
             foreach (var p in Data.Parameters)
                 AddParameter(p.Entity, Create(p));
@@ -96,25 +96,29 @@ namespace Ara3D.BimOpenSchema
         public void AddParameter(EntityIndex ei, ParameterModel pm)
         {
             var e = Get(ei);
-            e.ParameterValues[pm.Descriptor.Name] = GetParameterValue(pm);
+            e.ParameterValues[pm.Descriptor.Name] = pm.Value;
             e.Parameters.Add(pm);
         }
 
-        public object GetParameterValue(ParameterModel pm)
+        public object GetParameterValue(Parameter p)
+            => GetParameterValue(Get(p.Descriptor).ParameterType, p.Value);
+        
+        public object GetParameterValue(ParameterType pt, int value)
         {
-            return pm.Descriptor.ParameterType switch
+            return pt switch
             {
-                ParameterType.Int => pm.IntegerValue,
-                ParameterType.String => Get((StringIndex)pm.IntegerValue),
-                ParameterType.Number => Get((NumberIndex)pm.IntegerValue),
-                ParameterType.Entity => Get((EntityIndex)pm.IntegerValue),
-                ParameterType.Point => Get((PointIndex)pm.IntegerValue).ToString(),
+                ParameterType.Int => value,
+                ParameterType.String => Get((StringIndex)value),
+                ParameterType.Number => Get((NumberIndex)value),
+                ParameterType.Entity => Get((EntityIndex)value),
+                ParameterType.Point => Get((PointIndex)value).ToString(),
                 _ => null
             };
         }
 
+
         public ParameterModel Create(Parameter p) 
-            => new(p.Value, Get(p.Descriptor));
+            => new(GetParameterValue(p), Get(p.Entity), Get(p.Descriptor));
     }
 
     public class EntityModel
@@ -193,17 +197,19 @@ namespace Ara3D.BimOpenSchema
 
     public class ParameterModel
     {
-        public int IntegerValue { get; }
+        public object Value { get; }
+        public EntityModel Entity { get; }
         public DescriptorModel Descriptor { get; }
         
-        public ParameterModel(int value, DescriptorModel descriptor)
+        public ParameterModel(object value, EntityModel entity, DescriptorModel descriptor)
         {
-            IntegerValue = value;
+            Value = value;
+            Entity = entity;
             Descriptor = descriptor;
         }
 
         public override string ToString()
-            => $"{Descriptor.Name} ({Descriptor.ParameterType}) = {IntegerValue}";
+            => $"{Descriptor.Name} ({Descriptor.ParameterType}) = {Value}";
     }
 
     public class DocumentModel
