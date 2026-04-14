@@ -111,7 +111,7 @@ public static class UniformColors
     }
 }
 
-public class RandomizeColors : IModifier
+public class UniformRandomizeColors : IModifier
 {
     [Range(0.0f, 1.0f)] public float MinLightness = 0.62f;
     [Range(0.0f, 1.0f)] public float MaxLightness = 0.88f;

@@ -35,14 +35,14 @@ public static class PropertyControlGenerator
     {
         var editor = descriptor switch
         {
-            PropDescriptorInt intDesc => CreateSlider(intDesc, props),
-            PropDescriptorLong longDesc => CreateSlider(longDesc, props),
-            PropDescriptorFloat floatDesc => CreateSlider(floatDesc, props),
-            PropDescriptorBool boolDesc => CreateCheckBox(boolDesc, props),
-            PropDescriptorStringList stringListDesc => CreateComboBox(stringListDesc, props),
-            PropDescriptorDynamicStringList dynStringListDesc => CreateComboBox(dynStringListDesc, props),
-            PropDescriptorString stringDesc => CreateTextBox(stringDesc, props),
-            PropDescriptorAction actionDesc => CreateButton(actionDesc, props),
+                PropDescriptorInt intDesc => CreateSlider(intDesc, props),
+                PropDescriptorLong longDesc => CreateSlider(longDesc, props),
+                PropDescriptorFloat floatDesc => CreateSlider(floatDesc, props),
+                PropDescriptorBool boolDesc => CreateCheckBox(boolDesc, props),
+                PropDescriptorStringList stringListDesc => CreateComboBox(stringListDesc, props),
+                PropDescriptorDynamicStringList dynStringListDesc => CreateComboBox(dynStringListDesc, props),
+                PropDescriptorString stringDesc => CreateTextBox(stringDesc, props),
+                PropDescriptorAction actionDesc => CreateButton(actionDesc, props),
             _ => null
         };
 
@@ -141,7 +141,7 @@ public static class PropertyControlGenerator
         {
             Minimum = desc.MinValue,
             Maximum = desc.MaxValue,
-            TickFrequency = desc.Delta,
+            TickFrequency = 0.001f,
             IsSnapToTickEnabled = false,
             Height = 24,
             Margin = new Thickness(0, 2, 0, 2),

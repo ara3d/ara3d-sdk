@@ -1,5 +1,4 @@
 ﻿using Ara3D.Models;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -44,7 +43,7 @@ namespace Ara3D.BimOpenSchema
                     var entityIndex = inst.EntityIndex;
                     if (entityIndex >= 0)
                     {
-                        Entities[entityIndex]?.Instances.Add(inst);
+                        Entities[entityIndex]?.AddInstance(inst);
                     }
                 }
             }
@@ -151,7 +150,8 @@ namespace Ara3D.BimOpenSchema
         public string AssemblyName => GetParameterAsEntity(CommonRevitParameters.ElementAssemblyInstance)?.Index.ToString();
         public int WorksetId => GetParameterAsInt(CommonRevitParameters.ElementWorksetId);
         public float Elevation => GetParameterAsEntity(CommonRevitParameters.ElementLevel)?.GetParameterAsNumber(CommonRevitParameters.LevelElevation) ?? 0;
-        public string Type => GetEntityModel(Entity.Type)?.Name;
+        public string TypeName => Type?.Name ?? "";
+        public EntityModel Type => GetEntityModel(Entity.Type);
 
         // Family instance parameters
         public string RoomName => GetParameterAsEntity(CommonRevitParameters.FISpace)?.Name;
@@ -181,6 +181,11 @@ namespace Ara3D.BimOpenSchema
 
         public EntityModel GetParameterAsEntity(string name)
             => ParameterValues.GetValueOrDefault(name) as EntityModel;
+
+        public void AddInstance(InstanceStruct inst)
+        {
+            Instances.Add(inst);
+        }
     }
 
     public class RelationModel

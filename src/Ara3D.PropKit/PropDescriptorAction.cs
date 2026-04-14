@@ -5,7 +5,9 @@ public class PropDescriptorAction: TypedPropDescriptor<Action>
     public PropDescriptorAction(string name, string displayName, string description = "", string units = "", bool isReadOnly = false)
         : base(name, displayName, description, units, isReadOnly) { }
 
-    public override Action Update(Action value, PropUpdateType propUpdate) => value;
+    public override Action MinValue => null;
+    public override Action MaxValue => null;
+    public override Action DefaultValue => null;
 
     public override bool IsValid(Action value) => true;
     public override Action Validate(Action value) => value;

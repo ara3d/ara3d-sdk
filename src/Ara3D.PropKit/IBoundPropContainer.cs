@@ -8,4 +8,5 @@ public interface IBoundPropContainer
     bool TrySetValue(string name, object value);
     object GetValue(string name);
     IReadOnlyList<PropValue> GetPropValues();
+    IReadOnlyList<IPropAccessor> GetAccessors();
 }

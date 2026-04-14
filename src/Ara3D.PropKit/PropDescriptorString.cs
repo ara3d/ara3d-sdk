@@ -2,7 +2,9 @@
 
 public class PropDescriptorString : TypedPropDescriptor<string>
 {
-    public string DefaultValue { get; }
+    public override string DefaultValue { get; } = "";
+    public override string MinValue => "";
+    public override string MaxValue => "";
 
     public PropDescriptorString(string name, string displayName, string description = "", string units = "",
         bool isReadOnly = false, string defaultValue = "")
@@ -10,16 +12,6 @@ public class PropDescriptorString : TypedPropDescriptor<string>
     {
         DefaultValue = defaultValue;
     }
-
-    public override string Update(string value, PropUpdateType propUpdate) => propUpdate switch
-    {
-        PropUpdateType.Min => DefaultValue,
-        PropUpdateType.Max => DefaultValue,
-        PropUpdateType.Default => DefaultValue,
-        PropUpdateType.Inc => value,
-        PropUpdateType.Dec => value,
-        _ => value
-    };
 
     public override string Validate(string value) => value;
     public override bool IsValid(string value) => true;

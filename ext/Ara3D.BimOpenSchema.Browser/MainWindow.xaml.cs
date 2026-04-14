@@ -40,10 +40,11 @@ namespace Ara3D.BimOpenSchema.Browser
             Class,
             Category,
             CategoryType,
-            Type, 
-            CategoryWithParameters,
-            ClassWithParameters,
-            TypeWithParameters,
+            Family, 
+            FamilyCategoryWithParameters,
+            FamilyClassWithParameters,
+            InstanceCategoryWithParameters,
+            InstanceClassWithParameters,
         }
 
         public MainWindow()
@@ -90,10 +91,12 @@ namespace Ara3D.BimOpenSchema.Browser
             GroupingMenuItem.Items.Clear();
             foreach (var val in Enum.GetValues(typeof(Grouping)))
             {
-                // Add a separator before CategoryWithParameters 
-                if (val.Equals(Grouping.CategoryWithParameters))
+                if (val.Equals(Grouping.FamilyCategoryWithParameters))
                     GroupingMenuItem.Items.Add(new Separator());
-                
+
+                if (val.Equals(Grouping.InstanceCategoryWithParameters))
+                    GroupingMenuItem.Items.Add(new Separator());
+
                 var name = Enum.GetName(typeof(Grouping), val).SplitCamelCase();
                 var tmp = new MenuItem()
                 {
@@ -144,33 +147,47 @@ namespace Ara3D.BimOpenSchema.Browser
             return folder;
         }
 
+        public IEnumerable<EntityModel> GetAllEntities()
+            => ObjectModel.Entities;
+
+        public IEnumerable<EntityModel> GetInstanceEntities()
+            => ObjectModel.Entities.Where(e => e.Entity.Type >= 0);
+
+        public IEnumerable<EntityModel> GetNonInstanceEntities()
+            => ObjectModel.Entities.Where(e => e.Entity.Type < 0);
+
         public IEnumerable<IGrouping<string, EntityModel>> CreateGroupings()
         {
             switch (CurrentGrouping)
             {
                 case Grouping.None:
-                    return ObjectModel.Entities.GroupBy(_ => "All");
+                    return GetAllEntities().GroupBy(_ => "All");
                 case Grouping.AlphaName:
-                    return ObjectModel.Entities.GroupBy(e => e.Name.IsNullOrEmpty() ? " " : e.Name[0].ToString());
+                    return GetAllEntities().GroupBy(e => e.Name.IsNullOrEmpty() ? " " : e.Name[0].ToString());
                 case Grouping.Category:
-                case Grouping.CategoryWithParameters:
-                    return ObjectModel.Entities.GroupBy(e => e.Category);
+                    return GetAllEntities().GroupBy(e => e.Category);
+                case Grouping.FamilyCategoryWithParameters:
+                    return GetNonInstanceEntities().GroupBy(e => e.Category);
+                case Grouping.InstanceCategoryWithParameters:
+                    return GetInstanceEntities().GroupBy(e => e.Category);
                 case Grouping.CategoryType:
-                    return ObjectModel.Entities.GroupBy(e => e.CategoryType);
+                    return GetAllEntities().GroupBy(e => e.CategoryType);
                 case Grouping.Level:
-                    return ObjectModel.Entities.GroupBy(e => e.LevelName);
+                    return GetAllEntities().GroupBy(e => e.LevelName);
                 case Grouping.Group:
-                    return ObjectModel.Entities.GroupBy(e => e.GroupName);
+                    return GetAllEntities().GroupBy(e => e.GroupName);
                 case Grouping.Class:
-                case Grouping.ClassWithParameters:
-                    return ObjectModel.Entities.GroupBy(e => e.ClassName);
+                    return GetAllEntities().GroupBy(e => e.ClassName);
+                case Grouping.FamilyClassWithParameters:
+                    return GetNonInstanceEntities().GroupBy(e => e.ClassName);
+                case Grouping.InstanceClassWithParameters:
+                    return GetInstanceEntities().GroupBy(e => e.ClassName);
                 case Grouping.Room:
-                    return ObjectModel.Entities.GroupBy(e => e.RoomName);
+                    return GetAllEntities().GroupBy(e => e.RoomName);
                 case Grouping.Document:
-                    return ObjectModel.Entities.GroupBy(e => e.DocumentTitle);
-                case Grouping.Type:
-                case Grouping.TypeWithParameters:
-                    return ObjectModel.Entities.GroupBy(e => e.Type);
+                    return GetAllEntities().GroupBy(e => e.DocumentTitle);
+                case Grouping.Family:
+                    return GetAllEntities().GroupBy(e => e.TypeName);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -308,12 +325,7 @@ namespace Ara3D.BimOpenSchema.Browser
                 }
             });
         }
-
-        private async void IncludeParamsMenuItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            await UpdateTables();
-        }
-
+        
         private void ExportDuckDB_OnClick(object sender, RoutedEventArgs e)
         {
             try

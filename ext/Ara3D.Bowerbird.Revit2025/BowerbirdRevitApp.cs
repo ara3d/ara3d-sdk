@@ -13,6 +13,7 @@ using Ara3D.Events;
 using Ara3D.Logging;
 using Ara3D.ScriptService;
 using Ara3D.Services;
+using Ara3D.Studio.Samples.Demos;
 using Ara3D.Utils;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
@@ -113,7 +114,9 @@ namespace Ara3D.Bowerbird.Revit
                 "Ara 3D", AppName, "Libraries");
 
             // Try to force loading of "RangeAttribute".
-            var tmp = typeof(RangeAttribute);
+            var landingsType = typeof(StairsWithLandings);
+            var rangeType = typeof(RangeAttribute);
+            Debug.WriteLine($"{rangeType.Assembly.Location}");
 
             Options = new ScriptingOptions(AppName, scriptsFolder, libsFolder);
             BowerbirdService = new BowerbirdService(Options, logger);

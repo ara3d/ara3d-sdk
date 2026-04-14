@@ -9,40 +9,20 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Windows;
+using Ara3D.Models;
+using Ara3D.Studio.Samples.Demos;
+using Ara3D.Studio.Samples.Generators;
+using Window = System.Windows.Window;
 
 namespace Ara3D.Bowerbird.RevitSamples;
 
-public class UpArrow : IGenerator
+public class CommandGenerator : NamedCommand, IDirectContext3DServer
 {
-    [Range(1, 32)] public int Count = 16;
-    [Range(0f, 1f)] public float ShaftWidth = 0.01f;
-    [Range(0f, 5f)] public float ShaftHeight = 0.8f;
-    [Range(0f, 5f)] public float TipWidth = 0.2f;
-    [Range(0f, 5f)] public float TipHeight = 0.2f;
-
-    public QuadGrid3D Eval()
-    {
-        var totalHeight = ShaftHeight + TipHeight;
-        var halfOutLine = new Point3D[]
-        {
-            (0, 0, 0),
-            (ShaftWidth / 2, 0, 0),
-            (ShaftWidth / 2, 0, ShaftHeight),
-            (TipWidth / 2, 0, ShaftHeight),
-            (0, 0, totalHeight),
-        };
-
-        return halfOutLine.Revolve(Vector3.UnitZ, Count);
-    }
-}
-
-public class CommandDirectContextDemoArrowWithUI : NamedCommand, IDirectContext3DServer
-{
-    public override string Name => "Direct Context Demo - Draw Arrow with UI";
+    public override string Name => "Generator with Auto-UI";
 
     public Guid ServerGuid { get; private set; } = Guid.NewGuid();
     public Outline m_boundingBox;
-    public UpArrow Arrow = new();
+    public IGenerator Generator = new StairsWithLandings();
     public PropertyControlContainer PropContainerUi;
     public UIApplication UiApp;
     public Window Window;
@@ -95,7 +75,7 @@ public class CommandDirectContextDemoArrowWithUI : NamedCommand, IDirectContext3
         m_boundingBox = new Outline(new XYZ(0, 0, 0), new XYZ(10, 10, 10));
 
         PropContainerUi = new PropertyControlContainer();
-        PropContainerUi.ConnectToModel(Arrow);
+        PropContainerUi.ConnectToModel(Generator);
         
         Window = ShowPropertyWindow(PropContainerUi);
 
@@ -152,6 +132,11 @@ public class CommandDirectContextDemoArrowWithUI : NamedCommand, IDirectContext3
         if (tmp is QuadGrid3D quadGrid3D)
         {
             Mesh = quadGrid3D.Triangulate().ToRenderMesh();
+            UiApp.ActiveUIDocument?.UpdateAllOpenViews();
+        }
+        else if (tmp is IModel3D model)
+        {
+            Mesh = model.ToMesh().ToRenderMesh();
             UiApp.ActiveUIDocument?.UpdateAllOpenViews();
         }
         else

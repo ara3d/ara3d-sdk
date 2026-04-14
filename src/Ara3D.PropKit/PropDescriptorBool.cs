@@ -6,15 +6,9 @@ public class PropDescriptorBool : TypedPropDescriptor<bool>
     public PropDescriptorBool(string name, string displayName, string description = "", string units = "", bool isReadOnly = false)
         : base(name, displayName, description, units, isReadOnly) { }
 
-    public override bool Update(bool value, PropUpdateType propUpdate) => propUpdate switch
-    {
-        PropUpdateType.Min => false,
-        PropUpdateType.Max => true,
-        PropUpdateType.Default => false,
-        PropUpdateType.Inc => true,
-        PropUpdateType.Dec => false,
-        _ => value
-    };
+    public override bool MinValue => false;
+    public override bool MaxValue => true;
+    public override bool DefaultValue => false;
 
     public override bool IsValid(bool value) => true;
     public override bool Validate(bool value) => value;

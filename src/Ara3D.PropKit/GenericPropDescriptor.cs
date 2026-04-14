@@ -9,8 +9,11 @@ public class GenericPropDescriptor : PropDescriptor
     public override bool IsValid(object value) => true;
     public override bool IsValidString(string value) => false;
     public override string ToString(object value) => value.ToString();
-    public override object Update(object value, PropUpdateType propUpdate) => propUpdate == PropUpdateType.Default ? DefaultValue : value;
     public override object Validate(object value) => value;
+
+    public override object Min => DefaultValue;
+    public override object Max => DefaultValue;
+    public override object Default => DefaultValue;
 
     public GenericPropDescriptor(object defaultValue, Type type, string name = null, string displayName = null,
         string description = null, string units = null, bool isReadOnly = false)

@@ -10,15 +10,10 @@ public class PropDescriptorStringList : TypedPropDescriptor<int>
         Options = options;
     }
 
-    public override int Update(int value, PropUpdateType propUpdate) => Validate(propUpdate switch
-    {
-        PropUpdateType.Min => 0,
-        PropUpdateType.Max => Options.Count - 1,
-        PropUpdateType.Default => 0,
-        PropUpdateType.Inc => value + 1,
-        PropUpdateType.Dec => value - 1,
-        _ => value
-    });
+
+    public override int MinValue => 0;
+    public override int MaxValue => Options.Count - 1;
+    public override int DefaultValue => 0;
 
     public override int Validate(int value) => Math.Clamp(value, 0, Options.Count - 1);
     public override bool IsValid(int value) => value >= 0 && value < Options.Count;

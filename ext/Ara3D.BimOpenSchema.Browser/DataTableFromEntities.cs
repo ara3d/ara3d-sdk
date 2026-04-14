@@ -115,7 +115,7 @@ public class DataTableFromEntities : IDataTable
             levelColumn.Values.Add(e.LevelName);
             groupColumn.Values.Add(e.GroupName);
             roomColumn.Values.Add(e.RoomName);
-            familyTypeColumn.Values.Add(e.Type);
+            familyTypeColumn.Values.Add(e.TypeName);
 
             //globalIdColumn.Values.Add(e.GlobalId);
             //assemblyColumn.Values.Add(e.AssemblyName);

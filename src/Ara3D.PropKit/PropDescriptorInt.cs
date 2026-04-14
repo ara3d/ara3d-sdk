@@ -2,9 +2,9 @@
 
 public class PropDescriptorInt : TypedPropDescriptor<int>
 {
-    public int MinValue { get; }
-    public int MaxValue { get; }
-    public int DefaultValue { get; }
+    public override int MinValue { get; }
+    public override int MaxValue { get; }
+    public override int DefaultValue { get; }
 
     public PropDescriptorInt(string name, string displayName, string description = "", string units = "",
         bool isReadOnly = false, int defaultValue = 0,
@@ -20,16 +20,6 @@ public class PropDescriptorInt : TypedPropDescriptor<int>
         MinValue = minValue;
         MaxValue = maxValue;
     }
-
-    public override int Update(int value, PropUpdateType propUpdate) => Validate(propUpdate switch
-    {
-        PropUpdateType.Min => MinValue,
-        PropUpdateType.Max => MaxValue,
-        PropUpdateType.Default => DefaultValue,
-        PropUpdateType.Inc => value + 1,
-        PropUpdateType.Dec => value - 1,
-        _ => value
-    });
 
     public override int Validate(int value) => Math.Clamp(value, MinValue, MaxValue);
     public override bool IsValid(int value) => value >= MinValue && value <= MaxValue;

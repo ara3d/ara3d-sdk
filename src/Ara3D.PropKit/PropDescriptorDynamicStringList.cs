@@ -10,15 +10,9 @@ public class PropDescriptorDynamicStringList : TypedPropDescriptor<int>
         OptionsFunc = optionsFunc;
     }
 
-    public override int Update(int value, PropUpdateType propUpdate) => Validate(propUpdate switch
-    {
-        PropUpdateType.Min => 0,
-        PropUpdateType.Max => OptionsFunc().Count - 1,
-        PropUpdateType.Default => 0,
-        PropUpdateType.Inc => value + 1,
-        PropUpdateType.Dec => value - 1,
-        _ => value
-    });
+    public override int MinValue => 0;
+    public override int MaxValue => Count - 1;
+    public override int DefaultValue => 0;
 
     public int Count => OptionsFunc()?.Count ?? 0;
 

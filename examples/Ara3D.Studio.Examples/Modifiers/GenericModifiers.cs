@@ -1,6 +1,5 @@
 ﻿namespace Ara3D.Studio.Samples;
 
-    
 public class SetMaterial : IModifier
 {
     [Range(0f, 1f)] public float Red = 0.2f;

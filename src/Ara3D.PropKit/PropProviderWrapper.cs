@@ -125,6 +125,9 @@ public class PropProviderWrapper :
         Props.Dispose();
     }
 
+    public IReadOnlyList<IPropAccessor> GetAccessors()
+        => Props.GetAccessors();
+
     public IReadOnlyList<PropDescriptor> GetDescriptors()
         => Props.GetDescriptors();
 

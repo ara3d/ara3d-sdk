@@ -29,22 +29,17 @@ public abstract class PropDescriptor
         Tags = tags ?? [];
     }
 
-    public abstract object Update(object value, PropUpdateType propUpdate);
     public abstract bool IsValid(object value);
     public abstract object Validate(object value);
     public abstract bool IsValidString(string value);
     public abstract bool AreEqual(object value1, object value2);
     public abstract object FromString(string value);
     public abstract string ToString(object value);
-
-    public object Default => Update(default, PropUpdateType.Default);
-    public object Min => Update(default, PropUpdateType.Min);
-    public object Max => Update(default, PropUpdateType.Max);
     
     public override string ToString()
         => $"{Name}[\"{DisplayName}\"]";
 
-    public PropValue DefaultPropValue => new(Default, this);
-    public PropValue MinPropValue => new(Min, this);
-    public PropValue MaxPropValue => new(Max, this);
+    public abstract object Default { get; }
+    public abstract object Min { get; }
+    public abstract object Max { get; }
 }

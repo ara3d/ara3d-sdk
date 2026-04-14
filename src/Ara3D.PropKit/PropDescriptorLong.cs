@@ -2,9 +2,9 @@
 
 public class PropDescriptorLong : TypedPropDescriptor<long>
 {
-    public long MinValue { get; }
-    public long MaxValue { get; }
-    public long DefaultValue { get; }
+    public override long MinValue { get; }
+    public override long MaxValue { get; }
+    public override long DefaultValue { get; }
 
     public PropDescriptorLong(string name, string displayName, string description = "", string units = "",
         bool isReadOnly = false, long defaultValue = 0,
@@ -20,16 +20,6 @@ public class PropDescriptorLong : TypedPropDescriptor<long>
         MinValue = minValue;
         MaxValue = maxValue;
     }
-
-    public override long Update(long value, PropUpdateType propUpdate) => Validate(propUpdate switch
-    {
-        PropUpdateType.Min => MinValue,
-        PropUpdateType.Max => MaxValue,
-        PropUpdateType.Default => DefaultValue,
-        PropUpdateType.Inc => value + 1,
-        PropUpdateType.Dec => value - 1,
-        _ => value
-    });
 
     public override long Validate(long value) => Math.Clamp(value, MinValue, MaxValue);
     public override bool IsValid(long value) => value >= MinValue && value <= MaxValue;

@@ -5,14 +5,10 @@ public abstract class TypedPropDescriptor<T> : PropDescriptor
     protected TypedPropDescriptor(string name, string displayName, string description, string units, bool isReadOnly, Dictionary<string, string> tags = null)
         : base(typeof(T), name, displayName, description, units, isReadOnly, tags) { }
 
-    public abstract T Update(T value, PropUpdateType propUpdate);
     public abstract T Validate(T value);
     public abstract bool IsValid(T value);
     public abstract bool AreEqual(T value1, T value2);
     public abstract string ToString(T value);
-
-    public override object Update(object value, PropUpdateType propUpdate)
-        => Update((T)value, propUpdate);
 
     public override bool IsValid(object value)
         => value is T v && IsValid(v);
@@ -37,7 +33,11 @@ public abstract class TypedPropDescriptor<T> : PropDescriptor
     public override bool IsValidString(string value) => TryParse(value, out var parsed) && IsValid(parsed);
     protected abstract bool TryParse(string value, out T parsed);
 
-    public new T Default => Update(default, PropUpdateType.Default);
-    public new T Min => Update(default, PropUpdateType.Min);
-    public new T Max => Update(default, PropUpdateType.Max);
+    public abstract T DefaultValue { get; }
+    public abstract T MinValue { get; }
+    public abstract T MaxValue { get; }
+
+    public override object Default => DefaultValue;
+    public override object Min => MinValue;
+    public override object Max => MaxValue;
 }

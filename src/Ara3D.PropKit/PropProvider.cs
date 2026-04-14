@@ -33,6 +33,9 @@ public class PropProvider : IPropContainer
         return r;
     }
 
+    public IReadOnlyList<IPropAccessor> GetAccessors()
+        => Accessors;
+
     public IPropAccessor GetAccessor(string name)
         => _dictionary.GetValueOrDefault(name);
 
