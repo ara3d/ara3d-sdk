@@ -16,8 +16,19 @@ public class Cylinder : IGenerator
 public class Cube : IGenerator
 {
     [Range(1, 100)] public int Segments = 2;
-    public QuadMesh3D Eval(EvalContext context)
-        => PlatonicSolids.Cube.Subdivide(2);
+
+    public QuadMesh3D Eval()
+        => PlatonicSolids.Cube.Subdivide(Segments);
+}
+
+[Category(nameof(Categories.Meshes))]
+public class Box : IGenerator
+{
+    [Range(1, 100)] public int Segments = 2;
+    public Vector3 Dimensions = new(1,1,3);
+
+    public QuadMesh3D Eval()
+        => PlatonicSolids.Cube.Scale(Dimensions).Subdivide(Segments);
 }
 
 [Category(nameof(Categories.Meshes))]
@@ -91,7 +102,7 @@ public class Torus : IGenerator
     [Range(2, 128)] public int NumRows { get; set; } = 32;
     [Range(2, 128)] public int NumColumns { get; set; } = 32;
 
-    public QuadMesh3D Eval(EvalContext context)
+    public QuadMesh3D Eval()
     {
         var points = new FunctionalReadOnlyList2D<Point3D>(NumColumns, NumRows, PointOnTorus);
         return new QuadGrid3D(points, true, true).ToQuadMesh3D();

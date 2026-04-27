@@ -9,8 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.PropKit\Ara3D.PropKit.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
   </ItemGroup>
 
 </Project>

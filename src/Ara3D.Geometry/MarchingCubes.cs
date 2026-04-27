@@ -2,8 +2,6 @@
 {
     public static unsafe class MarchingCubeExtensions
     {
-
-
         public static Vector3 InterpolateVertices(Vector3 vertex0, Vector3 vertex1, Number fieldValue0, Number fieldValue1, Number threshold)
         {
             var lerpAmount = fieldValue0.Unlerp(fieldValue1, threshold);

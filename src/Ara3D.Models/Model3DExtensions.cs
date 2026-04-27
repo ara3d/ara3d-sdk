@@ -310,4 +310,12 @@ public static class Model3DExtensions
 
         return new(meshes, instances);
     }
+
+    public static IModel3D Combine(this IModel3D model, IModel3D other)
+    {
+        var meshes = model.Meshes.Concat(other.Meshes);
+        var n = model.Meshes.Count;
+        var instances = model.Instances.Concat(other.Instances.Map(i => i.WithMeshIndex(i.MeshIndex + n)));
+        return new Model3D(meshes, instances);
+    }
 }

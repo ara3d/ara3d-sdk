@@ -223,5 +223,25 @@ namespace Ara3D.Geometry
 
         [MethodImpl(AggressiveInlining)] 
         public static Number Dot(this SNVector3 self, Vector3 right) => SNVector3.Dot(self, right);
+
+        [MethodImpl(AggressiveInlining)]
+        public static Vector3 AnyPerpendicular(this Vector3 v)
+        {
+            if (v.AlmostZero)
+                return Vector3.UnitZ;
+            
+            // Choose the smallest component to avoid degeneracy
+            if (Math.Abs(v.X) < Math.Abs(v.Y))
+            {
+                return Math.Abs(v.X) < Math.Abs(v.Z) 
+                    ? new Vector3(0, -v.Z, v.Y).Normalize 
+                    : new Vector3(-v.Y, v.X, 0).Normalize; 
+            }
+
+            return Math.Abs(v.Y) < Math.Abs(v.Z) 
+                ? new Vector3(v.Z, 0, -v.X).Normalize 
+                : new Vector3(-v.Y, v.X, 0).Normalize; 
+        }
+
     }
 }

@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 using Ara3D.PropKit;
+using Ara3D.Utils.Wpf;
 
 namespace Ara3D.Studio.WpfControls;
 
@@ -43,6 +44,7 @@ public static class PropertyControlGenerator
                 PropDescriptorDynamicStringList dynStringListDesc => CreateComboBox(dynStringListDesc, props),
                 PropDescriptorString stringDesc => CreateTextBox(stringDesc, props),
                 PropDescriptorAction actionDesc => CreateButton(actionDesc, props),
+                PropDescriptorVector3 vector3Desc => CreateSpinners(vector3Desc, props),
             _ => null
         };
 
@@ -165,6 +167,13 @@ public static class PropertyControlGenerator
         };
         slider.SetBinding(RangeBase.ValueProperty, CreateBinding(desc, props));
         return slider;
+    }
+
+    public static FrameworkElement CreateSpinners(PropDescriptorVector3 desc, IBoundPropContainer props)
+    {
+        var control = new Vector3Control();
+        control.SetBinding(Vector3Control.ValueProperty, CreateBinding(desc, props));
+        return control;
     }
 
     public static FrameworkElement CreateSlider(PropDescriptorLong desc, IBoundPropContainer props)

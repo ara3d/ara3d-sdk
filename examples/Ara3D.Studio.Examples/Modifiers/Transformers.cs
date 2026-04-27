@@ -15,7 +15,7 @@ public class Transform : IModifier
     [Range(-360, 360)] public int Pitch;
     [Range(-360, 360)] public int Roll;
 
-    public FlowObject Eval(FlowObject input, EvalContext context)
+    public FlowObject Eval(FlowObject input)
         => input
             .Translate((XOffset, YOffset, ZOffset))
             .Rotate(Yaw.Degrees(), Pitch.Degrees(), Roll.Degrees())
@@ -33,10 +33,19 @@ public class AxisRotation : IModifier
 
     [Options(nameof(AxisNames))] public int Axis;
 
-    public IModel3D Eval(IModel3D model, EvalContext eval)
+    public IModel3D Eval(IModel3D model)
     {
         var axis = Axis == 0 ? Vector3.UnitX : Axis == 1 ? Vector3.UnitY : Vector3.UnitZ;
         var mat = Matrix4x4.CreateFromAxisAngle(axis, Degrees.Degrees());
         return model.Transform(mat);
     }
+}
+
+[Category(nameof(Categories.Transformers))]
+public class Translate : IModifier
+{
+    public Vector3 Offset;
+
+    public IModel3D Eval(IModel3D model, EvalContext eval)
+        => model.Translate(Offset);
 }

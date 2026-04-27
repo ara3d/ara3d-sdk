@@ -28,7 +28,7 @@ public class Window : IGenerator
         return (bldr.ToQuadMesh3D(), pane.ToQuadMesh3D());
     }
 
-    public IModel3D Eval(EvalContext context)
+    public IModel3D Eval()
     {
         var q = GeometryUtil.XZQuad(Width, Height);
         var (frame, pane) = CreateWindow(q, XSegments, YSegments, MullionWidth, PaneInset);

@@ -13,12 +13,12 @@ public class DefaultHostApplication : IHostApplication
     public void RebuildUI(object obj)
     { }
 
-    public void AnimateCameraTo(CameraState cameraState)
-    { }
-
-    public void SetCameraState(CameraState cameraState)
+    public void AnimateCameraTo(CameraState cameraState, float duration)
     { }
 
     public CameraState GetCameraState()
         => default;
+
+    public SynchronizationContext SynchronizationContext
+        => SynchronizationContext.Current;
 }

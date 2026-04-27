@@ -28,7 +28,7 @@ public static class FlowObjectConverters
         {
             return input;
         }
-        else if (outputType == typeof(IModel3D))
+        else if (outputType.IsAssignableTo(typeof(IModel3D)))
         {
             if (input is TriangleMesh3D tri)
             {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ara3D.Geometry
+﻿namespace Ara3D.Geometry
 {
     public static class PerlinNoise
     {
@@ -67,9 +61,6 @@ namespace Ara3D.Geometry
             return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
         }
 
-        /// <summary>
-        /// Generates 3D Perlin noise in [-1,1] at the given point.
-        /// </summary>
         public static float Noise(Vector3 point)
         {
             var floor = point.Floor;
@@ -113,13 +104,9 @@ namespace Ara3D.Geometry
                 )
             );
 
-            // Scale result to [-1,1]
-            return res;
+            return Math.Clamp(res + 1f * 0.5f, 0f, 1f);
         }
 
-        /// <summary>
-        /// Generates 2D Perlin noise in [-1,1] by embedding into the Z=0 plane.
-        /// </summary>
         public static float Noise(Vector2 point)
             => Noise(point.To3D);
     }

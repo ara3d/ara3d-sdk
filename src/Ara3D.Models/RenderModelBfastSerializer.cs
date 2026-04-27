@@ -12,12 +12,12 @@ public static class RenderModelBfastSerializer
 {
     public static string[] BufferNames = new[]
     {
-        nameof(RenderModelData.VertexBuffer),
-        nameof(RenderModelData.IndexBuffer),
-        nameof(RenderModelData.MeshSliceBuffer),
-        nameof(RenderModelData.InstanceBuffer),
-        nameof(RenderModelData.MeshBounds),
-        nameof(RenderModelData.InstanceBounds),
+        nameof(RenderModelData.VertexData),
+        nameof(RenderModelData.IndexData),
+        nameof(RenderModelData.MeshSliceData),
+        nameof(RenderModelData.InstanceData),
+        nameof(RenderModelData.MeshBoundsData),
+        nameof(RenderModelData.InstanceBoundsData),
         nameof(RenderModelData.Meta)
     };
 
@@ -25,12 +25,12 @@ public static class RenderModelBfastSerializer
     {
         var sizes = new[]
         {
-            renderModelData.VertexBuffer.Bytes.Count,
-            renderModelData.IndexBuffer.Bytes.Count,
-            renderModelData.MeshSliceBuffer.Bytes.Count,
-            renderModelData.InstanceBuffer.Bytes.Count,
-            renderModelData.MeshBounds.Bytes.Count,
-            renderModelData.InstanceBounds.Bytes.Count,
+            renderModelData.VertexData.Bytes.Count,
+            renderModelData.IndexData.Bytes.Count,
+            renderModelData.MeshSliceData.Bytes.Count,
+            renderModelData.InstanceData.Bytes.Count,
+            renderModelData.MeshBoundsData.Bytes.Count,
+            renderModelData.InstanceBoundsData.Bytes.Count,
             sizeof(RenderModelData.MetaData),
         };
 
@@ -43,12 +43,12 @@ public static class RenderModelBfastSerializer
         {
             var ptrs = new[]
             {
-                renderModelData.VertexBuffer.Bytes.Ptr,
-                renderModelData.IndexBuffer.Bytes.Ptr,
-                renderModelData.MeshSliceBuffer.Bytes.Ptr,
-                renderModelData.InstanceBuffer.Bytes.Ptr,
-                renderModelData.MeshBounds.Bytes.Ptr,
-                renderModelData.InstanceBounds.Bytes.Ptr,
+                renderModelData.VertexData.Bytes.Ptr,
+                renderModelData.IndexData.Bytes.Ptr,
+                renderModelData.MeshSliceData.Bytes.Ptr,
+                renderModelData.InstanceData.Bytes.Ptr,
+                renderModelData.MeshBoundsData.Bytes.Ptr,
+                renderModelData.InstanceBoundsData.Bytes.Ptr,
                 (byte*)metaDataPtr, 
             };
 
@@ -97,22 +97,22 @@ public static class RenderModelBfastSerializer
                 switch (index)
                 {
                     case 0: 
-                        r.VertexBuffer.AddRange(srcPointer, view.Size); 
+                        r.VertexData.AddRange(srcPointer, view.Size); 
                         break;
                     case 1: 
-                        r.IndexBuffer.AddRange(srcPointer, view.Size); 
+                        r.IndexData.AddRange(srcPointer, view.Size); 
                         break;
                     case 2: 
-                        r.MeshSliceBuffer.AddRange(srcPointer, view.Size); 
+                        r.MeshSliceData.AddRange(srcPointer, view.Size); 
                         break;
                     case 3: 
-                        r.InstanceBuffer.AddRange(srcPointer, view.Size); 
+                        r.InstanceData.AddRange(srcPointer, view.Size); 
                         break;
                     case 4:
-                        r.MeshBounds.AddRange(srcPointer, view.Size);
+                        r.MeshBoundsData.AddRange(srcPointer, view.Size);
                         break;
                     case 5:
-                        r.InstanceBounds.AddRange(srcPointer, view.Size);
+                        r.InstanceBoundsData.AddRange(srcPointer, view.Size);
                         break;
                     case 6:
                         Debug.Assert(view.Size == sizeof(RenderModelData.MetaData));

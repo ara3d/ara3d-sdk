@@ -46,33 +46,33 @@ public class SimulateSequence2 : IModifier
 
         if (OriginalTransforms == null)
         {
-            InstanceBounds = rmd.InstanceBounds.ToList();
-            OriginalTransforms = rmd.InstanceBuffer.Select(i => i.Matrix4x4).ToList();
-            OriginalFlags = rmd.InstanceBuffer.Select(i => i.Flags).ToList();
+            InstanceBounds = rmd.InstanceBoundsData.ToList();
+            OriginalTransforms = rmd.InstanceData.Select(i => i.Matrix4x4).ToList();
+            OriginalFlags = rmd.InstanceData.Select(i => i.Flags).ToList();
             TotalBounds = rmd.TotalBounds;
             StartTimes = InstanceBounds.Select(b => GetStartTime(b, TotalBounds)).ToList();
         }
 
         var lerpAmount = (LerpAmount / 100f) * (1f + TimeToPosition);
-        for (var i=0; i < rmd.InstanceBuffer.Count; i++)
+        for (var i=0; i < rmd.InstanceData.Count; i++)
         {
             var start = StartTimes[i];
             var end = start + TimeToPosition;
 
             if (lerpAmount < start)
             {
-                rmd.InstanceBuffer[i].Flags = 1;
+                rmd.InstanceData[i].Flags = 1;
             }
             else 
             {
-                rmd.InstanceBuffer[i].Flags = OriginalFlags[i];
+                rmd.InstanceData[i].Flags = OriginalFlags[i];
             }
 
             var dest = OriginalTransforms[i];
 
             if (lerpAmount >= end)
             {
-                rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(dest);
+                rmd.InstanceData[i] = rmd.InstanceData[i].WithMatrix(dest);
             }
             else
             {
@@ -82,12 +82,12 @@ public class SimulateSequence2 : IModifier
                 if (localLerpAmount < 0.5f)
                 {
                     var lerpedMatrix = srcA.Lerp(srcB, localLerpAmount * 2f);
-                    rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(lerpedMatrix);
+                    rmd.InstanceData[i] = rmd.InstanceData[i].WithMatrix(lerpedMatrix);
                 }
                 else
                 {
                     var lerpedMatrix = srcB.Lerp(dest, (localLerpAmount - 0.5f) * 2f);
-                    rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(lerpedMatrix);
+                    rmd.InstanceData[i] = rmd.InstanceData[i].WithMatrix(lerpedMatrix);
                 }
             }
         }

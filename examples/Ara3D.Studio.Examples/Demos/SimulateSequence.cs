@@ -153,23 +153,23 @@ public class SimulateSequence : IModifier
             if (bimData == null)
                 return obj;
 
-            Groups = rmd.InstanceBuffer.Select(i => CategoryToGroup(GetCategory(bimData, i))).ToList();
-            OriginalTransforms = rmd.InstanceBuffer.Select(i => i.Matrix4x4).ToList();
-            OriginalFlags = rmd.InstanceBuffer.Select(i => i.Flags).ToList();
+            Groups = rmd.InstanceData.Select(i => CategoryToGroup(GetCategory(bimData, i))).ToList();
+            OriginalTransforms = rmd.InstanceData.Select(i => i.Matrix4x4).ToList();
+            OriginalFlags = rmd.InstanceData.Select(i => i.Flags).ToList();
         }
 
-        for (var i=0; i < rmd.InstanceBuffer.Count; i++)
+        for (var i=0; i < rmd.InstanceData.Count; i++)
         {
             var start = Groups[i];
             var end = start + 0.1f;
 
             if (LerpAmount < start)
             {
-                rmd.InstanceBuffer[i].Flags = 1;
+                rmd.InstanceData[i].Flags = 1;
             }
             else
             {
-                rmd.InstanceBuffer[i].Flags = OriginalFlags[i];
+                rmd.InstanceData[i].Flags = OriginalFlags[i];
             }
 
             var dest = OriginalTransforms[i];
@@ -177,13 +177,13 @@ public class SimulateSequence : IModifier
 
             if (LerpAmount >= end)
             {
-                rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(dest);
+                rmd.InstanceData[i] = rmd.InstanceData[i].WithMatrix(dest);
             }
             else
             {
                 var amount = (LerpAmount - start) * 10f;
                 var lerpedMatrix = src.Lerp(dest, amount);
-                rmd.InstanceBuffer[i] = rmd.InstanceBuffer[i].WithMatrix(lerpedMatrix);
+                rmd.InstanceData[i] = rmd.InstanceData[i].WithMatrix(lerpedMatrix);
             }
         }
 

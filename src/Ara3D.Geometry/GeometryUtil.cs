@@ -323,7 +323,7 @@ namespace Ara3D.Geometry
         public static Quad3D Push(this Quad3D q, float distance)
             => q.Translate(q.Normal * distance);
 
-       
+
 
         public static QuadGrid3D Subdivide(this Quad3D q, int xSegments, int ySegments)
         {
@@ -745,5 +745,44 @@ namespace Ara3D.Geometry
 
             return builder.ToQuadMesh3D();
         }
+
+        public static QuadMesh3D ToMesh(this Bounds3D self)
+            => PlatonicSolids.Cube.Scale(self.Size).Translate(self.Center);
+
+        public static T Normalize<T>(this ITransformable3D<T> mesh, Bounds3D meshBounds, bool uniformScaling = true, bool center = true)
+            where T: ITransformable3D<T>
+        {
+            var maxSide = meshBounds.Size.MaxComponent;
+            var invScale = uniformScaling 
+                ? new Vector3(maxSide, maxSide, maxSide)
+                : meshBounds.Size;
+            var scale = invScale.Reciprocal;
+            var translatedMesh = mesh.Translate(-meshBounds.Center.Vector3);
+            var scaledMesh = translatedMesh.Scale(scale);
+            return center 
+                ? scaledMesh 
+                : scaledMesh.Translate(meshBounds.Center);
+        }
+
+        public static TriangleMesh3D Normalize(this TriangleMesh3D mesh, bool uniformScaling = true, bool center = true)
+            => mesh.Normalize(mesh.Bounds, uniformScaling, center);
+
+        public static QuadMesh3D Normalize(this QuadMesh3D mesh, bool uniformScaling = true, bool center = true)
+            => mesh.Normalize(mesh.Points.Bounds(), uniformScaling, center);
+
+        public static TriangleMesh3D FitToBounds(this TriangleMesh3D mesh, Bounds3D bounds)
+            => mesh.Normalize().Scale(bounds.Size).Translate(bounds.Center);
+
+        public static QuadMesh3D FitToBounds(this QuadMesh3D mesh, Bounds3D bounds)
+            => mesh.Normalize().Scale(bounds.Size).Translate(bounds.Center);
+
+        public static bool Within(this Vector2 v, Vector2 a, Vector2 b)
+            => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y;
+        
+        public static bool Within(this Vector3 v, Vector3 a, Vector3 b)
+            => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y && v.Z >= a.Z && v.Z <= b.Z;
+
+        public static bool Within(this Vector4 v, Vector4 a, Vector4 b)
+            => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y && v.Z >= a.Z && v.Z <= b.Z && v.W >= a.W && v.W <= b.W;
     }
 }

@@ -10,7 +10,7 @@ public class PropDescriptorFloat : TypedPropDescriptor<float>
 
     public PropDescriptorFloat(string name, string displayName, string description = "", string units = "",
         bool isReadOnly = false, float defaultValue = 0f,
-        float minValue = float.MinValue, float maxValue = float.MaxValue, float delta = 0f)
+        float minValue = float.MinValue, float maxValue = float.MaxValue)
         : base(name, displayName, description, units, isReadOnly)
     {
         if (minValue > maxValue)

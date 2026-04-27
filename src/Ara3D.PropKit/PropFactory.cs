@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Ara3D.Geometry;
 using Ara3D.Utils;
 
 namespace Ara3D.PropKit;
@@ -119,6 +120,24 @@ public static class PropFactory
         {
             return CreatePropAccessor(
                 new PropDescriptorString(name, displayName, description, units, isReadOnly),
+                targetType, type, getter, setter);
+        }
+        else if (type == typeof(System.Numerics.Vector2) || type == typeof(Ara3D.Geometry.Vector2))
+        {
+            return CreatePropAccessor(
+                new PropDescriptorVector2(name, displayName, description, units, isReadOnly),
+                targetType, type, getter, setter);
+        }
+        else if (type == typeof(System.Numerics.Vector3) || type == typeof(Ara3D.Geometry.Vector3))
+        {
+            return CreatePropAccessor(
+                new PropDescriptorVector3(name, displayName, description, units, isReadOnly),
+                targetType, type, getter, setter);
+        }
+        else if (type == typeof(System.Numerics.Vector4) || type == typeof(Ara3D.Geometry.Vector4))
+        {
+            return CreatePropAccessor(
+                new PropDescriptorVector4(name, displayName, description, units, isReadOnly),
                 targetType, type, getter, setter);
         }
         else if (type == typeof(Action))

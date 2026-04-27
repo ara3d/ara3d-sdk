@@ -131,7 +131,18 @@ namespace Ara3D.Utils.Wpf
             => menu.Items.Add(new Separator());
 
         public static MenuItem Add(this MenuItem menu, ICommand command, string text)
-            => menu.Add(command.ToMenuItem(text));
+        {
+            var item = command.ToMenuItem(text);
+            if (command is CheckableCommand checkable)
+            {
+                item.IsCheckable = true;
+                item.IsChecked = checkable.IsChecked;
+                command.CanExecuteChanged += (_, _) => item.IsChecked = checkable.IsChecked;
+            }
+
+            menu.Add(item);
+            return item;
+        }
 
         public static MenuItem Add(this MenuItem menu, string text, Action action = null)
             => menu.Items.Add(text, action);

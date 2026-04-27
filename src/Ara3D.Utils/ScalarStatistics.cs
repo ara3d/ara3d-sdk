@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace Ara3D.Utils
 {
     // https://stackoverflow.com/questions/3141692/standard-deviation-of-generic-list
     // https://www.codeproject.com/Articles/27340/%2FArticles%2F27340%2FA-User-Friendly-C-Descriptive-Statistic-Class   
-    public class Statistics
+    public class ScalarStatistics
     {
         // First statistics are computed in a single pass 
         public readonly double Average;
@@ -15,7 +16,7 @@ namespace Ara3D.Utils
         public readonly double Max = double.MinValue;
         public readonly double Range;
         public readonly double Sum;
-        public readonly long Count;
+        public readonly int Count;
         public readonly bool OrderedAscending;
         public readonly bool OrderedDescending;
 
@@ -39,11 +40,13 @@ namespace Ara3D.Utils
         public readonly double First5Percent;
         public readonly double Last5Percent;
 
+        public readonly string Error;
+
         /// <summary>
         /// Computes values from an IEnumerable. Only some statistics are computed if orderedStatistics 
         /// is false, or multiPass is true.
         /// </summary>
-        public Statistics(IEnumerable<double> values, bool multiPassStats = true, bool orderedStats = true)
+        public ScalarStatistics(IReadOnlyList<double> values, bool multiPassStats = true, bool orderedStats = true)
         {
             MultiPassStats = multiPassStats;
             OrderedStats = orderedStats;
@@ -66,11 +69,23 @@ namespace Ara3D.Utils
                 first = false;
             }
 
+            if (Count < 0)
+            {
+                Error = "No values found, can't compute statistics";
+                return;
+            }
+
             Average = Sum / Count;
             Range = Max - Min;
 
             if (!multiPassStats)
                 return;
+
+            if (Count < 4)
+            {
+                Error = "Not enough values to compute additional statistics";
+                return;
+            }
 
             var moment1 = 0.0;
             var moment2 = 0.0;
@@ -95,6 +110,9 @@ namespace Ara3D.Utils
             StandardDeviation = Math.Sqrt(Variance);
             Minus3StdDev = Average - 3 * StandardDeviation;
             Plus3StdDev = Average + 3 * StandardDeviation;
+
+            if (StandardDeviation.AlmostZero())
+                return;
 
             // using Excel approach
             var cumulativeSkew
@@ -130,12 +148,8 @@ namespace Ara3D.Utils
         /// <summary>
         /// Computes common statistics from a collection of values that can be converted to doubles
         /// </summary>
-        public static Statistics Statistics<T>(this IEnumerable<T> self)
-            // https://stackoverflow.com/questions/3343551/how-to-cast-a-value-of-generic-type-t-to-double-without-boxing
-            // OPTIMIZATION: this can be made much faster by avoiding boxing.
-            // https://stackoverflow.com/questions/24259261/avoiding-boxing-in-generic-blackboard
-            // https://blogs.msdn.microsoft.com/bclteam/2005/03/15/avoiding-boxing-in-classes-implementing-generic-interfaces-through-reflection-dave-fetterman/
-            => new Statistics(self.Select(x => Convert.ToDouble(x)));
+        public static ScalarStatistics Statistics<T>(this IEnumerable<T> self)
+            => new(self.Select(x => Convert.ToDouble(x)).ToList());
 
         /// <summary>
         /// Given a sorted list returns the value at the x% position (50% is the median)
@@ -179,16 +193,6 @@ namespace Ara3D.Utils
         {
             var stats = values.Statistics();
             return $"count = {stats.Count}, sum = {stats.Sum}, avg = {stats.Average}, min = {stats.Min}, max = {stats.Max}, dev = {stats.StandardDeviation}";
-        }
-
-        public static Statistics[] GetComponentStatistics<T>(
-            this T[] values,
-            Func<T, double>[] componentAccessors)
-        {
-            var stats = new Statistics[componentAccessors.Length];
-            Parallel.For(0, stats.Length, i =>
-                stats[i] = new Statistics(values.Select(componentAccessors[i])));
-            return stats;
         }
     }
 }

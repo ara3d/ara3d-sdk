@@ -143,30 +143,30 @@ public static class BimGeometryExtensions
 
     public static RenderModelData CopyToRenderModelData(this BimGeometry self, RenderModelData data)
     {
-        data.VertexBuffer.SetCount(self.GetNumVertices() * 3);
+        data.VertexData.SetCount(self.GetNumVertices() * 3);
         for (int i = 0, n = self.GetNumVertices(); i < n; i++)
         {
-            data.VertexBuffer[i * 3] = self.VertexX[i] /  BimGeometry.VertexMultiplier;
-            data.VertexBuffer[i * 3 + 1] = self.VertexY[i] / BimGeometry.VertexMultiplier;
-            data.VertexBuffer[i * 3 + 2] = self.VertexZ[i] / BimGeometry.VertexMultiplier;
+            data.VertexData[i * 3] = self.VertexX[i] /  BimGeometry.VertexMultiplier;
+            data.VertexData[i * 3 + 1] = self.VertexY[i] / BimGeometry.VertexMultiplier;
+            data.VertexData[i * 3 + 2] = self.VertexZ[i] / BimGeometry.VertexMultiplier;
         }
 
-        data.IndexBuffer.SetCount(self.GetNumIndices());
+        data.IndexData.SetCount(self.GetNumIndices());
         for (int i = 0, n = self.GetNumIndices(); i < n; i++)
         {
-            data.IndexBuffer[i] = (uint)self.IndexBuffer[i];
+            data.IndexData[i] = (uint)self.IndexBuffer[i];
         }
 
-        data.InstanceBuffer.SetCount(self.GetNumInstances());
+        data.InstanceData.SetCount(self.GetNumInstances());
         for (int i = 0, n = self.GetNumInstances(); i < n; i++)
         {
-            data.InstanceBuffer[i] = GetInstanceStruct(self, i);
+            data.InstanceData[i] = GetInstanceStruct(self, i);
         }
 
-        data.MeshSliceBuffer.SetCount(self.GetNumMeshes());
+        data.MeshSliceData.SetCount(self.GetNumMeshes());
         for (int i = 0, n = self.GetNumMeshes(); i < n; i++)
         {
-            data.MeshSliceBuffer[i] = GetMeshSlice(self, i);
+            data.MeshSliceData[i] = GetMeshSlice(self, i);
         }
 
         data.ValidateMeshSlices();

@@ -4,6 +4,7 @@ public enum Categories
 {
     // Generators 
     Meshes,
+    Lattices,
     Curves,
     Surfaces,
     Polylines,

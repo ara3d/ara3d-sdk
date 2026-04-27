@@ -3,6 +3,7 @@
 public class RandomizeColors : IModifier
 {
     [Range(0, 1000)] public int Seed { get; set; }
+    public bool IsWednesday { get; set; }
 
     public static Color RandomColor(Random rng)
         => Color.Create(rng.NextSingle(), rng.NextSingle(), rng.NextSingle(), 1);
@@ -11,7 +12,7 @@ public class RandomizeColors : IModifier
     {
         var rng = new Random(Seed);
         var mb = new Model3DBuilder();
-        mb.Meshes.AddRange(input.Meshes);
+        mb.Meshes.AddRange(input.Meshes); 
         for (var i = 0; i < input.Instances.Count; i++)
         {
             var inst = input.Instances[i];

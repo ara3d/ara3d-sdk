@@ -73,5 +73,40 @@ public class Spherify : IModifier
     }
 }
 
+public class NoiseDeformer : IModifier
+{
+    [Range(0f, 1f)] public float Amplitude { get; set; } = 1f;
+    [Range(1, 10)] public int Exp10 { get; set; } = 1;
+
+    [Range(-10f, 10f)] public float OffsetX { get; set; }
+    [Range(-10f, 10f)] public float OffsetY { get; set; }
+    [Range(-10f, 10f)] public float OffsetZ { get; set; }
+
+    public Point3D Deform(Point3D p)
+    {
+        var offset = (OffsetX, OffsetY, OffsetZ);
+
+        // Frequency: 10, 100, 1000, etc.
+        var frequency = MathF.Pow(10f, Exp10);
+
+        // Sample position in noise space
+        var sample = p.Vector3 * frequency + offset;
+
+        // Expected approximately [-1, +1]
+        var n = PerlinNoise.Noise(sample);
+
+        // Displace along a stable direction.
+        // Replace Vector3.UnitZ with p.Normal if you later have normals available.
+        var displaced = p.Vector3 + Vector3.UnitZ * (n * Amplitude);
+
+        return displaced;
+    }
+
+    public TriangleMesh3D Eval(TriangleMesh3D mesh)
+    {
+        return mesh.Deform(Deform);
+    }
+}
+
 // IDEA:
 // Boxify, Clamping, 

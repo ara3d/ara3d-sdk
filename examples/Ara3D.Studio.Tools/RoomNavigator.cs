@@ -45,13 +45,13 @@ namespace Ara3D.Studio.Tools
 
             for (var i = 0; i < model.InstanceCount; i++)
             {
-                var inst = model.InstanceBuffer[i];
+                var inst = model.InstanceData[i];
                 var ei = inst.EntityIndex;
                 var cat = data.GetCategoryName((EntityIndex)ei);
                 if (cat.StartsWith("room", StringComparison.CurrentCultureIgnoreCase))
                 {
                     if (inst.MeshIndex < 0) continue;
-                    var bounds = model.InstanceBounds[i];
+                    var bounds = model.InstanceBoundsData[i];
                     if (!RoomLookup.ContainsKey(ei))
                     {
                         var name = data.GetEntityName((EntityIndex)ei);
@@ -131,7 +131,7 @@ namespace Ara3D.Studio.Tools
         private void OnRoomClicked(RoomData room)
         {
             var state = App.GetCameraState();
-            App.AnimateCameraTo(state.WithPosition(room.Center));
+            App.AnimateCameraTo(state.WithPosition(room.Center), 1.5f);
         }
     }
 }

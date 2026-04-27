@@ -51,21 +51,10 @@ public readonly record struct CameraState
 
     public CameraState WithTarget(Vector3 target)
     {
-        // Direction from the camera to the point of interest
-        var dir = target - Position;
-
-        // --- Pitch (rotation around Right axis) ------------------------------
-        // sin(pitch) = z‑component of the forward vector
+        var dir = (target - Position).Normalize;
         var pitch = MathF.Asin(Math.Clamp(dir.Z, -1f, 1f));
-        
-        // --- Yaw (rotation around Up axis) -----------------------------------
-        // Forward.X =  cos(pitch) * cos(-yaw)
-        // Forward.Y =  cos(pitch) * sin(-yaw)
-        var yaw = -MathF.Atan2(dir.Y, dir.X);
-        
-        // Keep yaw in [0, 360) simply for convenience
+        var yaw = MathF.Atan2(dir.Y, dir.X);
         if (yaw < 0) yaw += 1.Turns();
-
         return WithYawPitch(yaw, pitch);
     }
 
