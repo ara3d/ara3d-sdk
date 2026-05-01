@@ -11,5 +11,5 @@ public class DataRow : IDataRow
         RowIndex = rowIndex;
     }
 
-    public object this[int n] => Values[n];
+    public object this[int n] => DataTable[n, RowIndex];
 }

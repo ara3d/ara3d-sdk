@@ -1,5 +1,24 @@
-﻿namespace Ara3D.Studio.Samples;
+﻿namespace Ara3D.Geometry;
 
+/// <summary>
+/// A rigid 3D coordinate frame represented by a world-space origin and
+/// an orthonormal basis.
+/// </summary>
+/// <remarks>
+/// Assumptions:
+/// - Basis.X, Basis.Y, and Basis.Z are unit length and mutually perpendicular.
+/// - Basis vectors are expressed in world coordinates.
+/// - Local coordinates are interpreted as coefficients along the basis vectors.
+/// - ToWorld maps a local point to world space:
+///     world = Origin + X * local.X + Y * local.Y + Z * local.Z
+/// - ToLocal maps a world point into this frame using dot products:
+///     local = (dot(world - Origin, X), dot(..., Y), dot(..., Z))
+/// - Direction transforms ignore Origin.
+/// - Compose(other) means "apply other in this frame", equivalent to:
+///     this.ToWorld(other.ToWorld(local))
+/// - Matrix/RotationMatrix layout must agree with Basis.Matrix and
+///   System.Numerics.Matrix4x4 conventions.
+/// </remarks>
 public readonly record struct Frame3D(
     Point3D Origin,
     OrthonormalBasis3D Basis) : IRigidTransform3D

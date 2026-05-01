@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Studio.Samples;
+﻿namespace Ara3D.Geometry;
 
 public readonly record struct OrthonormalBasis3D 
     : IRotation3D

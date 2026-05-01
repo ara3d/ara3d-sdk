@@ -178,6 +178,13 @@ namespace Ara3D.Geometry
             return (value - min) / (max - min);
         }
 
+        public static Color Lerp(this Color c0, Color c1, float amount)
+            => (
+                c0.R.Lerp(c1.R, amount),
+                c0.G.Lerp(c1.G, amount),
+                c0.B.Lerp(c1.B, amount),
+                c0.A.Lerp(c1.A, amount));
+
         public static Vector3 InverseLerp(this Vector3 v, Vector3 min, Vector3 max)
             => (v.X.Unlerp(min.X, max.X),
                 v.Y.Unlerp(min.Y, max.Y),
@@ -206,6 +213,15 @@ namespace Ara3D.Geometry
             var c = bounds.Center;
             return ((c.X, bounds.Min.Y, c.Z), (c.X, bounds.Max.Y, c.Z));
         }
+
+        public static Vector3 DiagonalVector(this Bounds3D bounds)
+            => (bounds.Max - bounds.Min);
+
+        public static Number DiagonalLength(this Bounds3D bounds)
+            => bounds.DiagonalVector().Length;
+
+        public static Number GetVolume(this Bounds3D bounds)
+            => bounds.Size.X * bounds.Size.Y * bounds.Size.Z;
 
         public static Number DistanceFromZAxis(this Bounds3D bounds, Vector3 p)
         {

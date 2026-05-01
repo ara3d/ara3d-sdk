@@ -108,7 +108,7 @@ public static class ParquetUtils
         var reader = await ParquetReader.CreateAsync(filePath);
         var parquetColumns = await reader.ReadEntireRowGroupAsync();
         var araColumns = parquetColumns.Select((c, i) => new ParquetColumnAdapter(c, i)).ToList();
-        return new ReadOnlyDataTable(name, araColumns);
+        return new DataTable.DataTable(name, araColumns, null);
     }
 
     public static async Task<ParquetTable<T>> ReadParquetAsync<T>(this FilePath filePath, Func<object[], T> ctor, string? name = null)
@@ -124,7 +124,7 @@ public static class ParquetUtils
         var reader = await ParquetReader.CreateAsync(stream);
         var parquetColumns = await reader.ReadEntireRowGroupAsync();
         var araColumns = parquetColumns.Select((c, i) => new ParquetColumnAdapter(c, i)).ToList();
-        return new ReadOnlyDataTable(name, araColumns);
+        return new DataTable.DataTable(name, araColumns, null);
     }
 
     public static async Task<ParquetColumn<T>> ReadParquetColumnAsync<T>(this Stream stream)

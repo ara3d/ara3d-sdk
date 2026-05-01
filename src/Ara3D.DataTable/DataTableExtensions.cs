@@ -9,27 +9,9 @@ namespace Ara3D.DataTable;
 
 public static class DataTableExtensions
 {
-    public static IDataTable ToDataTable(this DbDataReader ddr, string name = "")
-    {
-        var n = ddr.FieldCount;
-        var r = new DataTableBuilder(name);
-        var cols = new List<DataColumnBuilder>();
-        for (var i = 0; i < n; i++)
-            cols.Add(r.AddColumn(ddr.GetName(i), ddr.GetFieldType(i)));
-        while (ddr.Read())
-            for (var i = 0; i < n; i++)
-                cols[i].Add(ddr[i]);
-        return r;
-    }
-
-    public static DataRow GetRow(this IDataTable self, int rowIndex)
-        => new(self, rowIndex);
-
+    
     public static IReadOnlyList<object> GetRowValues(this IDataTable table, int row)
         => table.Columns.Select(c => c[row]).ToList();
-
-    public static ReadOnlyDataSet AddColumns(this IDataSet self, IDataTable table, params IDataColumn[] columns)
-        => self.AddTable(new ReadOnlyDataTable(table.Name, table.Columns.Concat(columns)));
 
     public static ReadOnlyDataSet AddTable(this IDataSet self, IDataTable table)
         => new(self.Tables.Append(table).ToList());
@@ -40,26 +22,22 @@ public static class DataTableExtensions
     public static IDataColumn? GetColumn(this IDataTable self, string name)
         => self.Columns.FirstOrDefault(c => c.Descriptor.Name == name);
 
-    public static ReadOnlyDataSet AddColumnsToTable(this IDataSet self, string tableName,
-        IReadOnlyList<IDataColumn> columns)
-    {
-        var table = self.GetTable(tableName);
-        if (table == null)
-        { 
-            table = new ReadOnlyDataTable(tableName, columns);
-            return self.AddTable(table);
-        }
-        return self.AddColumns(table, columns.ToArray());
-    }
-
     public static T[] GetTypedValues<T>(this IDataColumn column)
     {
         if (typeof(T) != column.GetDataType())
             throw new Exception($"Type {typeof(T)} does not match {column.GetDataType()}");
-        var tmp = column.AsArray();
-        if (tmp is T[] r)
-            return r;
-        throw new Exception("Unable to retrieve a typed array of values");
+
+        if (column is DataColumnWithValues dcwv)
+        {
+            var vals = dcwv.Values;
+            if (vals is T[] r)
+                return r;
+        }
+
+        var xs = new T[column.Count];
+        for (var i = 0; i < column.Count; i++)
+            xs[i] = (T)column[i];
+        return xs;
     }
 
     public static IReadOnlyList<object> GetValues(this IDataColumn column)
@@ -143,80 +121,19 @@ public static class DataTableExtensions
 
         return r;
     }
-
-    public static IDataTable JoinTable(this IDataTable tableA, int keyIndex, IDataTable tableB)
+    
+    public static IDataTable ToDataTable<T>(this IReadOnlyList<T> values, string name = "")
     {
-        if (tableA.Columns.Count < keyIndex || keyIndex < 0)
-            throw new Exception($"Column {keyIndex} not found");
-
-        var keyColumn = tableA.Columns[keyIndex];
-        if (keyColumn == null)
-            throw new Exception($"KeyColumn {keyIndex} not found");
-        var indices = keyColumn.AsIndexColumn();
-
-        var newColumns = new List<IDataColumn>();
-        foreach (var col in tableA.Columns)
+        if (typeof(T).IsPrimitive || typeof(T) == typeof(string))
         {
-            if (col.ColumnIndex == keyIndex)
-            {
-                foreach (var col2 in tableB.Columns)
-                {
-                    var dcb = new DataColumnBuilder(col2.Descriptor, newColumns.Count);
-                    foreach (var index in indices)
-                    {
-                        dcb.Values.Add(col2[(int)index]);
-                    }
-                    newColumns.Add(dcb);
-                }
-            }
-            else
-            {
-                newColumns.Add(col);
-            }
+            return new ReadOnlyListSingleColumnDataAdapter<T>(name, values);
         }
 
-        return new ReadOnlyDataTable(tableA.Name, newColumns);
-    }
-
-    public static ReadOnlyDataTable ToDataTable<T>(this IReadOnlyList<T> values, string name = "")
-    {
         var props = typeof(T).GetPropProvider();
-
-        if (typeof(T).IsPrimitive || typeof(T) == typeof(string))
-            return new ReadOnlyDataTable(name, [new ReadOnlyDataColumn<T>(0, values, name)]);
-
         var columns = props.Accessors.Select(
                 (acc, i) => new DataColumnFromAccessorAndList<T>(i, acc, values))
             .ToList();
-        return new ReadOnlyDataTable(name, columns);
-    }
-
-    public static DataTableBuilder AddColumnsFromFieldsAndProperties<T>(this DataTableBuilder self, IEnumerable<T> values)
-    {
-        var propSet = typeof(T).GetPropProvider();
-        var descriptors = propSet.GetDescriptors();
-
-        // TODO: what I want is actually a special kind of list builder that takes generic objects, but knows its type. 
-        // 
-        var columns = descriptors.Count.Select(_ => new List<object>()).ToList();
-
-        foreach (var value in values)
-        {
-            var row = propSet.GetPropValues(value);
-            for (var i = 0; i < row.Count; i++)
-            {
-                var propVal = row[i];
-                Debug.Assert(propVal.Descriptor.Name.Equals(descriptors[i].Name));
-                columns[i].Add(propVal.Value);
-            }
-        }
-
-        for (var i = 0; i < columns.Count; i++)
-        {
-            self.AddColumn(columns[i].ToArray(), descriptors[i].Name, descriptors[i].Type);
-        }
-
-        return self;
+        return new DataTable(name, columns, (col, row) => columns[col][row]);
     }
 
     public static IReadOnlyList<T> ToArray<T>(this IDataTable self)

@@ -30,7 +30,7 @@ public class MeshBoxes : IModifier
         if (!Oriented)
             return displayMesh.Triangulate().FitToBounds(bounds);
 
-        var obb = OrientedBox.Fit(mesh.Points.Map(m => m.Vector3));
+        var obb = mesh.Points.FitOrientedBox();
         var q = obb.Frame.Rotation;
         Debug.Assert(!float.IsNaN(q.X), "bad quaternion – matrix not orthonormal?");
 

@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Studio.Samples;
+﻿namespace Ara3D.Geometry;
 
 public static class GeometryExtensions
 {
@@ -41,26 +41,4 @@ public static class GeometryExtensions
     public static LineMesh3D ToLineMesh(this Quad2D q)
         => q.To3D.ToLineMesh();
 
-    public static QuadMesh3D ToQuadMesh(this IEnumerable<QuadGrid3D> grids)
-    {
-        var points = new List<Point3D>();
-        var faces = new List<Integer4>();
-        var offset = 0;
-
-        foreach (var grid in grids)
-        {
-            points.AddRange(grid.Points);
-            foreach (var face in grid.FaceIndices)
-            {
-                faces.Add(new Integer4(
-                    face.A + offset,
-                    face.B + offset,
-                    face.C + offset,
-                    face.D + offset));
-            }
-            offset = points.Count;
-        }
-
-        return new QuadMesh3D(points, faces);
-    }
 }

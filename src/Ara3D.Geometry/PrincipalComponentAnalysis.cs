@@ -1,5 +1,5 @@
 ﻿
-namespace Ara3D.Studio.Samples;
+namespace Ara3D.Geometry;
 
 public class PrincipalComponentAnalysis
 {
@@ -32,44 +32,79 @@ public class PrincipalComponentAnalysis
     public readonly double Planarity;
     public readonly double Scattering;
 
-    public int Count => Stats.Count;
-    public Vector3 Mean => Stats.Average;
+    public int Count { get; }
+
+    public readonly double MeanX;
+    public readonly double MeanY;
+    public readonly double MeanZ;
+
+    public Vector3 Mean => new Vector3((float)MeanX, (float)MeanY, (float)MeanZ);
+
     public double TotalVariance => LargestEigenValue + MiddleEigenValue + SmallestEigenValue;
     public bool IsPointLike => TotalVariance <= Epsilon;
     public Axes3D Axes => new(PrincipalAxis, SecondaryAxis, TertiaryAxis);
     public Frame3D Frame => new(Mean, Axes.ToOrthonormalBasis());
-    public Vector3Statistics Stats { get; }
 
-    public PrincipalComponentAnalysis(IReadOnlyList<Vector3> pts)
+    public PrincipalComponentAnalysis(
+        IReadOnlyList<Vector3> pts,
+        IReadOnlyList<double>? weights = null)
     {
         if (pts == null)
             throw new ArgumentNullException(nameof(pts));
 
-        Stats = new Vector3Statistics(pts);
+        Count = pts.Count;
+        if (weights != null && weights.Count != pts.Count)
+            throw new ArgumentException("Weights must match point count.");
 
-        foreach (var p in pts)
+        var sumW = 0.0;
+    
+        // --- Compute weighted mean --------------------------------------------
+        for (int i = 0; i < pts.Count; i++)
         {
-            var dx = p.X - Stats.AverageX;
-            var dy = p.Y - Stats.AverageY;
-            var dz = p.Z - Stats.AverageZ;
+            var w = weights != null ? weights[i] : 1.0;
+            var p = pts[i];
 
-            Cov00 += dx * dx;
-            Cov01 += dx * dy;
-            Cov02 += dx * dz;
-            Cov11 += dy * dy;
-            Cov12 += dy * dz;
-            Cov22 += dz * dz;
+            sumW += w;
+            MeanX += w * p.X;
+            MeanY += w * p.Y;
+            MeanZ += w * p.Z;
         }
 
-        var invN = 1.0 / Count;
+        if (sumW <= Epsilon)
+            throw new InvalidOperationException("Total weight is zero.");
 
-        Cov00 *= invN;
-        Cov01 *= invN;
-        Cov02 *= invN;
-        Cov11 *= invN;
-        Cov12 *= invN;
-        Cov22 *= invN;
+        MeanX /= sumW;
+        MeanY /= sumW;
+        MeanZ /= sumW;
 
+        // --- Compute weighted covariance ---------------------------------------
+        for (int i = 0; i < pts.Count; i++)
+        {
+            var w = weights != null ? weights[i] : 1.0;
+            var p = pts[i];
+
+            var dx = p.X - MeanX;
+            var dy = p.Y - MeanY;
+            var dz = p.Z - MeanZ;
+
+            Cov00 += w * dx * dx;
+            Cov01 += w * dx * dy;
+            Cov02 += w * dx * dz;
+            Cov11 += w * dy * dy;
+            Cov12 += w * dy * dz;
+            Cov22 += w * dz * dz;
+        }
+
+        var invW = 1.0 / sumW;
+
+        Cov00 *= invW;
+        Cov01 *= invW;
+        Cov02 *= invW;
+        Cov11 *= invW;
+        Cov12 *= invW;
+        Cov22 *= invW;
+
+        // --- Eigen decomposition (unchanged) -----------------------------------
         (EigenX, EigenY, EigenZ) = EigenValues(Cov00, Cov01, Cov02, Cov11, Cov12, Cov22);
 
         var sorted = SortDescending(EigenX, EigenY, EigenZ);
@@ -127,7 +162,7 @@ public class PrincipalComponentAnalysis
         => (p - Mean).Dot(TertiaryAxis);
 
     public double DistanceToBestFitPlane(Vector3 p)
-        => SignedDistanceToBestFitPlane(p).Abs();
+        => Math.Abs(SignedDistanceToBestFitPlane(p));
 
     public Vector3 ProjectOntoBestFitPlane(Vector3 p)
         => p - TertiaryAxis * (float)SignedDistanceToBestFitPlane(p);

@@ -259,6 +259,18 @@ public unsafe struct InstanceStruct
         return r;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public InstanceStruct WithFlags(byte flags)
+    {
+        var r = this;
+        r.Flags = flags;
+        return r;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public InstanceStruct WithVisibility(bool vis)
+        => WithFlags(vis ? (byte)(Flags & ~HiddenFlag) : (byte)(Flags | HiddenFlag));
+
     //------------
     // Helper function
 

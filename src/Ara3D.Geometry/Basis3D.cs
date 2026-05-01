@@ -1,4 +1,4 @@
-﻿ namespace Ara3D.Studio.Samples;
+﻿ namespace Ara3D.Geometry;
 
 public readonly record struct Basis3D
     : ITransform3D

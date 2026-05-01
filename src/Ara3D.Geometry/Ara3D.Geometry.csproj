@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
     <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Studio.Samples;
+﻿namespace Ara3D.Geometry;
 
 public class ColoredTriangleMesh3D : IPointGeometry3D<ColoredTriangleMesh3D>
 {

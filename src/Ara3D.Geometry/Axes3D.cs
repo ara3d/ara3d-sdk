@@ -1,4 +1,4 @@
-﻿namespace Ara3D.Studio.Samples;
+﻿namespace Ara3D.Geometry;
 
 public readonly record struct Axes3D(Vector3 X, Vector3 Y, Vector3 Z)
 {

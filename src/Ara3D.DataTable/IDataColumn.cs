@@ -6,5 +6,9 @@ public interface IDataColumn
     IDataDescriptor Descriptor { get; }
     int Count { get; }
     object this[int n] { get; }
-    Array AsArray();
+}
+
+public interface IDataColumnWithValues : IDataColumn
+{
+    Array Values { get; }
 }

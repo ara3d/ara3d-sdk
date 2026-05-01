@@ -14,14 +14,14 @@ namespace Ara3D.BimOpenSchema.IO;
 public class ParquetColumn<T> : IReadOnlyList<T>, IDataColumn, IDataTable
 {
     public readonly T[] Values;
-    private ReadOnlyListDataAdapter<T> _adapter;
+    private ReadOnlyListSingleColumnDataAdapter<T> _adapter;
 
     public ParquetColumn(DataColumn column)
     {
         Values = column.Data as T[];
         if (Values == null)
             throw new Exception($"Column has type {column.Data.GetType()} not {typeof(T[])}");
-        _adapter = new ReadOnlyListDataAdapter<T>(column.Field.Name, Values);
+        _adapter = new ReadOnlyListSingleColumnDataAdapter<T>(column.Field.Name, Values);
     }
 
     public IEnumerator<T> GetEnumerator() => (IEnumerator<T>)Values.GetEnumerator();

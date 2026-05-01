@@ -51,8 +51,7 @@ namespace Ara3D.Utils
         public static bool CanCastToDouble(this Type typeSrc)
             => typeSrc.IsPrimitive
                && typeSrc != typeof(char)
-               && typeSrc != typeof(decimal)
-               && typeSrc != typeof(bool);
+               && typeSrc != typeof(decimal);
 
         /// <summary>
         /// Returns true if the object is not null and can be safely cast to a double. 
@@ -67,6 +66,7 @@ namespace Ara3D.Utils
         {
             switch (o)
             {
+                case bool b: return b ? 1 : 0;
                 case int n: return n;
                 case uint un: return un;
                 case long l: return l;
@@ -78,7 +78,8 @@ namespace Ara3D.Utils
                 case float f: return f;
                 case double d: return d;
             }
-            throw new Exception($"Cannot cast object {o} to double");
+
+            return double.NaN;
         }
 
         /// <summary>

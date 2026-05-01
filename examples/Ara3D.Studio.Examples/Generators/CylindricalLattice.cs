@@ -6,22 +6,54 @@ namespace Ara3D.Studio.Samples.Generators
     {
         [Range(3, 100)] public int RadialSides = 16;
         [Range(1, 128)] public int VerticalSegments = 4;
+
+        [Range(1, 32)] public int RadialCellResolution = 6;
+        [Range(1, 32)] public int VerticalCellResolution = 6;
+
+        [Range(1, 31)] public int RadialBarThickness = 1;
+        [Range(1, 31)] public int VerticalBarThickness = 1;
+
         [Range(0.01f, 100f)] public float Height = 5f;
         [Range(0.01f, 100f)] public float InnerRadius = 1f;
         [Range(0.01f, 10f)] public float RadialThickness = 0.1f;
 
         public QuadMesh3D Eval()
         {
-            var shape = new CellGridBuilder3D(
-                RadialSides * 3,
+            RadialCellResolution = Math.Max(1, RadialCellResolution);
+            VerticalCellResolution = Math.Max(1, VerticalCellResolution);
+
+            RadialBarThickness = Math.Clamp(
+                RadialBarThickness,
                 1,
-                VerticalSegments * 3);
+                Math.Max(1, RadialCellResolution / 2));
+
+            VerticalBarThickness = Math.Clamp(
+                VerticalBarThickness,
+                1,
+                Math.Max(1, VerticalCellResolution / 2));
+
+            var shape = new CellGridBuilder3D(
+                RadialSides * RadialCellResolution,
+                1,
+                VerticalSegments * VerticalCellResolution);
 
             for (var x = 0; x < shape.SizeX; x++)
             {
+                var rx = x % RadialCellResolution;
+
+                var inRadialOpening =
+                    rx >= RadialBarThickness &&
+                    rx < RadialCellResolution - RadialBarThickness;
+
                 for (var z = 0; z < shape.SizeZ; z++)
                 {
-                    if (x % 3 == 1 && z % 3 == 1)
+                    var rz = z % VerticalCellResolution;
+
+                    var inVerticalOpening =
+                        rz >= VerticalBarThickness &&
+                        rz < VerticalCellResolution - VerticalBarThickness;
+
+                    if (inRadialOpening && inVerticalOpening)
                         shape.Remove(x, 0, z);
                 }
             }

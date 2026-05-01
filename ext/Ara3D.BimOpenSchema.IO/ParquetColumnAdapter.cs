@@ -4,7 +4,7 @@ using DataColumn = Parquet.Data.DataColumn;
 
 namespace Ara3D.BimOpenSchema.IO;
 
-public class ParquetColumnAdapter : IDataColumn
+public class ParquetColumnAdapter : IDataColumnWithValues
 {
     public DataColumn Column;
 
@@ -12,7 +12,7 @@ public class ParquetColumnAdapter : IDataColumn
     {
         Column = dc;
         ColumnIndex = index;
-        Descriptor = new DataDescriptor(dc.Field.Name, dc.Field.ClrType, index);
+        Descriptor = new DataDescriptor(dc.Field.Name, dc.Field.ClrType);
         Count = Column.NumValues;
     }
 
@@ -20,5 +20,5 @@ public class ParquetColumnAdapter : IDataColumn
     public IDataDescriptor Descriptor { get; }
     public int Count { get; }
     public object this[int n] => Column.Data.GetValue(n);
-    public Array AsArray() => Column.Data;
+    public Array Values => Column.Data;
 }

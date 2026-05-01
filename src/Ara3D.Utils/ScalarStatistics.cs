@@ -1,198 +1,163 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
-namespace Ara3D.Utils
+namespace Ara3D.Utils;
+
+public class ScalarStatistics
 {
-    // https://stackoverflow.com/questions/3141692/standard-deviation-of-generic-list
-    // https://www.codeproject.com/Articles/27340/%2FArticles%2F27340%2FA-User-Friendly-C-Descriptive-Statistic-Class   
-    public class ScalarStatistics
+    public readonly int Count;
+    public readonly int ValidCount;
+    public readonly int NanCount;
+    public readonly int InfinityCount;
+
+    public bool HasInvalidValues => NanCount > 0 || InfinityCount > 0;
+
+    public readonly double Sum;
+    public readonly double SumOfSquares;
+    public readonly double Average = double.NaN;
+    public readonly double Min = double.PositiveInfinity;
+    public readonly double Max = double.NegativeInfinity;
+    public readonly double Range = double.NaN;
+
+    public readonly bool OrderedAscending = true;
+    public readonly bool OrderedDescending = true;
+
+    public readonly double SumAbsoluteDeviation = double.NaN;
+    public readonly double SumSquaredDeviation = double.NaN;
+    public readonly double MeanAbsoluteDeviation = double.NaN;
+
+    public readonly double PopulationVariance = double.NaN;
+    public readonly double SampleVariance = double.NaN;
+    public double Variance => SampleVariance;
+
+    public readonly double PopulationStdDev = double.NaN;
+    public readonly double SampleStdDev = double.NaN;
+    public double StdDev => SampleStdDev;
+
+    public readonly double RootMeanSquare = double.NaN;
+    public readonly double CoefficientOfVariation = double.NaN;
+
+    public readonly double Minus3StdDev = double.NaN;
+    public readonly double Plus3StdDev = double.NaN;
+
+    public readonly double Skewness = double.NaN;
+    public readonly double Kurtosis = double.NaN;
+
+    public bool IsEmpty => ValidCount == 0;
+    public bool IsSingleValue => ValidCount == 1;
+    public bool IsConstant => ValidCount > 0 && Range == 0.0;
+
+    public double SumOfError => SumAbsoluteDeviation;
+    public double SumOfError2 => SumSquaredDeviation;
+
+    public ScalarStatistics(IReadOnlyList<double> values)
     {
-        // First statistics are computed in a single pass 
-        public readonly double Average;
-        public readonly double Min = double.MaxValue;
-        public readonly double Max = double.MinValue;
-        public readonly double Range;
-        public readonly double Sum;
-        public readonly int Count;
-        public readonly bool OrderedAscending;
-        public readonly bool OrderedDescending;
+        ArgumentNullException.ThrowIfNull(values);
 
-        // Additional statistics computed when doing multiple passes 
-        public readonly bool MultiPassStats;
-        public readonly double Skewness;
-        public readonly double Kurtosis;
-        public readonly double SumOfError;
-        public readonly double SumOfError2;
-        public readonly double Variance;
-        public readonly double StandardDeviation;
-        public readonly double Minus3StdDev;
-        public readonly double Plus3StdDev;
+        var hasPrevious = false;
+        var previous = 0.0;
 
-        // More expensive to compute statistics that are computed optionally only when 
-        // ordered statistics is true, and MultiPass is true
-        public readonly bool OrderedStats;
-        public readonly double Median;
-        public readonly double FirstQuartile;
-        public readonly double ThirdQuartile;
-        public readonly double First5Percent;
-        public readonly double Last5Percent;
-
-        public readonly string Error;
-
-        /// <summary>
-        /// Computes values from an IEnumerable. Only some statistics are computed if orderedStatistics 
-        /// is false, or multiPass is true.
-        /// </summary>
-        public ScalarStatistics(IReadOnlyList<double> values, bool multiPassStats = true, bool orderedStats = true)
+        foreach (var value in values)
         {
-            MultiPassStats = multiPassStats;
-            OrderedStats = orderedStats;
+            Count++;
 
-            var prev = 0.0;
-            OrderedAscending = true;
-            OrderedDescending = true;
-            var first = true;
-            foreach (var value in values)
+            if (double.IsNaN(value))
             {
-                Count++;
-                Sum += value;
-                Min = Math.Min(Min, value);
-                Max = Math.Max(Max, value);
-                if (!first && value < prev)
-                    OrderedAscending = false;
-                if (!first && value > prev)
-                    OrderedDescending = false;
-                prev = value;
-                first = false;
+                NanCount++;
+                continue;
             }
 
-            if (Count < 0)
+            if (double.IsInfinity(value))
             {
-                Error = "No values found, can't compute statistics";
-                return;
+                InfinityCount++;
+                continue;
             }
 
-            Average = Sum / Count;
-            Range = Max - Min;
+            ValidCount++;
 
-            if (!multiPassStats)
-                return;
+            Sum += value;
+            SumOfSquares += value * value;
 
-            if (Count < 4)
+            if (value < Min) Min = value;
+            if (value > Max) Max = value;
+
+            if (hasPrevious)
             {
-                Error = "Not enough values to compute additional statistics";
-                return;
+                if (value < previous) OrderedAscending = false;
+                if (value > previous) OrderedDescending = false;
             }
 
-            var moment1 = 0.0;
-            var moment2 = 0.0;
-            var moment3 = 0.0;
-            var moment4 = 0.0;
-            foreach (var value in values)
-            {
-                var m = value - Average;
-                var m2 = m * m;
-                var m3 = m2 * m;
-                var m4 = m3 * m;
-
-                moment1 += Math.Abs(m);
-                moment2 += m2;
-                moment3 += m3;
-                moment4 += m4;
-            }
-
-            SumOfError = moment1;
-            SumOfError2 = moment2;
-            Variance = SumOfError2 / (Count - 1);
-            StandardDeviation = Math.Sqrt(Variance);
-            Minus3StdDev = Average - 3 * StandardDeviation;
-            Plus3StdDev = Average + 3 * StandardDeviation;
-
-            if (StandardDeviation.AlmostZero())
-                return;
-
-            // using Excel approach
-            var cumulativeSkew
-                = values.Select(x => Math.Pow((x - Average) / StandardDeviation, 3)).Sum();
-
-            var n = (double)Count;
-            Skewness = n / (n - 1) / (n - 2) * cumulativeSkew;
-
-            // kurtosis: see http://en.wikipedia.org/wiki/Kurtosis 
-            var m2_2 = Math.Pow(SumOfError2, 2);
-            Kurtosis = ((n + 1) * n * (n - 1)) / ((n - 2) * (n - 3)) *
-                (moment4 / m2_2) -
-                3 * Math.Pow(n - 1, 2) / ((n - 2) * (n - 3)); // second last formula for G2
-
-            // If not computing ordered statistics we exit earlier.
-            if (!orderedStats)
-                return;
-
-            var sortedNumbers = values.OrderBy(x => x).ToList();
-            Median = sortedNumbers.Percentile(50);
-            FirstQuartile = sortedNumbers.Percentile(25);
-            ThirdQuartile = sortedNumbers.Percentile(75);
-            First5Percent = sortedNumbers.Percentile(5);
-            Last5Percent = sortedNumbers.Percentile(95);
-        }
-    }
-
-    /// <summary>
-    /// Helper functions 
-    /// </summary>
-    public static class StatisticHelpers
-    {
-        /// <summary>
-        /// Computes common statistics from a collection of values that can be converted to doubles
-        /// </summary>
-        public static ScalarStatistics Statistics<T>(this IEnumerable<T> self)
-            => new(self.Select(x => Convert.ToDouble(x)).ToList());
-
-        /// <summary>
-        /// Given a sorted list returns the value at the x% position (50% is the median)
-        /// This is a generalization of the median 
-        /// </summary>
-        public static double Percentile(this IReadOnlyList<double> sortedNumbers, float percent)
-        {
-            if (sortedNumbers.Count == 0)
-                throw new Exception("Empty list");
-            var n = (sortedNumbers.Count - 1) * percent / 100.0;
-
-            // Clamping
-            if (n < 0) n = 0;
-            if (n >= sortedNumbers.Count) n = sortedNumbers.Count - 1;
-            var lowerPos = (int)Math.Floor(n);
-            var upperPos = (int)Math.Ceiling(n);
-
-            var lowerValue = sortedNumbers[lowerPos];
-            var upperValue = sortedNumbers[upperPos];
-
-            if (lowerPos == upperPos)
-                return lowerValue;
-
-            var fraction = n - lowerPos;
-            return lowerValue + fraction * (upperValue - lowerValue);
+            previous = value;
+            hasPrevious = true;
         }
 
-        /// <summary>
-        /// Given a sorted list returns the value at the x% position. If the list is odd, 
-        /// this should return the value in the middle of the list otherwise it will
-        /// return a value part way between the middle. 
-        /// Throws an exception if the list does not have at least one value.
-        /// </summary>
-        public static double Median(this IReadOnlyList<double> sortedNumbers)
-            => sortedNumbers.Percentile(50);
+        if (ValidCount == 0)
+            return;
 
-        /// <summary>
-        /// Returns a string summary of the statistics 
-        /// </summary>
-        public static string StatisticsSummaryReport<T>(this IEnumerable<T> values)
+        Average = Sum / ValidCount;
+        Range = Max - Min;
+        RootMeanSquare = Math.Sqrt(SumOfSquares / ValidCount);
+
+        var absDev = 0.0;
+        var sqDev = 0.0;
+        var thirdMoment = 0.0;
+        var fourthMoment = 0.0;
+
+        foreach (var value in values)
         {
-            var stats = values.Statistics();
-            return $"count = {stats.Count}, sum = {stats.Sum}, avg = {stats.Average}, min = {stats.Min}, max = {stats.Max}, dev = {stats.StandardDeviation}";
+            if (!double.IsFinite(value))
+                continue;
+
+            var d = value - Average;
+            var d2 = d * d;
+
+            absDev += Math.Abs(d);
+            sqDev += d2;
+            thirdMoment += d2 * d;
+            fourthMoment += d2 * d2;
         }
+
+        SumAbsoluteDeviation = absDev;
+        SumSquaredDeviation = sqDev;
+        MeanAbsoluteDeviation = absDev / ValidCount;
+
+        PopulationVariance = sqDev / ValidCount;
+        PopulationStdDev = Math.Sqrt(PopulationVariance);
+
+        if (ValidCount >= 2)
+        {
+            SampleVariance = sqDev / (ValidCount - 1);
+            SampleStdDev = Math.Sqrt(SampleVariance);
+
+            Minus3StdDev = Average - 3.0 * SampleStdDev;
+            Plus3StdDev = Average + 3.0 * SampleStdDev;
+        }
+
+        if (Average != 0.0 && !double.IsNaN(SampleStdDev))
+            CoefficientOfVariation = SampleStdDev / Math.Abs(Average);
+
+        if (ValidCount >= 3 && SampleStdDev > 0.0)
+        {
+            var n = (double)ValidCount;
+            var s3 = SampleStdDev * SampleStdDev * SampleStdDev;
+            Skewness = n / ((n - 1.0) * (n - 2.0)) * thirdMoment / s3;
+        }
+
+        if (ValidCount >= 4 && sqDev > 0.0)
+        {
+            var n = (double)ValidCount;
+            var sqDev2 = sqDev * sqDev;
+
+            Kurtosis =
+                ((n + 1.0) * n * (n - 1.0)) /
+                ((n - 2.0) * (n - 3.0)) *
+                (fourthMoment / sqDev2)
+                - 3.0 * Math.Pow(n - 1.0, 2.0) /
+                ((n - 2.0) * (n - 3.0));
+        }
+
+        Debug.Assert(ValidCount <= Count);
+        Debug.Assert(IsEmpty || Min <= Max);
     }
 }

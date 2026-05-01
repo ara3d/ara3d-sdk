@@ -1,5 +1,4 @@
-﻿using Ara3D.Collections;
-using Ara3D.PropKit;
+﻿using Ara3D.PropKit;
 
 namespace Ara3D.DataTable;
 
@@ -16,12 +15,8 @@ public class DataColumnFromAccessorAndList<T>
     public DataColumnFromAccessorAndList(int index, IPropAccessor acc, IReadOnlyList<T> values)
     {
         ColumnIndex = index;
-        Descriptor = new DataDescriptor(acc.Descriptor.Name, acc.Descriptor.Type, index);
+        Descriptor = new DataDescriptor(acc.Descriptor.Name, acc.Descriptor.Type);
         Accessor = acc;
         _values = values;
     }
-
-    public Array AsArray() => 
-        // ReSharper disable once SuspiciousTypeConversion.Global
-        _values as Array ?? _values.ToArray();
 }

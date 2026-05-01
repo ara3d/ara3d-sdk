@@ -36,7 +36,7 @@ public class DataTableFromEntities : IDataTable
         {
             DefaultValue = type.GetDefaultValue();
             ColumnIndex = index;
-            Descriptor = new DataDescriptor(name, type, index);
+            Descriptor = new DataDescriptor(name, type);
         }
     }
 

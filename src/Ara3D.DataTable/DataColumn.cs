@@ -3,17 +3,17 @@
 public class DataColumn : IDataColumn
 {
     public int ColumnIndex { get; }
+    public IDataTable Table { get; }
     public IDataDescriptor Descriptor { get; }
-    public Array Values { get; }
-    public int Count => Values.Length;
-    public object this[int index] => Values.GetValue(index);
-    public DataColumn(Array values, IDataDescriptor descriptor, int index)
+    public int Count => Table.Rows.Count;
+    public object this[int index] => Table[ColumnIndex, index];
+
+    public DataColumn(IDataTable table, IDataDescriptor descriptor, int index)
     {
-        Values = values;
+        Table = table;
         Descriptor = descriptor;
         ColumnIndex = index;
     }
-    public Array AsArray() => Values;
 
     public override string ToString()
         => $"{Descriptor.Name}:{Descriptor.Type}[{Count}]";
