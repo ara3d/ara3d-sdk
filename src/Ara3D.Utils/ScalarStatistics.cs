@@ -51,7 +51,7 @@ public class ScalarStatistics
     public double SumOfError => SumAbsoluteDeviation;
     public double SumOfError2 => SumSquaredDeviation;
 
-    public ScalarStatistics(IReadOnlyList<double> values)
+    public ScalarStatistics(IReadOnlyList<double> values, bool singlePassStatsOnly = false)
     {
         ArgumentNullException.ThrowIfNull(values);
 
@@ -98,6 +98,9 @@ public class ScalarStatistics
         Average = Sum / ValidCount;
         Range = Max - Min;
         RootMeanSquare = Math.Sqrt(SumOfSquares / ValidCount);
+
+        if (singlePassStatsOnly)
+            return;
 
         var absDev = 0.0;
         var sqDev = 0.0;
@@ -159,5 +162,14 @@ public class ScalarStatistics
 
         Debug.Assert(ValidCount <= Count);
         Debug.Assert(IsEmpty || Min <= Max);
+    }
+
+    public double Normalize(double value)
+    {
+        if (double.IsNaN(value) || double.IsInfinity(value))
+            return double.NaN;
+        if (Range == 0.0)
+            return 0.0;
+        return (value - Min) / Range;
     }
 }

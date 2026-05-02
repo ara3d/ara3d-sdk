@@ -2,7 +2,7 @@
 
 public readonly record struct TopoHalfEdge(Topology Topology, HalfEdgeId Id)
 {
-    public FaceId FaceId => Topology.GetFaceId(Id);
+    public FaceId FaceId => Topology.GetAssociatedFaceId(Id);
     public TopoFace Face => Topology.Get(FaceId);
 
     public VertexId StartVertexId => Topology.GetStartVertex(Id);

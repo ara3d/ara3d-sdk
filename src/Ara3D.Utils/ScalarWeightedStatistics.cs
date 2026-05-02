@@ -48,7 +48,8 @@ public class ScalarWeightedStatistics
 
     public ScalarWeightedStatistics(
         IReadOnlyList<double> values,
-        IReadOnlyList<double> weights)
+        IReadOnlyList<double> weights,
+        bool singlePassStatsOnly = false)
     {
         ArgumentNullException.ThrowIfNull(values);
         ArgumentNullException.ThrowIfNull(weights);
@@ -103,6 +104,9 @@ public class ScalarWeightedStatistics
         Average = Sum / TotalWeight;
         Range = Max - Min;
         RootMeanSquare = Math.Sqrt(SumOfSquares / TotalWeight);
+
+        if (singlePassStatsOnly)
+            return;
 
         var absDev = 0.0;
         var sqDev = 0.0;

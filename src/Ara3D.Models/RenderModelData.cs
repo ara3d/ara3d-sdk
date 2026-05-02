@@ -148,6 +148,9 @@ public class RenderModelData : IDisposable
     public void Update(TriangleMesh3D mesh, IReadOnlyList<Vector3> colors, Material material, Matrix4x4 matrix)
         => Update(mesh.Points, mesh.CornerIndices().Select(i => (uint)i.Value), colors, 3, material, matrix);
 
+    public void Update(ColoredTriangleMesh3D mesh, Material material, Matrix4x4 matrix)
+        => Update(mesh.Mesh, mesh.VertexColors, material, matrix);
+
     public void Update(QuadMesh3D mesh, IReadOnlyList<Vector3> colors, Material material, Matrix4x4 matrix)
         => Update(mesh.Points, mesh.CornerIndices().Select(i => (uint)i.Value), colors, 4, material, matrix);
 

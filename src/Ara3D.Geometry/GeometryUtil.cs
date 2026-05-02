@@ -800,5 +800,8 @@ namespace Ara3D.Geometry
 
         public static bool Within(this Vector4 v, Vector4 a, Vector4 b)
             => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y && v.Z >= a.Z && v.Z <= b.Z && v.W >= a.W && v.W <= b.W;
+
+        public static Vector3 ToVector3(this Color c)
+            => (c.R, c.G, c.B);
     }
 }

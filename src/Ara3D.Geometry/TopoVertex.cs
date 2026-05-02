@@ -10,7 +10,7 @@ public readonly record struct TopoVertex(Topology Topology, VertexId Id)
     public bool IsInterior => !IsBoundary;
     public IReadOnlyList<HalfEdgeId> OutgoingHalfEdgeIds => Topology.GetOutgoingHalfEdgeIds(Id);
     public IReadOnlyList<HalfEdgeId> IncomingHalfEdgeIds => Topology.GetIncomingHalfEdgeIds(Id);
-    public IReadOnlyList<FaceId> FaceIds => Topology.GetFaceIds(Id);
+    public IReadOnlyList<FaceId> FaceIds => Topology.GetIncidentFaceIds(Id);
     public IReadOnlyList<TopoHalfEdge> OutgoingHalfEdges => OutgoingHalfEdgeIds.Select(Topology.Get);
     public IReadOnlyList<TopoHalfEdge> IncomingHalfEdges => IncomingHalfEdgeIds.Select(Topology.Get);
     public IReadOnlyList<TopoFace> Faces => FaceIds.Select(Topology.Get);

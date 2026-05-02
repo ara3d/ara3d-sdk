@@ -32,7 +32,7 @@ public sealed class Vector3WeightedStatistics
     public bool IsEmpty => Count == 0 || TotalWeight == 0.0;
     public bool IsConstant => X.IsConstant && Y.IsConstant && Z.IsConstant;
 
-    public Vector3WeightedStatistics(IReadOnlyList<Vector3> values, IReadOnlyList<double> weights)
+    public Vector3WeightedStatistics(IReadOnlyList<Vector3> values, IReadOnlyList<double> weights, bool singlePassStatsOnly = false)
     {
         if (values == null)
             throw new ArgumentNullException(nameof(values));
@@ -45,10 +45,10 @@ public sealed class Vector3WeightedStatistics
 
         Count = values.Count;
 
-        X = new ScalarWeightedStatistics(values.Map(v => (double)v.X), weights);
-        Y = new ScalarWeightedStatistics(values.Map(v => (double)v.Y), weights);
-        Z = new ScalarWeightedStatistics(values.Map(v => (double)v.Z), weights);
+        X = new ScalarWeightedStatistics(values.Map(v => (double)v.X), weights, singlePassStatsOnly);
+        Y = new ScalarWeightedStatistics(values.Map(v => (double)v.Y), weights, singlePassStatsOnly);
+        Z = new ScalarWeightedStatistics(values.Map(v => (double)v.Z), weights, singlePassStatsOnly);
 
-        Lengths = new ScalarWeightedStatistics(values.Map(v => (double)v.Length()), weights);
+        Lengths = new ScalarWeightedStatistics(values.Map(v => (double)v.Length()), weights, singlePassStatsOnly);
     }
 }

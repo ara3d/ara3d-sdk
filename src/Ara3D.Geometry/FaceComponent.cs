@@ -56,7 +56,7 @@ public static class FaceComoponentExtensions
 
                     foreach (var sibling in siblings)
                     {
-                        var nf = self.GetFaceId(sibling);
+                        var nf = self.GetAssociatedFaceId(sibling);
                         var ni = (int)nf;
 
                         if (ni == (int)f || visited[ni])
