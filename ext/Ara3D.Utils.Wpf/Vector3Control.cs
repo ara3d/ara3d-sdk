@@ -1,6 +1,6 @@
-﻿using System.Numerics;
-using System.Windows.Controls.Primitives;
+﻿using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using Ara3D.Geometry;
 
 namespace Ara3D.Utils.Wpf
 {

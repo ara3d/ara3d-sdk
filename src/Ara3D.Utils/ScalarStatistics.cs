@@ -169,7 +169,7 @@ public class ScalarStatistics
         if (double.IsNaN(value) || double.IsInfinity(value))
             return double.NaN;
         if (Range == 0.0)
-            return 0.0;
+            return 0.0; 
         return (value - Min) / Range;
     }
 }

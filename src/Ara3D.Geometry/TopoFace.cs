@@ -31,12 +31,6 @@ public readonly record struct TopoFace(Topology Topology, FaceId Id)
     public float Area => Triangle.Area;
     public Point3D Center => Triangle.Center;
 
-    public IReadOnlyList<Angle> Angles => Topology.GetCornerAngles(Id);
-
-    public Angle Angle0 => Topology.GetCornerAngle(Id, 0);
-    public Angle Angle1 => Topology.GetCornerAngle(Id, 1);
-    public Angle Angle2 => Topology.GetCornerAngle(Id, 2);
-
     public HashSet<FaceId> NeighborFaceIds => Topology.GetFaceNeighborIds(Id);
     public IEnumerable<TopoFace> NeighborFaces => Topology.GetFaceNeighbors(Id);
 }

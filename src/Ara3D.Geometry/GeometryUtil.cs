@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Ara3D.Utils;
 
 namespace Ara3D.Geometry
 {
@@ -801,7 +802,88 @@ namespace Ara3D.Geometry
         public static bool Within(this Vector4 v, Vector4 a, Vector4 b)
             => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y && v.Z >= a.Z && v.Z <= b.Z && v.W >= a.W && v.W <= b.W;
 
+        //==
+
         public static Vector3 ToVector3(this Color c)
             => (c.R, c.G, c.B);
+
+        public static Vector3 WeightedSum(this IEnumerable<(Vector3, double)> weightedVectors)
+        {
+            var sum = Vector3.Zero;
+            foreach (var pair in weightedVectors)
+                sum += pair.Item1 * (float)pair.Item2;
+            return sum;
+        }
+
+        public static Vector3 WeightedAverage(this IEnumerable<(Vector3, double)> weightedVectors)
+            => weightedVectors.WeightedSum().SafeNormalize();
+
+        public static Vector3 WeightedSum<T>(this IReadOnlyList<T> values, Func<T, Vector3> vectorSelect, Func<T, double> weightSelect)
+            => values.Select(v => (vectorSelect(v), weightSelect(v))).WeightedSum();
+
+        public static Vector3 WeightedAverage<T>(this IReadOnlyList<T> values, Func<T, Vector3> vectorSelect, Func<T, double> weightSelect)
+            => values.Select(v => (vectorSelect(v), weightSelect(v))).WeightedAverage();
+
+        public const double Epsilon = 1e-15;
+
+        public static Vector3 SafeNormalize(this Vector3 v)
+        {
+            var len = v.Length();
+            return len <= Epsilon || !IsFinite(len) ? Vector3.Zero : v / len;
+        }
+
+        public static double AngleBetween(this Vector3 a, Vector3 b)
+        {
+            var la = a.Length();
+            var lb = b.Length();
+
+            if (la <= Epsilon || lb <= Epsilon)
+                return 0.0;
+
+            var cos = Vector3.Dot(a, b) / (la * lb);
+
+            if (!IsFinite(cos))
+                return 0.0;
+
+            return Math.Acos(Clamp(cos, -1.0, 1.0));
+        }
+
+        public static double Cotangent(this Vector3 a, Vector3 b)
+        {
+            var cross = Vector3.Cross(a, b).Length();
+            if (cross <= Epsilon)
+                return 0.0;
+
+            var dot = Vector3.Dot(a, b);
+            var cot = dot / cross;
+
+            return IsFinite(cot) ? cot : 0.0;
+        }
+
+        public static double SafeDivide(this double numerator, double denominator, double fallback = 0.0)
+        {
+            if (Math.Abs(denominator) <= Epsilon)
+                return fallback;
+
+            var result = numerator / denominator;
+            return IsFinite(result) ? result : fallback;
+        }
+
+        public static double SafeNonNegative(this double value)
+        {
+            if (!IsFinite(value))
+                return 0.0;
+
+            return value < 0.0 ? 0.0 : value;
+        }
+
+        public static double Clamp(this double v, double min, double max)
+            => Math.Max(min, Math.Min(v, max));
+
+        public static bool IsFinite(this double x)
+            => !double.IsNaN(x) && !double.IsInfinity(x);
+
+        public static bool IsFinite(this float x)
+            => !float.IsNaN(x) && !float.IsInfinity(x);
     }
 }

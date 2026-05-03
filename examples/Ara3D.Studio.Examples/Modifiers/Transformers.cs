@@ -46,6 +46,6 @@ public class Translate : IModifier
 {
     public Vector3 Offset;
 
-    public IModel3D Eval(IModel3D model, EvalContext eval)
+    public IModel3D Eval(IModel3D model)
         => model.Translate(Offset);
 }

@@ -31,6 +31,7 @@ public readonly record struct TopologyFeatureStats(
     TessellationStats Tessellation);
 
 
+/*
 public static class TopologyStatsExtensions
 {
     private const double Epsilon = 1e-15;
@@ -248,4 +249,6 @@ public static class TopologyStatsExtensions
             SafeRatio(verticalArea, totalArea),
             SafeRatio(slopedArea, totalArea));
     }
+
 }
+*/

@@ -23,12 +23,7 @@ public abstract class TypedPropDescriptor<T> : PropDescriptor
         => ToString((T)value);
 
     public override object Validate(object value)
-    {
-        var r = Validate((T)value);
-        if (!IsValid(r))
-            throw new Exception($"Unable to validate {value}");
-        return r;
-    }
+        => Validate((T)value);
 
     public override bool IsValidString(string value) => TryParse(value, out var parsed) && IsValid(parsed);
     protected abstract bool TryParse(string value, out T parsed);

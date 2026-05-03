@@ -3,254 +3,6 @@ using Ara3D.Collections;
 
 namespace Ara3D.Geometry;
 
-public sealed class MeshAttributeCache
-{
-    public TriangleMesh3D Mesh { get; }
-    public Topology Topology { get; }
-
-    // Per face
-    public int NumFaces { get; }
-    public Vector3[] FaceCentroids { get; }
-    public Vector3[] FaceNormals { get; }
-    public double[] FaceAreas { get; }
-
-    // Per undirected edge
-    public int NumEdges { get; }
-    public Vector3[] EdgeMidpoints { get; }
-    public double[] EdgeLengths { get; }
-    public double[] EdgeDihedralAngles { get; }
-
-    // Per half-edge / corner
-    public int NumCorners { get; }
-    public double[] CornerAngles { get; }
-
-    public MeshAttributeCache(TriangleMesh3D mesh, Topology topology)
-    {
-        Mesh = mesh;
-        Topology = topology ?? throw new ArgumentNullException(nameof(topology));
-
-        NumFaces = Mesh.FaceIndices.Count;
-        FaceCentroids = new Vector3[NumFaces];
-        FaceNormals = new Vector3[NumFaces];
-        FaceAreas = new double[NumFaces];
-        for (var i = 0; i < NumFaces; i++)
-        {
-            var face = Mesh.GetTriangle(i);
-            FaceCentroids[i] = face.Center;
-            FaceNormals[i] = face.Normal;
-            FaceAreas[i] = face.Area;
-        }
-
-        NumEdges = Topology.EdgeCount;
-        EdgeMidpoints = new Vector3[NumEdges];
-        EdgeLengths = new double[NumEdges];
-        EdgeDihedralAngles = new double[NumEdges];
-        for (var i = 0; i < NumEdges; i++)
-        {
-            var line = Topology.GetLine((UndirectedEdgeId)i);
-            EdgeMidpoints[i] = line.Center;
-            EdgeLengths[i] = line.Length;
-            EdgeDihedralAngles[i] = GetDihedralAngle((UndirectedEdgeId)i);
-        }
-
-        NumCorners = Topology.HalfEdgeCount;
-        CornerAngles = new double[NumCorners];
-        for (var i = 0; i < NumCorners; i++)
-        {
-            CornerAngles[i] = Topology.GetCornerAngle((HalfEdgeId)i);
-        }
-    }
-
-    public Vector3 GetFaceCentroid(FaceId id) => FaceCentroids[(int)id];
-    public Vector3 GetFaceNormal(FaceId id) => FaceNormals[(int)id];
-    public double GetFaceArea(FaceId id) => FaceAreas[(int)id];
-
-    public Vector3 GetEdgeMidpoint(UndirectedEdgeId id) => EdgeMidpoints[(int)id];
-    public double GetEdgeLength(UndirectedEdgeId id) => EdgeLengths[(int)id];
-    public double GetEdgeDihedralAngle(UndirectedEdgeId id) => EdgeDihedralAngles[(int)id];
-
-    public double GetCornerAngle(HalfEdgeId id) => CornerAngles[(int)id];
-
-    //==============================================================================
-    // Incident values
-
-    public IReadOnlyList<Vector3> GetIncidentFaceNormals(VertexId id) =>
-        Topology.GetIncidentFaceIds(id).Select(GetFaceNormal);
-
-    public IReadOnlyList<double> GetIncidentFaceAreas(VertexId id) =>
-        Topology.GetIncidentFaceIds(id).Select(GetFaceArea);
-
-    public IReadOnlyList<Vector3> GetIncidentFaceCentroids(VertexId id) =>
-        Topology.GetIncidentFaceIds(id).Select(GetFaceCentroid);
-
-    public IReadOnlyList<Vector3> GetIncidentEdgeCentroids(VertexId id) =>
-        Topology.GetIncidentUndirectedEdgeIds(id).Select(GetEdgeMidpoint);
-
-    public IReadOnlyList<double> GetIncidentEdgeLengths(VertexId id) =>
-        Topology.GetIncidentUndirectedEdgeIds(id).Select(GetEdgeLength);
-
-    public IReadOnlyList<double> GetIncidentEdgeDihedralAngle(VertexId id) =>
-        Topology.GetIncidentUndirectedEdgeIds(id).Select(GetEdgeDihedralAngle);
-
-    public IReadOnlyList<double> GetIncidentCornerAngles(VertexId id) =>
-        Topology.GetOutgoingHalfEdgeIds(id).Select(GetCornerAngle);
-
-    //==============================================================================
-    // Statistics
-
-    public Vector3WeightedStatistics GetFaceNormalStatisticsWeightedByArea(VertexId id)
-        => new(GetIncidentFaceNormals(id), GetIncidentFaceAreas(id), true);
-
-    public Vector3WeightedStatistics GetFaceNormalStatisticsWeightedByAngle(VertexId id)
-        => new(GetIncidentFaceNormals(id), GetIncidentCornerAngles(id), true);
-
-    public ScalarWeightedStatistics GetEdgeDihedralAngleStatistics(VertexId id)
-        => new(GetIncidentEdgeDihedralAngle(id), GetIncidentEdgeLengths(id), true);
-
-    public ScalarStatistics GetEdgeLengthStatistics(VertexId id)
-        => new(GetIncidentEdgeLengths(id), true);
-
-
-    //==============================================================================
-    // Angle and value computations
-
-    public const float Epsilon = 1e-15f;
-
-    private static Vector3 SafeNormalize(Vector3 v)
-    {
-        var len = v.Length();
-        return len <= Epsilon ? Vector3.Zero : v / len;
-    }
-
-    public float GetSignedBending(VertexId vertex)
-    {
-        var sum = 0f;
-        var count = 0;
-
-        foreach (var edge in Topology.GetOutgoingHalfEdgeIds(vertex))
-        {
-            if (!Topology.TryGetTwin(edge, out _))
-                continue;
-
-            sum += GetDihedralAngle(edge);
-            count++;
-        }
-
-        return count > 0 ? sum / count : 0f;
-    }
-
-    private static Angle SafeAngle(Vector3 a, Vector3 b)
-    {
-        var la = a.Length();
-        var lb = b.Length();
-
-        if (la <= 1e-20f || lb <= 1e-20f)
-            return 0f;
-
-        var d = Vector3.Dot(a, b) / (la * lb);
-        return MathF.Acos(Clamp(d, -1f, 1f));
-    }
-
-    public Angle ComputeCornerAngle(HalfEdgeId id)
-    {
-        var p = Topology.GetPoint(Topology.GetStartVertex(id)).Vector3;
-        var prev = Topology.GetPoint(Topology.GetStartVertex(Topology.GetPrevious(id))).Vector3;
-        var next = Topology.GetPoint(Topology.GetEndVertex(id)).Vector3;
-        return SafeAngle(prev - p, next - p);
-    }
-
-    public double ComputeCornerAngle(FaceId face, int localVertex)
-        => ComputeCornerAngle(Topology.GetHalfEdgeId(face, localVertex));
-
-    /// <summary>
-    /// Returns the discrete Gaussian curvature at a vertex using angle defect.
-    /// </summary>
-    public float GetAngleDefect(VertexId vertex)
-    {
-        var target = Topology.IsBoundary(vertex) ? MathF.PI : MathF.Tau;
-        return target - GetAngleSum(vertex);
-    }
-
-    /// <summary>
-    /// Returns the unsigned dihedral angle, in radians, between the two face normals
-    /// adjacent to this half-edge.
-    /// Returns 0 for boundary edges.
-    /// </summary>
-    public Angle GetDihedralAngle(HalfEdgeId id)
-    {
-        if (!Topology.TryGetTwin(id, out var twin))
-            return 0f;
-
-        var n0 = Topology.Get(Topology.GetFaceId(id)).Normal;
-        var n1 = Topology.Get(Topology.GetFaceId(twin)).Normal;
-
-        var d = Vector3.Dot(n0, n1);
-        d = MathF.Max(-1f, MathF.Min(1f, d));
-        return MathF.Acos(d);
-    }
-
-    private static Angle AngleBetween(Vector3 a, Vector3 b)
-    {
-        var la = a.Length();
-        var lb = b.Length();
-
-        if (la <= Epsilon || lb <= Epsilon)
-            return 0f;
-
-        var cos = Vector3.Dot(a, b) / (la * lb);
-        return MathF.Acos(Clamp(cos, -1f, 1f));
-    }
-
-    public Angle GetDihedralAngle(UndirectedEdgeId id)
-    {
-        var halfEdges = Topology.GetHalfEdgeIds(id);
-        if (halfEdges.Count != 2)
-            return 0f;
-        return GetDihedralAngle(halfEdges[0]);
-    }
-
-    public Vector3 GetFaceNormal(FaceId face)
-        => SafeNormalize(GetFaceNormalVector(face));
-
-    public Vector3 GetAreaWeightedFaceNormal(FaceId face)
-        => GetFaceNormalVector(face);
-
-    public Vector3 GetVertexNormal(VertexId vertex, Topology.VertexNormalWeighting weighting)
-    {
-        var sum = Vector3.Zero;
-
-        foreach (var he in GetOutgoingHalfEdgeIds(vertex))
-        {
-            var face = GetFaceId(he);
-            var normal = GetFaceNormal(face);
-            var areaNormal = GetAreaWeightedFaceNormal(face);
-            var angle = GetCornerAngle(he);
-
-            sum += weighting switch
-            {
-                Topology.VertexNormalWeighting.UniformFace => normal,
-                Topology.VertexNormalWeighting.FaceArea => areaNormal,
-                Topology.VertexNormalWeighting.CornerAngle => normal * angle.Value,
-                Topology.VertexNormalWeighting.AreaTimesCornerAngle => areaNormal * angle.Value,
-                _ => normal
-            };
-        }
-
-        return SafeNormalize(sum);
-    }
-
-    public Vector3 GetUniformVertexNormal(VertexId vertex)
-        => GetVertexNormal(vertex, Topology.VertexNormalWeighting.UniformFace);
-
-    public Vector3 GetAreaWeightedVertexNormal(VertexId vertex)
-        => GetVertexNormal(vertex, Topology.VertexNormalWeighting.FaceArea);
-
-    public Vector3 GetAngleWeightedVertexNormal(VertexId vertex)
-        => GetVertexNormal(vertex, Topology.VertexNormalWeighting.CornerAngle);
-
-
-}
-
 public class MeshStatistics
 {
     public Topology Topology { get; }
@@ -258,7 +10,8 @@ public class MeshStatistics
     public TriangleMesh3D Mesh { get; }
     public ScalarStatistics FaceAreaStats { get; }
     public ScalarStatistics DihedralAngleStats { get; }
-    public Vector3WeightedStatistics FaceNormalStats { get; }
+    public Vector3Statistics FaceNormalByAreaStats { get; }
+    public Vector3Statistics FaceNormalByAngleStats { get; }
     public PrincipalComponentAnalysis Pca { get; }
     public OrientedBox3D OrientedBounds { get; }
     public IReadOnlyList<Point3D> NormalizedPoints { get; }
@@ -281,10 +34,14 @@ public class MeshStatistics
         NormalizedVertexStats = NormalizedPoints.GetStatistics();
         Topology = new Topology(Mesh);
 
-        FaceAreaStats = new ScalarStatistics(Attributes.FaceAreas);
-        FaceNormalStats = new Vector3WeightedStatistics(Attributes.FaceNormals, Attributes.FaceAreas);
-        FaceNormalPca = new PrincipalComponentAnalysis(Attributes.PcaFaceNormals, Attributes.FaceAreas);
-        DihedralAngleStats = new ScalarStatistics(Attributes.EdgeDihedralAngles);
-        TopologyFeatureStats = Topology.GetFeatureStats(Bounds);
+        FaceAreaStats = new ScalarStatistics(Attributes.Faces.Areas);
+        FaceNormalByAngleStats = new Vector3Statistics(Attributes.Vertices.AngleWeightedNormals);
+        FaceNormalByAreaStats = new Vector3Statistics(Attributes.Vertices.AreaWeightedNormals);
+
+        //FaceNormalPca = new PrincipalComponentAnalysis(Attributes.PcaFaceNormals, Attributes.FaceAreas);
+        DihedralAngleStats = new ScalarStatistics(Attributes.Edges.DihedralAngles);
+        
+        // TODO: later.W
+        //TopologyFeatureStats = Topology.GetFeatureStats(Bounds);
     }
 }

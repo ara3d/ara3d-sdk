@@ -32,7 +32,4 @@ public readonly record struct TopoHalfEdge(Topology Topology, HalfEdgeId Id)
 
     public Vector3 Vector => EndPoint.Vector3 - StartPoint.Vector3;
     public float Length => Vector.Length();
-
-    public Angle CornerAngle => Topology.GetCornerAngle(Id);
-    public Angle DihedralAngle => Topology.GetDihedralAngle(Id);
 }

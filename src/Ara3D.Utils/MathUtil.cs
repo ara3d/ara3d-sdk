@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ara3D.Utils
 {
@@ -78,6 +79,50 @@ namespace Ara3D.Utils
         public static float Rem(this float x, float m) => x % m;
         public static double Mod(this double x, double m) => m < 0 ? Mod(x, -m) : (x % m + m) % m;
         public static double Rem(this double x, double m) => x % m;
+
+        public static (double WeightedSum, double WeightSum) WeightedSumAndWeightSum(this IReadOnlyList<double> values, IReadOnlyList<double> weights)
+        {
+            if (values.Count != weights.Count)
+                throw new ArgumentException("Values and weights must have the same length.");
+            double weightedSum = 0;
+            double weightSum = 0;
+            for (int i = 0; i < values.Count; i++)
+            {
+                weightedSum += values[i] * weights[i];
+                weightSum += weights[i];
+            }
+            return (weightedSum, weightSum);
+        }
+
+        public static double WeightedSum<T>(this IEnumerable<T> values, Func<T, double> valueSelect, Func<T, double> weightSelect)
+            => values.WeightedSumAndWeightSum(valueSelect, weightSelect).Item1;
+
+        public static double WeightedAverage<T>(this IEnumerable<T> values, Func<T, double> valueSelect, Func<T, double> weightSelect)
+            => values.WeightedSumAndWeightSum(valueSelect, weightSelect).SafeDivide();
+
+        public static (double WeightedSum, double WeightSum) WeightedSumAndWeightSum<T>(this IEnumerable<T> values, Func<T, double> valueSelect, Func<T, double> weightSelect)
+        {
+            double weightedSum = 0;
+            double weightSum = 0;
+            foreach (var item in values)
+            {
+                var weight = weightSelect(item);
+                var value = valueSelect(item);
+                weightedSum += value * weight;
+                weightSum += weight;
+            }
+            return (weightedSum, weightSum);
+        }
+
+        public static double SafeDivide(this double numerator, double denominator)
+        {
+            if (denominator == 0)
+                return double.NaN;
+            return numerator / denominator;
+        }
+
+        public static double SafeDivide(this (double, double) pair)
+            => SafeDivide(pair.Item1, pair.Item2);
 
     }
 }

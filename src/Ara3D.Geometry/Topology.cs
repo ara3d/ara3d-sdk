@@ -136,7 +136,7 @@ public class Topology
         }
     }
 
-    public FaceId GetFaceId(HalfEdgeId id) 
+    public FaceId GetAssociatedFaceId(HalfEdgeId id) 
         => (FaceId)((int)id / 3);
 
     public HalfEdgeId GetHalfEdgeId(FaceId face, int localEdge)
@@ -329,7 +329,7 @@ public class Topology
         => GetIncidentFaceIds(id).Select(Get);
 
     public IReadOnlyList<TopoFace> GetFaces(HalfEdgeId id)
-        => GetHalfEdgeIds(GetUndirectedEdge(id)).Select(he => Get(GetFaceId(he)));
+        => GetHalfEdgeIds(GetUndirectedEdge(id)).Select(he => Get(GetAssociatedFaceId(he)));
 
     public IReadOnlyList<TopoHalfEdge> GetEdges(FaceId id)
         => GetHalfEdgeIds(id).Select(Get);
@@ -368,7 +368,7 @@ public class Topology
         => BoundaryHalfEdges.SelectMany(he => new[] { GetStartVertex(he), GetEndVertex(he) }).ToHashSet();
 
     public HashSet<FaceId> BoundaryFaces
-        => BoundaryHalfEdges.Select(GetFaceId).ToHashSet();
+        => BoundaryHalfEdges.Select(GetAssociatedFaceId).ToHashSet();
 
     public HashSet<HalfEdgeId> GetBoundaryHalfEdges(VertexId id)
         => GetOutgoingHalfEdgeIds(id).Where(IsBoundary).ToHashSet();
@@ -459,7 +459,7 @@ public class Topology
         {
             foreach (var sibling in GetSiblingHalfEdgeIds(he))
             {
-                var f = GetFaceId(sibling);
+                var f = GetAssociatedFaceId(sibling);
                 if (!EqualityComparer<FaceId>.Default.Equals(f, id))
                     result.Add(f);
             }

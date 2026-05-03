@@ -4,69 +4,28 @@
     {
         public Palettes Palette { get; set; }
 
-        public static Vector3 VertexColor(Color[] colors, ScalarStatistics stats, double curvature)
-            => colors.GetColor((float)stats.Normalize(curvature)).ToVector3();
+        private ScalarStatistics _stats { get; set; }
 
-        public enum AttributeEnum
-        {
-            X,
-            Y,
-            Z,
-            Curvature,
-            Valence,
-            NormalX,
-            NormalY,
-            NormalZ,
-            IsBoundary,
-            AverageEdgeLength,
-            AverageFaceArea,
-            AverageDihedralAngle,
-        }
+        public static Vector3 VertexColor(Color[] colors, ScalarStatistics stats, double v)
+            => colors.GetColor((float)stats.Normalize(v)).ToVector3();
 
-        public AttributeEnum Attribute { get; set; }
+        public float Min => (float)(_stats?.Min ?? float.NaN);
+        public float Max => (float)(_stats?.Max ?? float.NaN);
+        public float Avg => (float)(_stats?.Average ?? float.NaN);
+        public float Plus3StdDev => (float)(_stats?.Plus3StdDev ?? float.NaN);
+        public float Minus3StdDev => (float)(_stats?.Minus3StdDev ?? float.NaN);
 
-
-        public IReadOnlyList<double> GetValues(Topology topology)
-        {
-            switch (Attribute)
-            {
-                case AttributeEnum.X:
-                    return topology.GetVertexIds().Select(id => (double)topology.GetPoint(id).X);
-                case AttributeEnum.Y:
-                    return topology.GetVertexIds().Select(id => (double)topology.GetPoint(id).Y);
-                case AttributeEnum.Z:
-                    return topology.GetVertexIds().Select(id => (double)topology.GetPoint(id).Z);
-                case AttributeEnum.Curvature:
-                    return topology.GetVertexIds().Select(id => (double)topology.GetCurvature(id));
-                case AttributeEnum.Valence:
-                    return topology.GetVertexIds().Select(id => (double)topology.Valence(id));
-                case AttributeEnum.NormalX:
-                    return topology.GetVertexIds().Select(id => (double)topology.GetVertexNormal(id, Topology.VertexNormalWeighting.UniformFace).X);
-                case AttributeEnum.NormalY:
-                    return topology.GetVertexIds().Select(id => (double)topology.GetVertexNormal(id, Topology.VertexNormalWeighting.UniformFace).Y);
-                case AttributeEnum.NormalZ:
-                    return topology.GetVertexIds().Select(id => (double)topology.GetVertexNormal(id, Topology.VertexNormalWeighting.UniformFace).Z);
-                case AttributeEnum.IsBoundary:
-                    return topology.GetVertexIds().Select(id => topology.IsBoundary(id) ? 1.0 : 0.0);
-                case AttributeEnum.AverageEdgeLength:
-                    return topology.GetVertexIds().Select(id => topology.GetEdges(id).Average(e => (double)e.Length));
-                case AttributeEnum.AverageFaceArea:
-                    return topology.GetVertexIds().Select(id => topology.GetFaces(id).Average(e => (double)e.Area));
-                case AttributeEnum.AverageDihedralAngle:
-                    return topology.GetVertexIds().Select(id => topology.GetEdges(id).Average(e => (double)e.DihedralAngle));
-            }
-
-            return topology.GetVertexIds().Select(id => 0.0);
-        }
+        public VertexAttributeEnum Feature { get; set; }
 
         public ColoredTriangleMesh3D Eval(RenderModelData data)
         {
             var mesh = data.ToModel3D().Meshes[0];
             var topology = new Topology(mesh);
-            var values = GetValues(topology);
+            var mac = new MeshAttributes(mesh, topology);
+            var values = mac.Vertices.GetAttribute(Feature);
             var colors = Palette.GetColors();
-            var stats = values.Statistics();
-            var vertexColors = values.Select(c => VertexColor(colors, stats, c));
+            _stats = values.Statistics();
+            var vertexColors = values.Select(c => VertexColor(colors, _stats, c));
             return new ColoredTriangleMesh3D(mesh, vertexColors);
         }
     }

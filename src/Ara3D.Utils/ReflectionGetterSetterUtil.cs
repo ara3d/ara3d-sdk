@@ -110,58 +110,6 @@ public static class ReflectionGetterSetterUtil
         _ => throw new NotSupportedException()
     };
 
-
     static Expression EnsureType(Expression value, Type targetType)
         => value.Type == targetType ? value : Expression.Convert(value, targetType);
-
-    //=
-    // TODO: Delete the following functions
-
-    static Expression BuildPropertyGet(PropertyInfo pi, Expression? instance, bool nonPublic)
-    {
-        var getter = pi.GetGetMethod(nonPublic) ?? throw new InvalidOperationException($"No getter for {pi.Name}");
-        return Expression.Call(pi.GetMethod!.IsStatic ? null : instance, getter);
-    }
-
-    static Expression BuildPropertySet(PropertyInfo pi, Expression? instance, Expression value, bool nonPublic)
-    {
-        var setter = pi.GetSetMethod(nonPublic) ?? throw new InvalidOperationException($"No setter for {pi.Name}");
-        return Expression.Call(pi.SetMethod!.IsStatic ? null : instance, setter, EnsureType(value, pi.PropertyType));
-    }
-
-    static Expression BuildFieldGet(FieldInfo fi, Expression? instance)
-        => fi.IsStatic ? Expression.Field(null, fi) : Expression.Field(instance!, fi);
-
-    static Expression BuildFieldSet(FieldInfo fi, Expression? instance, Expression value)
-        => fi.IsStatic
-            ? Expression.Assign(Expression.Field(null, fi), EnsureType(value, fi.FieldType))
-            : Expression.Assign(Expression.Field(instance!, fi), EnsureType(value, fi.FieldType));
-
-    static Expression CastObjectTo(Expression valueObj, Type targetType)
-    {
-        if (valueObj.Type != typeof(object))
-            throw new ArgumentException("valueObj must be of type object", nameof(valueObj));
-
-        // Reference type: just cast (null stays null)
-        if (!targetType.IsValueType)
-            return Expression.Convert(valueObj, targetType);
-
-        // Value type (including Nullable<T>): null -> default(T)
-        var isNull = Expression.Equal(valueObj, Expression.Constant(null, typeof(object)));
-        var whenNull = Expression.Default(targetType);
-
-        // Nullable<T>: allow boxed T or boxed Nullable<T>
-        var underlying = Nullable.GetUnderlyingType(targetType);
-        if (underlying is not null)
-        {
-            // If the incoming object is boxed underlying (e.g., int), unbox to underlying then lift to Nullable<T>
-            var unboxUnderlying = Expression.Unbox(valueObj, underlying);          // (int)valueObj
-            var liftToNullable = Expression.Convert(unboxUnderlying, targetType);  // (int?)((int)valueObj)
-            return Expression.Condition(isNull, whenNull, liftToNullable);
-        }
-
-        // Non-nullable value type: require boxed exact type (or something directly unboxable)
-        var unbox = Expression.Unbox(valueObj, targetType);
-        return Expression.Condition(isNull, whenNull, unbox);
-    }
 }

@@ -42,4 +42,5 @@ public static class StatisticsHelpers
         var stats = values.Statistics();
         return $"count = {stats.Count}, sum = {stats.Sum}, avg = {stats.Average}, min = {stats.Min}, max = {stats.Max}, dev = {stats.StdDev}";
     }
+
 }

@@ -1,13 +1,6 @@
 ﻿using Ara3D.Geometry;
 using Ara3D.Utils;
 
-public sealed partial class MeshAttributes
-{
-    public MeshAttributes(TriangleMesh3D mesh)
-    {
-    }
-}
-
 public sealed partial class MeshFeatures
 {
     private const double Eps = 1e-12;
@@ -235,8 +228,7 @@ public sealed partial class MeshFeatures
 
     public double PcaAnisotropy => SafeRatio(PcaLargestEigenvalue - PcaSmallestEigenvalue, PcaLargestEigenvalue);
 
-    public double PcaOmnivariance =>
-        Math.Pow(PcaLargestEigenvalue * PcaMiddleEigenvalue * PcaSmallestEigenvalue, 1.0 / 3.0);
+    public double PcaOmnivariance => Math.Pow(PcaLargestEigenvalue * PcaMiddleEigenvalue * PcaSmallestEigenvalue, 1.0 / 3.0);
 
     public double PcaEigenEntropy => EntropyTerm(PcaNormalizedEigenvalue1) + EntropyTerm(PcaNormalizedEigenvalue2) +
                                      EntropyTerm(PcaNormalizedEigenvalue3);
@@ -262,9 +254,9 @@ public sealed partial class MeshFeatures
     // Face normal distribution
     // =========================================================================
 
-    public Vector3 FaceNormalAverage => Stats.FaceNormalStats.Average;
-    public Vector3 FaceNormalVariance => Stats.FaceNormalStats.Variance;
-    public Vector3 FaceNormalStdDev => Stats.FaceNormalStats.StdDev;
+    public Vector3 FaceNormalAverage => Stats.FaceNormalByAngleStats.Average;
+    public Vector3 FaceNormalVariance => Stats.FaceNormalByAngleStats.Variance;
+    public Vector3 FaceNormalStdDev => Stats.FaceNormalByAngleStats.StdDev;
 
     public double FaceNormalAverageX => FaceNormalAverage.X;
     public double FaceNormalAverageY => FaceNormalAverage.Y;
