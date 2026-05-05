@@ -5,7 +5,6 @@ namespace Ara3D.Studio.API;
 
 public static class FlowObjectConverters
 {
-    // TODO: eventually we will have converter settings for when we need to discretize automatically. 
     public static object Convert(FlowObject flowObject, Type outputType)
     {
         if (outputType == typeof(FlowObject))
@@ -15,11 +14,10 @@ public static class FlowObjectConverters
         if (input == null)
             return null;
 
-        var inputType = input.GetType();
-        if (inputType == outputType)
+        if (flowObject.Type == outputType)
             return input;
 
-        return ConvertImpl(input, inputType, outputType);
+        return ConvertImpl(input, flowObject.Type, outputType);
     }
 
     public static object ConvertImpl(object input, Type inputType, Type outputType)

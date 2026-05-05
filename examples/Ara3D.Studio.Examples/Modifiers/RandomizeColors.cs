@@ -3,7 +3,6 @@
 public class RandomizeColors : IModifier
 {
     [Range(0, 1000)] public int Seed { get; set; }
-    public bool IsWednesday { get; set; }
 
     public static Color RandomColor(Random rng)
         => Color.Create(rng.NextSingle(), rng.NextSingle(), rng.NextSingle(), 1);

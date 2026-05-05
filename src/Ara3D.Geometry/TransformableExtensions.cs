@@ -19,11 +19,23 @@ public static class TransformableExtensions
         => self.RotateZ(yaw).RotateX(pitch).RotateY(roll);
 
     public static T RotateX<T>(this ITransformable3D<T> self, Angle angle) where T : ITransformable3D<T>
-        => self.Transform(angle.RotateX);
+    {
+        // TODO: AxisAngle might be broken.
+        var rot = Matrix4x4.CreateRotationX(angle);
+        return self.Transform(rot);
+    }
 
     public static T RotateY<T>(this ITransformable3D<T> self, Angle angle) where T : ITransformable3D<T>
-        => self.Transform(angle.RotateY);
-    
+    {
+        // TODO: AxisAngle might be broken.
+        var rot = Matrix4x4.CreateRotationY(angle);
+        return self.Transform(rot);
+    }
+
     public static T RotateZ<T>(this ITransformable3D<T> self, Angle angle) where T : ITransformable3D<T>
-        => self.Transform(angle.RotateZ);
+    {
+        // TODO: AxisAngle might be broken.
+        var rot = Matrix4x4.CreateRotationZ(angle);
+        return self.Transform(rot);
+    }
 }

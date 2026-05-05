@@ -15,7 +15,7 @@ public class Transform : IModifier
     [Range(-360, 360)] public int Pitch;
     [Range(-360, 360)] public int Roll;
 
-    public FlowObject Eval(FlowObject input)
+    public IModel3D Eval(IModel3D input)
         => input
             .Translate((XOffset, YOffset, ZOffset))
             .Rotate(Yaw.Degrees(), Pitch.Degrees(), Roll.Degrees())
@@ -25,9 +25,9 @@ public class Transform : IModifier
 [Category(nameof(Categories.Transformers))]
 public class AxisRotation : IModifier
 {
-    [Range(0, 8)] public int RotationAmount;
+    [Range(0, 4)] public int QuarterTurns;
 
-    public int Degrees => RotationAmount * 45;
+    public int Degrees => QuarterTurns * 90;
 
     public List<string> AxisNames() => ["X", "Y", "Z"];
 
@@ -49,3 +49,4 @@ public class Translate : IModifier
     public IModel3D Eval(IModel3D model)
         => model.Translate(Offset);
 }
+

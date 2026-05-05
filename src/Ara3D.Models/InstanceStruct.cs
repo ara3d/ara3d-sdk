@@ -63,7 +63,7 @@ public unsafe struct InstanceStruct
         Color color,
         float metallic,
         float roughness,
-        byte flags
+        byte flags = 0
     )
     {
         EntityIndex = entityIndex;
@@ -82,7 +82,7 @@ public unsafe struct InstanceStruct
         Matrix4x4 transform,
         int meshIndex,
         Material mat,
-        byte flags
+        byte flags = 0
     )
         : this
         (
@@ -275,11 +275,7 @@ public unsafe struct InstanceStruct
     // Helper function
 
     public InstanceStruct Transform(Matrix4x4 matrix)
-    {
-        var r = this;
-        r.Matrix4x4 *= matrix;
-        return r;
-    }
+        => WithMatrix(matrix * Matrix4x4);
 
     //---------------
     // 

@@ -40,11 +40,7 @@ public class Prism : IGenerator
     [Range(0f, 10f)] public float Radius = 1;
 
     public QuadGrid3D Eval()
-    {
-        var r = Sides.GetCircularPoints(Radius).Extrude(Height / Segments, Segments);
-        // TODO: cap. 
-        return r;
-    }
+        => Sides.GetCircularPoints(Radius).Extrude(Height / Segments, Segments);
 }
 
 [Category(nameof(Categories.Meshes))]

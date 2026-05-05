@@ -17,7 +17,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="15"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Row="0" Text="{Binding Value, StringFormat={}{0:#.##}}"></TextBox>
+                    <TextBox Grid.Row="0" Text="{Binding Value, StringFormat={}{0:0.##}}"></TextBox>
                     <UniformGrid Grid.Column="1" Columns="1">
                         <RepeatButton x:Name="UpButton" Click="UpButton_Click" MouseDown="HandleMouseDown">
                             <Polygon Points="2,0 4,4, 0,4" Margin="1,1,1,1" Stroke="ForestGreen" Fill="DarkGoldenrod" />

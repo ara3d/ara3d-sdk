@@ -73,6 +73,43 @@ public class Spherify : IModifier
     }
 }
 
+[Category(nameof(Categories.Deformers))]
+public class Cubify: IModifier
+{
+    [Range(0f, 10f)] public float Radius { get; set; }
+    [Range(0f, 1f)] public float Strength { get; set; }
+
+    public Point3D Deform(Point3D p, Bounds3D newBox)
+    {
+        var v = p - newBox.Center;
+        var dir = v.LengthSquared >= 0.001 ? v.Normalize : Vector3.UnitZ;
+        var target = p + dir * Radius;
+        target = newBox.Clamp(target);
+        return p.Lerp(target, Strength);
+    }
+
+    public TriangleMesh3D Eval(TriangleMesh3D mesh)
+    {
+        var bounds = mesh.Bounds;
+        var min = bounds.Center - new Vector3(Radius, Radius, Radius);
+        var max = bounds.Center + new Vector3(Radius, Radius, Radius);
+        return mesh.Deform(p => Deform(p, (min, max)));
+    }
+}
+
+public class Push : IModifier
+{
+    [Range(0f, 10f)] public float Distance { get; set; }
+
+    public TriangleMesh3D Eval(TriangleMesh3D mesh)
+    {
+        var topo = new Topology(mesh);
+        var attr = new MeshAttributes(mesh, topo);
+        var normals = attr.Vertices.AngleWeightedNormals;        
+        return mesh.WithPoints(mesh.Points.Zip(normals, (p, n) => p + n * Distance));
+    }
+}
+
 public class NoiseDeformer : IModifier
 {
     [Range(0f, 1f)] public float Amplitude { get; set; } = 1f;
@@ -108,5 +145,8 @@ public class NoiseDeformer : IModifier
     }
 }
 
-// IDEA:
-// Boxify, Clamping, 
+public class ModelToSingleMesh : IModifier
+{
+    public TriangleMesh3D Eval(IModel3D model)
+        => model.ToMesh();
+}

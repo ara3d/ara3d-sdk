@@ -10,11 +10,8 @@ public class SweepDemo : IGenerator
     public static Matrix4x4 LookTowards(Vector3 pos, Vector3 dir)
         => Matrix4x4.CreateLookAt(pos, pos + dir, Vector3.UnitZ);
 
-    // NOTE: I need more casts 
     public IReadOnlyList<Transform3D> GetTransforms(Curve3D curve, int count)
     {
-        // NOTE: I need more conversions (Point3D to Translation, and IRotation3D to Rotation3D)
-        // Below the whole Vector3 conversion isn't great .
         var list = new List<Transform3D>();
         for (var i = 0; i <= count; i++)
         {
@@ -32,13 +29,12 @@ public class SweepDemo : IGenerator
 
     public static Angle QuarterTurn = 0.25f.Turns();
 
-    public IModel3D Eval(EvalContext context)
+    public QuadGrid3D Eval()
     {
         var profile = Curves.Circle.RotateX(QuarterTurn);
         var path = Curves.Helix(Height, Revolutions);
         var profilePoints = profile.Sample(SampleCount);
         var pathFrames = GetTransforms(path, SampleCount);
-        var grid = profilePoints.Sweep(pathFrames, true, false);
-        return Model3D.Create(grid.Triangulate());
+        return profilePoints.Sweep(pathFrames, true, false);
     }
 }

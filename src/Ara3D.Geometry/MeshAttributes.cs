@@ -88,7 +88,6 @@ public static class MeshAttributeExtensions
             VertexAttributeEnum.SignedMeanCurvature => n.MapRange(i => _attributes.SignedMeanCurvatures[i]),
             VertexAttributeEnum.SignedMeanCurvatureDensity => n.MapRange(i => _attributes.SignedMeanCurvatureDensities[i]),
 
-            VertexAttributeEnum.UnsignedEdgeBending => n.MapRange(i => _attributes.UnsignedEdgeBending[i]),
             VertexAttributeEnum.SignedEdgeBending => n.MapRange(i => _attributes.SignedEdgeBending[i]),
 
             _ => throw new ArgumentOutOfRangeException(nameof(attribute), attribute, null)
@@ -113,7 +112,6 @@ public interface IVertexAttributes
     IReadOnlyList<double> MeanCurvatureNormalLengths { get; }
     IReadOnlyList<double> SignedMeanCurvatures { get; }
     IReadOnlyList<double> SignedMeanCurvatureDensities { get; }
-    IReadOnlyList<double> UnsignedEdgeBending { get; }
     IReadOnlyList<double> SignedEdgeBending { get; }
 }
 
@@ -156,7 +154,6 @@ public sealed class VertexAttributes : IVertexAttributes
     public IReadOnlyList<double> MeanCurvatureNormalLengths { get; set; }
     public IReadOnlyList<double> SignedMeanCurvatures { get; set; }
     public IReadOnlyList<double> SignedMeanCurvatureDensities { get; set; }
-    public IReadOnlyList<double> UnsignedEdgeBending { get; set; }
     public IReadOnlyList<double> SignedEdgeBending { get; set; }
 }
 

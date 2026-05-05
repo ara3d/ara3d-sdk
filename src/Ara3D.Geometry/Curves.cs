@@ -1,6 +1,5 @@
 ﻿namespace Ara3D.Geometry
 {
-
     public static class Curves
     {
         public static Point3D Lerp(Point3D p0, Point3D p1, Number t)

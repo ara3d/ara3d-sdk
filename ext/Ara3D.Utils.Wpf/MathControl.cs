@@ -9,7 +9,13 @@ namespace Ara3D.Utils.Wpf
     public class MathControl<T> : UserControl, INotifyPropertyChanged
     {
         public Binding CreateBinding(string propName)
-            => new() { Source = this, Path = new PropertyPath(propName), Mode = BindingMode.TwoWay };
+            => new()
+            {
+                Source = this,
+                Path = new PropertyPath(propName),
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
 
         public LabeledFloatUserControl CreateFloatControl(string propName)
         {
@@ -22,10 +28,26 @@ namespace Ara3D.Utils.Wpf
             DependencyProperty.Register(nameof(Value), typeof(T), typeof(MathControl<T>),
                 new FrameworkPropertyMetadata(default(T), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
+        private static void OnValueChangedStatic(
+            DependencyObject sender,
+            DependencyPropertyChangedEventArgs e)
+        {
+            var control = (MathControl<T>)sender;
+            control.OnValueChanged((T)e.OldValue, (T)e.NewValue);
+        }
+
+        protected virtual void OnValueChanged(T oldValue, T newValue)
+        {
+            RaisePropertyChanged(nameof(Value));
+        }
+
         private static void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
             => (sender as MathControl<T>)?.PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(""));
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        protected void RaisePropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public T Value
         {

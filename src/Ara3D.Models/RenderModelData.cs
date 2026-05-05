@@ -12,7 +12,7 @@ namespace Ara3D.Models;
 /// touched by the garbage collector. This is also the data structure used when storing loaded data.
 /// All meshes in this structure must have the same PrimitiveKind (e.g., all Lines or all Triangles)
 /// </summary>
-public class RenderModelData : IDisposable
+public class RenderModelData : IDisposable, IModel3D
 {
     public int UseVertexColorsFlag = 0x1;
 
@@ -388,5 +388,14 @@ public class RenderModelData : IDisposable
         => BufferExtensions.Slice(VertexData?.Reinterpret<Point3D>(), meshSlice.BaseVertex, meshSlice.VertexCount);
 
     public IBuffer<int> GetIndices(MeshSliceStruct meshSlice)
-        => BufferExtensions.Slice(IndexData?.Reinterpret<int>(), meshSlice.FirstIndex, meshSlice.IndexCount);
+        => (IndexData?.Reinterpret<int>()).Slice(meshSlice.FirstIndex, meshSlice.IndexCount);
+
+    public IModel3D Transform(Transform3D t)
+        => Model3DExtensions.Transform(this, t);
+
+    public IReadOnlyList<TriangleMesh3D> Meshes
+        => MeshSliceData.Select(GetMesh);
+
+    public IReadOnlyList<InstanceStruct> Instances
+        => InstanceData;
 }

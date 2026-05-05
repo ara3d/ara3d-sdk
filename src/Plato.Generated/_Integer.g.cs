@@ -31,7 +31,7 @@ namespace Ara3D.Geometry
 
         // Implemented interface functions
         public Angle Turns { [MethodImpl(AggressiveInlining)] get  => this.Number.Turns; } 
-public Angle Degrees { [MethodImpl(AggressiveInlining)] get  => this.Number.Turns; } 
+public Angle Degrees { [MethodImpl(AggressiveInlining)] get  => this.Number.Degrees; } 
 public Angle Gradians { [MethodImpl(AggressiveInlining)] get  => this.Number.Gradians; } 
 public Angle ArcMinutes { [MethodImpl(AggressiveInlining)] get  => this.Number.ArcMinutes; } 
 public Angle ArcSeconds { [MethodImpl(AggressiveInlining)] get  => this.Number.ArcSeconds; } 
