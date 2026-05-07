@@ -13,21 +13,20 @@ public unsafe struct StepToken
     // For most tokens this is the number of bytes, but for a list, this is the number of tokens 
     public int Length;
 
-    // For lists this is the index of list in the token list.
-    // The following tokens are the ones in 
-    public int ValueOrIndex; 
+    // This is the index of list in the token list.
+    public int Index; 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public StepToken(byte* begin, byte* end, int valueOrIndex = 0)
-        : this(begin, (int)(end - begin), valueOrIndex)
+    public StepToken(byte* begin, byte* end, int index)
+        : this(begin, (int)(end - begin), index)
     { }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public StepToken(byte* begin, int length, int valueOrIndex = 0)
+    public StepToken(byte* begin, int length, int index)
     {
         Begin = begin;
         Length = length;
-        ValueOrIndex = valueOrIndex;
+        Index = index;
         Debug.Assert(sizeof(StepToken) == 16);
         Debug.Assert(Marshal.SizeOf<StepToken>() == 16);
     }
@@ -69,6 +68,10 @@ public unsafe struct StepToken
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly double AsNumber()
         => double.Parse(Span);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public readonly string AsString()
+        => new ByteSlice(Begin + 1, End - 1).ToAsciiString();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly int AsId()
@@ -134,7 +137,7 @@ public unsafe struct StepToken
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly bool Equals(StepToken other)
-        => Begin == other.Begin && Length == other.Length && ValueOrIndex == other.ValueOrIndex;
+        => Begin == other.Begin && Length == other.Length && Index == other.Index;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static StepToken CreateListToken(byte* ptr, int index)

@@ -416,4 +416,26 @@ public static class ParquetUtils
     public static void WriteToParquetZip(this IBimData data, FilePath fp)
         => Task.Run(() => data.WriteToParquetZipAsync(fp)).GetAwaiter().GetResult();
 
+    public static void WriteBimOpenSchema(this BimDataBuilder bdb, FilePath fp)
+    {
+        var dataSet = bdb.ToDataSet();
+        var fs = new FileStream(fp, FileMode.Create, FileAccess.Write, FileShare.None);
+        using var zip = new ZipArchive(fs, ZipArchiveMode.Create, leaveOpen: false);
+
+        var parquetCompressionMethod = CompressionMethod.Brotli;
+        var parquetCompressionLevel = CompressionLevel.Optimal;
+        var zipCompressionLevel = CompressionLevel.Fastest;
+
+        dataSet.WriteParquetToZip(
+            zip,
+            parquetCompressionMethod,
+            parquetCompressionLevel,
+            zipCompressionLevel);
+
+        bdb.Geometry.WriteParquetToZip(
+            zip,
+            parquetCompressionMethod,
+            parquetCompressionLevel,
+            zipCompressionLevel);
+    }
 }

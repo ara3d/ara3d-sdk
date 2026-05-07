@@ -24,7 +24,7 @@ public class ParquetColumn<T> : IReadOnlyList<T>, IDataColumn, IDataTable
         _adapter = new ReadOnlyListSingleColumnDataAdapter<T>(column.Field.Name, Values);
     }
 
-    public IEnumerator<T> GetEnumerator() => (IEnumerator<T>)Values.GetEnumerator();
+    public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)Values).GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => Values.GetEnumerator();
     public int ColumnIndex => _adapter.ColumnIndex;
     public IDataDescriptor Descriptor => _adapter.Descriptor;

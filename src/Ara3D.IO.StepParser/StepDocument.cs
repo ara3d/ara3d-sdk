@@ -59,7 +59,7 @@ public sealed unsafe class StepDocument : IDisposable
             Debug.Assert(Tokens.Count > 0);
             Debug.Assert(Tokens[curIndex].IsList);
             Debug.Assert(attrToken.Equals(Tokens[curIndex]));
-            Debug.Assert(attrToken.ValueOrIndex == curIndex);
+            Debug.Assert(attrToken.Index == curIndex);
             Debug.Assert(attrToken.IsList);
             Debug.Assert(attrToken.Length >= 0);
 

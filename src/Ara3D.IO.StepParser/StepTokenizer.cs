@@ -268,7 +268,7 @@ public static unsafe class StepTokenizer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool AdvanceTo(ref byte* cur, byte* end, out StepToken token, StepTokenType type)
+    public static bool AdvanceTo(ref byte* cur, byte* end, out StepToken token, StepTokenType type, UnmanagedList<StepToken> tokens)
     {
         while (cur < end)
         {
@@ -276,7 +276,7 @@ public static unsafe class StepTokenizer
             var r = ParseToken(ref cur, end);
             if (r == type)
             {
-                token = new StepToken(begin, cur);
+                token = new StepToken(begin, cur, tokens.Count);
                 return true;
             }
 
@@ -330,7 +330,7 @@ public static unsafe class StepTokenizer
                 throw new Exception("Unexpected end of definition");
 
             if (ShouldStoreType(type))
-                tokens.Add(new StepToken(prev, cur));
+                tokens.Add(new StepToken(prev, cur, tokens.Count));
         }
 
         throw new Exception("Missing end of list");
@@ -343,7 +343,7 @@ public static unsafe class StepTokenizer
         nameToken = default;
         attrToken = default;
 
-        if (!AdvanceTo(ref cur, end, out var idToken, StepTokenType.Id))
+        if (!AdvanceTo(ref cur, end, out var idToken, StepTokenType.Id, tokens))
         {
             if (idToken.Match("ENDSEC"u8))
             {
@@ -360,7 +360,7 @@ public static unsafe class StepTokenizer
             return false;
         }
 
-        AdvanceTo(ref cur, end, out nameToken, StepTokenType.Identifier);
+        AdvanceTo(ref cur, end, out nameToken, StepTokenType.Identifier, tokens);
 
         var n = tokens.Count;
 

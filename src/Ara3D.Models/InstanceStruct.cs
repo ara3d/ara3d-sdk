@@ -260,6 +260,14 @@ public unsafe struct InstanceStruct
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public InstanceStruct WithEntityIndex(int entityIndex)
+    {
+        var r = this;
+        r.EntityIndex = entityIndex;
+        return r;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public InstanceStruct WithFlags(byte flags)
     {
         var r = this;

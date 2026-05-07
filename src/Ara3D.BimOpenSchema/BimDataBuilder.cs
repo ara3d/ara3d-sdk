@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using Ara3D.Geometry;
 
 namespace Ara3D.BimOpenSchema;
 
 // This is a helper class for incrementally constructing a BIMData object without repeating objects. 
+// TODO: this should not implement "IBimData" directly. 
 public class BimDataBuilder : IBimData
 {
     public Manifest Manifest { get; set; } = new();
@@ -34,6 +37,7 @@ public class BimDataBuilder : IBimData
     public IReadOnlyList<EntityRelation> Relations => _relations;
     public IReadOnlyList<Diagnostic> Diagnostics => _diagnostics;
 
+    // TODO: it is very awkward that this is not a BimGeometryBuilder
     public BimGeometry Geometry { get; set; }
 
     private int Add<T>(Dictionary<T, int> d, List<T> list, T val)
@@ -54,6 +58,8 @@ public class BimDataBuilder : IBimData
     public const StringIndex InvalidStringIndex = (StringIndex)(-1);
     public const DocumentIndex InvalidDocumentIndex = (DocumentIndex)(-1);
     public const EntityIndex InvalidEntityIndex = (EntityIndex)(-1);
+    public const DescriptorIndex InvalidDescriptorIndex = (DescriptorIndex)(-1);
+    public const NumberIndex InvalidNumberIndex = (NumberIndex)(-1);
 
     public EntityIndex AddEntity(long localId, string globalId, DocumentIndex d, string name, EntityIndex category, EntityIndex type)
     {
@@ -123,5 +129,75 @@ public class BimDataBuilder : IBimData
 
     public void AddDiagnostic(DiagnosticType type, string msg, DocumentIndex di, EntityIndex e)
         => _diagnostics.Add(new(type, di, e, AddString(msg)));
+
+    public void AddBimData(IBimData bd, string title, string path)
+    {
+        var numEntities = _entities.Count;
+        var numDocs = _documents.Count;
+        var numPoints = _points.Count;
+        var numParameters = _parameters.Count;
+        var numDescriptors = _descriptors.Count;
+        var numNumbers = _numbers.Count;
+
+        //========================================
+        // Helper functions
+
+        StringIndex NewStr(StringIndex i) =>
+            i == InvalidStringIndex ? InvalidStringIndex : AddString(bd.Strings[(int)i]);
+        
+        EntityIndex NewEntity(EntityIndex i) 
+            => i == InvalidEntityIndex ? InvalidEntityIndex : numEntities + i;
+
+        DescriptorIndex NewDesc(DescriptorIndex i)
+            => i == InvalidDescriptorIndex ? InvalidDescriptorIndex : numDescriptors + i;
+
+        NumberIndex NewNumber(NumberIndex i)
+            => i == InvalidNumberIndex ? InvalidNumberIndex : numNumbers + i;
+
+        //========================================
+
+        foreach (var e in bd.Entities)
+            _entities.Add(new(e.LocalId, NewStr(e.GlobalId), (DocumentIndex)numDocs, NewStr(e.Name), NewEntity(e.Category),
+                NewEntity(e.Type)));
+
+        foreach (var d in bd.Descriptors)
+            _descriptors.Add(new(NewStr(d.Name), NewStr(d.Units), NewStr(d.Group), d.Type));
+
+        foreach (var p in bd.Points)
+            _points.Add(new Point(p.X, p.Y, p.Z));
+
+        foreach (var x in bd.Numbers)
+            _numbers.Add(x);
+
+        foreach (var r in bd.Relations)
+            _relations.Add(new(NewEntity(r.EntityA), NewEntity(r.EntityB), r.RelationType));
+
+        foreach (var p in bd.Parameters)
+        {
+            var val = p.Value;
+            var desc = bd.Descriptors[(int)p.Descriptor];
+            if (desc.Type == ParameterType.Entity)
+            {
+                val = (int)NewEntity((EntityIndex)val);
+            }
+            else if (desc.Type == ParameterType.Point)
+            {
+                if (val >= 0) val = val + numPoints; 
+            }
+            else if (desc.Type == ParameterType.String)
+            {
+                val = (int)NewStr((StringIndex)val);
+            }
+            else if (desc.Type == ParameterType.Number)
+            {
+                val = (int)NewNumber((NumberIndex)val);
+            }
+            var p2 = new Parameter(NewEntity(p.Entity), NewDesc(p.Descriptor), val);
+            _parameters.Add(p2);
+        }
+
+        // TEMP: right now we add the document 
+        _documents.Add(new(AddString(title), AddString(path)));
+    }
 }
 

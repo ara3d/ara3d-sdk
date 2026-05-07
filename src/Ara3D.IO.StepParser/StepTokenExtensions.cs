@@ -6,6 +6,22 @@ namespace Ara3D.IO.StepParser;
 
 public static unsafe class StepTokenExtensions
 {
+    // A "simple entity" is a Step Entity with one attribute. If there are more attributes we ignore the rest.
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static (string, StepToken) AsSimpleEntity(this StepToken token, StepDocument doc)
+    {
+        Debug.Assert(token.IsEntity);
+        var name = token.ToString();
+        var listToken = token.NextToken(doc);
+        var list = listToken.AsFlatArray(doc);
+        Debug.Assert(list.Length >= 1);
+        return (name, list[0]);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static StepToken NextToken(this StepToken token, StepDocument doc)
+        => doc.Tokens[token.Index + 1];
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlySpan<StepToken> AsFlatArray(this StepToken token, StepDocument doc)
     {
@@ -16,7 +32,7 @@ public static unsafe class StepTokenExtensions
 
         Debug.Assert(token.IsList);
         // We want to get the index of the first token in the list .
-        var index = token.ValueOrIndex;
+        var index = token.Index;
         Debug.Assert(index >= 0);
         
         // If the list token was not 
@@ -49,7 +65,7 @@ public static unsafe class StepTokenExtensions
                 i += 1;
                 if (i >= input.Length || !input[i].IsList)
                     throw new Exception("Expected a list to follow an entity");
-                i += input[i].ValueOrIndex + 1;
+                i += input[i].Index + 1;
             }
             else
             {
