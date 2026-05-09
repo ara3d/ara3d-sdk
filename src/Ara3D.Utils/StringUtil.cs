@@ -102,11 +102,11 @@ namespace Ara3D.Utils
         public static string JoinStringsWithNewLine<T>(this IEnumerable<T> self)
             => self.JoinStrings(Environment.NewLine);
 
-        /// <summary>
-        /// Remove starting and ending quotes.
-        /// </summary>
+        public static bool IsQuote(this char c)
+            => c == '"' || c == '\'';
+
         public static string StripQuotes(this string s)
-            => s.Length >= 2 && s[0] == '"' && s[s.Length - 1] == '"' ? s.Substring(1, s.Length - 2) : s;
+            => s.Length >= 2 && IsQuote(s[0]) && IsQuote(s[^1]) ? s.Substring(1, s.Length - 2) : s;
 
         /// <summary>
         /// Creates a string using the given quote delimiters. If endQuote is null, the beginQuote is used at the end as well.
