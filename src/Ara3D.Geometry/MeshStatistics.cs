@@ -24,7 +24,9 @@ public class MeshStatistics
     public MeshStatistics(TriangleMesh3D mesh, bool welded = true)
     {
         Mesh = welded ? mesh.WeldVertices() : mesh;
-        Attributes = null; // TODO: compute the attributes.
+        Topology = new Topology(Mesh);
+        Attributes = new MeshAttributes(Mesh, Topology);
+
         var vectors = Mesh.Points.Select(p => p.Vector3).ToList();
         VertexStats = new Vector3Statistics(vectors);
         Pca = new PrincipalComponentAnalysis(vectors);
@@ -32,16 +34,12 @@ public class MeshStatistics
         OrientedBounds = vectors.FitOrientedBox(frame);
         NormalizedPoints = Mesh.Points.Transform(OrientedBounds.LocalToWorldMatrix());
         NormalizedVertexStats = NormalizedPoints.GetStatistics();
-        Topology = new Topology(Mesh);
 
         FaceAreaStats = new ScalarStatistics(Attributes.Faces.Areas);
         FaceNormalByAngleStats = new Vector3Statistics(Attributes.Vertices.AngleWeightedNormals);
         FaceNormalByAreaStats = new Vector3Statistics(Attributes.Vertices.AreaWeightedNormals);
 
-        //FaceNormalPca = new PrincipalComponentAnalysis(Attributes.PcaFaceNormals, Attributes.FaceAreas);
+        FaceNormalPca = new PrincipalComponentAnalysis(Attributes.Faces.Normals, Attributes.Faces.Areas);
         DihedralAngleStats = new ScalarStatistics(Attributes.Edges.DihedralAngles);
-        
-        // TODO: later.W
-        //TopologyFeatureStats = Topology.GetFeatureStats(Bounds);
     }
 }

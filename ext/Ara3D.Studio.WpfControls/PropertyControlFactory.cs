@@ -1,11 +1,12 @@
-﻿using System.ComponentModel;
+﻿using Ara3D.PropKit;
+using Ara3D.Utils.Wpf;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
-using Ara3D.PropKit;
-using Ara3D.Utils.Wpf;
+using System.Windows.Threading;
 
 namespace Ara3D.Studio.WpfControls;
 
@@ -255,6 +256,7 @@ public static class PropertyControlGenerator
         return textBox;
     }
 
+    /*
     public static FrameworkElement CreateButton(PropDescriptorAction desc, IBoundPropContainer props)
     {
         var action = props.GetValue(desc.Name) as Action;
@@ -267,6 +269,48 @@ public static class PropertyControlGenerator
             VerticalAlignment = VerticalAlignment.Center,
         };
         button.Click += (_, _) => action?.Invoke();
+        return button;
+    }*/
+
+    public static FrameworkElement CreateButton(PropDescriptorAction desc, IBoundPropContainer props)
+    {
+        var action = props.GetValue(desc.Name) as Action;
+        if (action == null)
+            return null;
+
+        var button = new Button()
+        {
+            Content = desc.DisplayName,
+            IsEnabled = true,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+
+        button.Click += async (_, _) =>
+        {
+            button.IsEnabled = false;
+
+            using var wait = new WpfWaitContext();
+
+            try
+            {
+                // Let WPF process the disabled state / wait cursor before starting the long action.
+                await Dispatcher.Yield(DispatcherPriority.Render);
+                action.Invoke();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.ToString(),
+                    $"Error while running {desc.DisplayName}",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            finally
+            {
+                button.IsEnabled = true;
+            }
+        };
+
         return button;
     }
 }

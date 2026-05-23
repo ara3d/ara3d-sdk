@@ -105,9 +105,6 @@ They are not run automatically, and are not currently supported.
 - [Ara3D.Models](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.Models)  
   Core 3D model interfaces and data structures. Models are embedded scene-graphs with support for instancing.
 
-- [Ara3D.NarwhalDB](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.NarwhalDB)  
-  High-performance in-memory read-only relational database.
-
 - [Ara3D.PropKit](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.PropKit)  
   Property descriptors and change-notification toolkit for auto-generated serialization and UI.
 

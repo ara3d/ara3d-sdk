@@ -13,4 +13,5 @@ public enum Categories
     Transformers,
     Demos,
     Buildings,
+    Sdf
 }
