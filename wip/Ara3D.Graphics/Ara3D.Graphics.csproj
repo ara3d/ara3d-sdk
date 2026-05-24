@@ -2,16 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Description>A library for working with and rendering 2D and 3D graphics.</Description>
-    <PackageProjectUrl>https://github.com/ara3d/ara3d/tree/main/src/Ara3D.Graphics</PackageProjectUrl>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Ara3D.Geometry" Version="*" />
-    <PackageReference Include="Ara3D.Buffers" Version="*" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\labs\Ara3D.Mathematics\Ara3D.Mathematics.csproj" />
