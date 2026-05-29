@@ -193,5 +193,16 @@ namespace Ara3D.Utils
                 tmp.Add(func(self.Current));
             return tmp;
         }
+
+        /// <summary>
+        /// Returns the values that have values.
+        /// </summary>
+        public static IEnumerable<T> WhereHasValue<T>(this IEnumerable<T?> values)
+            where T : struct
+        {
+            foreach (var value in values)
+                if (value.HasValue)
+                    yield return value.Value;
+        }
     }
 }

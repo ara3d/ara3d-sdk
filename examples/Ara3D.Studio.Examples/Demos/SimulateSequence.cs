@@ -144,7 +144,7 @@ public class SimulateSequence : IModifier
 
     public FlowObject Eval(FlowObject obj, EvalContext context)
     {
-        if (obj.Value is not RenderModelData rmd)
+        if (obj.Content is not RenderModelData rmd)
             return obj;
 
         if (OriginalTransforms == null)

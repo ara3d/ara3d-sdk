@@ -1,4 +1,5 @@
 ﻿using Ara3D.Collections;
+using Ara3D.Utils;
 
 namespace Ara3D.Geometry;
 
@@ -17,4 +18,7 @@ public readonly record struct TopoVertex(Topology Topology, VertexId Id)
     public IEnumerable<Point3D> NeighborPoints => NeighborIds.Select(Topology.GetPoint);
     public HashSet<VertexId> NeighborIds => Topology.GetNeighborVertexIds(Id);
     public IEnumerable<TopoVertex> Neighbors  => NeighborIds.Select(Topology.Get);
+    public IReadOnlyList<UndirectedEdgeId> EdgeIds => Topology.GetIncidentUndirectedEdgeIds(Id);
+    public IReadOnlyList<TopoEdge> Edges => EdgeIds.Select(Topology.Get);
+    public IEnumerable<Angle> EdgeAngles => Edges.Select(e => e.Angle).WhereHasValue();
 }

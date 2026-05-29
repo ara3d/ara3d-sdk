@@ -337,6 +337,9 @@ public class Topology
     public IReadOnlyList<TopoHalfEdge> GetEdges(VertexId id)
         => GetOutgoingHalfEdgeIds(id).Select(Get);
 
+    public IReadOnlyList<TopoVertex> GetVertices()
+        => GetVertexIds().Select(Get);
+
     public IReadOnlyList<TopoVertex> GetVertices(HalfEdgeId id)
         => [Get(GetStartVertex(id)), Get(GetEndVertex(id))];
 
@@ -481,4 +484,17 @@ public class Topology
 
         return sum / 6.0;
     }
+
+    public Angle? GetAngle(HalfEdgeId id)
+    {
+        var faces = GetFaces(id);
+        if (faces.Count < 2) return null;
+        return faces[0].Normal.Angle(faces[1].Normal);
+    }
+}
+
+public static class TopologyExtensions
+{
+    public static Topology GetTopology(this TriangleMesh3D mesh)
+        => new(mesh);
 }

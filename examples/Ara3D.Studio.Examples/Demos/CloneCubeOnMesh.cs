@@ -10,8 +10,8 @@ public class CloneCubeOnMesh : IModifier
     {
         var material = m.FirstOrDefaultMaterial();
         var instancedMesh = PlatonicSolids.TriangulatedCube.Scale(Scale);
-        var mergedMesh = m.ToMesh();
-        var points = AtFaceCenters ? mergedMesh.Triangles.Map(f => f.Center) : mergedMesh.Points;
+        var mergedMesh = m.ToColoredMesh();
+        var points = AtFaceCenters ? mergedMesh.Mesh.Triangles.Map(f => f.Center) : mergedMesh.Mesh.Points;
         return instancedMesh.Clone(material, points);
     }
 }

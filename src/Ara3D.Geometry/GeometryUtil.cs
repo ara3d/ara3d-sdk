@@ -241,6 +241,11 @@ namespace Ara3D.Geometry
             return ((bounds.Min.X, c.Y, c.Z), (bounds.Max.X, c.Y, c.Z));
         }
 
+        public static Point3D Lerp(this Bounds3D bounds, Vector3 v)
+            => (bounds.Min.X.Lerp(bounds.Max.X, v.X),
+                bounds.Min.Y.Lerp(bounds.Max.Y, v.Y),
+                bounds.Min.Y.Lerp(bounds.Max.Z, v.Z));
+
         public static Vector3 WithComponent(this Vector3 self, Integer component, Number value)
         {
             if (component == 0) return self.WithX(value);
@@ -339,8 +344,6 @@ namespace Ara3D.Geometry
 
         public static Quad3D Push(this Quad3D q, float distance)
             => q.Translate(q.Normal * distance);
-
-
 
         public static QuadGrid3D Subdivide(this Quad3D q, int xSegments, int ySegments)
         {
@@ -832,6 +835,7 @@ namespace Ara3D.Geometry
             return len <= Epsilon || !IsFinite(len) ? Vector3.Zero : v / len;
         }
 
+        // NOTE: the old "Angle" function does not work. 
         public static double AngleBetween(this Vector3 a, Vector3 b)
         {
             var la = a.Length();

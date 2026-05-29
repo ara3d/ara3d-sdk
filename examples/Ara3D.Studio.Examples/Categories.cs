@@ -2,7 +2,6 @@
 
 public enum Categories
 {
-    // Generators 
     Meshes,
     Lattices,
     Curves,
@@ -13,5 +12,7 @@ public enum Categories
     Transformers,
     Demos,
     Buildings,
-    Sdf
+    Sdf,
+    Topology,
+    Converters
 }

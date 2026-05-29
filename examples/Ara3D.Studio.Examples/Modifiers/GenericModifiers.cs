@@ -13,7 +13,7 @@ public class SetMaterial : IModifier
         new((Red, Green, Blue, Alpha), Metallic, Roughness);
 
     public FlowObject Eval(FlowObject input)
-        => input.WithMaterial(Material);
+        => input.WithNewMaterial(Material);
 }
 
 public class SetRenderSettings : IModifier

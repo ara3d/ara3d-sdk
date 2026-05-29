@@ -144,9 +144,3 @@ public class NoiseDeformer : IModifier
         return mesh.Deform(Deform);
     }
 }
-
-public class ModelToSingleMesh : IModifier
-{
-    public TriangleMesh3D Eval(IModel3D model)
-        => model.ToMesh();
-}

@@ -5,6 +5,8 @@ public class PrincipalComponentAnalysis
 {
     public const double Epsilon = 1e-12;
 
+    // TODO: this needs to be its own type.
+
     // Symmetric 3x3 matrix
     // C00, C01, C02
     //      C11, C12

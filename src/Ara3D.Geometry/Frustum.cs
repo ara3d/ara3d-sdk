@@ -5,6 +5,8 @@ using Vector3 = System.Numerics.Vector3;
 
 namespace Ara3D.Geometry
 {
+
+
     public readonly struct Frustum
     {
         public readonly Plane Left;

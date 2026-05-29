@@ -15,4 +15,6 @@ public readonly record struct TopoEdge(Topology Topology, UndirectedEdgeId Id)
 
     public Point3D PointA => Topology.GetPointA(Id);
     public Point3D PointB => Topology.GetPointB(Id);
+
+    public Angle? Angle => Topology.GetAngle(FirstHalfEdge);
 }

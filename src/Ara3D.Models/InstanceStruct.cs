@@ -13,7 +13,7 @@ namespace Ara3D.Models;
 /// It is passed as-is to the renderer.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public unsafe struct InstanceStruct
+public unsafe struct InstanceStruct : ITransformable3D<InstanceStruct>
 {
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
     // Constant flags
@@ -297,7 +297,10 @@ public unsafe struct InstanceStruct
 
     public override int GetHashCode()
         => HashCode.Combine(EntityIndex, Material, MeshIndex, Matrix4x4, Flags);
-   
+
+    public InstanceStruct Transform(Transform3D t)
+        => WithMatrix(Matrix4x4 * t.Matrix4x4);
+
     public override bool Equals(object? obj)
         => obj is InstanceStruct other && Equals(other);
 

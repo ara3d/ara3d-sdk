@@ -5,9 +5,8 @@ namespace Ara3D.Studio.Samples.BIM_Tools;
 [Category(nameof(Categories.Buildings))]
 public class FilterCategory : IModifier
 {
-    //[Options(nameof(CategoryNames))] 
-    [Range(0, 80)] public int Category;
-    public string CategoryName => CategoryNames?.ElementAtOrDefault(Category, "");
+    [Options(nameof(CategoryNames))] public int Category;
+
     public List<string> CategoryNames { get; private set; } = [];
     
     private List<StringIndex> _categoryIndices;
@@ -46,11 +45,13 @@ public class FilterCategory : IModifier
     {
         var bimData = context.Input.GetAttachment<BimData>();
         RecomputeCategoryNames(bimData, context);
+        context.Application.RebuildUI(this);
 
         if (Category < 0 || Category >= CategoryNames.Count)
-            return model3D.Where((InstanceStruct inst) => true);
+            return model3D.Where((InstanceStruct _) => true);
 
+        var catName = CategoryNames.ElementAtOrDefault(Category);
         var entities = _model.Entities;
-        return model3D.Where(inst => entities[inst.EntityIndex].Category == CategoryName);
+        return model3D.Where(inst => inst.EntityIndex >= 0 && entities[inst.EntityIndex].Category == catName);
     }
 }

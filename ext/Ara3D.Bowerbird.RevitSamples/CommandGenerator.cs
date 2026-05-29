@@ -136,7 +136,7 @@ public class CommandGenerator : NamedCommand, IDirectContext3DServer
         }
         else if (tmp is IModel3D model)
         {
-            Mesh = model.ToMesh().ToRenderMesh();
+            Mesh = model.ToColoredMesh().Mesh.ToRenderMesh();
             UiApp.ActiveUIDocument?.UpdateAllOpenViews();
         }
         else

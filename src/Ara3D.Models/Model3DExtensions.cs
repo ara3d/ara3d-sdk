@@ -16,11 +16,14 @@ public static class Model3DExtensions
     public static TriangleMesh3D GetMesh(this IModel3D self, InstanceStruct node)
         => node.MeshIndex < 0 ? EmptyMesh : self.Meshes[node.MeshIndex];
 
-    public static TriangleMesh3D ToMesh(this IModel3D self)
+    // TODO: I need two paths. One for non-colored meshes, and one for colored. 
+    // I may be creating a bunch of colors for no reason. However ... this is functional so maybe it is not that bad. 
+    public static ColoredTriangleMesh3D ToColoredMesh(this IModel3D self)
     {
         var points = new List<Point3D>();
         var indices = new List<Integer3>();
         var indexOffset = 0;
+        var colors = new List<Vector3>();
 
         foreach (var node in self.Instances)
         {
@@ -30,13 +33,18 @@ public static class Model3DExtensions
             if (!mat.Equals(Matrix4x4.Identity))
             {
                 foreach (var p in mesh.Points)
+                {
                     points.Add(p.Transform(mat));
+                }
             }
             else
             {
                 // Fast path
                 points.AddRange(mesh.Points);
             }
+
+            // Add colors
+            colors.AddRange(node.Color.ToVector3().Repeat(mesh.Points.Count));
 
             if (indexOffset != 0)
             {
@@ -53,7 +61,7 @@ public static class Model3DExtensions
         }
 
         // TODO: we need  to be able to work more efficiently with buffers 
-        return new TriangleMesh3D(points, indices);
+        return new TriangleMesh3D(points, indices).ToColored(colors);
     }
 
     public static IReadOnlyList<Point3D> TransformedPoints(this IModel3D self)

@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,99 +8,180 @@ using System.Threading;
 namespace Ara3D.Utils
 {
     /// <summary>
-    /// A simple web-server. 
+    /// A simple local HTTP server based on HttpListener.
+    /// Intended for local/demo/plugin use, not production hosting.
     /// </summary>
-    public class WebServer
+    public sealed class WebServer : IDisposable
     {
+        public delegate void RequestHandler(HttpListenerContext context);
+
+        private readonly RequestHandler _handler;
+        private readonly HttpListener _listener;
+        private readonly Thread _listenerThread;
+        private readonly CancellationTokenSource _cts = new();
+
+        public string Uri { get; }
+
+        public bool Active => _listener.IsListening && _listenerThread.IsAlive;
+
         public delegate void CallBackDelegate(
-            string verb, 
-            string path, 
-            IDictionary<string, string> parameters, 
+            string verb,
+            string path,
+            IDictionary<string, string> parameters,
             Stream inputStream,
             Stream outputStream);
 
-        private CallBackDelegate _callback;
-        private HttpListener _listener;
-        private Thread _listenerThread;
+        public WebServer(CallBackDelegate callback, int port = 3000, string host = "127.0.0.1")
+            : this(AdaptLegacyCallback(callback), port, host)
+        { }
 
-        public CancellationTokenSource CancellationTokenSource { get; }
-        public CancellationToken Token { get; }
-        
-        public string Uri { get; }
-
-        public WebServer(CallBackDelegate callback, int port = 8074)
+        public WebServer(RequestHandler handler, int port = 3000, string host = "127.0.0.1")
         {
-            CancellationTokenSource = new CancellationTokenSource();
-            Token = CancellationTokenSource.Token;
+            _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
-            Uri = $"http://localhost:{port}/";
-            _callback = callback;
+            Uri = $"http://{host}:{port}/";
+
             _listener = new HttpListener();
             _listener.Prefixes.Add(Uri);
             _listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
             _listener.Start();
-            _listenerThread = new Thread(StartListener);
+
+            _listenerThread = new Thread(StartListener)
+            {
+                IsBackground = true,
+                Name = "Ara3D Local WebServer"
+            };
         }
 
         public void Start()
         {
-            _listenerThread.Start();
-            Debug.WriteLine("Server Started");
-        }
+            if (!_listenerThread.IsAlive)
+                _listenerThread.Start();
 
-        public bool Active
-            => _listenerThread.IsAlive;
+            Debug.WriteLine($"Server started: {Uri}");
+        }
 
         public void Stop()
         {
-            CancellationTokenSource.Cancel();
+            if (_cts.IsCancellationRequested)
+                return;
+
+            _cts.Cancel();
+
+            try
+            {
+                if (_listener.IsListening)
+                    _listener.Close();
+            }
+            catch
+            {
+                // Ignore shutdown errors.
+            }
         }
-        
+
         private void StartListener()
         {
-            while (true)
+            while (!_cts.IsCancellationRequested)
             {
-                var result = _listener.BeginGetContext(ListenerCallback, _listener);
-
-                // Every X msec, check for a cancelation request
-                while (!result.AsyncWaitHandle.WaitOne(100))
+                try
                 {
-                    if (Token.IsCancellationRequested)
-                    {
-                        _listener.Close();
-                        return;
-                    }
+                    var context = _listener.GetContext();
+
+                    // For a simple demo server, handle one request at a time.
+                    // If needed, this can be changed to ThreadPool.QueueUserWorkItem.
+                    HandleContext(context);
+                }
+                catch (HttpListenerException)
+                {
+                    // Normal during shutdown.
+                    return;
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Normal during shutdown.
+                    return;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
                 }
             }
-            // ReSharper disable once FunctionNeverReturns
         }
 
-        public void ProcessQuery(HttpListenerRequest request, HttpListenerResponse response)
-        {
-            var parameters = new Dictionary<string, string>();
-            foreach (string key in request.QueryString.Keys)
-                parameters.Add(key, request.QueryString[key]);
-            var path = request.Url.LocalPath.Substring(1);
-            path = path.TrimStart('/');
-            if (path.EndsWith(".js"))
-                response.ContentType = "text/javascript";
-            _callback?.Invoke(request.HttpMethod, path
-                , parameters, request.InputStream, response.OutputStream);
-        }
-
-        private void ListenerCallback(IAsyncResult result)
+        private void HandleContext(HttpListenerContext context)
         {
             try
             {
-                var context = _listener.EndGetContext(result);
-                ProcessQuery(context.Request, context.Response);
-                context.Response.Close();
+                _handler(context);
             }
             catch (Exception e)
             {
-                // An exception will be normal when the server is stopped .
                 Debug.WriteLine(e);
+
+                try
+                {
+                    context.Response.StatusCode = 500;
+                    context.Response.ContentType = "text/plain; charset=utf-8";
+                    using var writer = new StreamWriter(context.Response.OutputStream);
+                    writer.Write("Internal server error");
+                }
+                catch
+                {
+                    // Ignore response errors.
+                }
             }
+            finally
+            {
+                try
+                {
+                    context.Response.Close();
+                }
+                catch
+                {
+                    // Ignore close errors.
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Stop();
+            _cts.Dispose();
+        }
+
+        public static RequestHandler AdaptLegacyCallback(CallBackDelegate callback)
+        {
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+
+            return context =>
+            {
+                var request = context.Request;
+                var response = context.Response;
+
+                var parameters = new Dictionary<string, string>();
+
+                foreach (string? key in request.QueryString.Keys)
+                {
+                    if (key == null)
+                        continue;
+
+                    parameters[key] = request.QueryString[key] ?? "";
+                }
+
+                var path = request.Url?.LocalPath ?? "";
+                path = path.TrimStart('/');
+
+                if (path.EndsWith(".js", StringComparison.OrdinalIgnoreCase))
+                    response.ContentType = "text/javascript; charset=utf-8";
+
+                callback(
+                    request.HttpMethod,
+                    path,
+                    parameters,
+                    request.InputStream,
+                    response.OutputStream);
+            };
         }
     }
 }

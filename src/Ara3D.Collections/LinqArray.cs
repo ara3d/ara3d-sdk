@@ -203,6 +203,22 @@ namespace Ara3D.Collections
         /// <summary>
         /// Returns an array given a function that generates a tuple from each member. Eager evaluation.
         /// </summary>
+        public static U[] SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, (U, U)> func)
+        {
+            var r = new U[self.Count * 2];
+            for (var i = 0; i < self.Count; ++i)
+            {
+                var tmp = func(self[i]);
+                r[i * 2] = tmp.Item1;
+                r[i * 2 + 1] = tmp.Item2;
+            }
+
+            return r;
+        }
+
+        /// <summary>
+        /// Returns an array given a function that generates a tuple from each member. Eager evaluation.
+        /// </summary>
         public static U[] SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, Tuple<U, U, U>> func)
         {
             var r = new U[self.Count * 3];
@@ -220,7 +236,42 @@ namespace Ara3D.Collections
         /// <summary>
         /// Returns an array given a function that generates a tuple from each member. Eager evaluation.
         /// </summary>
+        public static U[] SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, (U, U, U)> func)
+        {
+            var r = new U[self.Count * 3];
+            for (var i = 0; i < self.Count; ++i)
+            {
+                var tmp = func(self[i]);
+                r[i * 3] = tmp.Item1;
+                r[i * 3 + 1] = tmp.Item2;
+                r[i * 3 + 2] = tmp.Item3;
+            }
+
+            return r;
+        }
+
+        /// <summary>
+        /// Returns an array given a function that generates a tuple from each member. Eager evaluation.
+        /// </summary>
         public static U[] SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, Tuple<U, U, U, U>> func)
+        {
+            var r = new U[self.Count * 4];
+            for (var i = 0; i < self.Count; ++i)
+            {
+                var tmp = func(self[i]);
+                r[i * 4] = tmp.Item1;
+                r[i * 4 + 1] = tmp.Item2;
+                r[i * 4 + 2] = tmp.Item3;
+                r[i * 4 + 3] = tmp.Item4;
+            }
+
+            return r;
+        }
+
+        /// <summary>
+        /// Returns an array given a function that generates a tuple from each member. Eager evaluation.
+        /// </summary>
+        public static U[] SelectMany<T, U>(this IReadOnlyList<T> self, Func<T, (U, U, U, U)> func)
         {
             var r = new U[self.Count * 4];
             for (var i = 0; i < self.Count; ++i)

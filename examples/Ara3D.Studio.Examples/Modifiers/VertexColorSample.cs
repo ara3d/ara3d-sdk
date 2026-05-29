@@ -30,14 +30,14 @@
 
         public ColoredTriangleMesh3D Eval(IModel3D model)
         {
-            var mesh = model.ToMesh();
-            var topology = new Topology(mesh);
-            var mac = new MeshAttributes(mesh, topology);
+            var mesh = model.ToColoredMesh();
+            var topology = new Topology(mesh.Mesh);
+            var mac = new MeshAttributes(mesh.Mesh, topology);
             var values = mac.Vertices.GetAttribute(Feature);
             var colors = Palette.GetColors();
             _stats = values.Statistics();
             var vertexColors = values.Select(c => VertexColor(colors, c));
-            return new ColoredTriangleMesh3D(mesh, vertexColors);
+            return new ColoredTriangleMesh3D(mesh.Mesh, vertexColors);
         }
     }
 }
