@@ -35,7 +35,7 @@ public class FilterLevels : IModifier
         _app = context.Application;
         _levelData = _bom.GetDistinctLevels().ToList();
         LevelNames = _levelData.Select(x => $"{x.Name} {x.Elevation:F2}").ToList();
-        _app.RebuildUI(this);
+        _app.RefreshUI(this);
     }
 
     public string CurLevelName => _levelData == null ? "" : _levelData[Level].Name;
@@ -48,10 +48,10 @@ public class FilterLevels : IModifier
         return em.LevelName == CurLevelName && (Math.Abs(em.Elevation - CurLevelElevation) < 0.0001);
     }
 
-    public FilteredModel3D Eval(IModel3D model3D, EvalContext context)
+    public IModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
-        if (bimData == null) return new(model3D);
+        if (bimData == null) return model3D;
         RecomputeLevels(bimData, context);
         return model3D.Where(FilterLevel);
     }

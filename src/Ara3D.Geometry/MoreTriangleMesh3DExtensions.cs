@@ -43,6 +43,9 @@ public static class MoreTriangleMesh3DExtensions
     public static Vector3 GetFaceNormal(this TriangleMesh3D mesh, int n)
         => mesh.GetTriangle(n).Normal;
 
+    public static IReadOnlyList<Vector3> GetFaceNormals(this TriangleMesh3D mesh)
+        => mesh.Triangles.Select(t => t.Normal);
+
     public static TriangleMesh3D GetMeshFromFaces(this TriangleMesh3D mesh, IReadOnlyList<int> faceIds)
         => new TriangleMesh3D(mesh.Points, mesh.FaceIndices.SelectByIndex(faceIds)).RemoveUnreferencedPoints();
 

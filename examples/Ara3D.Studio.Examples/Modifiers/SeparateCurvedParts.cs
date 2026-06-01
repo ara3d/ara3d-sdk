@@ -84,7 +84,7 @@ public class SeparateCurvedParts : IModifier
                 modelBuilder.AddInstance(localMesh);
         }
 
-        ctx.Application.RebuildUI(this);
+        ctx.Application.RefreshUI(this);
         return modelBuilder.Build();
     }
 }

@@ -9,4 +9,5 @@ public interface IBoundPropContainer
     object GetValue(string name);
     IReadOnlyList<PropValue> GetPropValues();
     IReadOnlyList<IPropAccessor> GetAccessors();
+    void NotifyPropertyChanged(string propName = null);
 }

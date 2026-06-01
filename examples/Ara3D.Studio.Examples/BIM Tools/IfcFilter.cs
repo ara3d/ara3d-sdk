@@ -74,7 +74,7 @@ public class IfcFilter : IModifier
         return false;
     }
 
-    public FilteredModel3D Eval(IModel3D model3D, EvalContext context)
+    public IModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
         return model3D.Where(inst => IsVisible(inst, bimData));

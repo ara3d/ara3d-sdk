@@ -109,7 +109,7 @@ public class FilterParameters : IModifier
         return _selectedEntities.Contains(ei);
     }
 
-    public FilteredModel3D Eval(IModel3D model3D, EvalContext context)
+    public IModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
         if (bimData == null) return model3D.Where((InstanceStruct _) => true);

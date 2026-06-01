@@ -10,7 +10,7 @@ public class DefaultHostApplication : IHostApplication
     public void Invalidate(object obj)
     { }
 
-    public void RebuildUI(object obj)
+    public void RefreshUI(object obj)
     { }
 
     public void AnimateCameraTo(CameraState cameraState, float duration)

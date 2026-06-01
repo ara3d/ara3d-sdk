@@ -67,7 +67,7 @@ public sealed partial class MeshFeatures
     public double AabbHorizontalDiagonal => Math.Sqrt(AabbSizeX * AabbSizeX + AabbSizeY * AabbSizeY);
     public double AabbHorizontalRadius => AabbHorizontalDiagonal * 0.5;
 
-    public double AabbVolume => Aabb.GetVolume();
+    public double AabbVolume => Aabb.Volume();
     public double AabbSurfaceArea => BoxSurfaceArea(AabbSize);
     public double AabbFootprintArea => AabbSizeX * AabbSizeY;
     public double AabbFootprintAspectRatio => SafeRatio(Math.Max(AabbSizeX, AabbSizeY), Math.Min(AabbSizeX, AabbSizeY));

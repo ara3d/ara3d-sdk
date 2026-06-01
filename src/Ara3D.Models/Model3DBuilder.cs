@@ -1,4 +1,5 @@
 ﻿using Ara3D.Geometry;
+using Ara3D.Collections;
 
 namespace Ara3D.Models;
 

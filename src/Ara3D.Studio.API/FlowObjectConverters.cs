@@ -59,12 +59,10 @@ public static class FlowObjectConverters
             {
                 return mesh.Mesh;
             }
-            /* NOTE: I am not sure about what the right thing is here. Maybe I should applying it to all meshes in the model. 
             else if (input is IModel3D m)
             {
                 return m.ToColoredMesh();
             }
-            */
         }
 
         throw new Exception($"Unable to convert from {input} of type {inputType} to object of type {outputType}");

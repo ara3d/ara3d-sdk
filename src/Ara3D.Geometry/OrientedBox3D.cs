@@ -48,4 +48,33 @@ public static class OrientedBox3DExtensions
         return b;
     }
 
+    public static Vector3 LongestAxis(this OrientedBox3D box)
+        => box.GetAxis(box.Size.GetLongestAxisIndex());
+
+    public static Vector3 GetAxis(this OrientedBox3D box, int n)
+        => box.Frame.GetAxis(n);
+
+    public static float MaxSide(this OrientedBox3D box)
+        => box.Size.MaxComponent;
+
+    public static float MinSide(this OrientedBox3D box)
+        => box.Size.MinComponent;
+
+    public static Number MiddleComponent(this Vector3 self)
+        => self.SumComponents - self.MaxComponent - self.MinComponent;
+
+    public static float MiddleSide(this OrientedBox3D box)
+        => box.Size.MiddleComponent();
+
+    public static Line3D CenterLine(this OrientedBox3D box)
+    {
+        var half = box.LongestAxis() * (box.MaxSide() * 0.5f);
+        return box.Frame.Origin.ToCenteredLine(half);
+    }
+
+    public static float Radius(this OrientedBox3D box)
+        => box.MiddleSide().Half();
+
+    public static Matrix4x4 ToMatrix(this OrientedBox3D obb)
+        => obb.Size.ToScaleMatrix() * obb.Frame.Matrix;
 }

@@ -41,11 +41,11 @@ public class FilterCategory : IModifier
     public static string GetCategory(BimObjectModel bim, InstanceStruct inst)
         => bim.Entities.ElementAtOrDefault(inst.EntityIndex)?.Category ?? "";
 
-    public FilteredModel3D Eval(IModel3D model3D, EvalContext context)
+    public IModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
         RecomputeCategoryNames(bimData, context);
-        context.Application.RebuildUI(this);
+        context.Application.RefreshUI(this);
 
         if (Category < 0 || Category >= CategoryNames.Count)
             return model3D.Where((InstanceStruct _) => true);

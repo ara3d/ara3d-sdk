@@ -113,8 +113,8 @@ public static class Model3DExtensions
     public static IModel3D WithInstances(this IModel3D self, Func<InstanceStruct, InstanceStruct> f)
         => self.WithInstances(self.Instances.Select(f));
 
-    public static FilteredModel3D Where(this IModel3D self, Func<InstanceStruct, bool> f)
-        => new(self, f);
+    public static Model3D Where(this IModel3D self, Func<InstanceStruct, bool> f)
+        => new(self.Meshes, self.Instances.Where(f).ToList());
 
     public static IModel3D Where(this IModel3D self, Func<TriangleMesh3D, bool> f)
         => self.WithInstances(self.Instances.Where(i => f(self.GetMesh(i))).ToList());
@@ -150,6 +150,9 @@ public static class Model3DExtensions
 
     public static Model3D WithInstances(this IModel3D self, IReadOnlyList<InstanceStruct> instances)
         => new(self.Meshes, instances);
+
+    public static Model3D MapInstances(this IModel3D self, Func<InstanceStruct, InstanceStruct> func)
+        => new(self.Meshes, self.Instances.Select(func));
 
     public static Model3D Transform(this IModel3D self, Transform3D transform)
         => self.WithInstances(self.Instances.Select(i => i.Transform(transform)));
@@ -325,5 +328,72 @@ public static class Model3DExtensions
         var n = model.Meshes.Count;
         var instances = model.Instances.Concat(other.Instances.Map(i => i.WithMeshIndex(i.MeshIndex + n)));
         return new Model3D(meshes, instances);
+    }
+
+    public static Model3DBuilder AddCylinders(this Model3DBuilder builder, IEnumerable<Line3D> lines, float radius, int sides = 16)
+        => builder.AddCylinders(lines, radius, Material.Default, sides);
+
+    public static Model3DBuilder AddCylinders(this Model3DBuilder builder, IEnumerable<Line3D> lines, float radius, Material material, int sides = 16)
+        => builder.AddCylinders(lines.Select(l => new Cylinder(l, radius)), material, sides);
+
+    public static Model3DBuilder AddCylinders(this Model3DBuilder builder, IEnumerable<Cylinder> cylinders, int sides = 16)
+        => AddCylinders(builder, cylinders, Material.Default, sides);
+
+    public static Model3DBuilder AddCylinders(this Model3DBuilder builder, IEnumerable<Cylinder> cylinders, Material material, int sides = 16)
+    {
+        var cylMesh = GeometryUtil.UnitCylinder(sides).Triangulate();
+        var cylMeshIndex = builder.AddMesh(cylMesh);
+        foreach (var cylinder in cylinders)
+        {
+            var mat = cylinder.ToMatrix();
+            builder.AddInstance(cylMeshIndex, mat, material);
+        }
+        return builder;
+    }
+
+    public static TriangleMesh3D ToMesh(this Cylinder self, int sides = 16)
+        => GeometryUtil.UnitCylinder(sides).Triangulate().Transform(self.ToMatrix());
+
+    public static Model3DBuilder AddSpheres(this Model3DBuilder builder, IEnumerable<Point3D> points, float radius)
+        => builder.AddSpheres(points, radius, Material.Default);
+
+    public static Model3DBuilder AddSpheres(this Model3DBuilder builder, IEnumerable<Point3D> points, float radius, Material material)
+        => builder.AddSpheres(points.Select(p => new Sphere(p, radius)), material);
+
+    public static Model3DBuilder AddSpheres(this Model3DBuilder builder, IEnumerable<Sphere> spheres)
+        => AddSpheres(builder, spheres, Material.Default);
+
+    public static TriangleMesh3D CanonicalSphereMesh()
+        => PlatonicSolids.Icosahedron;
+
+    public static Model3DBuilder AddSpheres(this Model3DBuilder builder, IEnumerable<Sphere> spheres, Material material)
+    {
+        var pointMeshIndex = builder.AddMesh(CanonicalSphereMesh());
+        foreach (var sphere in spheres)
+            builder.AddInstance(pointMeshIndex, sphere.ToMatrix());
+        return builder;
+    }
+
+    public static TriangleMesh3D ToMesh(this Sphere self)
+        => CanonicalSphereMesh().Transform(self.ToMatrix());
+
+    public static Model3D ToModel3D(this IReadOnlyList<TriangleMesh3D> meshes)
+    {
+        var mb = new Model3DBuilder();
+        foreach (var m in meshes)
+            mb.AddMesh(m);
+        return mb.Build();
+    }
+
+    public static Model3D ToModel3D(this IReadOnlyList<TriangleMesh3D> meshes, IReadOnlyList<Material> materials)
+    {
+        var mb = new Model3DBuilder();
+        for (var i=0; i<meshes.Count; i++)
+        {
+            var m = meshes[i];
+            var mat = i < materials.Count ? materials[i] : Material.Default;
+            mb.AddInstance(m, mat);
+        }
+        return mb.Build();
     }
 }

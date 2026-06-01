@@ -199,8 +199,11 @@ public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bo
 [MethodImpl(AggressiveInlining)] public Point3D TranslateZ(Number s) => this.Translate(s.ZVector3);
 
         // Unimplemented interface functions
-        [MethodImpl(AggressiveInlining)] public Point3D Subtract(Vector3 amount) => throw new NotImplementedException();
-[MethodImpl(AggressiveInlining)]  public static Point3D operator -(Point3D x, Vector3 amount) => x.Subtract(amount);
+
+        // NOTE: this was edited manually. 
+        [MethodImpl(AggressiveInlining)] public Point3D Subtract(Vector3 amount) => this.Vector3 - amount;
+
+        [MethodImpl(AggressiveInlining)]  public static Point3D operator -(Point3D x, Vector3 amount) => x.Subtract(amount);
         public IReadOnlyList<Point3D> Points => throw new NotImplementedException();
 [MethodImpl(AggressiveInlining)] public Point3D Modulo(Number other) => throw new NotImplementedException();
 [MethodImpl(AggressiveInlining)]  public static Point3D operator %(Point3D self, Number other) => self.Modulo(other);

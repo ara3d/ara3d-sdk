@@ -20,8 +20,11 @@ namespace Ara3D.BimOpenSchema
         public List<EntityModel> Entities { get; } = new();
         public List<DescriptorModel> Descriptors { get; } = new();
 
+        public HashSet<EntityIndex> TypeEntityIndices { get; } = new();
+        public HashSet<EntityIndex> CategoryEntityIndices { get; } = new();
+
         public BimObjectModel(IBimData data, bool computeParametersAndRelations)
-        {
+        {   
             Data = data;
 
             foreach (var d in data.Documents)
@@ -30,6 +33,14 @@ namespace Ara3D.BimOpenSchema
                     Path = Get(d.Path),
                     Title = Get(d.Title)
                 });
+
+            foreach (var e in Data.Entities)
+            {
+                if (e.Type >= 0)
+                    TypeEntityIndices.Add(e.Type);
+                if (e.Category >= 0)
+                    CategoryEntityIndices.Add(e.Category);
+            }
 
             Entities = data.
                 EntityIndices().Select(Create).ToList();
@@ -75,7 +86,7 @@ namespace Ara3D.BimOpenSchema
         }
 
         public EntityModel Create(EntityIndex ei)
-            => new(this, ei);
+            => new(this, ei, TypeEntityIndices.Contains(ei), CategoryEntityIndices.Contains(ei));
 
         public DescriptorModel Create(DescriptorIndex index, ParameterDescriptor desc) => new DescriptorModel
         {
@@ -122,9 +133,23 @@ namespace Ara3D.BimOpenSchema
 
     public class EntityModel
     {
+        public EntityModel(BimObjectModel model, EntityIndex ei, bool isType, bool isCategory)
+        {
+            Model = model;
+            Index = ei;
+            IsType = isType;
+            IsCategory = isCategory;
+        }
+
         // Stored data
         public BimObjectModel Model { get;  }
         public EntityIndex Index { get; }
+        
+        public bool IsType { get; }
+        public bool IsCategory { get; }
+        public bool IsTypeInstance => HasType;
+        public bool IsNotTypeOrCategory => !IsType && !IsCategory;
+
         public List<InstanceStruct> Instances { get; } = new();
 
         // Always accessible data 
@@ -138,6 +163,7 @@ namespace Ara3D.BimOpenSchema
         public string BuiltInCategory => GetEntityModel(Entity.Category)?.GetParameterAsString(CommonRevitParameters.CategoryBuiltInType);
         public string Name => Data.Get(Entity.Name);
         public bool HasGeometry => Instances.Count > 0;
+        public bool HasType => Entity.Type >= 0;
 
         public EntityModel GetEntityModel(EntityIndex ei)
             => ei < 0 ? null : Model.Entities[(int)ei];
@@ -155,12 +181,6 @@ namespace Ara3D.BimOpenSchema
 
         // Family instance parameters
         public string RoomName => GetParameterAsEntity(CommonRevitParameters.FISpace)?.Name;
-
-        public EntityModel(BimObjectModel model, EntityIndex ei)
-        {
-            Model = model;
-            Index = ei;
-        }
 
         public Dictionary<string, object> ParameterValues { get; } = new();
         public List<RelationModel> OutgoingRelations { get; } = new();

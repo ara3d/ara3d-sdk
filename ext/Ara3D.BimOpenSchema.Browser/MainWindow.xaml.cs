@@ -40,11 +40,11 @@ namespace Ara3D.BimOpenSchema.Browser
             Class,
             Category,
             CategoryType,
-            Family, 
+            Family,
             FamilyCategoryWithParameters,
             FamilyClassWithParameters,
-            InstanceCategoryWithParameters,
-            InstanceClassWithParameters,
+            CategoryWithParameters,
+            ClassWithParameters,
         }
 
         public MainWindow()
@@ -94,7 +94,7 @@ namespace Ara3D.BimOpenSchema.Browser
                 if (val.Equals(Grouping.FamilyCategoryWithParameters))
                     GroupingMenuItem.Items.Add(new Separator());
 
-                if (val.Equals(Grouping.InstanceCategoryWithParameters))
+                if (val.Equals(Grouping.CategoryWithParameters))
                     GroupingMenuItem.Items.Add(new Separator());
 
                 var name = Enum.GetName(typeof(Grouping), val).SplitCamelCase();
@@ -151,13 +151,14 @@ namespace Ara3D.BimOpenSchema.Browser
             => ObjectModel.Entities;
 
         public IEnumerable<EntityModel> GetInstanceEntities()
-            => ObjectModel.Entities.Where(e => e.Entity.Type >= 0);
+            => ObjectModel.Entities.Where(e => e.IsNotTypeOrCategory);
 
-        public IEnumerable<EntityModel> GetNonInstanceEntities()
-            => ObjectModel.Entities.Where(e => e.Entity.Type < 0);
+        public IEnumerable<EntityModel> GetTypeEntities()
+            => ObjectModel.Entities.Where(e => e.IsType);
 
         public IEnumerable<IGrouping<string, EntityModel>> CreateGroupings()
         {
+            // TODO: there is some confusion about the name "Family" versus "Type". They are used interchangeably. 
             switch (CurrentGrouping)
             {
                 case Grouping.None:
@@ -167,8 +168,8 @@ namespace Ara3D.BimOpenSchema.Browser
                 case Grouping.Category:
                     return GetAllEntities().GroupBy(e => e.Category);
                 case Grouping.FamilyCategoryWithParameters:
-                    return GetNonInstanceEntities().GroupBy(e => e.Category);
-                case Grouping.InstanceCategoryWithParameters:
+                    return GetTypeEntities().GroupBy(e => e.Category);
+                case Grouping.CategoryWithParameters:
                     return GetInstanceEntities().GroupBy(e => e.Category);
                 case Grouping.CategoryType:
                     return GetAllEntities().GroupBy(e => e.CategoryType);
@@ -179,8 +180,8 @@ namespace Ara3D.BimOpenSchema.Browser
                 case Grouping.Class:
                     return GetAllEntities().GroupBy(e => e.ClassName);
                 case Grouping.FamilyClassWithParameters:
-                    return GetNonInstanceEntities().GroupBy(e => e.ClassName);
-                case Grouping.InstanceClassWithParameters:
+                    return GetTypeEntities().GroupBy(e => e.ClassName);
+                case Grouping.ClassWithParameters:
                     return GetInstanceEntities().GroupBy(e => e.ClassName);
                 case Grouping.Room:
                     return GetAllEntities().GroupBy(e => e.RoomName);

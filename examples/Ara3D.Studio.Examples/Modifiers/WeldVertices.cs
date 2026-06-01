@@ -11,7 +11,7 @@ public class WeldVertices : IModifier
         var r = mesh.WeldVertices();
         VertexCountBefore = mesh.Points.Count;
         VertexCountAfter = r.Points.Count;
-        ctx.Application.RebuildUI(this);
+        ctx.Application.RefreshUI(this);
         return r;
     }
 }

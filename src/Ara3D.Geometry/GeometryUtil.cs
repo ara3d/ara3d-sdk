@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using Ara3D.Utils;
 
 namespace Ara3D.Geometry
@@ -197,32 +198,113 @@ namespace Ara3D.Geometry
         public static Vector3 InverseLerp(this Point3D point, Line3D line)
             => InverseLerp(point, line.A, line.B);
 
-        public static Point3D CenterBottom(this Bounds3D self)
-            => self.Center.WithZ(self.Min.Z);
+        public static Point3D CenterBottom(this Bounds3D self) => self.Center.WithZ(self.Min.Z);
+        public static Point3D CenterTop(this Bounds3D self) => self.Center.WithZ(self.Max.Z); 
 
-        public static Point3D CenterTop(this Bounds3D self)
-            => self.Center.WithZ(self.Max.Z);
+        public static Vector3 Along(this Vector3 v, int axisIndex) 
+            => axisIndex switch
+            {
+                0 => v.AlongX(),
+                1 => v.AlongY(),
+                2 => v.AlongZ(),
+                _ => throw new ArgumentOutOfRangeException(nameof(axisIndex))
+            };
 
-        public static Line3D CenterZAxis(this Bounds3D bounds)
+        public static Vector3 AlongX(this Vector3 v) => (v.X, 0, 0);
+        public static Vector3 AlongY(this Vector3 v) => (0, v.Y, 0);
+        public static Vector3 AlongZ(this Vector3 v) => (0, 0, v.Z);
+
+        public static Vector3 SizeAlongX(this Bounds3D bounds) => bounds.Size.AlongX();
+        public static Vector3 SizeAlongY(this Bounds3D bounds) => bounds.Size.AlongY();
+        public static Vector3 SizeAlongZ(this Bounds3D bounds) => bounds.Size.AlongZ();
+
+        public static Vector3 HalfSize(this Bounds3D bounds) => bounds.Size.Half;
+        public static Vector3 HalfSizeAlong(this Bounds3D bounds, int axisIndex) => bounds.HalfSize().Along(axisIndex);
+        public static Vector3 HalfSizeAlongX(this Bounds3D bounds) => bounds.HalfSize().AlongX();
+        public static Vector3 HalfSizeAlongY(this Bounds3D bounds) => bounds.HalfSize().AlongY();
+        public static Vector3 HalfSizeAlongZ(this Bounds3D bounds) => bounds.HalfSize().AlongZ();
+
+        public static Line3D CenterLine(this Bounds3D bounds, int axisIndex) => bounds.Center.ToCenteredLine(bounds.HalfSizeAlong(axisIndex));
+        public static Line3D CenterLineX(this Bounds3D bounds) => bounds.Center.ToCenteredLine(bounds.HalfSizeAlongX());
+        public static Line3D CenterLineY(this Bounds3D bounds) => bounds.Center.ToCenteredLine(bounds.HalfSizeAlongY());
+        public static Line3D CenterLineZ(this Bounds3D bounds) => bounds.Center.ToCenteredLine(bounds.HalfSizeAlongZ());
+
+        public static Vector3 DiagonalVector(this Bounds3D bounds) => (bounds.Max - bounds.Min);
+        public static Vector3 HalfDiagonalVector(this Bounds3D bounds) => (bounds.Max - bounds.Center);
+        public static Number DiagonalLength(this Bounds3D bounds) => bounds.DiagonalVector().Length;
+        public static Number Volume(this Bounds3D bounds) => bounds.Size.X * bounds.Size.Y * bounds.Size.Z;
+
+        public static Integer3 GetAxisIndicesByDescendingMagnitude(this Vector3 v)
         {
-            var c = bounds.Center;
-            return ((c.X, c.Y, bounds.Min.Z), (c.X, c.Y, bounds.Max.Z));
+            var (x, y, z) = v.Abs();
+            if (x >= y && x >= z) return y >= z ? (0, 1, 2) : (0, 2, 1);
+            if (y >= x && y >= z) return x >= z ? (1, 0, 2) : (1, 2, 0);
+            return x >= y ? (2, 0, 1) : (2, 1, 0);
         }
 
-        public static Line3D CenterYAxis(this Bounds3D bounds)
-        {
-            var c = bounds.Center;
-            return ((c.X, bounds.Min.Y, c.Z), (c.X, bounds.Max.Y, c.Z));
-        }
+        public static int GetPrimaryAxisIndex(this Vector3 v) => v.GetAxisIndicesByDescendingMagnitude().A;
+        public static int GetSecondaryAxisIndex(this Vector3 v) => v.GetAxisIndicesByDescendingMagnitude().B;
+        public static int GetTertiaryAxisIndex(this Vector3 v) => v.GetAxisIndicesByDescendingMagnitude().C;
 
-        public static Vector3 DiagonalVector(this Bounds3D bounds)
-            => (bounds.Max - bounds.Min);
+        public static int GetLongestAxisIndex(this Vector3 v) => v.GetPrimaryAxisIndex();
+        public static int GetMiddleAxisIndex(this Vector3 v) => v.GetSecondaryAxisIndex();
+        public static int GetShortestAxisIndex(this Vector3 v) => v.GetTertiaryAxisIndex();
 
-        public static Number DiagonalLength(this Bounds3D bounds)
-            => bounds.DiagonalVector().Length;
+        public static float GetPrimaryComponent(this Vector3 v) => v.GetComponent(v.GetPrimaryAxisIndex());
+        public static float GetSecondaryComponent(this Vector3 v) => v.GetComponent(v.GetSecondaryAxisIndex());
+        public static float GetTertiaryComponent(this Vector3 v) => v.GetComponent(v.GetTertiaryAxisIndex());
 
-        public static Number GetVolume(this Bounds3D bounds)
-            => bounds.Size.X * bounds.Size.Y * bounds.Size.Z;
+        public static float GetLongestComponent(this Vector3 v) => v.GetPrimaryComponent();
+        public static float GetMiddleComponent(this Vector3 v) => v.GetSecondaryComponent();
+        public static float GetShortestComponent(this Vector3 v) => v.GetTertiaryComponent();
+
+        public static float GetPrimaryMagnitude(this Vector3 v) => MathF.Abs(v.GetPrimaryComponent());
+        public static float GetSecondaryMagnitude(this Vector3 v) => MathF.Abs(v.GetSecondaryComponent());
+        public static float GetTertiaryMagnitude(this Vector3 v) => MathF.Abs(v.GetTertiaryComponent());
+
+        public static int PrimaryAxisIndex(this Bounds3D bounds) => bounds.Size.GetPrimaryAxisIndex();
+        public static int SecondaryAxisIndex(this Bounds3D bounds) => bounds.Size.GetSecondaryAxisIndex();
+        public static int TertiaryAxisIndex(this Bounds3D bounds) => bounds.Size.GetTertiaryAxisIndex();
+
+        public static int LongestAxisIndex(this Bounds3D bounds) => bounds.PrimaryAxisIndex();
+        public static int MiddleAxisIndex(this Bounds3D bounds) => bounds.SecondaryAxisIndex();
+        public static int ShortestAxisIndex(this Bounds3D bounds) => bounds.TertiaryAxisIndex();
+
+        public static Line3D CenterLinePrimary(this Bounds3D bounds) => bounds.CenterLine(bounds.PrimaryAxisIndex());
+        public static Line3D CenterLineSecondary(this Bounds3D bounds) => bounds.CenterLine(bounds.SecondaryAxisIndex());
+        public static Line3D CenterLineTertiary(this Bounds3D bounds) => bounds.CenterLine(bounds.TertiaryAxisIndex());
+
+        public static Line3D CenterLineLongest(this Bounds3D bounds) => bounds.CenterLinePrimary();
+        public static Line3D CenterLineMiddle(this Bounds3D bounds) => bounds.CenterLineSecondary();
+        public static Line3D CenterLineShortest(this Bounds3D bounds) => bounds.CenterLineTertiary();
+
+        public static float PrimarySize(this Bounds3D bounds) => bounds.Size.GetPrimaryComponent();
+        public static float SecondarySize(this Bounds3D bounds) => bounds.Size.GetSecondaryComponent();
+        public static float TertiarySize(this Bounds3D bounds) => bounds.Size.GetTertiaryComponent();
+
+        public static float LongestSize(this Bounds3D bounds) => bounds.PrimarySize();
+        public static float MiddleSize(this Bounds3D bounds) => bounds.SecondarySize();
+        public static float ShortestSize(this Bounds3D bounds) => bounds.TertiarySize();
+
+        public static Cylinder ToCylinder(this Bounds3D bounds) => new(bounds.CenterLinePrimary(), bounds.MiddleSize().Half());
+
+        public static (float, float) GetOtherComponents(this Vector3 v, int axisIndex)
+            => axisIndex switch
+            {
+                0 => (v.Y, v.Z),
+                1 => (v.X, v.Z),
+                2 => (v.X, v.Y),
+                _ => throw new ArgumentOutOfRangeException(nameof(axisIndex))
+            };
+
+        public static float GetComponent(this Vector3 v, int axisIndex)
+            => axisIndex switch
+            {
+                0 => v.X,
+                1 => v.Y,
+                2 => v.Z,
+                _ => throw new ArgumentOutOfRangeException(nameof(axisIndex))
+            };
 
         public static Number DistanceFromZAxis(this Bounds3D bounds, Vector3 p)
         {
@@ -244,7 +326,7 @@ namespace Ara3D.Geometry
         public static Point3D Lerp(this Bounds3D bounds, Vector3 v)
             => (bounds.Min.X.Lerp(bounds.Max.X, v.X),
                 bounds.Min.Y.Lerp(bounds.Max.Y, v.Y),
-                bounds.Min.Y.Lerp(bounds.Max.Z, v.Z));
+                bounds.Min.Z.Lerp(bounds.Max.Z, v.Z));
 
         public static Vector3 WithComponent(this Vector3 self, Integer component, Number value)
         {
@@ -333,7 +415,7 @@ namespace Ara3D.Geometry
             var y0 = (ad + bc) / 2f;
             var y1 = (da + cb) / 2f;
 
-            return InsetQuad(q, x0, x1, y0, y1);
+            return q.InsetQuad(x0, x1, y0, y1);
         }
 
         public static Quad3D GetQuad(this IReadOnlyList<Point3D> points, Integer4 face)
@@ -511,7 +593,6 @@ namespace Ara3D.Geometry
             var ez = MathF.Abs(m.M13) * e.X + MathF.Abs(m.M23) * e.Y + MathF.Abs(m.M33) * e.Z;
 
             var et = new Vector3(ex, ey, ez);
-
             return new(ct - et, ct + et);
         }
 
@@ -838,48 +919,26 @@ namespace Ara3D.Geometry
         // NOTE: the old "Angle" function does not work. 
         public static double AngleBetween(this Vector3 a, Vector3 b)
         {
-            var la = a.Length();
-            var lb = b.Length();
-
-            if (la <= Epsilon || lb <= Epsilon)
-                return 0.0;
-
-            var cos = Vector3.Dot(a, b) / (la * lb);
-
-            if (!IsFinite(cos))
-                return 0.0;
-
-            return Math.Acos(Clamp(cos, -1.0, 1.0));
+            var cos = a.Dot(b).SafeDivide(a.Length * b.Length);
+            return !cos.IsFinite() ? 0.0 : Clamp(cos, -1.0, 1.0).Acos();
         }
 
         public static double Cotangent(this Vector3 a, Vector3 b)
-        {
-            var cross = Vector3.Cross(a, b).Length();
-            if (cross <= Epsilon)
-                return 0.0;
-
-            var dot = Vector3.Dot(a, b);
-            var cot = dot / cross;
-
-            return IsFinite(cot) ? cot : 0.0;
-        }
+            => a.Dot(b).Value.SafeDivide(a.Cross(b).Length());
 
         public static double SafeDivide(this double numerator, double denominator, double fallback = 0.0)
-        {
-            if (Math.Abs(denominator) <= Epsilon)
-                return fallback;
+            => Math.Abs(denominator) <= Epsilon 
+                ? fallback : (numerator / denominator).FiniteOrFallback(fallback);
 
-            var result = numerator / denominator;
-            return IsFinite(result) ? result : fallback;
-        }
+        public static float SafeDivide(this Number numerator, float denominator, float fallback = 0.0f)
+            => numerator.Value.SafeDivide(denominator, fallback);
+
+        public static float SafeDivide(this float numerator, float denominator, float fallback = 0.0f)
+            => Math.Abs(denominator) <= Epsilon
+                ? fallback : (numerator / denominator).FiniteOrFallback(fallback);
 
         public static double SafeNonNegative(this double value)
-        {
-            if (!IsFinite(value))
-                return 0.0;
-
-            return value < 0.0 ? 0.0 : value;
-        }
+            => !value.IsFinite() || value < 0.0 ? 0.0 : value;
 
         public static double Clamp(this double v, double min, double max)
             => Math.Max(min, Math.Min(v, max));
@@ -889,5 +948,168 @@ namespace Ara3D.Geometry
 
         public static bool IsFinite(this float x)
             => !float.IsNaN(x) && !float.IsInfinity(x);
+
+        public static float FiniteOrFallback(this float f, float fallback = 0)
+            => f.IsFinite() ? f : fallback;
+
+        public static double FiniteOrFallback(this double d, double fallback = 0)
+            => d.IsFinite() ? d : fallback;
+
+        public static LineMesh3D Subdivide(this LineMesh3D mesh, int count)
+        {
+            if (count <= 1)
+                return mesh;
+            var pts = mesh.Points.ToList();
+            var lines = new List<Integer2>();
+            foreach (var f in mesh.FaceIndices)
+            {
+                var pt0 = mesh.Points[f.A];
+                var pt1 = mesh.Points[f.B];
+                for (var i = 0; i <= count; i++)
+                {
+                    var pt = pt0.Lerp(pt1, (float)i / count);
+                    var n = pts.Count;
+                    if (i == 0)
+                    {
+                        pts.Add(pt);
+                        lines.Add((f.A, n));
+                    }
+                    else if (i == count)
+                    {
+                        lines.Add((n - 1, f.B));
+                    }
+                    else
+                    {
+                        pts.Add(pt);
+                        lines.Add((n - 1, n));
+                    }
+                }
+            }
+            return new LineMesh3D(pts, lines);
+        }
+
+        public static LineMesh3D ToLineMesh(this Quad3D q)
+            => new(q.Points, [(0, 1), (1, 2), (2, 3), (3, 0)]);
+
+        public static LineMesh3D ToLineMesh(this Quad2D q)
+            => q.To3D.ToLineMesh();
+
+        public static Matrix4x4 ToMatrix(this Cylinder cylinder)
+            => Matrix4x4.CreateScale(cylinder.Radius * 2, cylinder.Radius * 2, 1f) * cylinder.Line.ToMatrix();
+
+        public static Matrix4x4 ToMatrix(this Sphere sphere)
+            => Matrix4x4.CreateScale(sphere.Radius) * Matrix4x4.CreateTranslation(sphere.Center.Vector3);
+
+        public static Matrix4x4 ToMatrix(this Line3D line)
+        {
+            var a = line.A.Vector3;
+            var b = line.B.Vector3;
+
+            var dz = b - a;
+            var length = dz.Length();
+
+            var c = line.Center.Vector3;
+
+            if (length <= float.Epsilon)
+                return Matrix4x4.CreateTranslation(c);
+
+            var z = dz / length;
+
+            // Pick a stable reference vector that is not parallel to the line.
+            var reference = MathF.Abs(Vector3.Dot(z, Vector3.UnitZ)) < 0.999f
+                ? Vector3.UnitZ
+                : Vector3.UnitY;
+
+            var x = reference.NormalizedCross(z);
+            var y = z.Cross(x);
+
+            // Maps a unit-height cylinder running from local Z=-0.5 to local Z=0.5
+            // onto the line from A to B.
+            return new Matrix4x4(
+                x.X, x.Y, x.Z, 0,
+                y.X, y.Y, y.Z, 0,
+                z.X * length, z.Y * length, z.Z * length, 0,
+                c.X, c.Y, c.Z, 1);
+        }
+
+        public static YawPitch YawPitch(this Line3D line)
+        {
+            var d = line.B.Vector3 - line.A.Vector3;
+
+            Debug.Assert(d.LengthSquared() > 0, "Line segment must have non-zero length.");
+
+            var horizontalLength = Math.Sqrt(d.X * d.X + d.Y * d.Y);
+
+            // Heading:
+            // atan2(x, y) instead of atan2(y, x), because +Y is forward / zero heading.
+            var heading = Math.Atan2(d.X, d.Y);
+
+            // Elevation:
+            // angle above the XY plane.
+            var elevation = Math.Atan2(d.Z, horizontalLength);
+
+            Debug.Assert(!double.IsNaN(heading));
+            Debug.Assert(!double.IsNaN(elevation));
+            Debug.Assert(elevation >= -Math.PI / 2 && elevation <= Math.PI / 2);
+
+            return ((float)heading, (float)elevation);
+        }
+
+        public static Matrix4x4 ToScaleMatrix(this Vector3 v)
+            => Matrix4x4.CreateScale(v.X, v.Y, v.Z);
+
+        public static Matrix4x4 ToTranslationMatrix(this Point3D p)
+            => p.Vector3.ToTranslationMatrix();
+
+        public static Matrix4x4 ToTranslationMatrix(this Vector3 v)
+            => Matrix4x4.CreateTranslation(v);
+
+        public static QuadMesh3D UnitCylinder(int sides = 16)
+            => sides.GetCircularPoints(0.5f).Translate((0, 0, -0.5f)).Extrude(1).ToQuadMesh3D();
+
+        public static QuadMesh3D ToCylinderMesh(this Line3D line, int sides = 16)
+            => UnitCylinder(sides).Transform(line.ToMatrix());
+
+        public static QuadMesh3D ToBoxMesh(this Line3D line, int sides = 16)
+            => PlatonicSolids.Cube.Transform(line.ToMatrix());
+
+        public static bool IsMostlyParallelTo(this Vector3 a, Vector3 b)
+            => a.IsMostlyParallelTo(b, 15.Degrees());
+
+        public static bool IsMostlyParallelTo(this Vector3 a, Vector3 b, Angle tolerance)
+        {
+            if (!a.IsFinite() || !b.IsFinite())
+                return false;
+
+            var la = a.Length();
+            var lb = b.Length();
+
+            if (la <= 0 || lb <= 0)
+                return false;
+
+            return (a.Dot(b) / (la * lb)).Abs() 
+                   >= tolerance.Cos;
+        }
+
+        public static bool IsMostlyPerpendicularTo(this Vector3 a, Vector3 b)
+            => a.IsMostlyPerpendicularTo(b, 15.Degrees());
+
+        public static bool IsMostlyPerpendicularTo(this Vector3 a, Vector3 b, Angle tolerance)
+        {
+            if (!a.IsFinite() || !b.IsFinite())
+                return false;
+
+            var la = a.Length();
+            var lb = b.Length();
+
+            if (la <= 0 || lb <= 0)
+                return false;
+
+            return (a.Dot(b) / (la * lb)).Abs 
+                   <= tolerance.Sin;
+        }
+
+        public static Line3D ToCenteredLine(this Point3D point, Vector3 halfDir)
+            => (point - halfDir, point + halfDir);
     }
 }

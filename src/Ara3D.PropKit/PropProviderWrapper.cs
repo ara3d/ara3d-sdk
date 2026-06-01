@@ -39,7 +39,7 @@ public class PropProviderWrapper :
 
     public void NotifyPropertyChanged(string propName = null)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
     }
 
     public dynamic AsDynamic

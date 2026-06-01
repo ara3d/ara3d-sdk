@@ -16,7 +16,7 @@ public interface IHostApplication
 {
     ILogger Logger { get; }
     void Invalidate(object obj);
-    void RebuildUI(object obj);
+    void RefreshUI(object obj);
     void AnimateCameraTo(CameraState cameraState, float duration);
     CameraState GetCameraState();
     SynchronizationContext SynchronizationContext { get; }

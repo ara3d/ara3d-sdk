@@ -78,4 +78,13 @@ public readonly record struct Frame3D(
 
     public Frame3D Compose(Frame3D other)
         => new(ToWorld(other.Origin), Basis.Compose(other.Basis));
+
+    public Vector3 GetAxis(int n)
+        => n switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => throw new ArgumentOutOfRangeException(nameof(n), "Axis index must be 0, 1, or 2.")
+        };
 }
