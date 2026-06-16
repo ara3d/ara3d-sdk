@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Ara3D.Utils;
 
 namespace Ara3D.Geometry
@@ -234,7 +233,7 @@ namespace Ara3D.Geometry
         public static Number DiagonalLength(this Bounds3D bounds) => bounds.DiagonalVector().Length;
         public static Number Volume(this Bounds3D bounds) => bounds.Size.X * bounds.Size.Y * bounds.Size.Z;
 
-        public static Integer3 GetAxisIndicesByDescendingMagnitude(this Vector3 v)
+        public static Integer3 GetOrderedAxisIndicesDescending(this Vector3 v)
         {
             var (x, y, z) = v.Abs();
             if (x >= y && x >= z) return y >= z ? (0, 1, 2) : (0, 2, 1);
@@ -242,9 +241,16 @@ namespace Ara3D.Geometry
             return x >= y ? (2, 0, 1) : (2, 1, 0);
         }
 
-        public static int GetPrimaryAxisIndex(this Vector3 v) => v.GetAxisIndicesByDescendingMagnitude().A;
-        public static int GetSecondaryAxisIndex(this Vector3 v) => v.GetAxisIndicesByDescendingMagnitude().B;
-        public static int GetTertiaryAxisIndex(this Vector3 v) => v.GetAxisIndicesByDescendingMagnitude().C;
+        public static int GetPrimaryAxisIndex(this Vector3 v) => v.GetOrderedAxisIndicesDescending().A;
+        public static int GetSecondaryAxisIndex(this Vector3 v) => v.GetOrderedAxisIndicesDescending().B;
+        public static int GetTertiaryAxisIndex(this Vector3 v) => v.GetOrderedAxisIndicesDescending().C;
+
+        public static Vector3 GetLongestAxis(this Vector3 v) => v.Along(v.GetLongestAxisIndex());
+        public static Vector3 GetMiddleAxis(this Vector3 v) => v.Along(v.GetMiddleAxisIndex());
+        public static Vector3 GetShortestAxis(this Vector3 v) => v.Along(v.GetShortestAxisIndex());
+
+        public static Vector3[] GetOrderedAxisDescending(this Vector3 v) =>
+            [v.GetLongestAxis(), v.GetMiddleAxis(), v.GetShortestAxis()];
 
         public static int GetLongestAxisIndex(this Vector3 v) => v.GetPrimaryAxisIndex();
         public static int GetMiddleAxisIndex(this Vector3 v) => v.GetSecondaryAxisIndex();
@@ -287,7 +293,8 @@ namespace Ara3D.Geometry
         public static float ShortestSize(this Bounds3D bounds) => bounds.TertiarySize();
 
         public static Cylinder ToCylinder(this Bounds3D bounds) => new(bounds.CenterLinePrimary(), bounds.MiddleSize().Half());
-
+        public static Matrix4x4 ToMatrix(this Bounds3D bounds) => bounds.Center.ToTranslationMatrix() * bounds.Size.ToScaleMatrix();
+        
         public static (float, float) GetOtherComponents(this Vector3 v, int axisIndex)
             => axisIndex switch
             {
@@ -910,10 +917,13 @@ namespace Ara3D.Geometry
 
         public const double Epsilon = 1e-15;
 
+        public static bool IsFinite(this Number x) 
+            => x.Value.IsFinite();
+        
         public static Vector3 SafeNormalize(this Vector3 v)
         {
             var len = v.Length();
-            return len <= Epsilon || !IsFinite(len) ? Vector3.Zero : v / len;
+            return len <= Epsilon || !len.IsFinite() ? Vector3.Zero : v / len;
         }
 
         // NOTE: the old "Angle" function does not work. 
@@ -1111,5 +1121,175 @@ namespace Ara3D.Geometry
 
         public static Line3D ToCenteredLine(this Point3D point, Vector3 halfDir)
             => (point - halfDir, point + halfDir);
+
+        public static Matrix4x4 LookAtMatrix(this Point3D pos, Point3D target)
+            => Matrix4x4.CreateLookAt(pos, target, Vector3.UnitZ);
+
+        public static Matrix4x4 LookInDirectionMatrix(this Point3D pos, Vector3 dir)
+            => pos.LookAtMatrix(pos + dir);
+
+        public static IReadOnlyList<Transform3D> GetTransforms(this Curve3D curve, int count)
+        {
+            var r = new Transform3D[count + 1];
+            for (var i = 0; i <= count; i++)
+            {
+                var t0 = (float)i / count;
+                var t1 = t0 + 0.001f;
+                var pos0 = curve.Eval(t0);
+                var pos1 = curve.Eval(t1);
+                var pose = pos0.LookAt(pos1);
+                r[i] = pose;
+            }
+            return r;
+        }
+
+        public static OrthonormalBasis3D CreateBasisFromZ(this Vector3 z)
+        {
+            // Pick the world axis least parallel to z.
+            // This avoids unstable cross products when z is near world X/Y/Z.
+            var helper = MathF.Abs(z.Z) < 0.9f
+                ? Vector3.UnitZ
+                : Vector3.UnitY;
+            var x = helper.NormalizedCross(z);
+            var y = z.Cross(x);
+            var axes = new Axes3D(x, y, z);
+            return new OrthonormalBasis3D(axes);
+        }
+
+        public static Bounds3D Combine(this IReadOnlyList<Bounds3D> bounds)
+        {
+            if (bounds == null || bounds.Count == 0)
+                return Bounds3D.Empty;
+            var combined = bounds[0];
+            foreach (var b in bounds)
+                combined = combined.Include(b);
+            return combined;
+        }
+
+        public static Bounds3D Bounds(this Triangle3D tri)
+            => tri.Points.Bounds();
+
+        public static Bounds3D Merge(this Bounds3D b1, Bounds3D b2)
+            // TODO: I am not sure that the name "Include" make sense.
+            => b1.Include(b2);
+
+        public static Bounds3D Bounds(this IEnumerable<Point3D> p)
+            => p.Aggregate(Bounds3D.Empty, (b1, b2) => b1.Include(b2));
+
+        public static Bounds3D Bounds(this IEnumerable<Line3D> lines)
+            => lines.SelectMany(t => t.Points).Bounds();
+
+        public static Bounds3D Bounds(this IEnumerable<Triangle3D> triangles)
+            => triangles.SelectMany(t => t.Points).Bounds();
+
+        public static Bounds3D Bounds(this IEnumerable<Quad3D> quads)
+            => quads.SelectMany(t => t.Points).Bounds();
+
+        public static Bounds3D Bounds(this IEnumerable<Bounds3D> boxes)
+            => boxes.SelectMany(b => new [] { b.Min, b.Max }).Bounds();
+
+        public static Bounds3D Bounds(this IEnumerable<TriangleMesh3D> meshes)
+            => meshes.SelectMany(m => m.Points).Bounds();
+
+        public static Bounds3D Bounds(this IEnumerable<LineMesh3D> meshes)
+            => meshes.SelectMany(m => m.Points).Bounds();
+
+        public static Bounds3D Bounds(this IEnumerable<QuadMesh3D> meshes)
+            => meshes.SelectMany(m => m.Points).Bounds();
+
+        public static Bounds3D Bounds(this IEnumerable<QuadGrid3D> meshes)
+            => meshes.SelectMany(m => m.Points).Bounds();
+
+        public static Bounds3D Bounds(this IEnumerable<IEnumerable<Point3D>> pointLists)
+            => pointLists.SelectMany(list => list).Bounds();
+
+        public const double DefaultEpsilon = 1e-12;
+        public const float DefaultFloatEpsilon = 1e-6f;
+
+        public static bool IsFinite(this Vector3 v)
+            => float.IsFinite(v.X) && float.IsFinite(v.Y) && float.IsFinite(v.Z);
+
+        public static bool IsUnit(this Vector3 v, float tolerance = 1e-4f)
+            => Math.Abs(v.LengthSquared() - 1f) <= tolerance;
+
+        public static Vector3 NormalizeSafe(this Vector3 v, Vector3 fallback, float epsilon = DefaultFloatEpsilon)
+        {
+            Debug.Assert(fallback.IsFinite());
+            Debug.Assert(fallback.LengthSquared() > epsilon * epsilon);
+
+            if (!v.IsFinite())
+                return fallback.Normalize;
+
+            var lenSq = v.LengthSquared();
+            return lenSq > epsilon * epsilon
+                ? v / MathF.Sqrt(lenSq)
+                : fallback.Normalize;
+        }
+
+        public static Vector3 AnyPerpendicular(Vector3 axis)
+        {
+            Debug.Assert(axis.IsFinite());
+            Debug.Assert(axis.LengthSquared() > 0);
+
+            axis = axis.Normalize();
+
+            var other = Math.Abs(axis.X) < 0.9f
+                ? Vector3.UnitX
+                : Vector3.UnitY;
+
+            return axis.NormalizedCross(other);
+        }
+
+        public static double Distance(this Point3D p, Line3D line)
+            => p.Vector3.DistanceToLine(line.A, line.Direction.Normalize);
+
+        // TODO: create Normal3D, Normal2D, Normal1D, UV
+
+        public static double DistanceToLine(this Vector3 p, Vector3 linePoint, Vector3 lineDir)
+        {
+            var d = p - linePoint;
+            var axial = d.Dot(lineDir);
+            var radial = d - axial * lineDir;
+            return radial.Length();
+        }
+
+        public static Vector3 ProjectOntoLine(Vector3 p, Vector3 linePoint, Vector3 lineDir)
+        {
+            var d = p - linePoint;
+            var t = d.Dot(lineDir);
+            return linePoint + t * lineDir;
+        }
+
+        public static double SignedDistanceAlongLine(Vector3 p, Vector3 linePoint, Vector3 lineDir)
+        {
+            return Vector3.Dot(p - linePoint, lineDir);
+        }
+
+        public static Vector3 Reject(this Vector3 v, Vector3 unitAxis)
+        {
+            Debug.Assert(unitAxis.IsUnit());
+            return v - Vector3.Dot(v, unitAxis) * unitAxis;
+        }
+
+        public static bool Intersects(this Bounds3D bounds, Bounds3D other)
+            => bounds.IntervalX().Intersects(other.IntervalX())
+            && bounds.IntervalY().Intersects(other.IntervalY())
+            && bounds.IntervalZ().Intersects(other.IntervalZ());
+
+        public static bool Intersects(this NumberInterval a, NumberInterval b)
+            => a.Start <= b.End && a.End >= b.Start;
+
+        public static NumberInterval IntervalX(this Bounds3D bounds) => new(bounds.Min.X, bounds.Max.X);
+        public static NumberInterval IntervalY(this Bounds3D bounds) => new(bounds.Min.Y, bounds.Max.Y);
+        public static NumberInterval IntervalZ(this Bounds3D bounds) => new(bounds.Min.Z, bounds.Max.Z);
+
+        public static Bounds3D Expand(this Bounds3D bounds, Vector3 v)
+            => (bounds.Min - v, bounds.Max + v);
+
+        public static Bounds3D OffsetMax(this Bounds3D bounds, Vector3 v)
+            => bounds.WithMax(bounds.Max + v);
+
+        public static Bounds3D OffsetMin(this Bounds3D bounds, Vector3 v)
+            => bounds.WithMin(bounds.Min + v);
     }
 }

@@ -16,6 +16,12 @@ public static class Model3DExtensions
     public static TriangleMesh3D GetMesh(this IModel3D self, InstanceStruct node)
         => node.MeshIndex < 0 ? EmptyMesh : self.Meshes[node.MeshIndex];
 
+    public static TriangleMesh3D GetTransformedMesh(this IModel3D self, InstanceStruct node)
+        => self.GetMesh(node).Transform(node.Matrix4x4);
+
+    public static TriangleMesh3D ToMesh(this IModel3D self)
+        => self.ToColoredMesh().Mesh;
+
     // TODO: I need two paths. One for non-colored meshes, and one for colored. 
     // I may be creating a bunch of colors for no reason. However ... this is functional so maybe it is not that bad. 
     public static ColoredTriangleMesh3D ToColoredMesh(this IModel3D self)
@@ -105,6 +111,15 @@ public static class Model3DExtensions
             r = r.Include(lclBounds);
         }
         return r;
+    }
+
+    public static IReadOnlyList<Bounds3D> GetInstanceBounds(this IModel3D self)
+    {
+        var meshBounds = self.GetMeshBounds();
+        return self.Instances.Select(i =>
+            i.MeshIndex >= 0
+                ? meshBounds[i.MeshIndex].Transform(i.Matrix4x4)
+                : Bounds3D.Empty);
     }
 
     public static IModel3D WithMeshes(this IModel3D self, Func<TriangleMesh3D, TriangleMesh3D> f)
@@ -339,17 +354,28 @@ public static class Model3DExtensions
     public static Model3DBuilder AddCylinders(this Model3DBuilder builder, IEnumerable<Cylinder> cylinders, int sides = 16)
         => AddCylinders(builder, cylinders, Material.Default, sides);
 
-    public static Model3DBuilder AddCylinders(this Model3DBuilder builder, IEnumerable<Cylinder> cylinders, Material material, int sides = 16)
+    public static Model3DBuilder AddInstances(this Model3DBuilder builder, TriangleMesh3D mesh, IReadOnlyList<Matrix4x4> matrices)
+        => builder.AddInstances(mesh, matrices, Material.Default);
+
+    public static Model3DBuilder AddInstances(this Model3DBuilder builder, TriangleMesh3D mesh, IReadOnlyList<Matrix4x4> matrices, Material material)
+        => builder.AddInstances(mesh, matrices.Select(mat => (mat, material)));
+
+    public static Model3DBuilder AddInstances(this Model3DBuilder builder, TriangleMesh3D mesh, IReadOnlyList<(Matrix4x4, Material)> instances)
     {
-        var cylMesh = GeometryUtil.UnitCylinder(sides).Triangulate();
-        var cylMeshIndex = builder.AddMesh(cylMesh);
-        foreach (var cylinder in cylinders)
-        {
-            var mat = cylinder.ToMatrix();
-            builder.AddInstance(cylMeshIndex, mat, material);
-        }
+        var index = builder.AddMesh(mesh);
+        foreach (var (matrix, material) in instances)
+            builder.AddInstance(index, matrix, material);
         return builder;
     }
+
+    public static IModel3D ToModel3D(this IEnumerable<Cylinder> cylinders, int sides = 16)
+        => cylinders.ToModel3D(Material.Default, sides);
+
+    public static IModel3D ToModel3D(this IEnumerable<Cylinder> cylinders, Material material , int sides = 16)
+        => new Model3DBuilder().AddCylinders(cylinders.ToList(), material, sides).Build();
+
+    public static Model3DBuilder AddCylinders(this Model3DBuilder builder, IEnumerable<Cylinder> cylinders, Material material, int sides = 16)
+        => builder.AddInstances(GeometryUtil.UnitCylinder(sides).Triangulate(), cylinders.Select(cyl => cyl.ToMatrix()).ToList(), material);
 
     public static TriangleMesh3D ToMesh(this Cylinder self, int sides = 16)
         => GeometryUtil.UnitCylinder(sides).Triangulate().Transform(self.ToMatrix());
@@ -381,7 +407,7 @@ public static class Model3DExtensions
     {
         var mb = new Model3DBuilder();
         foreach (var m in meshes)
-            mb.AddMesh(m);
+            mb.AddInstance(m);
         return mb.Build();
     }
 
@@ -396,4 +422,34 @@ public static class Model3DExtensions
         }
         return mb.Build();
     }
+
+    public static IEnumerable<TriangleMesh3D> TransformedMeshes(this IModel3D model)
+        => model.Instances.Select(inst => model.GetMesh(inst).Transform(inst.Matrix4x4));
+
+    public static IModel3D SelectInstances(this IModel3D model, IReadOnlyList<int> indices)
+        => new Model3D(model.Meshes, indices.Select(i => model.Instances[i]));
+
+    public static IModel3D WithInstances(this IModel3D model, IEnumerable<InstanceStruct> instances)
+        => model.WithInstances(instances.ToList());
+
+    public static TriangleMesh3D ToMesh(this IModel3D model, IEnumerable<InstanceStruct> instances)
+        => model.WithInstances(instances.ToList()).ToMesh();
+
+    public static ColoredTriangleMesh3D ToColoredMesh(this IModel3D model, IEnumerable<InstanceStruct> instances)
+        => model.WithInstances(instances.ToList()).ToColoredMesh();
+
+    public static IEnumerable<IModel3D> GroupBy<T>(this IModel3D model, Func<InstanceStruct, T> f) where T: IComparable<T> 
+        => model.Instances.GroupBy(f).Select(model.WithInstances);
+
+    public static IModel3D ToModel(this TriangleMesh3D mesh, IReadOnlyList<Matrix4x4> matrices)
+        => new Model3DBuilder().AddInstances(mesh, matrices).Build();
+
+    public static TriangleMesh3D CubeMesh
+        => PlatonicSolids.TriangulatedCube;
+
+    public static IModel3D ToModel(this IReadOnlyList<Bounds3D> bounds, Material material)
+        => new Model3DBuilder().AddBoxes(bounds, material).Build();
+
+    public static Model3DBuilder AddBoxes(this Model3DBuilder builder, IReadOnlyList<Bounds3D> bounds, Material material)
+        => builder.AddInstances(CubeMesh, bounds.Select(b => b.ToMatrix()), material);
 }

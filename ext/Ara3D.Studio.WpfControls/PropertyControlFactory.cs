@@ -59,7 +59,9 @@ public static class PropertyControlGenerator
         headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         headerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
-        var createHeader = descriptor is not PropDescriptorAction;
+        // NOTE: there might be a more elegant way to do this
+        var createHeader = descriptor is not PropDescriptorAction 
+                           && descriptor is not PropDescriptorBool;
 
         if (createHeader)
         {

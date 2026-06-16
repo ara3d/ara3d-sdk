@@ -1,11 +1,11 @@
-﻿namespace Ara3D.Studio.Samples.Generators;
+﻿namespace Ara3D.Geometry;
 
 public class BoxFrameMeshBuilder
 {
     public readonly QuadMesh3D Mesh;
     public readonly float FrameRatio;
 
-    public BoxFrameMeshBuilder(float frameRatio)
+    public BoxFrameMeshBuilder(float frameRatio = 0.02f)
     {
         FrameRatio = frameRatio;
         var shape = new CellGridBuilder3D(3, 3, 3)
@@ -21,17 +21,24 @@ public class BoxFrameMeshBuilder
         for (var x = 0; x <= 3; x++)
         for (var y = 0; y <= 3; y++)
         for (var z = 0; z <= 3; z++)
-            vertices.Add((Pos(x), Pos(y), Pos(z)));
+            vertices.Add((getPos(x), getPos(y), getPos(z)));
 
         Mesh = new QuadMesh3D(vertices, shape.GetQuadFaces());
     }
 
-    public float Pos(int i)
-    {
-        if (i == 0) return -0.5f;
-        if (i == 1) return -0.5f + FrameRatio;
-        if (i == 2) return 0.5f - FrameRatio;
-        if (i == 3) return 0.5f;
-        throw new ArgumentOutOfRangeException();
-    }
+    private float getPos(int i)
+        => i switch
+        {
+            0 => -0.5f,
+            1 => -0.5f + FrameRatio,
+            2 => 0.5f - FrameRatio,
+            3 => 0.5f,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+    public static QuadMesh3D CreateBoxFrameMesh(float frameRatio = 0.02f)
+        => new BoxFrameMeshBuilder(frameRatio).Mesh;
+
+    public static QuadMesh3D DefaultBoxFrame 
+        => CreateBoxFrameMesh();
 }

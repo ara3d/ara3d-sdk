@@ -9,7 +9,7 @@ BFAST stands for the **B**inary **F**ormat for **A**rray **S**erialization and *
 ***This code has been forked from: https://github.com/vimaec/vim-format/blob/develop/docs/bfast.md.***
 
 BFAST was developed by VIM, and is used for the VIM file format. This code makes some changes
-and improvments while still respecting the binary layout. 
+and improvements while still respecting the binary layout. 
 
 ## Summary
 

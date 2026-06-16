@@ -129,7 +129,7 @@ public Point3D ClampZeroOne { [MethodImpl(AggressiveInlining)] get  => this.MapC
 public Point3D Fract { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.Fract); } 
 public Point3D FromOne { [MethodImpl(AggressiveInlining)] get  => this.MapComponents((x1)  => x1.FromOne); } 
 [MethodImpl(AggressiveInlining)] public Point3D InversePow(Point3D y) => this.ZipComponents(y, (x1, y1)  => x1.InversePow(y1));
-[MethodImpl(AggressiveInlining)] public Point3D Lerp(Point3D b, Number t){
+[MethodImpl(AggressiveInlining)] public readonly Point3D Lerp(Point3D b, Number t){
             var _var54 = t;
             return this.ZipComponents(b, (a1, b1)  => a1.Lerp(b1, _var54));
         }

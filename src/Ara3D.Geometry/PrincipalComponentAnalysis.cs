@@ -18,9 +18,13 @@ public sealed class PrincipalComponentAnalysis
     public Vector3 SecondaryAxis => Eigen.MiddleVector;
     public Vector3 TertiaryAxis => Eigen.SmallestVector;
 
+    public Line3D PrincipalLine => new(Mean, Mean + PrincipalAxis);
+    public Line3D SecondaryLine => new(Mean, Mean + SecondaryAxis);
+    public Line3D TertiaryLine => new(Mean, Mean + TertiaryAxis);
+
     public double TotalVariance => Eigen.TotalVariance;
 
-    public bool IsPointLike => TotalVariance <= GeometryNumerics.DefaultEpsilon;
+    public bool IsPointLike => TotalVariance <= GeometryUtil.DefaultEpsilon;
 
     public double Linearity { get; }
     public double Planarity { get; }
@@ -63,7 +67,7 @@ public sealed class PrincipalComponentAnalysis
         Mean = mean;
         Eigen = EigenDecomposition3D.Decompose(Covariance);
 
-        if (LargestEigenValue > GeometryNumerics.DefaultEpsilon)
+        if (LargestEigenValue > GeometryUtil.DefaultEpsilon)
         {
             Linearity = (LargestEigenValue - MiddleEigenValue) / LargestEigenValue;
             Planarity = (MiddleEigenValue - SmallestEigenValue) / LargestEigenValue;
@@ -80,8 +84,8 @@ public sealed class PrincipalComponentAnalysis
         Debug.Assert(PrincipalAxis.IsUnit());
         Debug.Assert(SecondaryAxis.IsUnit());
         Debug.Assert(TertiaryAxis.IsUnit());
-        Debug.Assert(LargestEigenValue >= MiddleEigenValue - GeometryNumerics.DefaultEpsilon);
-        Debug.Assert(MiddleEigenValue >= SmallestEigenValue - GeometryNumerics.DefaultEpsilon);
+        Debug.Assert(LargestEigenValue >= MiddleEigenValue - GeometryUtil.DefaultEpsilon);
+        Debug.Assert(MiddleEigenValue >= SmallestEigenValue - GeometryUtil.DefaultEpsilon);
     }
 
     public bool IsMostlyLinear(double threshold = 0.8)
@@ -94,19 +98,19 @@ public sealed class PrincipalComponentAnalysis
         => Scattering >= threshold;
 
     public double SignedDistanceAlongPrincipalAxis(Vector3 p)
-        => GeometryNumerics.SignedDistanceAlongLine(p, Mean, PrincipalAxis);
+        => GeometryUtil.SignedDistanceAlongLine(p, Mean, PrincipalAxis);
 
     public double SignedDistanceAlongSecondaryAxis(Vector3 p)
-        => GeometryNumerics.SignedDistanceAlongLine(p, Mean, SecondaryAxis);
+        => GeometryUtil.SignedDistanceAlongLine(p, Mean, SecondaryAxis);
 
     public double SignedDistanceAlongTertiaryAxis(Vector3 p)
-        => GeometryNumerics.SignedDistanceAlongLine(p, Mean, TertiaryAxis);
+        => GeometryUtil.SignedDistanceAlongLine(p, Mean, TertiaryAxis);
 
     public Vector3 ProjectOntoPrincipalLine(Vector3 p)
-        => GeometryNumerics.ProjectOntoLine(p, Mean, PrincipalAxis);
+        => GeometryUtil.ProjectOntoLine(p, Mean, PrincipalAxis);
 
     public double DistanceToPrincipalLine(Vector3 p)
-        => GeometryNumerics.DistanceToLine(p, Mean, PrincipalAxis);
+        => GeometryUtil.DistanceToLine(p, Mean, PrincipalAxis);
 
     public double SignedDistanceToBestFitPlane(Vector3 p)
         => Vector3.Dot(p - Mean, TertiaryAxis);

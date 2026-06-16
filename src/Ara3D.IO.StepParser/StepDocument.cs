@@ -64,7 +64,7 @@ public sealed unsafe class StepDocument : IDisposable
             Debug.Assert(attrToken.Length >= 0);
 
             // Force a debug check
-            var _ = attrToken.AsFlatArray(this); 
+            var _ = attrToken.AsSpan(this); 
 
             var def = new StepDefinition(id, nameToken, attrToken);
             Definitions.Add(def);

@@ -1,7 +1,5 @@
-﻿using Ara3D.Utils;
-using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -94,22 +92,23 @@ public class CommandExportPdfs : NamedCommand
         return input;
     }
 
+    public static IReadOnlyList<View> GetPrintable2DViews(Document doc)
+        => new FilteredElementCollector(doc)
+            .OfClass(typeof(View))
+            .Cast<View>()
+            .Where(v =>
+                !v.IsTemplate &&
+                v.CanBePrinted &&
+                Is2DView(v))
+            .ToList();
+
     public static int ExportAll2DViewsToPdf(
         Document doc,
         string outputFolder)
     {
         Directory.CreateDirectory(outputFolder);
 
-        var views =
-            new FilteredElementCollector(doc)
-                .OfClass(typeof(View))
-                .Cast<View>()
-                .Where(v =>
-                    !v.IsTemplate &&
-                    v.CanBePrinted &&
-                    Is2DView(v))
-                .ToList();
-
+        var views = GetPrintable2DViews(doc);
         int count = 0;
 
         foreach (var view in views)
@@ -118,7 +117,7 @@ public class CommandExportPdfs : NamedCommand
 
             using (var options = new PDFExportOptions())
             {
-                options.Combine = true; // IMPORTANT: forces single output
+                options.Combine = false; 
                 options.FileName = EnsurePdfExtension(fileName);
 
                 options.AlwaysUseRaster = false;

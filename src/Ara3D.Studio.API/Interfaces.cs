@@ -12,16 +12,6 @@ public interface IExporter
     public string FileExtension { get; }
 }
 
-public interface IHostApplication
-{
-    ILogger Logger { get; }
-    void Invalidate(object obj);
-    void RefreshUI(object obj);
-    void AnimateCameraTo(CameraState cameraState, float duration);
-    CameraState GetCameraState();
-    SynchronizationContext SynchronizationContext { get; }
-}
-
 // Implementing this interface assures that your script is called on a regular phases
 public interface IAnimated
 { }

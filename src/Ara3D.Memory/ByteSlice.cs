@@ -82,8 +82,6 @@ namespace Ara3D.Memory
             // Use the span overload – same perf, safer diagnostics
             ReadOnlySpan<byte> span = new(Ptr, CheckedLength);
             return Encoding.ASCII.GetString(span);
-            
-            //return Encoding.ASCII.GetString(Ptr, CheckedLength);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -12,13 +12,13 @@ public readonly record struct EigenDecomposition3D(
 {
     public double TotalVariance => LargestValue + MiddleValue + SmallestValue;
 
-    public bool IsDegenerate(double epsilon = GeometryNumerics.DefaultEpsilon)
+    public bool IsDegenerate(double epsilon = GeometryUtil.DefaultEpsilon)
         => TotalVariance <= epsilon;
 
     public static EigenDecomposition3D Decompose(
         SymmetricMatrix3x3 m,
         int maxSweeps = 16,
-        double epsilon = GeometryNumerics.DefaultEpsilon)
+        double epsilon = GeometryUtil.DefaultEpsilon)
     {
         // Dense symmetric matrix for Jacobi iteration.
         var a = new double[3, 3]
@@ -41,7 +41,7 @@ public readonly record struct EigenDecomposition3D(
             var aqq = a[q, q];
             var apq = a[p, q];
 
-            if (Math.Abs(apq) <= GeometryNumerics.DefaultEpsilon)
+            if (Math.Abs(apq) <= GeometryUtil.DefaultEpsilon)
                 return;
 
             var tau = (aqq - app) / (2.0 * apq);
@@ -147,7 +147,7 @@ public readonly record struct EigenDecomposition3D(
         v -= Vector3.Dot(v, axis) * axis;
 
         if (v.LengthSquared() < 1e-10f)
-            v = GeometryNumerics.AnyPerpendicular(axis);
+            v = axis.AnyPerpendicular();
 
         return v.Normalize;
     }

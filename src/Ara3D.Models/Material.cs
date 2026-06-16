@@ -79,4 +79,7 @@ public record struct Material(Color Color, float Metallic, float Roughness)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Color.A >= 0.001f;
     }
+
+    public static implicit operator Material(Color c)
+        => Default.WithColor(c);
 }

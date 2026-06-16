@@ -306,21 +306,28 @@ public static class ParquetUtils
             names.Add(entry.Name);
             ms.Position = 0;
         }
-
         logger?.Log("Creating data table reading tasks");
+
         var tables = new IDataTable[streams.Count];
         var dop = Math.Max(1, Environment.ProcessorCount - 1);
+
         using var sem = new SemaphoreSlim(dop);
+
         var bimData = new BimData();
-        var tasks = Enumerable.Range(0, streams.Count).Select(async i =>
+
+        async Task ReadOneAsync(int i)
         {
             await sem.WaitAsync().ConfigureAwait(false);
+
+            var stream = streams[i];
+
             try
             {
-                var stream = streams[i];
                 var name = Path.GetFileNameWithoutExtension(names[i]);
 
-                stream.Position = 0;
+                if (stream.CanSeek)
+                    stream.Position = 0;
+
                 var ctor = GetTableCtor(name);
 
                 if (ctor == null)
@@ -329,15 +336,25 @@ public static class ParquetUtils
                 }
                 else
                 {
-                    await ctor(stream, bimData);
+                    await ctor(stream, bimData).ConfigureAwait(false);
                 }
             }
             finally
             {
-                try { await streams[i].DisposeAsync().ConfigureAwait(false); }
-                finally { sem.Release(); }
+                try
+                {
+                    await stream.DisposeAsync().ConfigureAwait(false);
+                }
+                finally
+                {
+                    sem.Release();
+                }
             }
-        });
+        }
+
+        var tasks = Enumerable.Range(0, streams.Count)
+            .Select(ReadOneAsync)
+            .ToArray();
 
         logger?.Log("Executing tasks");
         await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -416,15 +433,36 @@ public static class ParquetUtils
     public static void WriteToParquetZip(this IBimData data, FilePath fp)
         => Task.Run(() => data.WriteToParquetZipAsync(fp)).GetAwaiter().GetResult();
 
-    public static void WriteBimOpenSchema(this BimDataBuilder bdb, FilePath fp)
+    public static void WriteBimOpenSchema(this BimDataBuilder bdb, FilePath fp, CompressionLevel compressionLevel)
     {
         var dataSet = bdb.ToDataSet();
         var fs = new FileStream(fp, FileMode.Create, FileAccess.Write, FileShare.None);
         using var zip = new ZipArchive(fs, ZipArchiveMode.Create, leaveOpen: false);
 
+        // Default: Optimal
         var parquetCompressionMethod = CompressionMethod.Brotli;
         var parquetCompressionLevel = CompressionLevel.Optimal;
-        var zipCompressionLevel = CompressionLevel.Fastest;
+        var zipCompressionLevel = CompressionLevel.NoCompression;
+
+        if (compressionLevel == CompressionLevel.NoCompression)
+        {
+            parquetCompressionMethod = CompressionMethod.None;
+            parquetCompressionLevel = CompressionLevel.NoCompression;
+            zipCompressionLevel = CompressionLevel.NoCompression;
+        }
+        else if (compressionLevel == CompressionLevel.SmallestSize)
+        {
+            // VERY SLOW but very fast
+            parquetCompressionMethod = CompressionMethod.Brotli;
+            parquetCompressionLevel = CompressionLevel.SmallestSize;
+            zipCompressionLevel = CompressionLevel.SmallestSize;
+        }
+        else if (compressionLevel == CompressionLevel.Fastest)
+        {
+            parquetCompressionMethod = CompressionMethod.Snappy;
+            parquetCompressionLevel = CompressionLevel.Fastest;
+            zipCompressionLevel = CompressionLevel.Fastest;
+        }
 
         dataSet.WriteParquetToZip(
             zip,

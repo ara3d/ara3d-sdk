@@ -1,5 +1,6 @@
 using Ara3D.Logging;
 using Ara3D.Studio.API;
+using Ara3D.Utils;
 
 namespace Ara3D.Studio.WpfControls;
 
@@ -21,4 +22,13 @@ public class DefaultHostApplication : IHostApplication
 
     public SynchronizationContext SynchronizationContext
         => SynchronizationContext.Current;
+
+    public Task SaveGeometry(FilePath filePath)
+    {
+        return Task.CompletedTask;
+    }
+
+    public void SaveScreenshot(FilePath filePath)
+    {
+    }
 }

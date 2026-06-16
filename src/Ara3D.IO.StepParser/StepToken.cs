@@ -153,4 +153,7 @@ public unsafe struct StepToken
     public readonly bool Match(ReadOnlySpan<byte> bytes)
         => bytes.SequenceEqual(Span);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public readonly int GetListEndIndex()
+        => Index + Length;
 }

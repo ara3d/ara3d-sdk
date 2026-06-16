@@ -16,4 +16,15 @@ public readonly struct Cylinder
     public Cylinder WithLine(Line3D line) => new(line, Radius);
     public Cylinder WithLineStart(Point3D point) => WithLine(Line.WithA(point));
     public Cylinder WithLineEnd(Point3D point) => WithLine(Line.WithB(point));
+    public Cylinder Transform(Matrix4x4 m)
+    {
+        var newLine = Line.Transform(m);
+        var scaleFactor = newLine.Length / Length();
+        var newRadius = Radius * scaleFactor;
+        return new(newLine, newRadius);
+    }
+
+    public Cylinder Scale(float f)
+        => new(Line.Scale(f), Radius * f);
 }
+

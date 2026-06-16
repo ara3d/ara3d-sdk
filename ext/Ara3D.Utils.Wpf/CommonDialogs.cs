@@ -42,6 +42,9 @@ namespace Ara3D.Utils.Wpf
                 : null;
         }
 
+        public static void Message(string message)
+            => MessageBox.Show(message);
+
         public static bool YesNo(string message, string caption)
             => MessageBox.Show(message, caption, MessageBoxButton.YesNo) == MessageBoxResult.Yes;
 

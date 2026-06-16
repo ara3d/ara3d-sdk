@@ -36,6 +36,8 @@ public class FilterCategory : IModifier
             .Distinct()
             .OrderBy(x => x)
             .ToList();
+
+        context.Application.RefreshUI(this);
     }
 
     public static string GetCategory(BimObjectModel bim, InstanceStruct inst)
@@ -45,7 +47,6 @@ public class FilterCategory : IModifier
     {
         var bimData = context.Input.GetAttachment<BimData>();
         RecomputeCategoryNames(bimData, context);
-        context.Application.RefreshUI(this);
 
         if (Category < 0 || Category >= CategoryNames.Count)
             return model3D.Where((InstanceStruct _) => true);

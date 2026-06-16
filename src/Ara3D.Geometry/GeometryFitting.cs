@@ -2,6 +2,13 @@
 
 public static class GeometryFitting
 {
+    public static Cylinder ResizeToFit(this Cylinder cylinder, IReadOnlyList<Point3D> points)
+    {
+        var line = cylinder.Line;
+        var maxRadius = points.Max(p => p.Distance(line));
+        return cylinder.WithRadius((float)maxRadius);
+    }
+
     public static Cylinder FitCylinder(this OrientedBox3D obb, IReadOnlyList<Vector3> normals, CylinderRadiusFit fit = CylinderRadiusFit.Enclosing)
     {
         if (normals == null || normals.Count == 0)
@@ -79,7 +86,8 @@ public static class GeometryFitting
         }
 
         if (bestAxisIndex < 0)
-            throw new InvalidOperationException("Could not determine a cylinder axis from the supplied normals.");
+            return obb.FitCylinder();
+            //throw new InvalidOperationException("Could not determine a cylinder axis from the supplied normals.");
 
         var bestAxis = axes[bestAxisIndex].Normalize;
         var length = sizes[bestAxisIndex];

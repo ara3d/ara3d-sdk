@@ -56,7 +56,7 @@ namespace Ara3D.Geometry
 [MethodImpl(AggressiveInlining)] public Triangle3D Triangle(Integer3 index) => this.Points.Triangle(index);
 [MethodImpl(AggressiveInlining)] public Quad3D Quad(Integer4 index) => this.Points.Quad(index);
 public Bounds3D Bounds { [MethodImpl(AggressiveInlining)] get  => this.Points.Bounds(); } 
-[MethodImpl(AggressiveInlining)] public QuadMesh3D Transform(Transform3D t){
+[MethodImpl(AggressiveInlining)] public readonly QuadMesh3D Transform(Transform3D t){
             var _var74 = t;
             return this.Deform((p)  => p.Vector3.Transform(_var74.Matrix));
         }

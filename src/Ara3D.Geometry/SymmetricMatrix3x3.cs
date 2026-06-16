@@ -30,7 +30,7 @@ public readonly record struct SymmetricMatrix3x3(
         IReadOnlyList<Vector3> points,
         out Vector3 mean,
         IReadOnlyList<double>? weights = null,
-        double epsilon = GeometryNumerics.DefaultEpsilon)
+        double epsilon = GeometryUtil.DefaultEpsilon)
     {
         if (points == null)
             throw new ArgumentNullException(nameof(points));

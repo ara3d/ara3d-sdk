@@ -11,16 +11,19 @@ public class Model3DBuilder
     public Model3D Build()
         => new(Meshes, Instances);
 
-    public void AddInstance(int meshIndex, Matrix4x4 matrix)
+    public int AddInstance(int meshIndex, Matrix4x4 matrix)
         => AddInstance(meshIndex, matrix, Material.Default);
 
-    public void AddInstance(int meshIndex, Material material)
+    public int AddInstance(int meshIndex, Material material)
         => AddInstance(meshIndex, Matrix4x4.Identity, material);
 
-    public void AddInstance(InstanceStruct inst)
-        => Instances.Add(inst);
+    public int AddInstance(InstanceStruct inst)
+    {
+        Instances.Add(inst);
+        return Instances.Count - 1;
+    }
 
-    public void AddInstance(int meshIndex, Matrix4x4 matrix, Material material, int entityIndex = -1, byte flags = 0)
+    public int AddInstance(int meshIndex, Matrix4x4 matrix, Material material, int entityIndex = -1, byte flags = 0)
         => AddInstance(new InstanceStruct(entityIndex, matrix, meshIndex, material, flags));
 
     public void AddModel(IModel3D model)
@@ -31,15 +34,19 @@ public class Model3DBuilder
             Instances.Add(inst.WithMeshIndex(inst.MeshIndex + meshOffset));
     }
 
-    public void AddInstance(TriangleMesh3D mesh, Material material)
+    public int AddInstance(TriangleMesh3D mesh, Material material)
         => AddInstance(mesh, Matrix4x4.Identity, material);
 
-    public void AddInstance(TriangleMesh3D mesh, Matrix4x4 matrix, Material material)
+    public int AddInstance(TriangleMesh3D mesh, Matrix4x4 matrix, Material material)
         => AddInstance(AddMesh(mesh), matrix, material);
 
-    public void AddInstance(TriangleMesh3D mesh)
+    public int AddInstance(TriangleMesh3D mesh, Matrix4x4 matrix)
+        => AddInstance(mesh, matrix,  Material.Default);
+
+    public int AddInstance(TriangleMesh3D mesh)
         => AddInstance(mesh, Matrix4x4.Identity, Material.Default);
 
+    // TODO: this is potentially confusing. 
     public int AddMesh(TriangleMesh3D mesh)
     {
         var r = Meshes.Count;

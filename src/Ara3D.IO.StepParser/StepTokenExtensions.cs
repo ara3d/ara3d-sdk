@@ -1,7 +1,13 @@
-﻿using System;
+﻿using Ara3D.Utils;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
+
 namespace Ara3D.IO.StepParser;
 
 public static unsafe class StepTokenExtensions
@@ -13,7 +19,7 @@ public static unsafe class StepTokenExtensions
         Debug.Assert(token.IsEntity);
         var name = token.ToString();
         var listToken = token.NextToken(doc);
-        var list = listToken.AsFlatArray(doc);
+        var list = listToken.AsSpan(doc);
         Debug.Assert(list.Length >= 1);
         return (name, list[0]);
     }
@@ -23,7 +29,7 @@ public static unsafe class StepTokenExtensions
         => doc.Tokens[token.Index + 1];
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ReadOnlySpan<StepToken> AsFlatArray(this StepToken token, StepDocument doc)
+    public static ReadOnlySpan<StepToken> AsSpan(this StepToken token, StepDocument doc)
     {
         if (token.IsUnassignedOrRedeclared)
         {
@@ -47,9 +53,16 @@ public static unsafe class StepTokenExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<StepToken> AsArray(this StepToken token, StepDocument doc)
+    public static string ToString(this StepToken token, StepDocument doc)
+        => token.IsList 
+            ? $"({token.AsList(doc).Select(t => t.ToString(doc)).JoinStringsWithComma()})" 
+            : token.ToString();
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IReadOnlyList<StepToken> AsList(this StepToken token, StepDocument doc)
     {
-        var input = token.AsFlatArray(doc);
+        var input = token.AsSpan(doc);
         var output = new List<StepToken>();
         var i = 0;
         while (i < input.Length)
@@ -63,9 +76,12 @@ public static unsafe class StepTokenExtensions
             else if (element.IsEntity)
             {
                 i += 1;
-                if (i >= input.Length || !input[i].IsList)
+                if (i >= input.Length)
+                    throw new Exception("Out of bounds");
+                var listToken = input[i];
+                if (!listToken.IsList)
                     throw new Exception("Expected a list to follow an entity");
-                i += input[i].Index + 1;
+                i += listToken.Length + 1;
             }
             else
             {
@@ -78,7 +94,7 @@ public static unsafe class StepTokenExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double[] AsNumbers(this StepToken value, StepDocument doc)
     {
-        var vals = value.AsFlatArray(doc);
+        var vals = value.AsSpan(doc);
         var r = new double[vals.Length];
         for (var i = 0; i < vals.Length; ++i)
             r[i] = vals[i].AsNumber();
@@ -88,7 +104,7 @@ public static unsafe class StepTokenExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int[] AsIds(this StepToken value, StepDocument doc)
     {
-        var vals = value.AsFlatArray(doc);
+        var vals = value.AsSpan(doc);
         var r = new int[vals.Length];
         for (var i = 0; i < vals.Length; ++i)
             r[i] = vals[i].AsId();
