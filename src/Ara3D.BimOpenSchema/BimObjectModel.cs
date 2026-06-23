@@ -12,7 +12,7 @@ namespace Ara3D.BimOpenSchema
     public class BimObjectModel
     {
         public IBimData Data;
-        public BimGeometry Geometry => Data.Geometry;
+        public IModel3D Model3D;
 
         private bool _parametersComputed;
 
@@ -24,8 +24,13 @@ namespace Ara3D.BimOpenSchema
         public HashSet<EntityIndex> CategoryEntityIndices { get; } = new();
 
         public BimObjectModel(IBimData data, bool computeParametersAndRelations)
+            : this(data, data.Geometry.ToModel3D(), computeParametersAndRelations)
+        { }
+
+        public BimObjectModel(IBimData data, IModel3D model, bool computeParametersAndRelations)
         {   
             Data = data;
+            Model3D = model;
 
             foreach (var d in data.Documents)
                 Documents.Add(new DocumentModel
@@ -47,10 +52,10 @@ namespace Ara3D.BimOpenSchema
             
             if (Entities.Count > 0)
             {
-                var numElements = Geometry.GetNumInstances();
+                var numElements = Model3D.Instances.Count;
                 for (var i = 0; i < numElements; i++)
                 {
-                    var inst = Geometry.GetInstanceStruct(i);
+                    var inst = Model3D.Instances[i];
                     var entityIndex = inst.EntityIndex;
                     if (entityIndex >= 0)
                     {
@@ -99,9 +104,9 @@ namespace Ara3D.BimOpenSchema
 
         public EntityModel Get(EntityIndex ei) => ei < 0 ? null : Entities[(int)ei];
         public DescriptorModel Get(DescriptorIndex di) => di < 0 ? null : Descriptors[(int)di];
-        public Point Get(PointIndex pi) => pi < 0 ? new Point(0,0,0) : Data.Get(pi);
-        public string Get(StringIndex si) => si < 0 ? "" : Data.Get(si);
-        public float Get(NumberIndex ni) => ni < 0 ? 0 : Data.Get(ni);
+        public Point Get(PointIndex pi) => Data.Get(pi);
+        public string Get(StringIndex si) => Data.Get(si);
+        public float Get(NumberIndex ni) => Data.Get(ni);
 
         public void AddParameter(EntityIndex ei, ParameterModel pm)
         {
@@ -154,7 +159,7 @@ namespace Ara3D.BimOpenSchema
 
         // Always accessible data 
         public IBimData Data => Model.Data;
-        public Entity Entity => Model.Data.Get(Index);
+        public Entity Entity => Model.Data.Get(Index) ?? default;
         public DocumentModel Document => Model.Documents.ElementAtOrDefault((int)Entity.Document);
         public string DocumentTitle => Document?.Title;
         public long LocalId => Entity.LocalId;

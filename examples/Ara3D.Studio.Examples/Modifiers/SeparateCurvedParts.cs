@@ -1,90 +1,48 @@
 ﻿using Ara3D.Studio.Samples;
 
-[Category(nameof(Categories.Converters))]
+[Category(nameof(Categories.Tests))]
 public class SeparateCurvedParts : IModifier
 {
-    [Range(0, 20f)]
-    public float PushAmount = 2f;
-
-    [Range(0, 180)]
-    public float CurveCutOff { get; set; } = 15f;
+    [Range(0, 180)] public float CreaseCutOff { get; set; } = 35f;
 
     public int NumGroups { get; private set; }
 
-    public IModel3D Eval(TriangleMesh3D mesh, EvalContext ctx)
+    public bool ApplyRandomColors { get; set; } = true;
+    [Range(0, 1000)] public int Seed { get; set; }
+
+    public static Color RandomColor(Random rng)
+        => Color.Create(rng.NextSingle(), rng.NextSingle(), rng.NextSingle(), 1);
+
+    public bool RemoveFlatSurfaces { get; set; } = true;
+    [Range(0, 45)] public float MaxFlatAngleChange { get; set; } = 5f;
+
+    public IModel3D Eval(IModel3D model, EvalContext ctx)
     {
-        var center = mesh.Bounds.Center;
-        var topo = mesh.GetTopology();
-        var numFaces = mesh.FaceIndices.Count;
-        var ids = (-1).Repeat(numFaces).ToArray();
-        var normals = mesh.Triangles.Map(tri => tri.Normal).ToArray();
-        var cutoff = CurveCutOff.Degrees();
+        var totalGroups = 0;
 
-        void VisitGroupBreadthFirst(int startFaceIndex, int groupId)
+        var result = model.SplitMeshes(mesh =>
         {
-            Debug.Assert(ids[startFaceIndex] < 0);
+            mesh = mesh.WeldVertices();
+            var parts = mesh.SplitByCreaseAngle(CreaseCutOff);
+            totalGroups += parts.Count;
+            return parts;   
+        });
 
-            var queue = new Queue<int>();
-            ids[startFaceIndex] = groupId;
-            queue.Enqueue(startFaceIndex);
-
-            while (queue.Count > 0)
-            {
-                var faceIndex = queue.Dequeue();
-                var faceNormal = normals[faceIndex];
-
-                foreach (var neighbor in topo.GetFaceNeighbors((FaceId)faceIndex))
-                {
-                    var neighborIndex = (int)neighbor.Id;
-
-                    // Already assigned to a group.
-                    if (ids[neighborIndex] >= 0)
-                        continue;
-
-                    var neighborNormal = normals[neighborIndex];
-                    var angle = faceNormal.AngleBetween(neighborNormal);
-
-                    if (Math.Abs(angle) > cutoff)
-                        continue;
-
-                    ids[neighborIndex] = groupId;
-                    queue.Enqueue(neighborIndex);
-                }
-            }
+        if (ApplyRandomColors)
+        {
+            var rng = new Random(Seed);
+            var coloredInstances = result.Instances.Select(inst => inst.WithColor(RandomColor(rng))).ToList();
+            result = result.WithInstances(coloredInstances);
         }
 
-        NumGroups = 0;
-
-        for (var faceIndex = 0; faceIndex < numFaces; faceIndex++)
+        if (RemoveFlatSurfaces)
         {
-            if (ids[faceIndex] >= 0)
-                continue;
-
-            VisitGroupBreadthFirst(faceIndex, NumGroups++);
+            result = result.WhereMeshes(mesh => !mesh.IsMostlyFlat(MaxFlatAngleChange));
         }
 
-        var modelBuilder = new Model3DBuilder();
-
-        for (var groupId = 0; groupId < NumGroups; groupId++)
-        {
-            var faces = Enumerable
-                .Range(0, numFaces)
-                .Where(faceIndex => ids[faceIndex] == groupId)
-                .ToList();
-
-            var localMesh = mesh.GetMeshFromFaces(faces);
-            var localMeshCenter = localMesh.Bounds.Center;
-            var dir = (localMeshCenter - center).Normalize();
-            if (dir.Magnitude > 0.001f)
-            {
-                var pos = dir * PushAmount;
-                modelBuilder.AddInstance(localMesh, Matrix4x4.CreateTranslation(pos), Material.Default);
-            }
-            else
-                modelBuilder.AddInstance(localMesh);
-        }
-
+        NumGroups = totalGroups;
         ctx.Application.RefreshUI(this);
-        return modelBuilder.Build();
+        return result;
     }
+
 }

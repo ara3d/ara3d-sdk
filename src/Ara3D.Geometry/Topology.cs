@@ -497,4 +497,15 @@ public static class TopologyExtensions
 {
     public static Topology GetTopology(this TriangleMesh3D mesh)
         => new(mesh);
+
+    public static IEnumerable<TopoFace> GetFaceNeighborsWithAngleCutOff(this Topology topology, FaceId id, Angle cutOff)
+    {
+        var faceNormal = topology.Get(id).Normal;
+        foreach (var neighbor in topology.GetFaceNeighbors(id))
+        {
+            if (faceNormal.Angle(neighbor.Normal) > cutOff)
+                continue;
+            yield return neighbor;
+        }
+    }
 }

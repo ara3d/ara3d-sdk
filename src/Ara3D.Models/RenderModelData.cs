@@ -238,6 +238,9 @@ public class RenderModelData : IDisposable, IModel3D
 
         foreach (var mesh in model.Meshes)
         {
+            if (mesh.NumFaces() == 0)
+                continue;
+
             var faceIndices = mesh.FaceIndices;
             var points = mesh.Points;
 

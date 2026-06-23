@@ -92,14 +92,14 @@ namespace Ara3D.BIMOpenSchema.Tests
 
         public static void OutputBimData(IBimData bd)
         {
-            Console.WriteLine($"# documents = {bd.Documents.Count}");
-            Console.WriteLine($"# entities = {bd.Entities.Count}");
-            Console.WriteLine($"# descriptors = {bd.Descriptors.Count}");
-            Console.WriteLine($"# points = {bd.Points.Count}");
-            Console.WriteLine($"# string = {bd.Strings.Count}");
-            Console.WriteLine($"# numbers = {bd.Numbers.Count}");
-            Console.WriteLine($"# parameters = {bd.Parameters.Count}");
-            Console.WriteLine($"# relations = {bd.Relations.Count}");
+            Console.WriteLine($"# documents = {bd.Documents.Length}");
+            Console.WriteLine($"# entities = {bd.Entities.Length}");
+            Console.WriteLine($"# descriptors = {bd.Descriptors.Length}");
+            Console.WriteLine($"# points = {bd.Points.Length}");
+            Console.WriteLine($"# string = {bd.Strings.Length}");
+            Console.WriteLine($"# numbers = {bd.Numbers.Length}");
+            Console.WriteLine($"# parameters = {bd.Parameters.Length}");
+            Console.WriteLine($"# relations = {bd.Relations.Length}");
         }
 
         public static void TestParameterStatistics()

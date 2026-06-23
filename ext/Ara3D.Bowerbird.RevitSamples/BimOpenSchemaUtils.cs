@@ -60,7 +60,7 @@ namespace Ara3D.Bowerbird.RevitSamples
         public static FilePath ExportBimOpenSchema(this BosRevitBuilder bosRevitBuilder, BimOpenSchemaExportSettings settings, ILogger logger)
         {
             logger.Log($"Creating BIM data");
-            var dataSet = bosRevitBuilder.BimDataBuilder.ToDataSet();
+            var dataSet = bosRevitBuilder.BimDataBuilder.Build().ToDataSet();
 
             logger.Log($"Creating FileStream");
             var fp = bosRevitBuilder.InputPath.ChangeDirectoryAndExt(settings.Folder, "bos");

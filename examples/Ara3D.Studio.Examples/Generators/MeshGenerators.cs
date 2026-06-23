@@ -9,7 +9,7 @@ public class Cylinder : IGenerator
     [Range(0f, 10f)] public float Radius = 1;
 
     public QuadGrid3D Eval()
-        => Sides.GetCircularPoints(Radius).Extrude(Height / Segments, Segments);
+        => Primitives.Cylinder(Sides, Radius, Height, Segments);
 }
 
 [Category(nameof(Categories.Meshes))]
@@ -132,25 +132,13 @@ public class Tube : IGenerator
 public class UpArrow : IGenerator
 {
     [Range(1, 32)] public int Count = 16;
-    [Range(0f, 1f)] public float ShaftWidth = 0.01f;
+    [Range(0f, 1f)] public float ShaftWidth = 0.05f;
     [Range(0f, 5f)] public float ShaftHeight = 0.8f;
     [Range(0f, 5f)] public float TipWidth = 0.2f;
     [Range(0f, 5f)] public float TipHeight = 0.2f;
 
     public QuadGrid3D Eval()
-    {
-        var totalHeight = ShaftHeight + TipHeight;
-        var halfOutLine = new Point3D[]
-        {
-            (0, 0, 0),
-            (ShaftWidth / 2, 0, 0),
-            (ShaftWidth / 2, 0, ShaftHeight),
-            (TipWidth / 2, 0, ShaftHeight),
-            (0, 0, totalHeight),
-        };
-
-        return halfOutLine.Revolve(Vector3.UnitZ, Count);
-    }
+        => Primitives.UpArrow(Count, ShaftHeight, ShaftWidth, TipHeight, TipWidth);
 }
 
 [Category(nameof(Categories.Meshes))]
@@ -178,4 +166,20 @@ public class Plane
             (i, j) => (i / (float)(NumColumns - 1), j / (float)(NumRows - 1), 0));
         return new QuadGrid3D(points, false, false);
     }
+}
+
+[Category(nameof(Categories.Meshes))]
+public class SolidBoxFrame : IGenerator
+{
+    [Range(0f, 10f)] public float SizeX = 1;
+    [Range(0f, 10f)] public float SizeY = 1;
+    [Range(0f, 10f)] public float SizeZ = 1;
+    [Range(0f, 0.5f)] public float FrameRatio = 0.1f;
+
+    public bool EmptyTop = true;
+    public bool EmptyBottom = true;
+    public bool EmptySides = true;
+
+    public QuadMesh3D Eval()
+        => new BoxFrameMeshBuilder(FrameRatio, EmptyTop, EmptyBottom, EmptySides).Mesh.Scale((SizeX, SizeY, SizeZ));
 }

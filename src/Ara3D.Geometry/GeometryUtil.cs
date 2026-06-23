@@ -198,9 +198,9 @@ namespace Ara3D.Geometry
             => InverseLerp(point, line.A, line.B);
 
         public static Point3D CenterBottom(this Bounds3D self) => self.Center.WithZ(self.Min.Z);
-        public static Point3D CenterTop(this Bounds3D self) => self.Center.WithZ(self.Max.Z); 
+        public static Point3D CenterTop(this Bounds3D self) => self.Center.WithZ(self.Max.Z);
 
-        public static Vector3 Along(this Vector3 v, int axisIndex) 
+        public static Vector3 Along(this Vector3 v, int axisIndex)
             => axisIndex switch
             {
                 0 => v.AlongX(),
@@ -223,7 +223,9 @@ namespace Ara3D.Geometry
         public static Vector3 HalfSizeAlongY(this Bounds3D bounds) => bounds.HalfSize().AlongY();
         public static Vector3 HalfSizeAlongZ(this Bounds3D bounds) => bounds.HalfSize().AlongZ();
 
-        public static Line3D CenterLine(this Bounds3D bounds, int axisIndex) => bounds.Center.ToCenteredLine(bounds.HalfSizeAlong(axisIndex));
+        public static Line3D CenterLine(this Bounds3D bounds, int axisIndex) =>
+            bounds.Center.ToCenteredLine(bounds.HalfSizeAlong(axisIndex));
+
         public static Line3D CenterLineX(this Bounds3D bounds) => bounds.Center.ToCenteredLine(bounds.HalfSizeAlongX());
         public static Line3D CenterLineY(this Bounds3D bounds) => bounds.Center.ToCenteredLine(bounds.HalfSizeAlongY());
         public static Line3D CenterLineZ(this Bounds3D bounds) => bounds.Center.ToCenteredLine(bounds.HalfSizeAlongZ());
@@ -277,7 +279,10 @@ namespace Ara3D.Geometry
         public static int ShortestAxisIndex(this Bounds3D bounds) => bounds.TertiaryAxisIndex();
 
         public static Line3D CenterLinePrimary(this Bounds3D bounds) => bounds.CenterLine(bounds.PrimaryAxisIndex());
-        public static Line3D CenterLineSecondary(this Bounds3D bounds) => bounds.CenterLine(bounds.SecondaryAxisIndex());
+
+        public static Line3D CenterLineSecondary(this Bounds3D bounds) =>
+            bounds.CenterLine(bounds.SecondaryAxisIndex());
+
         public static Line3D CenterLineTertiary(this Bounds3D bounds) => bounds.CenterLine(bounds.TertiaryAxisIndex());
 
         public static Line3D CenterLineLongest(this Bounds3D bounds) => bounds.CenterLinePrimary();
@@ -292,9 +297,12 @@ namespace Ara3D.Geometry
         public static float MiddleSize(this Bounds3D bounds) => bounds.SecondarySize();
         public static float ShortestSize(this Bounds3D bounds) => bounds.TertiarySize();
 
-        public static Cylinder ToCylinder(this Bounds3D bounds) => new(bounds.CenterLinePrimary(), bounds.MiddleSize().Half());
-        public static Matrix4x4 ToMatrix(this Bounds3D bounds) => bounds.Center.ToTranslationMatrix() * bounds.Size.ToScaleMatrix();
-        
+        public static Cylinder ToCylinder(this Bounds3D bounds) =>
+            new(bounds.CenterLinePrimary(), bounds.MiddleSize().Half());
+
+        public static Matrix4x4 ToMatrix(this Bounds3D bounds) =>
+            bounds.Center.ToTranslationMatrix() * bounds.Size.ToScaleMatrix();
+
         public static (float, float) GetOtherComponents(this Vector3 v, int axisIndex)
             => axisIndex switch
             {
@@ -857,18 +865,19 @@ namespace Ara3D.Geometry
         public static QuadMesh3D ToMesh(this Bounds3D self)
             => PlatonicSolids.Cube.Scale(self.Size).Translate(self.Center);
 
-        public static T Normalize<T>(this ITransformable3D<T> mesh, Bounds3D meshBounds, bool uniformScaling = true, bool center = true)
-            where T: ITransformable3D<T>
+        public static T Normalize<T>(this ITransformable3D<T> mesh, Bounds3D meshBounds, bool uniformScaling = true,
+            bool center = true)
+            where T : ITransformable3D<T>
         {
             var maxSide = meshBounds.Size.MaxComponent;
-            var invScale = uniformScaling 
+            var invScale = uniformScaling
                 ? new Vector3(maxSide, maxSide, maxSide)
                 : meshBounds.Size;
             var scale = invScale.Reciprocal;
             var translatedMesh = mesh.Translate(-meshBounds.Center.Vector3);
             var scaledMesh = translatedMesh.Scale(scale);
-            return center 
-                ? scaledMesh 
+            return center
+                ? scaledMesh
                 : scaledMesh.Translate(meshBounds.Center);
         }
 
@@ -886,12 +895,13 @@ namespace Ara3D.Geometry
 
         public static bool Within(this Vector2 v, Vector2 a, Vector2 b)
             => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y;
-        
+
         public static bool Within(this Vector3 v, Vector3 a, Vector3 b)
             => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y && v.Z >= a.Z && v.Z <= b.Z;
 
         public static bool Within(this Vector4 v, Vector4 a, Vector4 b)
-            => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y && v.Z >= a.Z && v.Z <= b.Z && v.W >= a.W && v.W <= b.W;
+            => v.X >= a.X && v.Y <= b.X && v.Y >= a.Y && v.Y <= b.Y && v.Z >= a.Z && v.Z <= b.Z && v.W >= a.W &&
+               v.W <= b.W;
 
         //==
 
@@ -909,17 +919,19 @@ namespace Ara3D.Geometry
         public static Vector3 WeightedAverage(this IEnumerable<(Vector3, double)> weightedVectors)
             => weightedVectors.WeightedSum().SafeNormalize();
 
-        public static Vector3 WeightedSum<T>(this IReadOnlyList<T> values, Func<T, Vector3> vectorSelect, Func<T, double> weightSelect)
+        public static Vector3 WeightedSum<T>(this IReadOnlyList<T> values, Func<T, Vector3> vectorSelect,
+            Func<T, double> weightSelect)
             => values.Select(v => (vectorSelect(v), weightSelect(v))).WeightedSum();
 
-        public static Vector3 WeightedAverage<T>(this IReadOnlyList<T> values, Func<T, Vector3> vectorSelect, Func<T, double> weightSelect)
+        public static Vector3 WeightedAverage<T>(this IReadOnlyList<T> values, Func<T, Vector3> vectorSelect,
+            Func<T, double> weightSelect)
             => values.Select(v => (vectorSelect(v), weightSelect(v))).WeightedAverage();
 
         public const double Epsilon = 1e-15;
 
-        public static bool IsFinite(this Number x) 
+        public static bool IsFinite(this Number x)
             => x.Value.IsFinite();
-        
+
         public static Vector3 SafeNormalize(this Vector3 v)
         {
             var len = v.Length();
@@ -937,15 +949,17 @@ namespace Ara3D.Geometry
             => a.Dot(b).Value.SafeDivide(a.Cross(b).Length());
 
         public static double SafeDivide(this double numerator, double denominator, double fallback = 0.0)
-            => Math.Abs(denominator) <= Epsilon 
-                ? fallback : (numerator / denominator).FiniteOrFallback(fallback);
+            => Math.Abs(denominator) <= Epsilon
+                ? fallback
+                : (numerator / denominator).FiniteOrFallback(fallback);
 
         public static float SafeDivide(this Number numerator, float denominator, float fallback = 0.0f)
             => numerator.Value.SafeDivide(denominator, fallback);
 
         public static float SafeDivide(this float numerator, float denominator, float fallback = 0.0f)
             => Math.Abs(denominator) <= Epsilon
-                ? fallback : (numerator / denominator).FiniteOrFallback(fallback);
+                ? fallback
+                : (numerator / denominator).FiniteOrFallback(fallback);
 
         public static double SafeNonNegative(this double value)
             => !value.IsFinite() || value < 0.0 ? 0.0 : value;
@@ -995,6 +1009,7 @@ namespace Ara3D.Geometry
                     }
                 }
             }
+
             return new LineMesh3D(pts, lines);
         }
 
@@ -1097,7 +1112,7 @@ namespace Ara3D.Geometry
             if (la <= 0 || lb <= 0)
                 return false;
 
-            return (a.Dot(b) / (la * lb)).Abs() 
+            return (a.Dot(b) / (la * lb)).Abs()
                    >= tolerance.Cos;
         }
 
@@ -1115,7 +1130,7 @@ namespace Ara3D.Geometry
             if (la <= 0 || lb <= 0)
                 return false;
 
-            return (a.Dot(b) / (la * lb)).Abs 
+            return (a.Dot(b) / (la * lb)).Abs
                    <= tolerance.Sin;
         }
 
@@ -1140,6 +1155,7 @@ namespace Ara3D.Geometry
                 var pose = pos0.LookAt(pos1);
                 r[i] = pose;
             }
+
             return r;
         }
 
@@ -1186,7 +1202,7 @@ namespace Ara3D.Geometry
             => quads.SelectMany(t => t.Points).Bounds();
 
         public static Bounds3D Bounds(this IEnumerable<Bounds3D> boxes)
-            => boxes.SelectMany(b => new [] { b.Min, b.Max }).Bounds();
+            => boxes.SelectMany(b => new[] { b.Min, b.Max }).Bounds();
 
         public static Bounds3D Bounds(this IEnumerable<TriangleMesh3D> meshes)
             => meshes.SelectMany(m => m.Points).Bounds();
@@ -1273,8 +1289,8 @@ namespace Ara3D.Geometry
 
         public static bool Intersects(this Bounds3D bounds, Bounds3D other)
             => bounds.IntervalX().Intersects(other.IntervalX())
-            && bounds.IntervalY().Intersects(other.IntervalY())
-            && bounds.IntervalZ().Intersects(other.IntervalZ());
+               && bounds.IntervalY().Intersects(other.IntervalY())
+               && bounds.IntervalZ().Intersects(other.IntervalZ());
 
         public static bool Intersects(this NumberInterval a, NumberInterval b)
             => a.Start <= b.End && a.End >= b.Start;
@@ -1291,5 +1307,57 @@ namespace Ara3D.Geometry
 
         public static Bounds3D OffsetMin(this Bounds3D bounds, Vector3 v)
             => bounds.WithMin(bounds.Min + v);
+
+        public static Vector3 Average(this IEnumerable<Vector3> vs)
+        {
+            var sum = Vector3.Zero;
+            var n = 0;
+            foreach (var v in vs)
+            {
+                sum += v;
+                n++;
+            }
+
+            if (n <= 1)
+                return sum;
+            return sum / n;
+        }
+
+        public static bool IsMostlyFlat(this TriangleMesh3D mesh)
+            => mesh.IsMostlyFlat(1.Degrees());
+
+        public static bool IsMostlyFlat(this TriangleMesh3D mesh, Angle cutOff)
+        {
+            var averageNormal = mesh.GetFaceNormals().Average();
+            var faceNormals = mesh.GetFaceNormals();
+            return !faceNormals.Any(n => averageNormal.Angle(n) > cutOff);
+        }
+
+        public static IReadOnlyList<TriangleMesh3D> SplitByCreaseAngle(this TriangleMesh3D mesh, Angle cutOff)
+            => mesh.FaceGroupsByCreaseAngle(cutOff).Split(mesh);
+
+        public static FaceGroups FaceGroupsByCreaseAngle(this TriangleMesh3D mesh, Angle cutOff)
+        {
+            var topo = mesh.GetTopology();
+            return FaceGroups.Create(mesh.FaceIndices.Count, i => topo
+                .GetFaceNeighborsWithAngleCutOff((FaceId)i, cutOff)
+                .Select(f => (int)f.Id));
+        }
+
+        public static TriangleMesh3D RemoveFlatSurfaces(this TriangleMesh3D mesh, FaceGroups groups, Angle cutOff)
+        {
+            var meshes = groups.Split(mesh);
+            var groupsToKeep = new List<FaceGroup>();
+            for (var i = 0; i < meshes.Count; i++)
+            {
+                if (meshes[i].IsMostlyFlat(cutOff))
+                    continue;
+                groupsToKeep.Add(groups[i]);
+            }
+            return groupsToKeep.Merge(mesh);
+        }
+
+        public static int NumFaces(this TriangleMesh3D mesh)
+            => mesh.FaceIndices?.Count ?? 0;
     }
 }

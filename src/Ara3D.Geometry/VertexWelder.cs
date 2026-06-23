@@ -2,11 +2,11 @@
 
 public static class VertexWelder
 {
-    public readonly record struct VertexKey(int X, int Y, int Z)
+    public readonly record struct VertexKey(long X, long Y, long Z)
     {
-        public const int Multiplier = 10_000; 
+        public const long Multiplier = 100_000; 
         public static VertexKey Create(Vector3 v)
-            => new((int)(v.X * Multiplier), (int)(v.Y * Multiplier), (int)(v.Z * Multiplier));
+            => new((long)(v.X * Multiplier), (long)(v.Y * Multiplier), (long)(v.Z * Multiplier));
     }
 
     public static TriangleMesh3D WeldVertices(this TriangleMesh3D mesh)

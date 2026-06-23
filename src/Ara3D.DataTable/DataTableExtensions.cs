@@ -185,4 +185,33 @@ public static class DataTableExtensions
         foreach (var row in table.Rows)
             yield return new DataRecordAdapter(table, row);
     }
+
+    public static IDataTable ToDataTable(this IReadOnlyList<IDictionary<string, string>> rows)
+    {
+        var d = new Dictionary<string, SparseColumn>();
+        var dtb = new DataTableBuilder("");
+        var numRows = rows.Count;
+        var rowIndex = 0;
+        foreach (var row in rows)
+        {
+            foreach (var kv in row)
+            {
+                var key = kv.Key;
+                var val = kv.Value;
+                if (!d.ContainsKey(key))
+                {
+                    var col = new SparseColumn(key, typeof(string), numRows, d.Count, "");
+                    dtb.AddColumn(col);
+                    d.Add(key, col);
+                }
+
+                var sc = d[key];
+                sc.Dictionary.Add(rowIndex, val);
+            }
+
+            rowIndex++;
+        }
+
+        return dtb.Build();
+    }
 }

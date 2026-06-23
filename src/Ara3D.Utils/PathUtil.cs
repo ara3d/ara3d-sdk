@@ -535,14 +535,18 @@ namespace Ara3D.Utils
         public static FileStream OpenRead(this FilePath filePath)
             => File.OpenRead(filePath);
 
-        public static FileStream OpenWrite(this FilePath filePath)
-            => File.OpenWrite(filePath);
+        public static FileStream CreateWrite(this FilePath filePath)
+        {
+            var fs = File.Create(filePath);
+            fs.SetLength(0);
+            return fs;
+        }
 
         /// <summary>
         /// Returns a binary writer for the given file path
         /// </summary>
         public static BinaryWriter CreateBinaryWriter(this FilePath filePath)
-            => new BinaryWriter(filePath.OpenWrite());
+            => new BinaryWriter(filePath.CreateWrite());
 
         /// <summary>
         /// Returns a binary reader for the given file path

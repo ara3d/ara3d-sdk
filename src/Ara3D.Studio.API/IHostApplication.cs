@@ -13,4 +13,5 @@ public interface IHostApplication
     SynchronizationContext SynchronizationContext { get; }
     Task SaveGeometry(FilePath filePath);
     void SaveScreenshot(FilePath filePath);
+    Task<IAsset> LoadAssetAsync(FilePath filePath, bool inApplication);
 }

@@ -32,9 +32,17 @@ public static class FlowObjectConverters
             {
                 return Model3D.Create(tri);
             }
+            else if (input is ColoredTriangleMesh3D coloredTri)
+            {
+                return Model3D.Create(coloredTri.Mesh);
+            }
             else if (input is QuadMesh3D quad)
             {
                 return Model3D.Create(quad.Triangulate());
+            }
+            else if (input is QuadGrid3D grid)
+            {
+                return Model3D.Create(grid.Triangulate());
             }
             else if (input is Model3D || input is IModel3D)
             {

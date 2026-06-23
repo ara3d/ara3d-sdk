@@ -93,8 +93,8 @@ public static class BosTests
 
         Console.WriteLine(json); 
         
-        logger.Log($"# documents = {bd.Documents.Count}");
-        logger.Log($"# entities = {bd.Entities.Count}");
+        logger.Log($"# documents = {bd.Documents.Length}");
+        logger.Log($"# entities = {bd.Entities.Length}");
 
         logger.Log($"   # instance entities = {bd.Entities.Count(e => e.Type >= 0)}");
 
@@ -104,12 +104,12 @@ public static class BosTests
         var numTypes = bd.Entities.Select(e => e.Type).Distinct().Count(i => i >= 0);
         logger.Log($"   # distinct types = {numTypes}");
 
-        logger.Log($"# diagnostics = {bd.Diagnostics.Count}");
-        logger.Log($"# descriptors = {bd.Descriptors.Count}");
-        logger.Log($"# points = {bd.Points.Count}");
-        logger.Log($"# numbers = {bd.Numbers.Count}");
-        logger.Log($"# string = {bd.Strings.Count}");
-        logger.Log($"# relations = {bd.Relations.Count}");
+        logger.Log($"# diagnostics = {bd.Diagnostics.Length}");
+        logger.Log($"# descriptors = {bd.Descriptors.Length}");
+        logger.Log($"# points = {bd.Points.Length}");
+        logger.Log($"# numbers = {bd.Numbers.Length}");
+        logger.Log($"# string = {bd.Strings.Length}");
+        logger.Log($"# relations = {bd.Relations.Length}");
         logger.Log($"# parameters = {bd.GetNumParameters()}");
 
         logger.Log($" entities with no element {bd.Entities.Count(e => e.LocalId < 0)}");

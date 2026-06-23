@@ -16,7 +16,7 @@ public class PropDescriptorDynamicStringList : TypedPropDescriptor<int>
 
     public int Count => OptionsFunc()?.Count ?? 0;
 
-    public override int Validate(int value) => Math.Clamp(value, 0, Count - 1);
+    public override int Validate(int value) => Math.Clamp(value, 0, Math.Max(Count - 1, 0));
     public override bool IsValid(int value) => value >= 0 && value < Count;
     public override bool AreEqual(int value1, int value2) => value1 == value2;
     public override object FromString(string value) => int.Parse(value);

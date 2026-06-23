@@ -61,7 +61,7 @@ namespace Ara3D.IO.BFAST
             if (cnt > 0)
             {
                 view.Accessor.ReadArray(Ranges[0].Begin, bytes, 0, cnt);
-                BufferNames = bytes.UnpackStrings();
+                BufferNames = bytes.AsSpan().UnpackStrings();
                 if (BufferNames.Length + 1 != Ranges.Length)
                     throw new Exception("Badly formed BFAST: number of buffer names does not match number of arrays");
             }

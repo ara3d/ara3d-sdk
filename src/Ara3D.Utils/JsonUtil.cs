@@ -11,7 +11,7 @@ public static class JsonUtil
     public static FilePath WriteJson<T>(this FilePath filePath, T self, bool includeFields = false,
         bool writeIndented = true)
     {
-        using var fs = filePath.OpenWrite();
+        using var fs = filePath.CreateWrite();
         var options = new JsonSerializerOptions() { IncludeFields = includeFields, WriteIndented = writeIndented };
         JsonSerializer.Serialize(fs, self, options);
         return filePath;

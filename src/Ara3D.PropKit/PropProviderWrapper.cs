@@ -76,6 +76,8 @@ public class PropProviderWrapper :
 
     public bool TrySetValue(string name, object value)
     {
+        if (value.Equals(GetValue(name)))
+            return true;
         if (!Props.TrySetValue(ref _wrapped, name, value))
             return false;
         NotifyPropertyChanged(name);

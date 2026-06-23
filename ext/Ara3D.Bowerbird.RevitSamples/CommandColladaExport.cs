@@ -24,7 +24,7 @@ namespace Ara3D.Bowerbird.RevitSamples
 
 
             var outputFilePath = doc.CurrentFileName().ChangeDirectoryAndExt(Config.OutputDir, ".dae");
-            using (var textWriter = new StreamWriter(outputFilePath.OpenWrite()))
+            using (var textWriter = new StreamWriter(outputFilePath.CreateWrite()))
             {
                 var context = new ColladaExportContext(doc, textWriter);
                 var exporter = new CustomExporter(doc, context);

@@ -94,7 +94,13 @@ namespace Ara3D.IO.BFAST
         /// <summary>
         /// Converts a byte[] array encoding a collection of strings separate by NULL into an array of string   
         /// </summary>
-        public static string[] UnpackStrings(this byte[] bytes)
+        public static string[] UnpackStrings(this Span<byte> bytes)
+            => ((ReadOnlySpan<byte>)bytes).UnpackStrings();
+
+        /// <summary>
+        /// Converts a byte[] array encoding a collection of strings separate by NULL into an array of string   
+        /// </summary>
+        public static string[] UnpackStrings(this ReadOnlySpan<byte> bytes)
         {
             var r = new List<string>();
             if (bytes.Length == 0)
@@ -104,13 +110,13 @@ namespace Ara3D.IO.BFAST
             {
                 if (bytes[i] == 0)
                 {
-                    r.Add(Encoding.UTF8.GetString(bytes, prev, i - prev));
+                    r.Add(Encoding.UTF8.GetString(bytes.Slice(prev, i - prev)));
                     prev = i + 1;
                 }
             }
 
             if (prev < bytes.Length)
-                r.Add(Encoding.UTF8.GetString(bytes, prev, bytes.Length - prev));
+                r.Add(Encoding.UTF8.GetString(bytes.Slice(prev, bytes.Length - prev)));
             return r.ToArray();
         }
 
@@ -372,7 +378,7 @@ namespace Ara3D.IO.BFAST
             CheckAlignment(br.BaseStream);
 
             var nameBytes = br.ReadBytes((int)r.Ranges[0].Count);
-            r.Names = nameBytes.UnpackStrings();
+            r.Names = nameBytes.AsSpan().UnpackStrings();
 
             padding = ComputePadding(r.Ranges[0].End);
             br.ReadBytes((int)padding);

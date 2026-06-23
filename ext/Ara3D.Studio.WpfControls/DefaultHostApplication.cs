@@ -31,4 +31,9 @@ public class DefaultHostApplication : IHostApplication
     public void SaveScreenshot(FilePath filePath)
     {
     }
+
+    public Task<IAsset> LoadAssetAsync(FilePath filePath, bool inApplication)
+    {
+        throw new NotImplementedException();
+    }
 }

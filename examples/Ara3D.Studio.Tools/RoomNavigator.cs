@@ -41,7 +41,7 @@ namespace Ara3D.Studio.Tools
                 return;
             Model = model;
             App = app;
-            BimObjectModel = new BimObjectModel(BimData, true);
+            BimObjectModel = new BimObjectModel(BimData, data.Geometry.ToModel3D(), true);
 
             for (var i = 0; i < model.InstanceCount; i++)
             {
@@ -54,7 +54,7 @@ namespace Ara3D.Studio.Tools
                     var bounds = model.InstanceBoundsData[i];
                     if (!RoomLookup.ContainsKey(ei))
                     {
-                        var name = data.GetEntityName((EntityIndex)ei);
+                        var name = data.EntityName((EntityIndex)ei);
                         var room = new RoomData(name, ei, bounds);
                         RoomLookup.Add(ei, room);
                     }

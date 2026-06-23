@@ -38,7 +38,7 @@ public class Model3DBuilder
         => AddInstance(mesh, Matrix4x4.Identity, material);
 
     public int AddInstance(TriangleMesh3D mesh, Matrix4x4 matrix, Material material)
-        => AddInstance(AddMesh(mesh), matrix, material);
+        => AddInstance(AddMeshWithoutInstance(mesh), matrix, material);
 
     public int AddInstance(TriangleMesh3D mesh, Matrix4x4 matrix)
         => AddInstance(mesh, matrix,  Material.Default);
@@ -47,7 +47,7 @@ public class Model3DBuilder
         => AddInstance(mesh, Matrix4x4.Identity, Material.Default);
 
     // TODO: this is potentially confusing. 
-    public int AddMesh(TriangleMesh3D mesh)
+    public int AddMeshWithoutInstance(TriangleMesh3D mesh)
     {
         var r = Meshes.Count;
         Meshes.Add(mesh);

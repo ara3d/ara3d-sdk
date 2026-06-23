@@ -14,5 +14,7 @@ public enum Categories
     Buildings,
     Sdf,
     Topology,
-    Converters
+    Converters,
+    Tests,
+    Lakehouse,
 }

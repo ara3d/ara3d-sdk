@@ -9,7 +9,7 @@ namespace Ara3D.Graphics
     {
         public static void Save(this Bitmap bitmap, FilePath path)
         {
-            var writer = path.OpenWrite();
+            var writer = path.CreateWrite();
             var dibHeader = new DibHeader(bitmap.Width, bitmap.Height);
             var bmpHeader = new BitmapHeader(dibHeader.biSizeImage);
             writer.WriteValue(bmpHeader);

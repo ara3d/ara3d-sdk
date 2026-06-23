@@ -13,7 +13,7 @@ public class ArrangeByDocument : IModifier
     public void RecomputeDocuments(EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
-        for (var i = 0; i < bimData.Entities.Count; i++)
+        for (var i = 0; i < bimData.Entities.Length; i++)
         {
             var docIndex = bimData.Entities[i].Document;    
             if (docIndex >= 0)

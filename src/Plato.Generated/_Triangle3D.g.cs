@@ -53,7 +53,7 @@ namespace Ara3D.Geometry
         [MethodImpl(AggressiveInlining)] public static Triangle3D CreateFromComponent(Point3D x) => new Triangle3D(x, x, x);
 
         // Implemented interface functions
-        public Number Area { [MethodImpl(AggressiveInlining)] get  => this.CrossProductA.Magnitude; } 
+        public Number Area { [MethodImpl(AggressiveInlining)] get  => this.CrossProductA.Magnitude * 0.5f; } 
 public Vector3 CrossProductA { [MethodImpl(AggressiveInlining)] get  => this.B.Subtract(this.A).Cross(this.C.Subtract(this.A)); } 
 public Triangle3D Flip { [MethodImpl(AggressiveInlining)] get  => (this.C, this.B, this.A); } 
 public Vector3 Normal { [MethodImpl(AggressiveInlining)] get  => this.CrossProductA.Normalize; } 

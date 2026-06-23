@@ -206,6 +206,40 @@ public static class Model3DExtensions
         return new(newMeshes, newInstances);
     }
 
+    public static IModel3D WhereMeshes(this IModel3D model, Func<TriangleMesh3D, bool> filter)
+    {
+        var meshMap = new List<int>();
+        var newMeshes = new List<TriangleMesh3D>();
+        for (var i = 0; i < model.Meshes.Count; i++)
+        {
+            var mesh = model.Meshes[i];
+            if (!filter(mesh))
+            {
+                meshMap.Add(-1);
+            }
+            else
+            {
+                meshMap.Add(newMeshes.Count);
+                newMeshes.Add(mesh);
+            }
+        }
+
+        var newInstances = new List<InstanceStruct>();
+        foreach (var inst in model.Instances)
+        {
+            if (inst.MeshIndex < 0)
+                continue;
+
+            var newMeshIndex = meshMap[inst.MeshIndex];
+            if (newMeshIndex >= 0)
+            {
+                newInstances.Add(inst.WithMeshIndex(newMeshIndex));
+            }
+        }
+
+        return new Model3D(newMeshes, newInstances);
+    }
+
     public static IModel3D ToModel3D(this TriangleMesh3D self)
         => Model3D.Create(self);
 
@@ -354,6 +388,16 @@ public static class Model3DExtensions
     public static Model3DBuilder AddCylinders(this Model3DBuilder builder, IEnumerable<Cylinder> cylinders, int sides = 16)
         => AddCylinders(builder, cylinders, Material.Default, sides);
 
+    public static Model3DBuilder AddInstances(this Model3DBuilder builder, IReadOnlyList<TriangleMesh3D> meshes)
+        => builder.AddInstances(meshes, Material.Default);
+
+    public static Model3DBuilder AddInstances(this Model3DBuilder builder, IReadOnlyList<TriangleMesh3D> meshes, Material mat)
+    {
+        foreach (var mesh in meshes)
+            builder.AddInstance(mesh, mat);
+        return builder;
+    }
+
     public static Model3DBuilder AddInstances(this Model3DBuilder builder, TriangleMesh3D mesh, IReadOnlyList<Matrix4x4> matrices)
         => builder.AddInstances(mesh, matrices, Material.Default);
 
@@ -362,7 +406,7 @@ public static class Model3DExtensions
 
     public static Model3DBuilder AddInstances(this Model3DBuilder builder, TriangleMesh3D mesh, IReadOnlyList<(Matrix4x4, Material)> instances)
     {
-        var index = builder.AddMesh(mesh);
+        var index = builder.AddMeshWithoutInstance(mesh);
         foreach (var (matrix, material) in instances)
             builder.AddInstance(index, matrix, material);
         return builder;
@@ -394,7 +438,7 @@ public static class Model3DExtensions
 
     public static Model3DBuilder AddSpheres(this Model3DBuilder builder, IEnumerable<Sphere> spheres, Material material)
     {
-        var pointMeshIndex = builder.AddMesh(CanonicalSphereMesh());
+        var pointMeshIndex = builder.AddMeshWithoutInstance(CanonicalSphereMesh());
         foreach (var sphere in spheres)
             builder.AddInstance(pointMeshIndex, sphere.ToMatrix());
         return builder;
@@ -408,6 +452,56 @@ public static class Model3DExtensions
         var mb = new Model3DBuilder();
         foreach (var m in meshes)
             mb.AddInstance(m);
+        return mb.Build();
+    }
+
+    public static Dictionary<T, IModel3D> Split<T>(this IModel3D model, Func<InstanceStruct, T> f)
+        where T : IComparable<T>
+    {
+        var groups = model.Instances.GroupBy(f);
+        var r = new Dictionary<T, IModel3D>();
+        foreach (var g in groups)
+        {
+            var tmp = model.WithInstances(g).RemoveUnusedMeshes();
+            r.Add(g.Key, tmp);
+        }
+
+        return r;
+    }
+
+    public static IModel3D SplitMeshes(this IModel3D model, Func<TriangleMesh3D, IReadOnlyList<TriangleMesh3D>> split)
+    {
+        var mb = new Model3DBuilder();
+        var meshRanges = new (int Start, int Count)[model.Meshes.Count];
+
+        for (var i = 0; i < model.Meshes.Count; i++)
+        {
+            var parts = split(model.Meshes[i]);
+            if (parts == null)
+                continue;
+
+            var start = mb.Meshes.Count;
+            mb.Meshes.AddRange(parts);
+            meshRanges[i] = (start, parts.Count);
+        }
+
+        foreach (var inst in model.Instances)
+        {
+            if (inst.MeshIndex < 0)
+            {
+                mb.Instances.Add(inst);
+                continue;
+            }
+
+            var range = meshRanges[inst.MeshIndex];
+
+            for (var i = 0; i < range.Count; i++)
+            {
+                var newInst = inst.WithMeshIndex(range.Start + i);
+                mb.Instances.Add(newInst);
+            }
+        }
+
         return mb.Build();
     }
 

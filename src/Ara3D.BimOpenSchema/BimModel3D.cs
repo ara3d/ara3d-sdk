@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Ara3D.Collections;
-using Ara3D.Geometry;
+﻿using Ara3D.Collections;
 using Ara3D.Models;
 
 namespace Ara3D.BimOpenSchema;
@@ -11,7 +9,7 @@ public class BimModel3D
     {
         ObjectModel = model;
         RenderModelData = new RenderModelData(3);
-        model.Geometry.CopyToRenderModelData(RenderModelData);
+        RenderModelData.Update(model.Model3D);
     }
 
     public RenderModelData RenderModelData { get; private set; }
@@ -21,7 +19,7 @@ public class BimModel3D
         => new(model);
 
     public static BimModel3D Create(IBimData data, bool computeParametersAndRelations)
-        => new(new BimObjectModel(data, computeParametersAndRelations));
+        => new(new BimObjectModel(data, data.Geometry.ToModel3D(), computeParametersAndRelations));
     
     public EntityModel GetEntityModel(InstanceStruct inst)
         => ObjectModel.Entities.ElementAtOrDefault(inst.EntityIndex);

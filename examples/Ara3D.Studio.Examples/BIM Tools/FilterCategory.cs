@@ -8,34 +8,35 @@ public class FilterCategory : IModifier
     [Options(nameof(CategoryNames))] public int Category;
 
     public List<string> CategoryNames { get; private set; } = [];
-    
-    private List<StringIndex> _categoryIndices;
+
+    private string _prevCatName;
+    private int _prevCatIndex;
 
     private BimData _data;
     private BimObjectModel _model;
 
-    public void RecomputeCategoryNames(BimData bimData, EvalContext context)
-    {
-        if (bimData == _data)
-            return;
-        
+    public MultiDictionary<string, InstanceStruct> Groups = [];
+
+    public string GetCategory(InstanceStruct inst)
+        => _model.Entities.ElementAtOrDefault(inst.EntityIndex)?.Category ?? "";
+
+    public void RecomputeCategoryNames(BimData bimData, RenderModelData renderData, EvalContext context)
+    {   
+        if (_data == bimData)
+            return; 
+
         _data = bimData;
-        
+        _model = null;
+        CategoryNames = [];
+        Groups = [];
+
         if (_data == null)
-        {
-            CategoryNames = [];
             return;
-        } 
 
-        _model = new BimObjectModel(_data, true);
-
-        CategoryNames = _model
-            .Entities
-            .Where(e => e.HasGeometry)
-            .Select(e => e.Category)
-            .Distinct()
-            .OrderBy(x => x)
-            .ToList();
+        _model = new BimObjectModel(_data, renderData, false);
+        foreach (var i in renderData.InstanceData)
+            Groups.Add(GetCategory(i), i.WithVisibility(true));
+        CategoryNames = Groups.Keys.OrderBy(x => x).ToList();
 
         context.Application.RefreshUI(this);
     }
@@ -46,13 +47,33 @@ public class FilterCategory : IModifier
     public IModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
-        RecomputeCategoryNames(bimData, context);
+        var renderData = context.Input.GetAttachment<RenderModelData>();
+    
+        RecomputeCategoryNames(bimData, renderData, context);
 
         if (Category < 0 || Category >= CategoryNames.Count)
             return model3D.Where((InstanceStruct _) => true);
 
         var catName = CategoryNames.ElementAtOrDefault(Category);
-        var entities = _model.Entities;
-        return model3D.Where(inst => inst.EntityIndex >= 0 && entities[inst.EntityIndex].Category == catName);
+
+        if (Category == _prevCatIndex)
+        {
+            if (catName != _prevCatName)
+            {
+                var tmp = CategoryNames.IndexOf(_prevCatName);
+                if (tmp != -1)
+                {
+                    Category = tmp;
+                    catName = _prevCatName;
+                }
+            }
+        }
+
+        _prevCatIndex = Category;
+        _prevCatName = catName;
+
+        var instances = Groups.GetValueOrDefault(catName, []);
+
+        return model3D.WithInstances(instances);
     }
 }

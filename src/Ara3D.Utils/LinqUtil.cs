@@ -204,5 +204,28 @@ namespace Ara3D.Utils
                 if (value.HasValue)
                     yield return value.Value;
         }
+
+        public static IDictionary<TKey, TValue> ToDictionarySafe<TKey, TValue>(this IEnumerable<(TKey, TValue)> self)
+        {
+            var dict = new Dictionary<TKey, TValue>();
+            foreach (var kv in self)
+                dict[kv.Item1] = kv.Item2;
+            return dict;
+        }
+
+        public static IDictionary<TKey, TValue> ToDictionarySafe<TKey, TValue>(this IEnumerable<TValue> self, Func<TValue, TKey> fKeySelector)
+            => self.ToDictionarySafe(fKeySelector, x => x);
+
+        public static IDictionary<TKey, TValue> ToDictionarySafe<TInput, TKey, TValue>(this IEnumerable<TInput> self, Func<TInput, TKey> fKeySelector, Func<TInput, TValue> fValSelector)
+        {
+            var dict = new Dictionary<TKey, TValue>();
+            foreach (var x in self)
+            {
+                var key = fKeySelector(x);
+                var value = fValSelector != null ? fValSelector(x) : (TValue)(object)x!;
+                dict[key] = value;
+            }
+            return dict;
+        }
     }
 }

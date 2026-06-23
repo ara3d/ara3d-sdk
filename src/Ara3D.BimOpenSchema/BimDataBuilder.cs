@@ -6,8 +6,7 @@ using Ara3D.Geometry;
 namespace Ara3D.BimOpenSchema;
 
 // This is a helper class for incrementally constructing a BIMData object without repeating objects. 
-// TODO: this should not implement "IBimData" directly. 
-public class BimDataBuilder : IBimData
+public class BimDataBuilder 
 {
     public Manifest Manifest { get; set; } = new();
 
@@ -26,6 +25,33 @@ public class BimDataBuilder : IBimData
     private readonly List<float> _numbers = [];
     private readonly List<EntityRelation> _relations = [];
     private readonly List<Diagnostic> _diagnostics = [];
+
+    public BimData Build()
+    {
+        return new BimData()
+        {
+            Descriptors = _descriptors.ToArray(),
+            Documents = _documents.ToArray(),
+            Diagnostics = _diagnostics.ToArray(),
+            Entities = _entities.ToArray(),
+            Strings = _strings.ToArray(),
+            Geometry = Geometry,
+            Numbers = _numbers.ToArray(),
+            Parameters = _parameters.ToArray(),
+            Points = _points.ToArray(),
+            Relations = _relations.ToArray(),
+        };
+    }
+
+
+    public string Get(StringIndex index) => _strings[(int)index];
+    public Entity Get(EntityIndex index) => _entities[(int)index];
+    public Document Get(DocumentIndex index) => _documents[(int)index];
+    public Point Get(PointIndex index) => _points[(int)index];
+    public float Get(NumberIndex index) => _numbers[(int)index];
+    public Parameter Get(ParameterIndex index) => _parameters[(int)index];
+    public EntityRelation Get(RelationIndex index) => _relations[(int)index];
+    public ParameterDescriptor Get(DescriptorIndex index) => _descriptors[(int)index];
 
     public IReadOnlyList<ParameterDescriptor> Descriptors => _descriptors;
     public IReadOnlyList<Parameter> Parameters => _parameters;

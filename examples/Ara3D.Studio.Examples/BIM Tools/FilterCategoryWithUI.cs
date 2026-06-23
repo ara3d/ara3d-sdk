@@ -69,7 +69,7 @@ public class FilterCategoryWithUI : IModifier
     public IModel3D Eval(IModel3D model3D, EvalContext context)
     {
         var bimData = context.Input.GetAttachment<BimData>();
-        if (bimData == null) return model3D.Where((InstanceStruct _) => true);
+        if (bimData == null) return model3D;
         RecomputeCategoryNames(bimData, context);
         return model3D.Where(IsSelected);
     }

@@ -35,7 +35,7 @@ public class ParquetBuilder
 
     public async Task SaveToFile(FilePath filePath, CompressionMethod method, CompressionLevel level)
     {
-        await using var stream = filePath.OpenWrite();
+        await using var stream = filePath.CreateWrite();
         await SaveToStream(stream, method, level);
     }
 

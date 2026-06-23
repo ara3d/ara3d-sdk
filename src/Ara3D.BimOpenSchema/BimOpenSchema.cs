@@ -27,15 +27,15 @@ namespace Ara3D.BimOpenSchema;
 public interface IBimData
 {
     Manifest Manifest { get; }
-    IReadOnlyList<ParameterDescriptor> Descriptors { get; } 
-    IReadOnlyList<Parameter> Parameters { get; } 
-    IReadOnlyList<Document> Documents { get; } 
-    IReadOnlyList<Entity> Entities { get; } 
-    IReadOnlyList<string> Strings { get; }
-    IReadOnlyList<float> Numbers { get; }
-    IReadOnlyList<Point> Points { get; } 
-    IReadOnlyList<EntityRelation> Relations { get; }
-    IReadOnlyList<Diagnostic> Diagnostics { get; }
+    ParameterDescriptor[] Descriptors { get; } 
+    Parameter[] Parameters { get; } 
+    Document[] Documents { get; } 
+    Entity[] Entities { get; } 
+    string[] Strings { get; }
+    float[] Numbers { get; }
+    Point[] Points { get; } 
+    EntityRelation[] Relations { get; }
+    Diagnostic[] Diagnostics { get; }
     BimGeometry Geometry { get; }
 }
 

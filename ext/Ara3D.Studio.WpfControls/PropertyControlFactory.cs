@@ -205,30 +205,10 @@ public static class PropertyControlGenerator
         return comboBox;
     }
 
+
     public static FrameworkElement CreateComboBox(PropDescriptorDynamicStringList desc, IBoundPropContainer props)
     {
-        var comboBox = new ComboBox
-        {
-            ItemsSource = desc.OptionsFunc(),
-            IsEditable = false,
-            IsEnabled = !desc.IsReadOnly
-        };
-        comboBox.SetBinding(Selector.SelectedIndexProperty, CreateBinding(desc, props));
-
-        void OnPropsOnPropertyChanged(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            var curSource = comboBox.ItemsSource;
-            var newSource = desc.OptionsFunc();
-            if (ReferenceEquals(curSource, newSource)) return;
-            comboBox.Dispatcher.BeginInvoke(() => comboBox.ItemsSource = newSource);
-        }
-
-        PropertyChangedEventManager.AddHandler(
-            props,
-            OnPropsOnPropertyChanged,
-            string.Empty); 
-        
-        return comboBox;
+        return new DynamicStringListComboBox(desc, props);
     }
 
     public static FrameworkElement CreateCheckBox(PropDescriptorBool desc, IBoundPropContainer props)
@@ -257,22 +237,6 @@ public static class PropertyControlGenerator
         textBox.SetBinding(TextBox.TextProperty, CreateBinding(desc, props));
         return textBox;
     }
-
-    /*
-    public static FrameworkElement CreateButton(PropDescriptorAction desc, IBoundPropContainer props)
-    {
-        var action = props.GetValue(desc.Name) as Action;
-        if (action == null)
-            return null;
-        var button = new Button()
-        {
-            Content = desc.DisplayName,
-            IsEnabled = action != null,
-            VerticalAlignment = VerticalAlignment.Center,
-        };
-        button.Click += (_, _) => action?.Invoke();
-        return button;
-    }*/
 
     public static FrameworkElement CreateButton(PropDescriptorAction desc, IBoundPropContainer props)
     {

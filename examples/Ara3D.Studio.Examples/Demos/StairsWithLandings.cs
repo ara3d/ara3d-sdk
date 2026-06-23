@@ -32,7 +32,7 @@ public class StairsWithLandings : IGenerator
     public void CreateLandings(Model3DBuilder bldr)
     {
         var landingMesh = CreateLandingMesh();
-        var meshIndex = bldr.AddMesh(landingMesh);
+        var meshIndex = bldr.AddMeshWithoutInstance(landingMesh);
         for (var i = 0;i < Flights; i++)
         {
             var yoffset = (i % 2) * LandingHorizontalSpacing;

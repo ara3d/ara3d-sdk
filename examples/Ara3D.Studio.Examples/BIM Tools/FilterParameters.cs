@@ -38,7 +38,7 @@ public class FilterParameters : IModifier
         foreach (var name in sel)
             _selectedNames.Add(name);
 
-        for (var i=0; i < _data.Descriptors.Count; i++)
+        for (var i=0; i < _data.Descriptors.Length; i++)
         {
             var pd = _data.Descriptors[i];
             if (_selectedNames.Contains(GetDescriptorName(pd)))
