@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using Ara3D.Geometry;
 using Ara3D.IO.BFAST;
 using Ara3D.Memory;
-using Ara3D.MemoryMappedFiles;
 using Ara3D.Utils;
 
 namespace Ara3D.Models;

@@ -1,6 +1,6 @@
 # BFAST
 
-[<img src="https://img.shields.io/nuget/v/Ara3D.Serialization.BFAST.svg">](https://www.nuget.org/packages/Ara3D.Serialization.BFAST) 
+Part of the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package. 
 
 BFAST stands for the **B**inary **F**ormat for **A**rray **S**erialization and **T**ransmission.
 
@@ -13,8 +13,8 @@ and improvements while still respecting the binary layout.
 
 ## Summary
 
-BFAST is an extremely efficent and simple alternative to TAR, Zip, ProtoBuf, and 
-FlatBuffers. Data in BFAST is a of a collection of 
+BFAST is an extremely efficient and simple alternative to TAR, Zip, ProtoBuf, and 
+FlatBuffers. Data in BFAST is a collection of 
 name/value pairs where names are strings, and values are arrays of bytes.
 
 * Unlike JSON, XML, and YAML: BFAST is binary
@@ -60,7 +60,7 @@ with very little code.
 ## Rationale
 
 Encoding containers of binary data is a deceptively simple problem that is easy to solve
-in ways that have are not as efficient of generic as possible, or dependent on a particular platform. 
+in ways that are not as efficient or generic as possible, or dependent on a particular platform. 
 We propose BFAST as a standardized solution to the problem in the form of a specification and sample 
 implementation that can allow software to easily encode low level binary data in a manner 
 that is both efficient and cross-platform. 
@@ -69,7 +69,7 @@ that is both efficient and cross-platform.
 
 The following is a partial list of commonly used binary data serialization formats:
 
-* [Protcol Buffers](https://developers.google.com/protocol-buffers/)
+* [Protocol Buffers](https://developers.google.com/protocol-buffers/)
 * [FlatBuffers](https://github.com/google/flatbuffers)
 * [BINN](https://github.com/liteserver/binn/)
 * [BSON](http://bsonspec.org/)

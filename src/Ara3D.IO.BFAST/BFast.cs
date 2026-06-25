@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Ara3D.Memory;
-using Ara3D.MemoryMappedFiles;
 using Ara3D.Utils;
 
 namespace Ara3D.IO.BFAST

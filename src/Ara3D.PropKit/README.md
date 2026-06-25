@@ -19,11 +19,11 @@ and how to validate it.
 Getting and setting of property values is done via the `PropAccessor` class, which can be used to wrap any getter or setter function. 
 The `PropProvider` class acts as a container around a collection of `PropAccessor`s, and implements the `IPropContainer` interface.
 
-The `IPropContainer` interface provides a way to get or set values by name, or all at once. It also inherts from `INotifyPropertyChanged` so that changes to properties can be monitored.
+The `IPropContainer` interface provides a way to get or set values by name, or all at once. It also inherits from `INotifyPropertyChanged` so that changes to properties can be monitored.
 It also implements `ICustomTypeProvider` so that it can be used in data binding scenarios by providing run-time type information about the properties it contains
 in a way that is compatible with existing frameworks that use `System.ComponentModel`, such as WPF and WinForms.
 
-Values can be more easily validated, because they are typically passed and returned as `PropValue` instances which wrap the the value and the `PropDescriptor`
+Values can be more easily validated, because they are typically passed and returned as `PropValue` instances which wrap the value and the `PropDescriptor`
 together. The construction of a `PropValue` forces validation of the value against the `PropDescriptor`.
 
 You can use a `PropContainerWrapper` as a dynamic view model around any class, and you can then bind to any property or field on that class.
@@ -39,6 +39,6 @@ You can use a `PropContainerWrapper` as a dynamic view model around any class, a
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](../../LICENSE).
 
 **Enjoy building dynamic, descriptor-driven UIs in WPF with Ara3D.PropKit!**

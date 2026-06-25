@@ -1,8 +1,8 @@
-﻿# GLTF Exporter
+﻿# Ara3D.IO.GltfExporter
 
-This code was taken and slightly adapted from
-https://github.com/EverseDevelopment/revit-glTF-exporter
+Exports geometry to glTF/GLB. This code was adapted from
+https://github.com/EverseDevelopment/revit-glTF-exporter.
 
-For importing GLTF and GLB files we are currently using 
-the Ara3D.IO.SharpGLTF project.
+For importing glTF and GLB files use [Ara3D.IO.SharpGLTF](../Ara3D.IO.SharpGLTF).
 
+Part of the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package.

@@ -1,4 +1,5 @@
-﻿using System.IO.MemoryMappedFiles;
+﻿using System;
+using System.IO.MemoryMappedFiles;
 using Ara3D.Memory;
 
 namespace Ara3D.MemoryMappedFiles

@@ -26,7 +26,7 @@ A log writer is any class that implements the `ILogWriter` interface:
 A generic log writer class (`LogWriter`) is provided that can be customized via an action
 passed to the constructor. 
 
-A default static instance which writes to the console and the debug log.  
+A default static instance (`LogWriter.Default`) writes to the console and the debug log.  
 
 ```csharp
     public class LogWriter 
@@ -43,11 +43,11 @@ A default static instance which writes to the console and the debug log.
 You may find yourself looking for a static "Log" function that you can call, 
 or are tempted to write one yourself. 
 
-**Resist the urge!***
- 
+**Resist the urge!**
+
 Well-structured software does not use global mutable state. 
 
-Your code will be easier to reuse and refactor it you explicitly pass an `ILogger`
+Your code will be easier to reuse and refactor if you explicitly pass an `ILogger`
 to every component that might want to use it. 
 
 If you find that you are passing too many values to each component, consider using an `IJob`
@@ -56,7 +56,7 @@ which bundles many commonly related concerns together.
 ## More than just Logging 
 
 When we start introducing logging into an application other related concerns tend to creep
-in, like progress reporting, and cancelation. 
+in, like progress reporting, and cancellation. 
 
 Ara3D.Logging introduces a special interface called `IJob` which combines these 
 concerns. 

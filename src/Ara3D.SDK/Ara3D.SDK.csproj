@@ -50,15 +50,11 @@
   </Target>
 
   <!-- Copy to PipingLabs location -->
-  <Target Name="CopyPackageToLocalNuGetSource"
-          AfterTargets="Pack"
-          Condition="Exists('$(LocalNuGetSourcePath)')">
+  <Target Name="CopyPackageToLocalNuGetSource" AfterTargets="Pack" Condition="Exists('$(LocalNuGetSourcePath)')">
     <ItemGroup>
       <LocalNuGetPackages Include="$(PackageOutputPath)\$(PackageId).$(PackageVersion)*.nupkg" />
     </ItemGroup>
-    <Copy SourceFiles="@(LocalNuGetPackages)"
-          DestinationFolder="$(LocalNuGetSourcePath)"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(LocalNuGetPackages)" DestinationFolder="$(LocalNuGetSourcePath)" SkipUnchangedFiles="true" />
   </Target>
   
   <ItemGroup>
@@ -89,7 +85,6 @@
     <ProjectReference Include="..\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.IO.VIM\Ara3D.IO.VIM.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" PrivateAssets="All" />
-    <ProjectReference Include="..\Ara3D.MemoryMappedFiles\Ara3D.MemoryMappedFiles.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" PrivateAssets="All" />

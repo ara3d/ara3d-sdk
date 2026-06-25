@@ -18,10 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ara3d-sdk\src\Ara3D.Utils\Ara3D.Utils.csproj" />
-    <ProjectReference Include="..\..\ara3d-sdk\toolchain\parakeet\Parakeet.Grammars\Ara3D.Parakeet.Grammars.csproj" />
-    <ProjectReference Include="..\..\ara3d-sdk\toolchain\parakeet\Parakeet.Tests\Ara3D.Parakeet.Tests.csproj" />
-    <ProjectReference Include="..\..\ara3d-sdk\toolchain\parakeet\Parakeet\Ara3D.Parakeet.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\..\toolchain\parakeet\Parakeet.Grammars\Ara3D.Parakeet.Grammars.csproj" />
+    <ProjectReference Include="..\..\toolchain\parakeet\Parakeet.Tests\Ara3D.Parakeet.Tests.csproj" />
+    <ProjectReference Include="..\..\toolchain\parakeet\Parakeet\Ara3D.Parakeet.csproj" />
   </ItemGroup>
 
   <ItemGroup>

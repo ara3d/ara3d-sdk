@@ -1,6 +1,6 @@
 # G3D
 
-[<img src="https://img.shields.io/nuget/v/Vim.G3d.svg">](https://www.nuget.org/packages/Vim.G3d) 
+Part of the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package.
 
 G3D is a simple, efficient, generic binary format for storing and transmitting geometry. The G3D format
 is designed to be used either as a serialization format or as an in-memory data structure.
@@ -12,7 +12,7 @@ The G3D format can contain a superset of geometry attributes found in most commo
 including formats such as FBX, glTF, OBJ, PLY, and in memory data structures used in popular 3D APIs, like 
 Unity, Three.JS, Assimp, and 3dsMax.
 
-BFAST is maintained by [VIMaec LLC](https://vimaec.com) and is licensed under the terms of the MIT License.
+G3D is maintained by [VIMaec LLC](https://vimaec.com) and is licensed under the terms of the MIT License.
 
 # Format 
 
@@ -26,11 +26,11 @@ Each subsequent buffer uses the attribute descriptor string as a name.
 
 ## Meta-Information
 
-The first buffer of a G3D file is named "meta" and is represented by the G3D 
+The first buffer of a G3D file is named "meta" and contains the G3D header (`G3dHeader`).
 
 ## Attributes 
 
-G3D is organized as a collection of attribute buffers. Each attributes describe what part of the incoming geometry they are associated with:
+G3D is organized as a collection of attribute buffers. Each attribute describes what part of the incoming geometry they are associated with:
 
 * point     // vertex data
 * corner    // face-vertex data

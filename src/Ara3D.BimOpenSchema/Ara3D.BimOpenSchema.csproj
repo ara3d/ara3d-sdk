@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call post-build.bat" />
-  </Target>
-
 </Project>

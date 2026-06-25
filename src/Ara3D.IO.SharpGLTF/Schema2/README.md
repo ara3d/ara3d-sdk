@@ -11,12 +11,12 @@ can be accessed indirectly with helper classes, for example, materials use this 
 
 The main object that represent a glTF document in memory is `ModelRoot`. Internally, it stores
 almost all the model elements in plain lists, and cross referencing is done by integer indices.
-The public API implentation tries to simplify document access by resolving the references and
+The public API implementation tries to simplify document access by resolving the references and
 offering a more C# friendly API.
 
 There's two ways to traverse a glTF document; you can directly access every individual element
 using the `ModelRoot.Logical*` collections, which gives you direct access to almost all
-the individual building blocks as they where originally stored in the document.
+the individual building blocks as they were originally stored in the document.
 
 But if you want to traverse the document as a visual tree graph, you start with `ModelRoot.DefaultScene`
 and from there you navigate throught the different nodes and properties using the `.Visual*` properties.
@@ -24,7 +24,7 @@ and from there you navigate throught the different nodes and properties using th
 `ModelRoot` also contains the methods to create, load and save a glTF document:
 
 Creating a new glTF document:
-```c#
+```csharp
 var model = SharpGLTF.Schema2.ModelRoot.CreateModel();
 var root = model.UseScene(0).CreateNode("root node");
 root.CreateNode("child node");
@@ -32,12 +32,12 @@ model.SaveGLB("model.glb");
 ```
 
 Loading a glTF document:
-```c#
+```csharp
 var model = Schema2.ModelRoot.Load("model.gltf");
 ```
 
 Loading a gltf and saving it as glb:
-```c#
+```csharp
 var model = Schema2.ModelRoot.Load("model.gltf");
 model.SaveGLB("model.glb");
 ```
@@ -47,4 +47,4 @@ designed to be edited. In particular, removing elements is essentially impossibl
 because in many cases data can be shared between elements and would require expensive
 internal data reshuffle.
 
-For glTF edition purposes, refer to [__SharpGLTF.Toolkit__](../../SharpGLTF.Toolkit/README.md)
+For glTF edition purposes, refer to the upstream [SharpGLTF.Toolkit](https://github.com/vpenades/SharpGLTF/tree/master/src/SharpGLTF.Toolkit) project (not included in this repository).

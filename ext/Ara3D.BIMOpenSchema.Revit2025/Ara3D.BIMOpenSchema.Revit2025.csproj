@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

@@ -5,7 +5,7 @@ It is a set of interfaces for use with in-memory columnar databases or ECS (Enti
 
 ## What is a Columnar Database
 
-In traditional object-oriented approches large amounts of data are stored as collections of objects or structs. 
+In traditional object-oriented approaches large amounts of data are stored as collections of objects or structs. 
 This is also referred to as the array-of-structs approach. This can be thought of as a collection of rows in a table. 
 
 The alternative to lists of objects is a column-oriented layout, also known as struct-of-arrays. The column-oriented approach 

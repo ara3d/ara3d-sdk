@@ -1,5 +1,5 @@
-﻿### Memory namespace
- 
+﻿# Memory namespace
+
 glTF2 stores array structures as encoded byte buffers that are not easy to handle directly.
 
 Data is accessed by `Accessors` pointing to `BufferViews` which point to `Buffers`.

@@ -1,6 +1,8 @@
-﻿using System.IO.MemoryMappedFiles;
+﻿using System;
+using System.IO;
+using System.IO.MemoryMappedFiles;
 
-namespace Ara3D.MemoryMappedFiles
+namespace Ara3D.Memory
 {
     /// <summary>
     /// This address a limitation of memory mapped view accessor,

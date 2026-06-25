@@ -52,7 +52,6 @@
 	  <ProjectReference Include="..\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
 	  <ProjectReference Include="..\Ara3D.Bowerbird.Demo\Ara3D.Bowerbird.Demo.csproj" />
 	  <ProjectReference Include="..\Ara3D.Bowerbird\Ara3D.Bowerbird.csproj" />
-	  <ProjectReference Include="..\Ara3D.Studio.WpfControls\Ara3D.Studio.WpfControls.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="AdWindows">

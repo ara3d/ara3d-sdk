@@ -6,19 +6,21 @@ Ara 3D Services is a set of interfaces and classes
 designed to provide a foundation for software architecture 
 that supports building scalable and decoupled applications. 
 
-It uses the [`Ara3D.Domo` state management library](https://github.com/ara3d/domo) 
+It uses the [`Ara3D.Domo`](../Ara3D.Domo) state management library
 and provides additional concepts: 
 
 * `IService` - Contains commands, optionally may house a repository, 
 and subscribe to or publish events. Usually one service of each 
 type is present in an application. 
 
-* `IEventBus` - used to communicate messages (called events)
-from publishers to subscribers in a thread safe way, without
-the resource leaking problem inherent in C# events.  
-
-* `IApplication` - Contains references to all services, repositories,
+* `IServiceManager` - Contains references to all services, repositories,
 and an event bus. 
+
+## The following concepts are provided by [`Ara3D.Events`](../Ara3D.Events):
+
+* `IEventBus` - used to communicate messages (called events)
+from publishers to subscribers in a thread-safe way, without
+the resource leaking problem inherent in C# events.  
 
 ## The following concepts are provided by Ara3D.Domo:
 

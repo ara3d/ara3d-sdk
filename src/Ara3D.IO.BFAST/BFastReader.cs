@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ara3D.Memory;
 using Ara3D.MemoryMappedFiles;
 
 namespace Ara3D.IO.BFAST
