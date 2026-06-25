@@ -42,10 +42,10 @@ namespace Ara3D.BIMOpenSchema.Tests
             };
         }
 
-        public static DirectoryPath InputFolder = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "data", "input");
-        public static DirectoryPath OutputFolder = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "data", "output");
+        public static DirectoryPath DataFolder => PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "data");
+        public static DirectoryPath OutputFolder => DataFolder.RelativeFolder("output");
 
-        public static FilePath InputFile => InputFolder.RelativeFile("snowdon.bimdata.parquet.zip");
+        public static FilePath InputFile => DataFolder.RelativeFile("rac_basic_sample_project-2025.bos");
 
         [Test]
         public static void TestInputFileExists()
@@ -63,7 +63,7 @@ namespace Ara3D.BIMOpenSchema.Tests
             Console.WriteLine($"Has size: {fp.GetFileSizeAsString()}");
         }
 
-        [Test]
+        [Test, Category("Slow")]
         public static void TestReadInputFile()
         {
             var bd = GetTestInputData();
@@ -79,7 +79,7 @@ namespace Ara3D.BIMOpenSchema.Tests
             Console.WriteLine($"Wrote {sz} to {outputFile.GetFileName()} in {sw.Elapsed.Seconds:F} seconds");
         }
 
-        [Test]
+        [Test, Category("Slow")]
         public static void TestWriter()
         {
             var sw = Stopwatch.StartNew();
@@ -112,7 +112,7 @@ namespace Ara3D.BIMOpenSchema.Tests
             dt.WriteToExcel(outputFile);
         }
 
-        [Test]
+        [Test, Category("Slow")]
         public static void BimDataObjectModel()
         {
             var bimData = GetTestInputData();

@@ -35,7 +35,7 @@ namespace Ara3D.SDK.Tests
             Console.WriteLine($"# instances = {g.InstanceMeshes.Count}");
         }
 
-        [Test]
+        [Test, Category("Slow")]
         public static void OpenVIM()
         {
             var f = Residence;
@@ -47,7 +47,7 @@ namespace Ara3D.SDK.Tests
             logger.Log("Completed test");
         }
 
-        [Test]
+        [Test, Category("Slow")]
         public static void OpenBFast()
         {
             var f = Residence;

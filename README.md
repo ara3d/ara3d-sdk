@@ -21,7 +21,7 @@ Designed for high performance and scalability, the libraries handle massive 3D d
 - `ext/` - Libraries with additional dependencies, or for Windows only 
 - `tests/` – NUnit projects for unit, regression, and developer testing
 - `vendor/` - Required 3rd party libraries 
-- `toolchain/` – Projects for parsing Plato and generating C# sourc code. 
+- `toolchain/` – Projects for parsing Plato and generating C# source code. 
 
 ---
 
@@ -50,8 +50,11 @@ They are not run automatically, and are not currently supported.
 
 ## 🗂️ Projects
 
-- [Ara3D.Collections](https://github.com/ara3d/ara3d-sdk/tree/main/src/Ara3D.Collections)  
-  Optimized LINQ operations for IReadOnlyList. Additional generic collection types and utilities.
+All core libraries live under [`src/`](src/). See the [src/ project index](src/README.md) for a
+full list grouped by category (geometry, I/O, BIM, architecture, Studio, utilities).
+
+Install via the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package, or reference
+individual projects from `src/`.
 
 ---
 
@@ -63,6 +66,24 @@ Before submitting a pull request:
 - Familiarize yourself with the code base
 - Follow the existing style and architecture
 - For significant changes, please open an [issue](https://github.com/ara3d/ara3d-sdk/issues) first
+
+### Coding guidelines and AI agents
+
+Coding conventions and the preferred development workflow are documented in
+[`AGENTS.md`](AGENTS.md), with tracked improvements logged in
+[`docs/TECHNICAL_DEBT.md`](docs/TECHNICAL_DEBT.md). Read these before making changes
+(they apply to AI agents and humans alike).
+
+Use the helper scripts to build and test:
+
+```bat
+build.bat              :: build the solution (Debug)
+test.bat               :: run the full test suite (includes Slow tests)
+test.bat fast          :: run all areas, skip Slow file-I/O tests
+test.bat geometry      :: run only one area's tests (all | sdk | geometry | bim | devtools)
+test.bat geometry fast :: run one area, skip Slow tests
+test.bat sdk OpenVIM   :: run tests in an area matching a name substring
+```
 
 Let's build something amazing together 🚀
 
@@ -78,4 +99,4 @@ Found a bug? Have a question? Want to suggest a feature for either the SDK or **
 
 ## 🔗 Related Projects
 
-- [Ara3D.Plato](https://github.com/cdiggins/plato) – A Domain specific programming language for math and geometry/
+- [Ara3D.Plato](https://github.com/cdiggins/plato) – A domain-specific programming language for math and geometry
