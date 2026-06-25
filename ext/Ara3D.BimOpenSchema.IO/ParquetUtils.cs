@@ -378,28 +378,32 @@ public static class ParquetUtils
 
 
     public static Diagnostic ToDiagnostic(object[] row)
-        => new((DiagnosticType)row[0], (DocumentIndex)row[1], (EntityIndex)row[2], (StringIndex)row[3]);
+        => new((DiagnosticType)I32(row[0]), (DocumentIndex)I32(row[1]), (EntityIndex)I32(row[2]), (StringIndex)I32(row[3]));
 
     public static Point ToPoint(object[] row)
-        => new((float)row[0], (float)row[1], (float)row[2]);
+        => new(F32(row[0]), F32(row[1]), F32(row[2]));
 
     public static float ToNumber(object[] row)
-        => (float)row[0];
+        => F32(row[0]);
 
     public static Parameter ToParameter(object[] row)
-        => new((EntityIndex)row[0], (DescriptorIndex)row[1], (int)row[2]);
+        => new((EntityIndex)I32(row[0]), (DescriptorIndex)I32(row[1]), I32(row[2]));
 
     public static EntityRelation ToRelation(object[] row)
-        => new((EntityIndex)row[0], (EntityIndex)row[1], (RelationType)row[2]);
+        => new((EntityIndex)I32(row[0]), (EntityIndex)I32(row[1]), (RelationType)I32(row[2]));
 
     public static ParameterDescriptor ToDescriptor(object[] row)
-        => new((StringIndex)row[0], (StringIndex)row[1], (StringIndex)row[2], (ParameterType)row[3]);
+        => new((StringIndex)I32(row[0]), (StringIndex)I32(row[1]), (StringIndex)I32(row[2]), (ParameterType)I32(row[3]));
 
     public static Document ToDocument(object[] row)
-        => new((StringIndex)row[0], (StringIndex)row[1]);
+        => new((StringIndex)I32(row[0]), (StringIndex)I32(row[1]));
 
     public static Entity ToEntity(object[] row)
-        => new((long)row[0], (StringIndex)row[1], (DocumentIndex)row[2], (StringIndex)row[3], (EntityIndex)row[4], (EntityIndex)row[5]);
+        => new(I64(row[0]), (StringIndex)I32(row[1]), (DocumentIndex)I32(row[2]), (StringIndex)I32(row[3]), (EntityIndex)I32(row[4]), (EntityIndex)I32(row[5]));
+
+    static int I32(object value) => Convert.ToInt32(value);
+    static long I64(object value) => Convert.ToInt64(value);
+    static float F32(object value) => Convert.ToSingle(value);
 
 
     public static Func<Stream, BimData, Task> GetTableCtor(string name)

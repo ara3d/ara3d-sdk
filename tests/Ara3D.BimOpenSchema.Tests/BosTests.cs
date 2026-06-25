@@ -8,13 +8,11 @@ namespace Ara3D.BIMOpenSchema.Tests;
 
 public static class BosTests
 {
-    public static DirectoryPath InputDir => SpecialFolders.MyDocuments.RelativeFolder("BIM Open Schema");
-    //public static string TestFileName = "Autodesk_Hospital_Metric_Architectural_Central.bos";
-    public static string TestFileName = "Snowdon Towers Sample Architectural.bos";
-    //public static FilePath TestFile => InputDir.RelativeFile(TestFileName);
-    public static FilePath TestFile => @"C:\Users\cdigg\OneDrive\Documents\BIM Open Schema\rac_basic_sample_project-2025.bos";
+    public static DirectoryPath DataFolder => PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "data");
+
+    public static FilePath TestFile => DataFolder.RelativeFile("rac_basic_sample_project-2025.bos");
     
-    [Test]
+    [Test, Category("Slow")]
     public static void TestLoadBimDataAndBimGeometry()
     {
         var logger = Logger.Console;
