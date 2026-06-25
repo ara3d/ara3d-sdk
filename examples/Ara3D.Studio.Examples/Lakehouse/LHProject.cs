@@ -83,7 +83,8 @@ public class LHProject
                 Name = BimData.Name(entity)
             };
 
-            Rooms.Add(room.EntityIndex, room);
+            // NOTE: sometimes the same room is added twice ... don't ask me how. 
+            Rooms[room.EntityIndex] = room;
             room.Document.Rooms.Add(room);
         }
 
@@ -114,17 +115,10 @@ public class LHProject
                 room.Model = model.WithInstances(room.Members.ToList()).RemoveUnusedMeshes();
         }
     }
-
+    
     public IDictionary<string, string> GetParameterData(EntityIndex ei)
-    {
-        var r = new Dictionary<string, string>();
-        var parameters = Parameters.GetValueOrDefault(ei, []);
-        foreach (var param in parameters)
-        {
-            var name = BimData.ParameterName(param);
-            var value = BimData.ParameterValue(param);
-            r[name] = param.Value;
-        }
-        return r;
-    }
+        => Parameters
+            .GetValueOrDefault(ei, [])
+            .ToDictionarySafe(BimData.ParameterName, BimData.ParameterValue);
+
 }

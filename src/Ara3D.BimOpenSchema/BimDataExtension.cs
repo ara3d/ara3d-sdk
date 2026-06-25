@@ -41,7 +41,7 @@ public static class BimDataExtension
     public static ParameterDescriptor? Get(this IBimData self, DescriptorIndex index) 
         => index < 0 ? null : self.Descriptors[(int)index];
 
-    public static string GetEntityName(this IBimData self, EntityIndex index)
+    public static string EntityName(this IBimData self, EntityIndex index)
         => index >= 0 ? self.GetEntityName(self.Get(index)) : "null";
 
     public static string GetEntityName(this IBimData self, Entity? e)
@@ -54,7 +54,7 @@ public static class BimDataExtension
         => e != null ? self.GetEntityName(self.Get(e.Value.Category)) : "null";
 
     public static string GetEntityLabel(this IBimData self, EntityIndex index)
-        => $"{self.GetEntityName(index)}[{index}]";
+        => $"{self.EntityName(index)}[{index}]";
 
     public static IEnumerable<EntityIndex> EntityIndices(this IBimData self) 
         => Enumerable.Range(0, self.Entities.Length).Select(i => (EntityIndex)i);
@@ -156,13 +156,13 @@ public static class BimDataExtension
         => self.Entities.Select(e => e.Category).Distinct();
     
     public static IEnumerable<string> GetCategoryNames(this IBimData self)
-        => self.GetCategories().Select(self.GetEntityName).OrderBy(x => x);
+        => self.GetCategories().Select(self.EntityName).OrderBy(x => x);
 
     public static IEnumerable<EntityIndex> GetTypes(this IBimData self)
         => self.Entities.Select(e => e.Type).Distinct();
 
     public static IEnumerable<string> GetTypeNames(this IBimData self)
-        => self.GetTypes().Select(self.GetEntityName).OrderBy(x => x);
+        => self.GetTypes().Select(self.EntityName).OrderBy(x => x);
 
     public static IEnumerable<string> GetDescriptorNames(this IBimData self)
         => self.Descriptors.Select(x => self.Get(x.Name)).OrderBy(x => x);
@@ -250,4 +250,25 @@ public static class BimDataExtension
 
     public static string ParameterName(this IBimData self, Parameter p)
         => self.Get(self.Descriptor(p)?.Name ?? InvalidStringIndex);
+
+    public static string ParameterValue(this IBimData self, Parameter p)
+    {
+        var desc = self.Descriptor(p);
+        if (!desc.HasValue) return "";
+        switch (desc.Value.Type)
+        {
+            case ParameterType.Int: 
+                return p.Value.ToString(); 
+            case ParameterType.Number:
+                return p.Value < 0 ? "" : self.Get((NumberIndex)p.Value).ToString();
+            case ParameterType.Entity:
+                return self.EntityName((EntityIndex)p.Value);
+            case ParameterType.String:
+                return self.Get((StringIndex)p.Value);
+            case ParameterType.Point:
+                return self.Get((PointIndex)p.Value).ToString();
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 }

@@ -64,7 +64,7 @@ namespace Ara3D.BimOpenSchema
                 }
             }
 
-            Descriptors.AddRange(Data.DescriptorIndices().Select(di => Create(di, Data.Get(di))));
+            Descriptors.AddRange(Data.DescriptorIndices().Select(di => Create(di, Data.Get(di) ?? default)));
 
             if (computeParametersAndRelations)
                 ComputeParametersAndRelations();

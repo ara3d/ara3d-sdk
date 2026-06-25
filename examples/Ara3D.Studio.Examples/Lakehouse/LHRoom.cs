@@ -4,7 +4,7 @@ namespace Ara3D.Studio.Samples.Lakehouse;
 
 public class LHRoom
 {
-    public LHDoc Doc { get; set; }
+    public LHDocument Document { get; set; }
     public EntityIndex EntityIndex { get; set; }
     public Entity Entity { get; set; }
     public string Name { get; set; }

@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="libs/web-ifc-library.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>web-ifc-library.dll</Link>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ara3d-sdk\src\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj" />
+    <ProjectReference Include="..\..\ara3d-sdk\src\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" />
+    <ProjectReference Include="..\..\ara3d-sdk\src\Ara3D.Models\Ara3D.Models.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\Ara3D.IfcTypes\Ara3D.IfcTypes.projitems" Label="Shared" />
+</Project>

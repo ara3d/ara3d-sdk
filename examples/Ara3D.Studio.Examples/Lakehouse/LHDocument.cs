@@ -23,26 +23,21 @@ public class LHDocument
         Title = BimData.Get(Document.Title);
     }
 
-    public IDataTable ToDataTable()
+    public IDataTable GetRoomProperties()
     {
-        var builder = new DataTableBuilder("Rooms");
+        var rows = new List<IDictionary<string, string>>();
 
-        var vals = new List<IDictionary<string, string>>();
-        
-        foreach (var row in BimData.
-
-        builder.AddColumn("Name", typeof(string));
-        builder.AddColumn("EntityIndex", typeof(EntityIndex));
-        builder.AddColumn("Entity", typeof(Entity));
-        builder.AddColumn("Mesh", typeof(TriangleMesh3D));
-        builder.AddColumn("Instance", typeof(InstanceStruct));
-        builder.AddColumn("Bounds", typeof(Bounds3D));
-        builder.AddColumn("Model", typeof(IModel3D));
-        builder.AddColumn("Parameters", typeof(List<Parameter>));
         foreach (var room in Rooms)
         {
-            builder.AddRow(room.Name, room.EntityIndex, room.Entity, room.Mesh, room.Instance, room.Bounds, room.Model, room.Parameters);
+            var d = Project.GetParameterData(room.EntityIndex);
+            d.Add("Entity Name", room.Name);
+            d.Add("Entity Index", room.EntityIndex.ToString());
+            d.Add("Entity", room.Entity.ToString());
+            d.Add("Local ID", room.Entity.LocalId.ToString());
+            d.Add("Global ID", BimData.Get(room.Entity.GlobalId));
+            rows.Add(d);
         }
-        return builder.Build();
+
+        return rows.ToDataTable();
     }
 }

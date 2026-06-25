@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>16dff50b-2e76-4a7a-9634-7c655c58f025</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Ara3D.IfcTypes</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Aliases.Ifc2x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Aliases.Ifc4.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Aliases.Ifc4x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities.Ifc2x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities.Ifc4.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities.Ifc4x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums.Ifc2x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums.Ifc4.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums.Ifc4x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces.Ifc2x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces.Ifc4.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces.Ifc4x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schema.Ifc2x3.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schema.Ifc4.g.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Schema.Ifc4x3.g.cs" />
+  </ItemGroup>
+</Project>

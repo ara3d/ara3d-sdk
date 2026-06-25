@@ -1,16 +1,17 @@
 ﻿using Ara3D.BimOpenSchema;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Ara3D.Studio.Samples.Lakehouse;
 
 public class LakehouseRooms : IGenerator
 {
-    public int Entities => BimData?.Entities.Length ?? 0;
-    public int Documents => BimData?.Documents.Length ?? 0;
-    public int ParameterTypes => BimData?.Descriptors.Length ?? 0;
-    public int ParameterValues => BimData?.Parameters.Length ?? 0;
-    public int Meshes => Model?.Meshes.Count ?? 0;
-    public int Instances => Model?.Instances.Count ?? 0;
+    public int Entities => Project?.BimData?.Entities.Length ?? 0;
+    public int Documents => Project?.BimData?.Documents.Length ?? 0;
+    public int ParameterTypes => Project?.BimData?.Descriptors.Length ?? 0;
+    public int ParameterValues => Project?.BimData?.Parameters.Length ?? 0;
+    public int Meshes => Project?.Model?.Meshes.Count ?? 0;
+    public int Instances => Project?.Model?.Instances.Count ?? 0;
     public LHProject Project { get; private set; }
 
     [Options(nameof(FileNames))] public int File;
@@ -23,10 +24,13 @@ public class LakehouseRooms : IGenerator
 
     public void ShowRoomDataImpl()
     {
-        var builder = new DataTableBuilder("Rooms");
-        var d = new Dictionary<string, string>();
-        var roomLookup = RoomData.ToDictionary(rc => rc.RoomEntityIndex, rc => rc);
-        var parameters = new Dictionary<int, ParameterDescriptor>();
+        if (currentDoc == null)
+        {
+            MessageBox.Show("No document currently active");
+            return;
+        }
+        var props = currentDoc.GetRoomProperties();
+        DataTableWindow.CreateAndShow(props);
     }
 
     private int _prevFile;
@@ -34,6 +38,9 @@ public class LakehouseRooms : IGenerator
     public List<string> FileNames { get; private set; } = [];
     public List<string> RoomNames { get; private set; } = [];
     public List<string> Categories { get; private set; } = [];
+
+    private LHDocument currentDoc => Project?.Documents.ElementAtOrDefault(File);
+    private LHRoom currentRoom => currentDoc?.Rooms.ElementAtOrDefault(Room);
 
     private int _oldFile = -1;
 
@@ -44,28 +51,25 @@ public class LakehouseRooms : IGenerator
 
     public List<Entity> RoomEntities = [];
 
-    public Entity? GetEntity(InstanceStruct i)
-        => i.EntityIndex < 0 ? null : BimData.Entities[i.EntityIndex];
-
-    public int GetDocument(InstanceStruct i)
-        => (int?)(GetEntity(i)?.Document) ?? -1;
-
     public void Init(IHostApplication app)
     {
         _app = app;
         _ = LoadInitialAssetAsync();
     }
 
-    
     private async Task LoadInitialAssetAsync()
     {
         try
         {
+            _app.Logger.Log("Starting load of LakeHouse");
             var asset = await _app.LoadAssetAsync(_lakehouseFile, false);
             var bimData = asset.Attachments[0] as BimData;
             var renderModel = asset.Attachments[1] as RenderModelData;
-            Project = new LHProject(bimData, renderModel);
-
+            _app.Logger.Log("Completed loading phase");
+            _app.Logger.Log("Starting initialization");
+            Project =new LHProject(bimData, renderModel);
+            _app.Logger.Log("Completed initialization");
+            FileNames = Project.Documents.Select(f => f.Title).ToList();
             _app.RefreshUI(this);
             _app.Invalidate(this);
         }
@@ -78,7 +82,6 @@ public class LakehouseRooms : IGenerator
     public IModel3D Eval()
     {
         var emptyModel = new Model3D([], []);
-        var currentDoc = Project.Documents.ElementAtOrDefault(File);
         if (currentDoc == null)
             return emptyModel;
 
@@ -92,9 +95,9 @@ public class LakehouseRooms : IGenerator
         if (!FilterRooms)
             return currentDoc.Model;
 
-        if (Room < 0 || Room >= RoomData.Count)
+        if (currentRoom == null)
             return currentDoc.Model;
 
-        return RoomData[Room].Model;
+        return currentRoom.Model;
     }
 }

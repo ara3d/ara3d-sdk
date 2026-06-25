@@ -35,9 +35,13 @@ public static class ParameterStatisticsExtensions
         var stats = new T();
         var desc = data.Get(descIndex);
         stats.Index = (long)descIndex;
-        stats.Name = data.Get(desc.Name);
-        stats.Group = data.Get(desc.Group);
-        stats.Units = data.Get(desc.Units);
+        if (desc.HasValue)
+        {
+            stats.Name = data.Get(desc.Value.Name);
+            stats.Group = data.Get(desc.Value.Group);
+            stats.Units = data.Get(desc.Value.Units);
+        }
+
         return stats;
     }
 

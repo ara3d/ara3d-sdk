@@ -12,7 +12,7 @@ public class SparseColumn : IDataColumn, IDataDescriptor
     }
     public Dictionary<int, object> Dictionary { get; } = [];
     public int ColumnIndex { get; }
-    public IDataDescriptor Descriptor { get; }
+    public IDataDescriptor Descriptor => this;
     public Type Type { get; }
     public string Name { get; }
     public int Count { get; }
