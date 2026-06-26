@@ -163,15 +163,17 @@ Build and test from the repo root using the helper scripts (preferred over raw `
 commands so behavior stays consistent):
 
 ```bat
-build.bat              :: build the solution (Debug); "build.bat Release" for Release
-test.bat               :: run the FULL suite (all test projects, including Slow)
-test.bat fast          :: run all projects, skip tests tagged Category("Slow")
-test.bat <area>        :: run only one area's tests
-test.bat <area> fast   :: run one area, skip Slow tests (good default for inner loop)
-test.bat <area> <name> :: run only tests in <area> whose full name contains <name>
+build.bat                :: build the solution (Debug); "build.bat Release" for Release
+test.bat                 :: run the FULL supported suite (including Slow)
+test.bat fast            :: run supported tests, skip tests tagged Category("Slow")
+test.bat <area>          :: run only one area's tests
+test.bat <area> fast     :: run one area, skip Slow tests (good default for inner loop)
+test.bat <area> <name>   :: run only tests in <area> whose full name contains <name>
+test.bat knownissues     :: run known-broken behavior tests (opt-in only)
 ```
 
-`<area>` is one of `all | sdk | geometry | bim | devtools`. The areas map to:
+`<area>` is one of `all | sdk | geometry | bim | devtools | knownissues`. The supported
+default areas map to:
 
 | Area | Test project | Covers (changed `src/` libraries) |
 | --- | --- | --- |
@@ -179,6 +181,9 @@ test.bat <area> <name> :: run only tests in <area> whose full name contains <nam
 | `geometry` | `Ara3D.SDK.GeometryTests` | `Ara3D.Geometry`, `Ara3D.IO.PLY` |
 | `bim` | `Ara3D.BimOpenSchema.Tests` | `Ara3D.BimOpenSchema`, `Ara3D.BimOpenSchema.IO`, glTF |
 | `devtools` | `Ara3D.SDK.DevTools` | Roslyn / `Microsoft.CodeAnalysis` helpers |
+
+`knownissues` maps to `Ara3D.SDK.KnownIssues.Tests`. It is not part of `test.bat`,
+`test.bat fast`, `release.bat`, or the solution default test run.
 
 ### 8.1 Scoped testing — don't rerun everything for small changes
 
@@ -217,6 +222,17 @@ Mark a test Slow when it reads real data files (VIM, BOS, PLY, parquet, glTF, et
 otherwise takes noticeably longer than in-memory unit tests. Pure algorithm/geometry tests
 stay untagged. Before committing, run the **full** suite (`test.bat`) at least once so Slow
 tests are included.
+
+### 8.3 Known-issues tests (`test.bat knownissues`)
+
+Known-issues tests document bugs or incomplete behavior that should fail until the
+underlying issue is fixed. They live in `tests/Ara3D.SDK.KnownIssues.Tests`, are tagged
+`[Category("KnownIssue")]`, and are intentionally excluded from all normal/default test
+runs.
+
+Move a failing test here only when the behavior is still important to track but must not
+block normal development. When the bug is fixed, move the test back into the appropriate
+supported test project and remove the known-issues copy.
 
 ---
 

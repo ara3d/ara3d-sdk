@@ -9,8 +9,11 @@ rem   test.bat <area> fast             Run <area>, skip Slow tests
 rem   test.bat <area> <name>           Run tests in <area> whose full name contains <name>
 rem   test.bat <area> fast <name>      Run <area>, skip Slow, and match <name>
 rem
-rem   <area> = all | sdk | geometry | bim | devtools
+rem   <area> = all | sdk | geometry | bim | devtools | knownissues
 rem   <name> = substring matched against the fully-qualified test name
+rem
+rem Known-issues tests document currently broken behavior and are never run by
+rem default. Use "test.bat knownissues" to check whether any have been fixed.
 rem
 rem Examples:
 rem   test.bat geometry                Run all geometry tests
@@ -40,16 +43,11 @@ if /I "%AREA%"=="fast" (
 )
 
 set PROJ=
-if /I "%AREA%"=="all"      set PROJ=Ara3D.SDK.sln
 if /I "%AREA%"=="sdk"      set PROJ=tests\Ara3D.SDK.Tests\Ara3D.SDK.Tests.csproj
 if /I "%AREA%"=="geometry" set PROJ=tests\Ara3D.SDK.GeometryTests\Ara3D.SDK.GeometryTests.csproj
 if /I "%AREA%"=="bim"      set PROJ=tests\Ara3D.BimOpenSchema.Tests\Ara3D.BimOpenSchema.Tests.csproj
 if /I "%AREA%"=="devtools" set PROJ=tests\Ara3D.SDK.DevTools\Ara3D.SDK.DevTools.csproj
-
-if "%PROJ%"=="" (
-  echo Unknown area "%AREA%". Valid areas: all, sdk, geometry, bim, devtools
-  exit /b 1
-)
+if /I "%AREA%"=="knownissues" set PROJ=tests\Ara3D.SDK.KnownIssues.Tests\Ara3D.SDK.KnownIssues.Tests.csproj
 
 set FILTER=
 if %FAST%==1 set "FILTER=Category!=Slow"
@@ -61,11 +59,33 @@ if not "%NAME%"=="" (
   )
 )
 
+if /I "%AREA%"=="all" (
+  call :RunProject "tests\Ara3D.SDK.Tests\Ara3D.SDK.Tests.csproj"
+  if errorlevel 1 exit /b %ERRORLEVEL%
+  call :RunProject "tests\Ara3D.SDK.GeometryTests\Ara3D.SDK.GeometryTests.csproj"
+  if errorlevel 1 exit /b %ERRORLEVEL%
+  call :RunProject "tests\Ara3D.BimOpenSchema.Tests\Ara3D.BimOpenSchema.Tests.csproj"
+  if errorlevel 1 exit /b %ERRORLEVEL%
+  call :RunProject "tests\Ara3D.SDK.DevTools\Ara3D.SDK.DevTools.csproj"
+  if errorlevel 1 exit /b %ERRORLEVEL%
+  exit /b 0
+)
+
+if "%PROJ%"=="" (
+  echo Unknown area "%AREA%". Valid areas: all, sdk, geometry, bim, devtools, knownissues
+  exit /b 1
+)
+
+call :RunProject "%PROJ%"
+exit /b %ERRORLEVEL%
+
+:RunProject
+set PROJECT=%~1
 if defined FILTER (
-  echo Running tests: %PROJ%  [filter: %FILTER%]
-  dotnet test "%ROOT%%PROJ%" --filter "%FILTER%"
+  echo Running tests: %PROJECT%  [filter: %FILTER%]
+  dotnet test "%ROOT%%PROJECT%" --filter "%FILTER%"
 ) else (
-  echo Running tests: %PROJ%
-  dotnet test "%ROOT%%PROJ%"
+  echo Running tests: %PROJECT%
+  dotnet test "%ROOT%%PROJECT%"
 )
 exit /b %ERRORLEVEL%
