@@ -27,8 +27,10 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
-[Oo]bj/
+# Match build-output folders at any project depth. Keep this folder-based rather
+# than ignoring *.dll globally: vendor and sample DLLs are required inputs here.
+**/[Bb]in/
+**/[Oo]bj/
 [Ll]og/
 [Ll]ogs/
 
