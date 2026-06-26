@@ -96,7 +96,11 @@ public class IfcToBosConverter
     ]);
 
     public static bool IsMaybeIfcElement(IfcEntity entity)
-        => !NonElementIfcClassNames.Contains(entity.GetEntityName());
+    {
+        var name = entity.GetEntityName();
+        return !NonElementIfcClassNames.Contains(name)
+            && !name.StartsWith("IFCREL", StringComparison.Ordinal);
+    }
 
     public static void Convert(FilePath input, FilePath output, ILogger logger = null)
         => new IfcToBosConverter(input, logger).SaveToBos(output);
@@ -178,6 +182,20 @@ public class IfcToBosConverter
             var ei = BimDataBuilder.AddEntity(id, gid, docIndex, name, catEi, typeEi);
             IfcIdToBosId.Add(id, ei);
         }
+
+        logger?.Log("Creating structural relations");
+        var structuralRels = new IfcStructuralRelations(IfcFile);
+        var addedRelations = 0;
+        foreach (var rel in structuralRels.Relations)
+        {
+            var a = GetBosEntityIndexFromIfc(rel.From);
+            var b = GetBosEntityIndexFromIfc(rel.To);
+            if (a == InvalidEntityIndex || b == InvalidEntityIndex)
+                continue;
+            BimDataBuilder.AddRelation(a, b, IfcStructuralRelationMapping.ToBos(rel.Kind));
+            addedRelations++;
+        }
+        logger?.Log($"Added {addedRelations} structural relations");
 
         // TEMP:
         logger?.Log($"Found {catIds.Count} unique cat ids");
