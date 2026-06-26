@@ -188,7 +188,7 @@ default areas map to:
 
 `nuget` is also excluded from default `test.bat` / `test.bat fast` runs. Use `test.bat nuget`
 after packing, or `publish-nuget.bat smoke` for the full release dry-run. See
-[`docs/NUGET_RELEASE.md`](docs/NUGET_RELEASE.md).
+[`docs/NUGET_RELEASE.md`](docs/NUGET_RELEASE.md). Script cheat sheet: [`docs/WORKFLOWS.md`](docs/WORKFLOWS.md).
 
 ### 8.1 Scoped testing — don't rerun everything for small changes
 
@@ -206,7 +206,7 @@ Match the test scope to the blast radius of the change:
   `test.bat`.
 
 **Hard rule:** scoped runs are for the *inner loop* only. Before you consider a task done
-(§10) or commit, you must run the **full suite at least once** and have it green. Speed is for
+(§11) or commit, you must run the **full suite at least once** and have it green. Speed is for
 iterating; the full run is the safety net.
 
 When unsure which area a change belongs to, use the table above; if it spans more than one,
@@ -241,7 +241,18 @@ supported test project and remove the known-issues copy.
 
 ---
 
-## 9. Shell and tooling rules (important for agents)
+## 9. Git and Cursor
+
+- **Do not commit or push unless the user asks.**
+- **Local save:** `save.bat "message"` commits without pushing.
+- **During work:** `test.bat <area> fast`; run full `test.bat` before done (§11).
+- **NuGet release:** use `release-nuget.bat` — see [`docs/NUGET_RELEASE.md`](docs/NUGET_RELEASE.md).
+
+Script cheat sheet: [`docs/WORKFLOWS.md`](docs/WORKFLOWS.md).
+
+---
+
+## 10. Shell and tooling rules (important for agents)
 
 **Do not get stuck fighting PowerShell quoting and newline issues.** When you need to run
 something repeatable:
@@ -257,7 +268,7 @@ wasted time on shell escaping.
 
 ---
 
-## 10. Definition of done for a change
+## 11. Definition of done for a change
 
 Before considering a task complete:
 
