@@ -9,7 +9,7 @@ rem   test.bat <area> fast             Run <area>, skip Slow tests
 rem   test.bat <area> <name>           Run tests in <area> whose full name contains <name>
 rem   test.bat <area> fast <name>      Run <area>, skip Slow, and match <name>
 rem
-rem   <area> = all | sdk | geometry | bim | devtools | knownissues
+rem   <area> = all | sdk | geometry | bim | devtools | nuget | knownissues
 rem   <name> = substring matched against the fully-qualified test name
 rem
 rem Known-issues tests document currently broken behavior and are never run by
@@ -48,6 +48,7 @@ if /I "%AREA%"=="geometry" set PROJ=tests\Ara3D.SDK.GeometryTests\Ara3D.SDK.Geom
 if /I "%AREA%"=="bim"      set PROJ=tests\Ara3D.BimOpenSchema.Tests\Ara3D.BimOpenSchema.Tests.csproj
 if /I "%AREA%"=="devtools" set PROJ=tests\Ara3D.SDK.DevTools\Ara3D.SDK.DevTools.csproj
 if /I "%AREA%"=="knownissues" set PROJ=tests\Ara3D.SDK.KnownIssues.Tests\Ara3D.SDK.KnownIssues.Tests.csproj
+if /I "%AREA%"=="nuget"      set PROJ=tests\Ara3D.SDK.NuGet.Tests\Ara3D.SDK.NuGet.Tests.csproj
 
 set FILTER=
 if %FAST%==1 set "FILTER=Category!=Slow"
@@ -72,7 +73,7 @@ if /I "%AREA%"=="all" (
 )
 
 if "%PROJ%"=="" (
-  echo Unknown area "%AREA%". Valid areas: all, sdk, geometry, bim, devtools, knownissues
+  echo Unknown area "%AREA%". Valid areas: all, sdk, geometry, bim, devtools, nuget, knownissues
   exit /b 1
 )
 

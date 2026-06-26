@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ara3D.Collections" Version="$(Ara3DVersion)" />
+    <PackageReference Include="Ara3D.SDK" Version="$(Ara3DVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Ara3DMicrosoftNetTestSdkVersion)" />
+    <PackageReference Include="NUnit" Version="$(Ara3DNUnitVersion)" />
+    <PackageReference Include="NUnit3TestAdapter" Version="$(Ara3DNUnit3TestAdapterVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+  </ItemGroup>
+
+</Project>

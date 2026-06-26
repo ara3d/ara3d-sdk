@@ -86,7 +86,13 @@ test.bat sdk OpenVIM   :: run tests in an area matching a name substring
 test.bat knownissues   :: run documented known-broken behavior tests (opt-in only)
 pack.bat               :: pack all NuGet packages from build/packages.txt (Release)
 release.bat            :: build supported SDK surface, run scoped tests, then pack
+bump-version.bat patch :: bump Ara3DVersion in Directory.Build.props
+publish-nuget.bat smoke :: build, test, pack, and run NuGet integration tests (no push)
+release-nuget.bat patch :: full NuGet release (bump, smoke, commit, tag, publish)
 ```
+
+NuGet versioning, packaging, integration tests, and publishing are documented in
+[`docs/NUGET_RELEASE.md`](docs/NUGET_RELEASE.md).
 
 Known-issues tests are intentionally excluded from default and release test runs. They
 document bugs or incomplete behavior that should fail until the underlying issue is fixed.

@@ -8,7 +8,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/ara3d/bim-open-schema</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageOutputPath>$(MSBuildProjectDirectory)\..\..\artifacts</PackageOutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj" />
+    <ProjectReference Include="..\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
   </ItemGroup>
 
 </Project>

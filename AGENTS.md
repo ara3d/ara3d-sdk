@@ -172,7 +172,7 @@ test.bat <area> <name>   :: run only tests in <area> whose full name contains <n
 test.bat knownissues     :: run known-broken behavior tests (opt-in only)
 ```
 
-`<area>` is one of `all | sdk | geometry | bim | devtools | knownissues`. The supported
+`<area>` is one of `all | sdk | geometry | bim | devtools | nuget | knownissues`. The supported
 default areas map to:
 
 | Area | Test project | Covers (changed `src/` libraries) |
@@ -181,9 +181,14 @@ default areas map to:
 | `geometry` | `Ara3D.SDK.GeometryTests` | `Ara3D.Geometry`, `Ara3D.IO.PLY` |
 | `bim` | `Ara3D.BimOpenSchema.Tests` | `Ara3D.BimOpenSchema`, `Ara3D.BimOpenSchema.IO`, glTF |
 | `devtools` | `Ara3D.SDK.DevTools` | Roslyn / `Microsoft.CodeAnalysis` helpers |
+| `nuget` | `Ara3D.SDK.NuGet.Tests` | Packed `.nupkg` restore from `artifacts/` (run after `pack.bat`) |
 
 `knownissues` maps to `Ara3D.SDK.KnownIssues.Tests`. It is not part of `test.bat`,
 `test.bat fast`, `release.bat`, or the solution default test run.
+
+`nuget` is also excluded from default `test.bat` / `test.bat fast` runs. Use `test.bat nuget`
+after packing, or `publish-nuget.bat smoke` for the full release dry-run. See
+[`docs/NUGET_RELEASE.md`](docs/NUGET_RELEASE.md).
 
 ### 8.1 Scoped testing — don't rerun everything for small changes
 
