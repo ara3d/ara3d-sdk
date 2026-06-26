@@ -26,11 +26,14 @@ group, roughly highest-impact first.
 | --- | --- | --- |
 | `src/Ara3D.Studio.API/FlowObject.cs` | `WithNewPresentation(presentation)` ignores its argument and re-passes the existing `Presentation` | `WithNewRenderSettings` and `WithNewMaterial` both delegate to it, so setting a material/render settings silently does nothing — this is a live bug, not just debt |
 | `src/Ara3D.Studio.API/FlowObject.cs` | `Transform` throws `NotImplementedException` | Studio modifier / flow-graph pipeline cannot apply transforms to a `FlowObject` end-to-end |
+| `src/Ara3D.Studio.API/FlowObject.cs` | Presentation updates may leave stale attributes when modifiers change | Flow-graph objects can carry invalid attribute state after a presentation swap |
 | `src/Ara3D.Geometry/TransformableExtensions.cs` | `AxisAngle` / `Rotate(AxisAngle)` path flagged "might be broken" (the matrix-based `RotateX/Y/Z` look fine) | Any transform chain that goes through `AxisAngle` may be wrong; needs a test to confirm or fix |
 | `src/Ara3D.IO.GltfExporter/GltfBuilder.cs` | Assumes all instances sharing a mesh share one material | Drops material variation on instanced meshes in glTF output (worked-around glTF limitation, but currently lossy) |
 | `src/Ara3D.IO.PLY/PlyImporter.cs` | `ToMesh` reads positions only; normals / colors / UV are dropped | Colored or textured PLY files lose data silently |
 | `src/Ara3D.BimOpenSchema/BimObjectModelExtensions.cs` | `GetDistinctLevels` dedups with a hard-coded `0.001` elevation epsilon | Can mis-classify nearly-coincident floors or split true duplicates |
 | `src/Ara3D.Utils/ZipUtil.cs` | `CreateEntryFromText` reported to produce sporadic zip-creation failures (author note) | Unreliable archive writes; needs reproduction + a test before relying on it |
+| `src/Ara3D.IO.BFAST/BFast.cs` | `CheckAlignment` returns early when `stream.Position == stream.Length` (open question: bail vs skip) | Alignment checks on actively-writing streams are silently skipped |
+| `src/Ara3D.Geometry/IsotropicRemesher.cs` | Face-key dedup and half-edge helper incomplete (`GetUndirectedFaceKey` should move to topology) | Vertex-collapse remeshing may miss duplicate faces or mishandle shared topology |
 
 ### Architecture & API shape (works, but hard to evolve)
 
@@ -41,7 +44,10 @@ group, roughly highest-impact first.
 | `src/Ara3D.Domo/Model.cs` | `SetPropertyValue` writes read-only auto-props via the `<name>k__BackingField` reflection trick | Relies on an undocumented compiler naming convention; brittle and slow |
 | `src/Ara3D.BimOpenSchema/BimGeometryExtensions.cs` | `ToBimGeometry` copies columns through `IDataSet` helpers instead of reading Parquet columns directly | Extra allocations and indirection on large BIM geometry loads |
 | `src/Ara3D.BimOpenSchema/BimDataBuilder.cs` | `Geometry` is a mutable property on the general builder, not a dedicated `BimGeometryBuilder` | Awkward API; easy to misuse when building BOS documents |
-| `src/Ara3D.Models/Model3DExtensions.cs` | Only a colored-mesh path; no separate non-colored fast path | Unnecessary work and allocations when color is not needed |
+| `src/Ara3D.Models/Model3DExtensions.cs` | Only a colored-mesh path; no separate non-colored fast path; copies buffers instead of reusing them; some helpers may belong in geometry extensions | Unnecessary work and allocations when building render models from large meshes |
+| `src/Ara3D.Logging/ILogger.cs` | `Create(category)` defaults to `DebugWriter` instead of inheriting the parent logger's writer | Child loggers lose custom writers; hard to route logs consistently in pipelines |
+| `src/Ara3D.Utils/PathUtil.cs` | Mixed string and `FilePath`/`DirectoryPath` API (class-level note to finish the migration) | Easy to misuse paths at call sites; inconsistent conventions across the SDK |
+| `src/Ara3D.Utils/ProfilingUtil.cs` | Direct `Console` references in profiling helpers | Profiling output cannot be redirected in headless or CI runs |
 | `src/Ara3D.Logging/Job.cs` | Job / chained-progress API is commented out and unfinished | Progress reporting across multi-step pipelines stays ad hoc |
 | `src/Ara3D.IO.SharpGLTF/` | Vendored SharpGLTF fork with scattered validation / extension TODOs | Drift from upstream; glTF edge cases (extensions, external images, animation pointer) may be under-validated |
 
@@ -59,6 +65,7 @@ group, roughly highest-impact first.
 | `ext/Ara3D.IfcLoader/IfcEntityResolver.cs` | Creates an `IfcEntity` for every STEP entity without filtering | Memory and parse cost on large IFC files |
 | `ext/Ara3D.Bowerbird.Revit2025/` | Hard-coded to Revit 2025; upgrade path noted in TODO | Each Revit year needs a sibling project or a version-abstraction layer |
 | `ext/Ara3D.Utils.Wpf/ObservablePair.cs` | WPF-specific helper that "should move to shared utilities" | Minor; duplication risk if similar binding helpers are needed elsewhere |
+| `tests/Ara3D.BimOpenSchema.Tests/GltfMaterialFactory.cs` | glTF → `Models.Material` conversion lives in test code with a "move to models" note | Duplicated or lost if tests change; belongs in production code if the mapping is real |
 
 ---
 

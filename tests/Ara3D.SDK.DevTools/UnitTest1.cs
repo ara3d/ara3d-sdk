@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Ara3D.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -140,11 +141,13 @@ namespace Ara3D.SDK.DevTools
             return sb;
         }
 
+        static DirectoryPath PropKitSourceFolder
+            => PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "src", "Ara3D.PropKit");
+
         [Test, Explicit]
         public static void GetProjectSummary()
         {
-            var dir = @"..\..\..\..\..\src\Ara3D.PropKit\";
-            var sb = ExtractCode(dir);
+            var sb = ExtractCode(PropKitSourceFolder.Value);
             Console.WriteLine(sb.ToString());
         }
 
@@ -159,7 +162,7 @@ namespace Ara3D.SDK.DevTools
         [Test, Explicit]
         public static void CreateProjectReadme()
         {
-            var dir = @"..\..\..\..\..\src\Ara3D.PropKit\";
+            _ = PropKitSourceFolder;
         }
     }
 }

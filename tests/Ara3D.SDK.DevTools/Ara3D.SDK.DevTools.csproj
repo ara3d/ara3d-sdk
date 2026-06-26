@@ -23,4 +23,8 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
+  </ItemGroup>
+
 </Project>
