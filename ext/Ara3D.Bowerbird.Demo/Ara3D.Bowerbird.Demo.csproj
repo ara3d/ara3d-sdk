@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(Ara3DNewtonsoftJsonVersion)" />
+    <PackageReference Include="System.Resources.Extensions" Version="$(Ara3DSystemResourcesExtensionsVersion)" />
   </ItemGroup>
 
   <ItemGroup>

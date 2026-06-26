@@ -8,8 +8,8 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(Ara3DNewtonsoftJsonVersion)" />
+    <PackageReference Include="System.IO.Pipes" Version="$(Ara3DSystemIoPipesVersion)" />
   </ItemGroup>
 
   <ItemGroup>

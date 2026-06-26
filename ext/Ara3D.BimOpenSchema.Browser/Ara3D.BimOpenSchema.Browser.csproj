@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.105.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Parquet.Net" Version="5.2.0" />
+    <PackageReference Include="ClosedXML" Version="$(Ara3DClosedXmlVersion)" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(Ara3DNewtonsoftJsonVersion)" />
+    <PackageReference Include="Parquet.Net" Version="$(Ara3DParquetNetVersion)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,9 +15,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.105.0" />
-    <PackageReference Include="DuckDB.NET.Data.Full" Version="1.3.2" />
-    <PackageReference Include="Parquet.Net" Version="5.2.0" />
+    <PackageReference Include="ClosedXML" Version="$(Ara3DClosedXmlVersion)" />
+    <PackageReference Include="DuckDB.NET.Data.Full" Version="$(Ara3DDuckDbNetDataFullVersion)" />
+    <PackageReference Include="Parquet.Net" Version="$(Ara3DParquetNetVersion)" />
   </ItemGroup>
 
   <ItemGroup>
