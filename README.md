@@ -83,6 +83,8 @@ test.bat fast          :: run all areas, skip Slow file-I/O tests
 test.bat geometry      :: run only one area's tests (all | sdk | geometry | bim | devtools)
 test.bat geometry fast :: run one area, skip Slow tests
 test.bat sdk OpenVIM   :: run tests in an area matching a name substring
+pack.bat               :: pack all NuGet packages from build/packages.txt (Release)
+release.bat            :: build supported SDK surface, run scoped tests, then pack
 ```
 
 Let's build something amazing together 🚀
