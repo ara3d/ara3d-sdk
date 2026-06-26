@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup Condition="'$(IncludeBuildOutput)' == 'false'">
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+</Project>

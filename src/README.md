@@ -16,6 +16,10 @@ or reference individual projects from this folder.
 | Project | Description |
 | --- | --- |
 | [Ara3D.SDK](Ara3D.SDK) | Bundles most libraries below into a single NuGet package |
+| [Ara3D.SDK.Geometry](Ara3D.SDK.Geometry) | Convenience bundle for geometry, models, memory, and SIMD |
+| [Ara3D.SDK.IO](Ara3D.SDK.IO) | Convenience bundle for BFAST, G3D, VIM, PLY, STEP, GeoJSON, and glTF |
+| [Ara3D.SDK.BIM](Ara3D.SDK.BIM) | Convenience bundle for BIM Open Schema model and IO packages |
+| [Ara3D.SDK.Studio](Ara3D.SDK.Studio) | Convenience bundle for Studio API, scripting, services, PropKit, and Roslyn helpers |
 
 ---
 

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Description>Studio, scripting, property, service, and Roslyn helper packages for Ara 3D tools.</Description>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <PackageType>Dependency</PackageType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
+    <ProjectReference Include="..\Ara3D.ScriptService\Ara3D.ScriptService.csproj" />
+    <ProjectReference Include="..\Ara3D.Services\Ara3D.Services.csproj" />
+    <ProjectReference Include="..\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
+    <ProjectReference Include="..\Ara3D.WorkItems\Ara3D.WorkItems.csproj" />
+  </ItemGroup>
+</Project>
