@@ -1,0 +1,13 @@
+<Project>
+  <Import Project="..\Directory.Build.props" />
+
+  <PropertyGroup>
+    <IsPackable Condition="'$(IsPackable)' == ''">true</IsPackable>
+    <PackageReadmeFile Condition="'$(PackageReadmeFile)' == '' And Exists('$(MSBuildProjectDirectory)\README.md')">README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)\README.md')">
+    <None Remove="README.md" />
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>
