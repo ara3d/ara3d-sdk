@@ -364,10 +364,9 @@ public static unsafe class StepTokenizer
 
         var n = tokens.Count;
 
-        var type = ParseToken(ref cur, end);
-        if (type != StepTokenType.BeginGroup)
+        if (!AdvancePast(ref cur, end, StepTokenType.BeginGroup))
             throw new Exception("Expected the beginning of a group");
-                
+
         ParseList(ref cur, end, tokens);
 
         if (!AdvancePast(ref cur, end, StepTokenType.Semicolon))

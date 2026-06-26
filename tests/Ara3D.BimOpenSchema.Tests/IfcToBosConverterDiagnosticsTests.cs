@@ -21,7 +21,7 @@ public static class IfcToBosConverterDiagnosticsTests
         new("model_0.ifc", true),
         new("AC20-Institute-Var-2.ifc", true),
         new("schependomlaan.ifc", true),
-        new("AC20-FZK-Haus.ifc", false),
+        new("AC20-FZK-Haus.ifc", true),
     ];
 
     public sealed record ConversionSnapshot(

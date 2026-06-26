@@ -38,6 +38,27 @@ public static class IfcStructuralRelationsTests
     }
 
     [Test]
+    public static void ParseDefinitionWithExtraWhitespaceBeforeGroup()
+    {
+        const string ifc = """
+            ISO-10303-21;
+            HEADER;
+            FILE_DESCRIPTION(('ViewDefinition'),'2;1');
+            FILE_NAME('whitespace-test.ifc','2024-01-01T00:00:00',(''),(''),'','','');
+            FILE_SCHEMA(('IFC2X3'));
+            ENDSEC;
+            DATA;
+            #1= IFCWALL  ($,$,$,$,$,$);
+            ENDSEC;
+            END-ISO-10303-21;
+            """;
+
+        using var doc = new StepDocument(Encoding.ASCII.GetBytes(ifc).Fix());
+        Assert.That(doc.Definitions, Has.Count.EqualTo(1));
+        Assert.That(doc.Definitions[0].Id, Is.EqualTo(1));
+    }
+
+    [Test]
     public static void ParseStructuralRelations()
     {
         var (doc, resolver) = Parse();
