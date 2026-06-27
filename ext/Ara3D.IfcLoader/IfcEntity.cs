@@ -27,6 +27,18 @@ public class IfcEntity
     public string GetIfcRootGlobalId()
         => GetString(0);
 
+    /// <summary>Display name for IfcRoot (attr 2) and material/layer entities (attr 0).</summary>
+    public string GetEntityLabel()
+    {
+        var rootName = GetString(2);
+        if (!string.IsNullOrEmpty(rootName))
+            return rootName;
+        var firstName = GetString(0);
+        if (!string.IsNullOrEmpty(firstName))
+            return firstName;
+        return $"#{Id}";
+    }
+
     public StepToken GetValue(int index)
         => Attributes.Count > index ? Attributes[index] : default;
 

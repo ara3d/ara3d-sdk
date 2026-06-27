@@ -30,6 +30,7 @@ public class IfcToBosConverter
     public Dictionary<string, EntityIndex> CatEntities = new();
     public FilePath Input;
     public IDataSet DataSet;
+    DocumentIndex _docIndex = (DocumentIndex)(-1);
 
     public EntityIndex GetCatEntityIndex(int ifcId)
     {
@@ -49,6 +50,30 @@ public class IfcToBosConverter
     
     public EntityIndex GetBosEntityIndexFromIfc(int id)
         => IfcIdToBosId.GetValueOrDefault(id, InvalidEntityIndex);
+
+    public EntityIndex EnsureBosEntity(int ifcId)
+    {
+        if (ifcId <= 0)
+            return InvalidEntityIndex;
+
+        var existing = GetBosEntityIndexFromIfc(ifcId);
+        if (existing != InvalidEntityIndex)
+            return existing;
+
+        var entity = GetEntityOrDefault(ifcId);
+        if (entity == null || !IsMaybeIfcElement(entity))
+            return InvalidEntityIndex;
+
+        var catEi = GetCatEntityIndex(ifcId);
+        var name = entity.GetEntityLabel();
+        var gid = entity.GetIfcRootGlobalId();
+        var typeEi = InvalidEntityIndex;
+        if (TypeRelations.InstancesToTypes.TryGetValue(ifcId, out var typeId))
+            typeEi = GetBosEntityIndexFromIfc(typeId);
+        var ei = BimDataBuilder.AddEntity(ifcId, gid, _docIndex, name, catEi, typeEi);
+        IfcIdToBosId.Add(ifcId, ei);
+        return ei;
+    }
 
     public static readonly HashSet<string> HiddenIfcNames = new([
         "IFCSITE",
@@ -138,13 +163,13 @@ public class IfcToBosConverter
         logger?.Log($"Found {BosEntities.Count} entities, among {IfcFile.EntityResolver.EntityLookup.Count} total entities");
 
         // TODO: compute this correctly 
-        var docIndex = (DocumentIndex)(-1);
+        _docIndex = (DocumentIndex)(-1);
 
         logger?.Log($"Creating categories");
         var uniqueNames = BosEntities.Select(e => e.GetEntityName().DecodeIfc()).Distinct().ToList();
         foreach (var stepEntityName in uniqueNames)
         {
-            var ei = BimDataBuilder.AddEntity(-1, "", docIndex, stepEntityName, (EntityIndex)(-1), (EntityIndex)(-1));
+            var ei = BimDataBuilder.AddEntity(-1, "", _docIndex, stepEntityName, (EntityIndex)(-1), (EntityIndex)(-1));
             CatEntities.Add(stepEntityName, ei);
         }
 
@@ -155,9 +180,9 @@ public class IfcToBosConverter
         {
             var e = GetEntity(id);
             var catEi = GetCatEntityIndex(id);
-            var name = e.GetIfcRootName();
+            var name = e.GetEntityLabel();
             var gid = e.GetIfcRootGlobalId();
-            var ei = BimDataBuilder.AddEntity(id, gid, docIndex, name, catEi, InvalidEntityIndex);
+            var ei = BimDataBuilder.AddEntity(id, gid, _docIndex, name, catEi, InvalidEntityIndex);
             IfcIdToBosId.Add(id, ei);
         }
 
@@ -174,28 +199,33 @@ public class IfcToBosConverter
             var e = GetEntity(id);
             var catEi = GetCatEntityIndex(id);
             var typeEi = InvalidEntityIndex;
-            var name = e.GetIfcRootName();
+            var name = e.GetEntityLabel();
             var gid = e.GetIfcRootGlobalId();
             if (TypeRelations.InstancesToTypes.TryGetValue(id, out var typeId))
                 typeEi = GetBosEntityIndexFromIfc(typeId);
             catIds.Add((int)catEi);
-            var ei = BimDataBuilder.AddEntity(id, gid, docIndex, name, catEi, typeEi);
+            var ei = BimDataBuilder.AddEntity(id, gid, _docIndex, name, catEi, typeEi);
             IfcIdToBosId.Add(id, ei);
         }
 
-        logger?.Log("Creating structural relations");
-        var structuralRels = new IfcStructuralRelations(IfcFile);
+        logger?.Log("Creating relations");
+        var ifcRels = new IfcRelations(IfcFile);
         var addedRelations = 0;
-        foreach (var rel in structuralRels.Relations)
+        foreach (var rel in ifcRels.Relations)
         {
-            var a = GetBosEntityIndexFromIfc(rel.From);
-            var b = GetBosEntityIndexFromIfc(rel.To);
+            var a = EnsureBosEntity(rel.From);
+            var b = EnsureBosEntity(rel.To);
             if (a == InvalidEntityIndex || b == InvalidEntityIndex)
                 continue;
-            BimDataBuilder.AddRelation(a, b, IfcStructuralRelationMapping.ToBos(rel.Kind));
+            BimDataBuilder.AddRelation(a, b, IfcRelationMapping.ToBos(rel.Kind));
             addedRelations++;
         }
-        logger?.Log($"Added {addedRelations} structural relations");
+        logger?.Log($"Added {addedRelations} relations");
+        foreach (var (type, count) in BimDataBuilder.Relations
+                     .GroupBy(r => r.RelationType)
+                     .Select(g => (g.Key, count: g.Count()))
+                     .OrderByDescending(x => x.count))
+            logger?.Log($"  {type}: {count}");
 
         // TEMP:
         logger?.Log($"Found {catIds.Count} unique cat ids");

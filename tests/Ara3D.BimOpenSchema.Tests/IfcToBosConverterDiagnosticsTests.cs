@@ -127,10 +127,13 @@ public static class IfcToBosConverterDiagnosticsTests
         OutputRelationBreakdown(roundTripData, logger);
         OutputTopCategories(converter, logger);
 
-        AssertConversion(converter, snapshot, roundTripData, roundTripGeometry);
+        AssertConversion(converter, snapshot, roundTripData, roundTripGeometry, sample.FileName);
 
         converter.IfcFile.Dispose();
     }
+
+    static int RelationCountOf(IBimData data, RelationType type)
+        => data.Relations.Count(r => r.RelationType == type);
 
     static ConversionSnapshot CaptureSnapshot(IfcToBosConverter converter, FilePath input)
     {
@@ -204,14 +207,29 @@ public static class IfcToBosConverterDiagnosticsTests
         IfcToBosConverter converter,
         ConversionSnapshot snapshot,
         IBimData roundTrip,
-        BimGeometry roundTripGeometry)
+        BimGeometry roundTripGeometry,
+        string fileName)
     {
         Assert.That(snapshot.BosCandidateEntities, Is.GreaterThan(0), "Expected convertible IFC entities");
         Assert.That(snapshot.MappedIfcIds, Is.GreaterThan(0), "Expected mapped IFC ids");
         Assert.That(snapshot.InstanceEntityCount, Is.GreaterThan(0), "Expected BOS instance entities");
         Assert.That(snapshot.MeshCount, Is.GreaterThan(0), "Expected tessellated meshes");
         Assert.That(snapshot.GeometryInstanceCount, Is.GreaterThan(0), "Expected geometry instances");
-        Assert.That(snapshot.RelationCount, Is.GreaterThan(0), "Expected structural relations");
+        Assert.That(snapshot.RelationCount, Is.GreaterThan(0), "Expected relations");
+
+        if (fileName == "model_0.ifc")
+        {
+            Assert.That(RelationCountOf(roundTrip, RelationType.HasMaterial), Is.GreaterThan(0));
+            Assert.That(RelationCountOf(roundTrip, RelationType.Voids), Is.GreaterThan(0));
+            Assert.That(RelationCountOf(roundTrip, RelationType.Fills), Is.GreaterThan(0));
+            Assert.That(RelationCountOf(roundTrip, RelationType.MemberOf), Is.GreaterThan(0));
+        }
+
+        if (fileName == "schependomlaan.ifc")
+        {
+            Assert.That(RelationCountOf(roundTrip, RelationType.HasLayer), Is.GreaterThan(0));
+            Assert.That(RelationCountOf(roundTrip, RelationType.HasMaterial), Is.GreaterThan(0));
+        }
 
         Assert.That(
             converter.BosEntities.Any(e => e.GetEntityName().StartsWith("IFCREL", StringComparison.Ordinal)),
