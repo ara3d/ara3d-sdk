@@ -400,3 +400,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Test and tool output under data/
+data/output/
