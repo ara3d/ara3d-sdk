@@ -5,6 +5,7 @@ planned and tackled deliberately instead of all at once.
 
 **How to use this file** (see [`../AGENTS.md`](../AGENTS.md) §6):
 
+- **Prioritized backlog:** [`TODO.md`](TODO.md) — what to work on next (P0–P4).
 - When you take a shortcut or spot an improvement that is out of scope, add a `// TODO:`
   marker in the code **and** an entry here.
 - Each entry: where (file/area), what, and why it matters. Keep it specific and actionable.
@@ -24,6 +25,8 @@ group, roughly highest-impact first.
 
 | Area / file | What | Why it matters |
 | --- | --- | --- |
+| `ext/Ara3D.BimOpenSchema.IO/IfcToBosConverter.cs` | IFC string values not passed through `DecodeIfc` before BOS write (entity names, parameter values) | Non-ASCII and escaped IFC strings appear garbled or unreadable in BOS output; decoder already exists in `IfcStringDecoder.cs` |
+| `ext/Ara3D.IfcLoader/IfcEntity.cs`, `IfcToBosConverter.cs` | `IfcSpace` BOS `Name` uses room number (`IfcRoot.Name`) instead of display name (`LongName`) | Room JSON and BOS queries show numbers where users expect labels; room number should be a parameter |
 | `src/Ara3D.Studio.API/FlowObject.cs` | `WithNewPresentation(presentation)` ignores its argument and re-passes the existing `Presentation` | `WithNewRenderSettings` and `WithNewMaterial` both delegate to it, so setting a material/render settings silently does nothing — this is a live bug, not just debt |
 | `src/Ara3D.Studio.API/FlowObject.cs` | `Transform` throws `NotImplementedException` | Studio modifier / flow-graph pipeline cannot apply transforms to a `FlowObject` end-to-end |
 | `src/Ara3D.Studio.API/FlowObject.cs` | Presentation updates may leave stale attributes when modifiers change | Flow-graph objects can carry invalid attribute state after a presentation swap |

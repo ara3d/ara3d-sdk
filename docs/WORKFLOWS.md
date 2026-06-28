@@ -15,4 +15,5 @@
 **Opt-in tests:** `test.bat knownissues`, `test.bat nuget` (after pack).
 
 Coding rules and test areas: [`AGENTS.md`](../AGENTS.md).  
+Prioritized backlog: [`TODO.md`](TODO.md). Technical debt detail: [`TECHNICAL_DEBT.md`](TECHNICAL_DEBT.md).  
 NuGet release: [`NUGET_RELEASE.md`](NUGET_RELEASE.md).
