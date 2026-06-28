@@ -10,7 +10,10 @@ namespace Ara3D.BimOpenSchema.Tests;
 [TestFixture]
 public static class IfcToBosConverterDiagnosticsTests
 {
-    public sealed record IfcSample(string FileName, bool ExpectLoadSuccess);
+    public sealed record IfcSample(string FileName, bool ExpectLoadSuccess)
+    {
+        public FilePath Path => DataFolder.RelativeFile(FileName);
+    }
 
     public static DirectoryPath DataFolder => PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "data");
 

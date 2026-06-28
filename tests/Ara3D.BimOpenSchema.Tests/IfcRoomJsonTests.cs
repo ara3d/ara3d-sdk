@@ -44,9 +44,9 @@ public static class IfcRoomJsonTests
     public static IfcSample[] Samples => IfcToBosConverterDiagnosticsTests.Samples;
 
     [TestCaseSource(nameof(Samples))]
-    public static void LoadIfcSample(IfcSample sample)
+    public static void ParseRooms(IfcSample sample)
     {
-        var path = WriteTempIfc(RoomIfc);
+        var path = sample.Path;
         var logger = Logger.Console;
         IfcToBosConverter? converter = null;
         converter = new IfcToBosConverter(path);
@@ -59,6 +59,7 @@ public static class IfcRoomJsonTests
         }
     }
 
+    [Test]
     public static void ConvertIfcToRoomJson()
     {
         var path = WriteTempIfc(RoomIfc);
