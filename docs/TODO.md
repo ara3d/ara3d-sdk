@@ -46,18 +46,16 @@ Estimates are planning hints, not commitments. Update when an item splits or sco
 | Order | Item | Effort | Why |
 | --- | --- | --- | --- |
 | 1 | P0 #1 `FlowObject.WithNewPresentation` | XS | One-line fix; unblocks Studio modifiers |
-| 2 | Now #14–16 Land IFC relations + `_docIndex` + converter tests | M | Finish in-flight work; closes biggest BOS gap |
-| 2b | P1 #43–44 IFC string decoding + `IfcSpace` naming | S | Correct BOS labels and room metadata on real IFC files |
-| 3 | P0 #3 `AxisAngle` test + fix | M | Confirm or kill a geometry correctness risk |
-| 4 | P2 #17 `IfcEntityResolver` filtering | M | High payoff on real IFC files; pairs with relations work |
-| 5 | P0 #4 `FlowObject.Transform` | L | Unblocks remaining Studio pipeline |
+| 2 | P0 #3 `AxisAngle` test + fix | M | Confirm or kill a geometry correctness risk |
+| 3 | P0 #4 `FlowObject.Transform` | L | Unblocks remaining Studio pipeline |
+| 4 | P2 #17 `IfcEntityResolver` filtering | M | High payoff on real IFC files |
+| 5 | P1 #6 glTF exporter per-instance materials | M | Fixes lossy glTF export |
 
 ---
 
 ## P0 — Fix first (live bugs)
 
 - [ ] **1. [XS] `FlowObject.WithNewPresentation` ignores its argument** — `src/Ara3D.Studio.API/FlowObject.cs` lines 32–33 pass `Presentation` instead of `presentation`, so `WithNewMaterial` / `WithNewRenderSettings` do nothing.
-- [ ] **2. [S] IFC document index hard-coded to `-1`** — `ext/Ara3D.BimOpenSchema.IO/IfcToBosConverter.cs` lines 165–166. Every IFC entity gets `InvalidDocumentIndex`. Fix: call `BimDataBuilder.AddDocument(...)` (see `ext/Ara3D.Bowerbird.RevitSamples/BosDocumentBuilder.cs` line 37) using IFC file name/path from `Input`.
 - [ ] **3. [M] `AxisAngle` / `Rotate(AxisAngle)` may be wrong** — `src/Ara3D.Geometry/TransformableExtensions.cs` lines 23–37. Add a focused geometry test first, then fix or remove the path.
 - [ ] **4. [L] `FlowObject.Transform` throws `NotImplementedException`** — `src/Ara3D.Studio.API/FlowObject.cs` lines 50–55. Blocks Studio modifier pipeline end-to-end.
 
@@ -65,18 +63,12 @@ Estimates are planning hints, not commitments. Update when an item splits or sco
 
 ## Now — In-flight work
 
-Uncommitted IFC-relations refactor. Complete and land as one coherent slice:
-
-- [ ] **14. [M] Land IFC relations consolidation** — `ext/Ara3D.IfcLoader/IfcRelations.cs`, `ext/Ara3D.BimOpenSchema.IO/IfcRelationMapping.cs`, `ext/Ara3D.IfcLoader/IfcMaterialSelectResolver.cs`; remove deleted structural-relation files; wire in `IfcToBosConverter.cs`.
-- [ ] **15. [S] Add missing converter-level relation tests** — `tests/Ara3D.BimOpenSchema.Tests/IfcRelationsTests.cs` has parse tests for openings/groups/projections but only converter tests for structural + material relations. Add `ConverterEmitsOpeningRelations` and `ConverterEmitsGroupAndProjectRelations`.
-- [ ] **16. [XS] Fix `_docIndex` (P0 #2) in the same PR** — natural companion to relations work since both touch `IfcToBosConverter`.
+None currently. (IFC-relations refactor landed — see Resolved.)
 
 ---
 
 ## P1 — Correctness gaps
 
-- [ ] **43. [S] Apply IFC string decoding consistently in IFC→BOS conversion** — `ext/Ara3D.IfcLoader/IfcStringDecoder.cs` (`DecodeIfc`) handles STEP escape sequences (`\X2\`, `\S\`, etc.) but is only applied to property-set and property *names* in `IfcToBosConverter.cs` (lines 250, 288). Entity names from `GetEntityLabel()` / `GetString()` and string parameter *values* in `ProcessPropValue` (line 278) are stored raw. Decode all user-facing IFC strings before writing BOS entities, descriptors, and parameter values.
-- [ ] **44. [S] Fix `IfcSpace` entity naming (room number vs display name)** — `IfcEntity.GetEntityLabel()` (`ext/Ara3D.IfcLoader/IfcEntity.cs` line 31) uses only `IfcRoot.Name` (attr 2). For `IfcSpace`, exporters often put the room number in `Name` and the descriptive label in `LongName` (attr 7 on `IfcSpatialStructureElement`). BOS entity `Name` should prefer `LongName` when present; the short `Name` should be stored as a parameter (e.g. `Room Number`), matching the Revit path in `BosDocumentBuilder.ProcessRoom`. Add tests via `IfcRelationsTests` or a dedicated converter test with a minimal `IFCSPACE` fixture.
 - [ ] **5. [M] Presentation swap may leave stale attributes** — `src/Ara3D.Studio.API/FlowObject.cs` line 28.
 - [ ] **6. [M] glTF exporter drops per-instance materials** — `src/Ara3D.IO.GltfExporter/GltfBuilder.cs` line 122.
 - [ ] **7. [M] PLY import drops normals / colors / UV** — `src/Ara3D.IO.PLY/PlyImporter.cs` line 296.
@@ -134,6 +126,12 @@ Uncommitted IFC-relations refactor. Complete and land as one coherent slice:
 
 Move completed items here with a one-line note on the resolution, then delete from the
 sections above.
+
+- [x] **14. [M] Land IFC relations consolidation** — committed and pushed; `IfcRelations.cs` / `IfcRelationMapping.cs` / `IfcMaterialSelectResolver.cs` wired into `IfcToBosConverter`, old structural-relation files removed.
+- [x] **2 / 16. [S] IFC document index hard-coded to `-1`** — accepted as-is: single-document IFC→BOS conversion does not need a per-document index, so `_docIndex = -1` is intentional; no `AddDocument` call required. `// TODO:` marker removed.
+- [x] **15. [S] Converter-level relation tests (openings + groups)** — added `ConverterEmitsOpeningRelations` and `ConverterEmitsGroupAndProjectRelations` to `IfcRelationsTests.cs`.
+- [x] **43. [S] Consistent IFC string decoding** — `DecodeIfc` now applied to entity display names (`GetEntityLabel`) and string parameter values in `IfcToBosConverter`; covered by `ConverterDecodesEscapedEntityName` / `ConverterDecodesEscapedStringPropertyValue`.
+- [x] **44. [S] IfcSpace naming** — `GetEntityLabel` prefers `LongName` for `IfcSpace`, stops surfacing the GlobalId GUID as a name (unset `$`/`*` now treated as empty via `GetStringOrEmpty`); the room number (`Name`) is preserved as an `Ifc:Room:Number` parameter. Covered by `ConverterUsesSpaceLongNameAndKeepsRoomNumber`.
 
 <!-- Example:
 - [x] **1. [XS] FlowObject.WithNewPresentation** — fixed in commit abc123; passes Studio modifier tests.

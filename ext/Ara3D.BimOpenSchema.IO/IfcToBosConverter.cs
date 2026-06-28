@@ -65,7 +65,7 @@ public class IfcToBosConverter
             return InvalidEntityIndex;
 
         var catEi = GetCatEntityIndex(ifcId);
-        var name = entity.GetEntityLabel();
+        var name = entity.GetEntityLabel().DecodeIfc();
         var gid = entity.GetIfcRootGlobalId();
         var typeEi = InvalidEntityIndex;
         if (TypeRelations.InstancesToTypes.TryGetValue(ifcId, out var typeId))
@@ -162,7 +162,6 @@ public class IfcToBosConverter
 
         logger?.Log($"Found {BosEntities.Count} entities, among {IfcFile.EntityResolver.EntityLookup.Count} total entities");
 
-        // TODO: compute this correctly 
         _docIndex = (DocumentIndex)(-1);
 
         logger?.Log($"Creating categories");
@@ -180,7 +179,7 @@ public class IfcToBosConverter
         {
             var e = GetEntity(id);
             var catEi = GetCatEntityIndex(id);
-            var name = e.GetEntityLabel();
+            var name = e.GetEntityLabel().DecodeIfc();
             var gid = e.GetIfcRootGlobalId();
             var ei = BimDataBuilder.AddEntity(id, gid, _docIndex, name, catEi, InvalidEntityIndex);
             IfcIdToBosId.Add(id, ei);
@@ -199,13 +198,30 @@ public class IfcToBosConverter
             var e = GetEntity(id);
             var catEi = GetCatEntityIndex(id);
             var typeEi = InvalidEntityIndex;
-            var name = e.GetEntityLabel();
+            var name = e.GetEntityLabel().DecodeIfc();
             var gid = e.GetIfcRootGlobalId();
             if (TypeRelations.InstancesToTypes.TryGetValue(id, out var typeId))
                 typeEi = GetBosEntityIndexFromIfc(typeId);
             catIds.Add((int)catEi);
             var ei = BimDataBuilder.AddEntity(id, gid, _docIndex, name, catEi, typeEi);
             IfcIdToBosId.Add(id, ei);
+        }
+
+        // When an IfcSpace has a LongName, GetEntityLabel uses it as the display name, so the
+        // short Name (the room number) would be lost. Preserve it as a "Number" parameter.
+        foreach (var e in BosEntities)
+        {
+            if (e.GetEntityName() != "IFCSPACE")
+                continue;
+            if (string.IsNullOrEmpty(e.GetStringOrEmpty(7)))
+                continue;
+            var number = e.GetStringOrEmpty(2).DecodeIfc();
+            if (string.IsNullOrEmpty(number))
+                continue;
+            var bosId = GetBosEntityIndexFromIfc(e.Id);
+            if (bosId == InvalidEntityIndex)
+                continue;
+            BimDataBuilder.AddParameter(bosId, number, "Ifc:Room:Number", "", "Ifc");
         }
 
         logger?.Log("Creating relations");
@@ -275,7 +291,7 @@ public class IfcToBosConverter
                         }
                         else if (val.IsString)
                         {
-                            var str = val.AsString();
+                            var str = val.AsString().DecodeIfc();
                             BimDataBuilder.AddParameter(bosId, str, name, "", propSetName);
                         }
                         else

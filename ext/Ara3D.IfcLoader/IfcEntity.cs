@@ -27,15 +27,30 @@ public class IfcEntity
     public string GetIfcRootGlobalId()
         => GetString(0);
 
-    /// <summary>Display name for IfcRoot (attr 2) and material/layer entities (attr 0).</summary>
+    /// <summary>Display name: IfcSpace.LongName (attr 7), then IfcRoot.Name (attr 2), then material name (attr 0).</summary>
     public string GetEntityLabel()
     {
-        var rootName = GetString(2);
+        // IfcSpace exporters typically put the room number in Name and the descriptive label in LongName.
+        if (GetEntityName() == "IFCSPACE")
+        {
+            var longName = GetStringOrEmpty(7);
+            if (!string.IsNullOrEmpty(longName))
+                return longName;
+        }
+
+        var rootName = GetStringOrEmpty(2);
         if (!string.IsNullOrEmpty(rootName))
             return rootName;
-        var firstName = GetString(0);
-        if (!string.IsNullOrEmpty(firstName))
-            return firstName;
+
+        // Material/layer entities carry their name in attr 0; for IfcRoot entities attr 0 is the GlobalId GUID,
+        // so only fall back to attr 0 for materials (otherwise we would surface a GUID as a name).
+        if (GetEntityName().StartsWith("IFCMATERIAL", StringComparison.Ordinal))
+        {
+            var materialName = GetStringOrEmpty(0);
+            if (!string.IsNullOrEmpty(materialName))
+                return materialName;
+        }
+
         return $"#{Id}";
     }
 
@@ -44,6 +59,15 @@ public class IfcEntity
 
     public string GetString(int index)
         => Attributes.Count > index ? Attributes[index].ToString().StripQuotes() : string.Empty;
+
+    /// <summary>Like <see cref="GetString"/> but maps unset ($) / redeclared (*) STEP attributes to empty.</summary>
+    public string GetStringOrEmpty(int index)
+    {
+        if (Attributes.Count <= index)
+            return string.Empty;
+        var token = Attributes[index];
+        return token.IsUnassignedOrRedeclared ? string.Empty : token.ToString().StripQuotes();
+    }
 
     public IReadOnlyList<StepToken> GetArray(int index)
         => Attributes.Count > index ? GetAttribute(index).AsList(Document) : [];

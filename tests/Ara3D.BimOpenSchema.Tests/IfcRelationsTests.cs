@@ -127,6 +127,48 @@ public static class IfcRelationsTests
         END-ISO-10303-21;
         """;
 
+    const string SpaceIfc = """
+        ISO-10303-21;
+        HEADER;
+        FILE_DESCRIPTION(('ViewDefinition'),'2;1');
+        FILE_NAME('space-naming-test.ifc','2024-01-01T00:00:00',(''),(''),'','','');
+        FILE_SCHEMA(('IFC2X3'));
+        ENDSEC;
+        DATA;
+        #10=IFCSPACE('space-gid',$,'101',$,$,$,$,'Office',.ELEMENT.,.INTERNAL.,$);
+        ENDSEC;
+        END-ISO-10303-21;
+        """;
+
+    const string EscapedNameIfc = """
+        ISO-10303-21;
+        HEADER;
+        FILE_DESCRIPTION(('ViewDefinition'),'2;1');
+        FILE_NAME('escaped-name-test.ifc','2024-01-01T00:00:00',(''),(''),'','','');
+        FILE_SCHEMA(('IFC2X3'));
+        ENDSEC;
+        DATA;
+        #10=IFCWALL('wall-gid',$,'Caf\X2\00E9\X0\',$,$,$,$);
+        ENDSEC;
+        END-ISO-10303-21;
+        """;
+
+    const string EscapedPropertyValueIfc = """
+        ISO-10303-21;
+        HEADER;
+        FILE_DESCRIPTION(('ViewDefinition'),'2;1');
+        FILE_NAME('escaped-property-test.ifc','2024-01-01T00:00:00',(''),(''),'','','');
+        FILE_SCHEMA(('IFC2X3'));
+        ENDSEC;
+        DATA;
+        #10=IFCWALL('wall-gid',$,'Wall',$,$,$,$);
+        #11=IFCPROPERTYSINGLEVALUE('Comment',$,'Caf\X2\00E9\X0\',$);
+        #12=IFCPROPERTYSET('ps-gid',$,'Pset_Test',$,(#11));
+        #13=IFCRELDEFINESBYPROPERTIES('rd-gid',$,$,$,(#10),#12);
+        ENDSEC;
+        END-ISO-10303-21;
+        """;
+
     static (StepDocument Doc, IfcEntityResolver Resolver) Parse(string ifc)
     {
         var doc = new StepDocument(Encoding.ASCII.GetBytes(ifc).Fix());
@@ -308,6 +350,126 @@ public static class IfcRelationsTests
             converter?.IfcFile.Dispose();
             try { File.Delete(path); } catch (IOException) { }
         }
+    }
+
+    [Test]
+    public static void ConverterEmitsOpeningRelations()
+    {
+        var path = WriteTempIfc(OpeningIfc);
+        IfcToBosConverter? converter = null;
+        try
+        {
+            converter = new IfcToBosConverter(path);
+            var bosRels = converter.BimDataBuilder.Relations;
+            var ifcToBos = converter.IfcIdToBosId;
+
+            AssertRelation(bosRels, ifcToBos, 11, 10, RelationType.Voids);
+            AssertRelation(bosRels, ifcToBos, 20, 11, RelationType.Fills);
+        }
+        finally
+        {
+            converter?.IfcFile.Dispose();
+            try { File.Delete(path); } catch (IOException) { }
+        }
+    }
+
+    [Test]
+    public static void ConverterEmitsGroupAndProjectRelations()
+    {
+        var path = WriteTempIfc(GroupAndProjectIfc);
+        IfcToBosConverter? converter = null;
+        try
+        {
+            converter = new IfcToBosConverter(path);
+            var bosRels = converter.BimDataBuilder.Relations;
+            var ifcToBos = converter.IfcIdToBosId;
+
+            AssertRelation(bosRels, ifcToBos, 20, 10, RelationType.MemberOf);
+            AssertRelation(bosRels, ifcToBos, 31, 30, RelationType.PartOf);
+        }
+        finally
+        {
+            converter?.IfcFile.Dispose();
+            try { File.Delete(path); } catch (IOException) { }
+        }
+    }
+
+    [Test]
+    public static void ConverterUsesSpaceLongNameAndKeepsRoomNumber()
+    {
+        var path = WriteTempIfc(SpaceIfc);
+        IfcToBosConverter? converter = null;
+        try
+        {
+            converter = new IfcToBosConverter(path);
+            var b = converter.BimDataBuilder;
+            var bosId = converter.IfcIdToBosId[10];
+
+            // Display name comes from LongName, not the room number in Name.
+            Assert.That(b.Get(b.Get(bosId).Name), Is.EqualTo("Office"));
+
+            // The room number (IfcSpace.Name) is preserved as a parameter.
+            Assert.That(FindStringParam(b, bosId, "Ifc:Room:Number"), Is.EqualTo("101"));
+        }
+        finally
+        {
+            converter?.IfcFile.Dispose();
+            try { File.Delete(path); } catch (IOException) { }
+        }
+    }
+
+    [Test]
+    public static void ConverterDecodesEscapedEntityName()
+    {
+        var path = WriteTempIfc(EscapedNameIfc);
+        IfcToBosConverter? converter = null;
+        try
+        {
+            converter = new IfcToBosConverter(path);
+            var b = converter.BimDataBuilder;
+            var bosId = converter.IfcIdToBosId[10];
+
+            Assert.That(b.Get(b.Get(bosId).Name), Is.EqualTo("Café"));
+        }
+        finally
+        {
+            converter?.IfcFile.Dispose();
+            try { File.Delete(path); } catch (IOException) { }
+        }
+    }
+
+    [Test]
+    public static void ConverterDecodesEscapedStringPropertyValue()
+    {
+        var path = WriteTempIfc(EscapedPropertyValueIfc);
+        IfcToBosConverter? converter = null;
+        try
+        {
+            converter = new IfcToBosConverter(path);
+            var b = converter.BimDataBuilder;
+            var bosId = converter.IfcIdToBosId[10];
+
+            Assert.That(FindStringParam(b, bosId, "Comment"), Is.EqualTo("Café"));
+        }
+        finally
+        {
+            converter?.IfcFile.Dispose();
+            try { File.Delete(path); } catch (IOException) { }
+        }
+    }
+
+    static string? FindStringParam(BimDataBuilder b, EntityIndex e, string descriptorName)
+    {
+        foreach (var p in b.Parameters)
+        {
+            if (p.Entity != e)
+                continue;
+            var desc = b.Get(p.Descriptor);
+            if (desc.Type != ParameterType.String || b.Get(desc.Name) != descriptorName)
+                continue;
+            return b.Get((StringIndex)p.Value);
+        }
+        return null;
     }
 
     static void AssertRelation(
