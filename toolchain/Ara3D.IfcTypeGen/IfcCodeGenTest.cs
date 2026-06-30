@@ -156,7 +156,7 @@ public static class IfcCodeGenTest
             {
                 var (typeStr, rank) = GetTypeDetails(attr.TypeExpr);
                 var kind = typeKinds.GetValueOrDefault(typeStr, IfcTypeKind.Unknown);
-                sb.AppendLine($"    public readonly IfcAttribute<{typeStr}> {attr.Name} = new({attrIndex++}, IfcTypeKind.{kind}, {rank});");
+                sb.AppendLine($"    public readonly IfcAttribute<{typeStr}> {attr.Name} = new(\"{attr.Name}\", {attrIndex++}, IfcTypeKind.{kind}, {rank});");
             }
 
             var attrNames = inheritedAttrs.Concat(e.Attributes).Select(attr => attr.Name).JoinStringsWithComma();
@@ -240,7 +240,7 @@ public static class IfcCodeGenTest
     public static void Generate(ParserInput input, string ns)
     {
         var schema = GetSchema(input);
-        var outputDir = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "Ara3D.IfcTypes");
+        var outputDir = PathUtil.GetCallerSourceFolder().RelativeFolder("..", "..", "ext", "Ara3D.IfcTypes");
 
         var typeKinds = new Dictionary<string, IfcTypeKind>();
         typeKinds.Add("double", IfcTypeKind.System);

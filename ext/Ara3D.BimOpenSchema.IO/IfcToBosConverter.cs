@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using Ara3D.DataTable;
+﻿using Ara3D.DataTable;
 using Ara3D.IfcLoader;
+using Ara3D.IfcTypes;
 using Ara3D.IO.StepParser;
 using Ara3D.Logging;
 using Ara3D.Models;
 using Ara3D.Utils;
 using Parquet;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
 
 namespace Ara3D.BimOpenSchema.IO;
 
@@ -50,30 +51,6 @@ public class IfcToBosConverter
     
     public EntityIndex GetBosEntityIndexFromIfc(int id)
         => IfcIdToBosId.GetValueOrDefault(id, InvalidEntityIndex);
-
-    public EntityIndex EnsureBosEntity(int ifcId)
-    {
-        if (ifcId <= 0)
-            return InvalidEntityIndex;
-
-        var existing = GetBosEntityIndexFromIfc(ifcId);
-        if (existing != InvalidEntityIndex)
-            return existing;
-
-        var entity = GetEntityOrDefault(ifcId);
-        if (entity == null || !IsMaybeIfcElement(entity))
-            return InvalidEntityIndex;
-
-        var catEi = GetCatEntityIndex(ifcId);
-        var name = entity.GetEntityLabel().DecodeIfc();
-        var gid = entity.GetIfcRootGlobalId();
-        var typeEi = InvalidEntityIndex;
-        if (TypeRelations.InstancesToTypes.TryGetValue(ifcId, out var typeId))
-            typeEi = GetBosEntityIndexFromIfc(typeId);
-        var ei = BimDataBuilder.AddEntity(ifcId, gid, _docIndex, name, catEi, typeEi);
-        IfcIdToBosId.Add(ifcId, ei);
-        return ei;
-    }
 
     public static readonly HashSet<string> HiddenIfcNames = new([
         "IFCSITE",
@@ -139,6 +116,7 @@ public class IfcToBosConverter
         logger?.Log("Loaded file");
         var model = IfcFile.Model;
         var doc = IfcFile.Document;
+        var schema = IfcFile.Schema;
 
         // NOTE: if I want this to go a LOT faster, I can skip STUPID definitions. 
         // We have properties, we have property sets, we have entities, which have properties. 
@@ -198,30 +176,42 @@ public class IfcToBosConverter
             var e = GetEntity(id);
             var catEi = GetCatEntityIndex(id);
             var typeEi = InvalidEntityIndex;
-            var name = e.GetEntityLabel().DecodeIfc();
-            var gid = e.GetIfcRootGlobalId();
+
+            var entityCode = e.GetEntityCode();
+
+            // NOTE: if there is a schema mismatch, this will throw an exception.
+            var ifcEntityPrototype = schema.Entities[entityCode];
+            var protoName = ifcEntityPrototype.GetEntityName();
+            Debug.Assert(e.GetEntityName() == protoName);
+
+            var attributes = ifcEntityPrototype.Attributes;
+            
+            var name = e.GetEntityName();
+            var gid = "";
+
+            if (attributes.Length > 2)
+            {
+                // Most have the following. 
+                // GlobalId, OwnerHistory, Name
+                if (attributes[0].Name == "GlobalId")
+                    gid = e.GetString(0);
+                if (attributes[2].Name == "Name")
+                    name = e.GetString(2).DecodeIfc();
+            }
+
             if (TypeRelations.InstancesToTypes.TryGetValue(id, out var typeId))
                 typeEi = GetBosEntityIndexFromIfc(typeId);
+
             catIds.Add((int)catEi);
             var ei = BimDataBuilder.AddEntity(id, gid, _docIndex, name, catEi, typeEi);
             IfcIdToBosId.Add(id, ei);
-        }
 
-        // When an IfcSpace has a LongName, GetEntityLabel uses it as the display name, so the
-        // short Name (the room number) would be lost. Preserve it as a "Number" parameter.
-        foreach (var e in BosEntities)
-        {
-            if (e.GetEntityName() != "IFCSPACE")
-                continue;
-            if (string.IsNullOrEmpty(e.GetStringOrEmpty(7)))
-                continue;
-            var number = e.GetStringOrEmpty(2).DecodeIfc();
-            if (string.IsNullOrEmpty(number))
-                continue;
-            var bosId = GetBosEntityIndexFromIfc(e.Id);
-            if (bosId == InvalidEntityIndex)
-                continue;
-            BimDataBuilder.AddParameter(bosId, number, "Ifc:Room:Number", "", "Ifc");
+            // Additional attributes are added as properties. 
+            for (var i=3; i < attributes.Length; i++)
+            {
+                ProcessAttributeAsProp(e, attributes[i], ei);
+            }
+
         }
 
         logger?.Log("Creating relations");
@@ -229,13 +219,15 @@ public class IfcToBosConverter
         var addedRelations = 0;
         foreach (var rel in ifcRels.Relations)
         {
-            var a = EnsureBosEntity(rel.From);
-            var b = EnsureBosEntity(rel.To);
+            // TODO: this should not create new entities. 
+            var a = GetBosEntityIndexFromIfc(rel.From);
+            var b = GetBosEntityIndexFromIfc(rel.To);
             if (a == InvalidEntityIndex || b == InvalidEntityIndex)
                 continue;
             BimDataBuilder.AddRelation(a, b, IfcRelationMapping.ToBos(rel.Kind));
             addedRelations++;
         }
+        
         logger?.Log($"Added {addedRelations} relations");
         foreach (var (type, count) in BimDataBuilder.Relations
                      .GroupBy(r => r.RelationType)
@@ -271,41 +263,12 @@ public class IfcToBosConverter
 
                     // This is a function so that we can recursively resolve entities that are used as property values.
                     // We assume that entities within entities have only one property, which is a very common pattern in IFC files.
-                    void ProcessPropValue(string name, StepToken val)
-                    {
-                        if (val.IsId)
-                        {
-                            var refId = GetBosEntityIndexFromIfc(p.Value.Value.AsId());
-                            BimDataBuilder.AddParameter(bosId, refId, name, "", propSetName);
-                        }
-
-                        if (val.IsEntity)
-                        {
-                            var (type, val2) = val.AsSimpleEntity(IfcFile.Document);
-                            ProcessPropValue(name, val2);
-                        }
-                        else if (val.IsNumber)
-                        {
-                            var num = val.AsNumber();
-                            BimDataBuilder.AddParameter(bosId, num, name, "", propSetName);
-                        }
-                        else if (val.IsString)
-                        {
-                            var str = val.AsString().DecodeIfc();
-                            BimDataBuilder.AddParameter(bosId, str, name, "", propSetName);
-                        }
-                        else
-                        {
-                            var str = val.ToString() ?? "";
-                            BimDataBuilder.AddParameter(bosId, str, name, "", propSetName);
-                        }
-                    }
 
                     var propName = p.Name.DecodeIfc();
                     if (!p.Value.HasValue)
                         BimDataBuilder.AddParameter(bosId, "", propName, "", propSetName);
                     else
-                        ProcessPropValue(propName, p.Value.Value);
+                        ProcessPropValue(propName, p.Value.Value, p, bosId, propSetName);
                 }
             }
         }
@@ -396,6 +359,81 @@ public class IfcToBosConverter
 
         logger?.Log("Creating dataset");
         DataSet = bimData.ToDataSet();
+    }
+
+    private void ProcessPropValue(string name, StepToken val, IfcPropValue p, EntityIndex bosId, string propSetName)
+    {
+        if (val.IsId)
+        {
+            var refId = GetBosEntityIndexFromIfc(p.Value.Value.AsId());
+            BimDataBuilder.AddParameter(bosId, refId, name, "", propSetName);
+        }
+        else if (val.IsEntity)
+        {
+            var (type, val2) = val.AsSimpleEntity(IfcFile.Document);
+            ProcessPropValue(name, val2, p, bosId, propSetName);
+        }
+        else if (val.IsNumber)
+        {
+            var num = val.AsNumber();
+            BimDataBuilder.AddParameter(bosId, num, name, "", propSetName);
+        }
+        else if (val.IsString)
+        {
+            var str = val.AsString().DecodeIfc();
+            BimDataBuilder.AddParameter(bosId, str, name, "", propSetName);
+        }
+        else
+        {
+            var str = val.ToString()?.DecodeIfc() ?? "";
+            BimDataBuilder.AddParameter(bosId, str, name, "", propSetName);
+        }
+    }
+
+    public static string ToIfcStdPropName(string name)
+        => $"Ifc:{name}";
+
+    private void ProcessAttributeAsProp(IfcEntity entity, IfcAttribute attribute, EntityIndex bosId)
+    {
+        var name = attribute.Name;
+        if (name == "GlobalId" || name == "OwnerHistory" || name == "Name")
+            return;
+        var val = entity.GetAttribute(attribute.Index);
+        if (val.IsUnassignedOrRedeclared)
+            return;
+
+        var ifcPropName = ToIfcStdPropName(name);
+        var entityName = entity.GetEntityName();
+        if (val.IsId)
+        {
+            var refId = GetBosEntityIndexFromIfc(val.AsId());
+            if (refId < 0)
+                return;
+            BimDataBuilder.AddParameter(bosId, refId, ifcPropName, "", entityName);
+        }
+        else if (val.IsEntity)
+        {
+            return;
+        }
+        else if (val.IsNumber)
+        {
+            var num = val.AsNumber();
+            BimDataBuilder.AddParameter(bosId, num, ifcPropName, "", entityName);
+        }
+        else if (val.IsString)
+        {
+            var str = val.AsString().DecodeIfc();
+            if (str == null)
+                return;
+            BimDataBuilder.AddParameter(bosId, str, ifcPropName, "", entityName);
+        }
+        else
+        {
+            var str = val.ToString()?.DecodeIfc();
+            if (str == null)
+                return;
+            BimDataBuilder.AddParameter(bosId, str, ifcPropName, "", entityName);
+        }
     }
 
     public void SaveToBos(FilePath output, ILogger logger = null)

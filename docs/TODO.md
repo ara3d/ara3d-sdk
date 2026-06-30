@@ -3,11 +3,15 @@
 A repo-wide backlog ordered by impact. Use this to decide **what to work on next**.
 
 - **Detail log:** [`TECHNICAL_DEBT.md`](TECHNICAL_DEBT.md) — what each shortcut is and why it matters.
+- **Investigations:** [`investigations.md`](investigations.md) — evidence and hypotheses for unresolved problems.
 - **Workflow:** [`../AGENTS.md`](../AGENTS.md) — build/test expectations before marking items done.
 - **Scope:** `src/` and `ext/` only. `toolchain/` Plato experiments are excluded (unsupported).
 
 When you complete an item: check it off here, remove the matching row from `TECHNICAL_DEBT.md`
 (if any), and delete the inline `// TODO:` marker in code.
+
+Use short IDs like `IFC-STR-001` when an item needs to be linked across TODOs,
+technical debt, tests, and investigation notes.
 
 **Sort rule:** priority tier first (P0 → P4), then effort as a tie-breaker within a tier when
 time is limited.
@@ -132,6 +136,7 @@ sections above.
 - [x] **15. [S] Converter-level relation tests (openings + groups)** — added `ConverterEmitsOpeningRelations` and `ConverterEmitsGroupAndProjectRelations` to `IfcRelationsTests.cs`.
 - [x] **43. [S] Consistent IFC string decoding** — `DecodeIfc` now applied to entity display names (`GetEntityLabel`) and string parameter values in `IfcToBosConverter`; covered by `ConverterDecodesEscapedEntityName` / `ConverterDecodesEscapedStringPropertyValue`.
 - [x] **44. [S] IfcSpace naming** — `GetEntityLabel` prefers `LongName` for `IfcSpace`, stops surfacing the GlobalId GUID as a name (unset `$`/`*` now treated as empty via `GetStringOrEmpty`); the room number (`Name`) is preserved as an `Ifc:Room:Number` parameter. Covered by `ConverterUsesSpaceLongNameAndKeepsRoomNumber`.
+- [x] **45. [M] `IFC-STR-001` schependomlaan string decoding** — closed as false alarm: `\uXXXX` in room JSON output is default `System.Text.Json` ASCII escaping of decoded Unicode (e.g. Dutch `ë`), not missing IFC decode. BOS string values round-trip correctly via `GetValue<string>()`.
 
 <!-- Example:
 - [x] **1. [XS] FlowObject.WithNewPresentation** — fixed in commit abc123; passes Studio modifier tests.

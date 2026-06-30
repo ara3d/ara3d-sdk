@@ -9,9 +9,9 @@ public partial class IfcActionRequest
     public const uint ENTITY_CODE = 1511108338;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcActionRequestTypeEnum> PredefinedType = new(6, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> Status = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> LongDescription = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcActionRequestTypeEnum> PredefinedType = new("PredefinedType", 6, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> Status = new("Status", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> LongDescription = new("LongDescription", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, PredefinedType, Status, LongDescription ];
 }
 
@@ -23,7 +23,7 @@ public partial class IfcActor
     public const uint ENTITY_CODE = 3349624876;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcActorSelect> TheActor = new(5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcActorSelect> TheActor = new("TheActor", 5, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, TheActor ];
 }
 
@@ -35,9 +35,9 @@ public partial class IfcActorRole
     public const uint ENTITY_CODE = 100396148;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRoleEnum> Role = new(0, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedRole = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRoleEnum> Role = new("Role", 0, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedRole = new("UserDefinedRole", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Role, UserDefinedRole, Description ];
 }
 
@@ -49,7 +49,7 @@ public partial class IfcActuator
     public const uint ENTITY_CODE = 796185452;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcActuatorTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcActuatorTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -61,7 +61,7 @@ public partial class IfcActuatorType
     public const uint ENTITY_CODE = 1185848164;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcActuatorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcActuatorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -73,9 +73,9 @@ public partial class IfcAddress
     public const uint ENTITY_CODE = 3858321853;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAddressTypeEnum> Purpose = new(0, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedPurpose = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAddressTypeEnum> Purpose = new("Purpose", 0, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedPurpose = new("UserDefinedPurpose", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Purpose, Description, UserDefinedPurpose ];
 }
 
@@ -98,7 +98,7 @@ public partial class IfcAdvancedBrepWithVoids
     public const uint ENTITY_CODE = 3439879655;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcClosedShell> Voids = new(1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcClosedShell> Voids = new("Voids", 1, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Outer, Voids ];
 }
 
@@ -121,7 +121,7 @@ public partial class IfcAirTerminal
     public const uint ENTITY_CODE = 3293878581;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAirTerminalTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAirTerminalTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -133,7 +133,7 @@ public partial class IfcAirTerminalBox
     public const uint ENTITY_CODE = 1684970626;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAirTerminalBoxTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAirTerminalBoxTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -145,7 +145,7 @@ public partial class IfcAirTerminalBoxType
     public const uint ENTITY_CODE = 1176320402;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAirTerminalBoxTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAirTerminalBoxTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -157,7 +157,7 @@ public partial class IfcAirTerminalType
     public const uint ENTITY_CODE = 1876148061;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAirTerminalTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAirTerminalTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -169,7 +169,7 @@ public partial class IfcAirToAirHeatRecovery
     public const uint ENTITY_CODE = 2081643409;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAirToAirHeatRecoveryTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAirToAirHeatRecoveryTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -181,7 +181,7 @@ public partial class IfcAirToAirHeatRecoveryType
     public const uint ENTITY_CODE = 3377884601;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAirToAirHeatRecoveryTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAirToAirHeatRecoveryTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -193,7 +193,7 @@ public partial class IfcAlarm
     public const uint ENTITY_CODE = 848685364;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAlarmTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAlarmTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -205,7 +205,7 @@ public partial class IfcAlarmType
     public const uint ENTITY_CODE = 2639371548;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAlarmTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAlarmTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -217,7 +217,7 @@ public partial class IfcAlignment
     public const uint ENTITY_CODE = 3888330920;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAlignmentTypeEnum> PredefinedType = new(7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAlignmentTypeEnum> PredefinedType = new("PredefinedType", 7, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, PredefinedType ];
 }
 
@@ -229,7 +229,7 @@ public partial class IfcAlignmentCant
     public const uint ENTITY_CODE = 4153010922;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> RailHeadDistance = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> RailHeadDistance = new("RailHeadDistance", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, RailHeadDistance ];
 }
 
@@ -241,13 +241,13 @@ public partial class IfcAlignmentCantSegment
     public const uint ENTITY_CODE = 3264792747;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> StartDistAlong = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> HorizontalLength = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> StartCantLeft = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> EndCantLeft = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> StartCantRight = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> EndCantRight = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAlignmentCantSegmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> StartDistAlong = new("StartDistAlong", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> HorizontalLength = new("HorizontalLength", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> StartCantLeft = new("StartCantLeft", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> EndCantLeft = new("EndCantLeft", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> StartCantRight = new("StartCantRight", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> EndCantRight = new("EndCantRight", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAlignmentCantSegmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ StartTag, EndTag, StartDistAlong, HorizontalLength, StartCantLeft, EndCantLeft, StartCantRight, EndCantRight, PredefinedType ];
 }
 
@@ -270,13 +270,13 @@ public partial class IfcAlignmentHorizontalSegment
     public const uint ENTITY_CODE = 3522045321;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCartesianPoint> StartPoint = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> StartDirection = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> StartRadiusOfCurvature = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> EndRadiusOfCurvature = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> SegmentLength = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> GravityCenterLineHeight = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAlignmentHorizontalSegmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> StartPoint = new("StartPoint", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> StartDirection = new("StartDirection", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> StartRadiusOfCurvature = new("StartRadiusOfCurvature", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> EndRadiusOfCurvature = new("EndRadiusOfCurvature", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> SegmentLength = new("SegmentLength", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> GravityCenterLineHeight = new("GravityCenterLineHeight", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAlignmentHorizontalSegmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ StartTag, EndTag, StartPoint, StartDirection, StartRadiusOfCurvature, EndRadiusOfCurvature, SegmentLength, GravityCenterLineHeight, PredefinedType ];
 }
 
@@ -288,8 +288,8 @@ public partial class IfcAlignmentParameterSegment
     public const uint ENTITY_CODE = 3953384776;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> StartTag = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> EndTag = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> StartTag = new("StartTag", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> EndTag = new("EndTag", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ StartTag, EndTag ];
 }
 
@@ -301,7 +301,7 @@ public partial class IfcAlignmentSegment
     public const uint ENTITY_CODE = 2276039737;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAlignmentParameterSegment> DesignParameters = new(7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAlignmentParameterSegment> DesignParameters = new("DesignParameters", 7, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, DesignParameters ];
 }
 
@@ -324,13 +324,13 @@ public partial class IfcAlignmentVerticalSegment
     public const uint ENTITY_CODE = 2021450595;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> StartDistAlong = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> HorizontalLength = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> StartHeight = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcRatioMeasure> StartGradient = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcRatioMeasure> EndGradient = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> RadiusOfCurvature = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAlignmentVerticalSegmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> StartDistAlong = new("StartDistAlong", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> HorizontalLength = new("HorizontalLength", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> StartHeight = new("StartHeight", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRatioMeasure> StartGradient = new("StartGradient", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRatioMeasure> EndGradient = new("EndGradient", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> RadiusOfCurvature = new("RadiusOfCurvature", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAlignmentVerticalSegmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ StartTag, EndTag, StartDistAlong, HorizontalLength, StartHeight, StartGradient, EndGradient, RadiusOfCurvature, PredefinedType ];
 }
 
@@ -342,7 +342,7 @@ public partial class IfcAnnotation
     public const uint ENTITY_CODE = 3507439686;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAnnotationTypeEnum> PredefinedType = new(7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAnnotationTypeEnum> PredefinedType = new("PredefinedType", 7, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, PredefinedType ];
 }
 
@@ -354,8 +354,8 @@ public partial class IfcAnnotationFillArea
     public const uint ENTITY_CODE = 508923030;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> OuterBoundary = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCurve> InnerBoundaries = new(1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCurve> OuterBoundary = new("OuterBoundary", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurve> InnerBoundaries = new("InnerBoundaries", 1, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ OuterBoundary, InnerBoundaries ];
 }
 
@@ -367,10 +367,10 @@ public partial class IfcApplication
     public const uint ENTITY_CODE = 365708759;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOrganization> ApplicationDeveloper = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLabel> Version = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> ApplicationFullName = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> ApplicationIdentifier = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcOrganization> ApplicationDeveloper = new("ApplicationDeveloper", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLabel> Version = new("Version", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ApplicationFullName = new("ApplicationFullName", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> ApplicationIdentifier = new("ApplicationIdentifier", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ApplicationDeveloper, Version, ApplicationFullName, ApplicationIdentifier ];
 }
 
@@ -382,16 +382,16 @@ public partial class IfcAppliedValue
     public const uint ENTITY_CODE = 777421865;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAppliedValueSelect> AppliedValue = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcMeasureWithUnit> UnitBasis = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDate> ApplicableDate = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDate> FixedUntilDate = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Category = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Condition = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcArithmeticOperatorEnum> ArithmeticOperator = new(8, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcAppliedValue> Components = new(9, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAppliedValueSelect> AppliedValue = new("AppliedValue", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcMeasureWithUnit> UnitBasis = new("UnitBasis", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDate> ApplicableDate = new("ApplicableDate", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDate> FixedUntilDate = new("FixedUntilDate", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Category = new("Category", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Condition = new("Condition", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcArithmeticOperatorEnum> ArithmeticOperator = new("ArithmeticOperator", 8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAppliedValue> Components = new("Components", 9, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, AppliedValue, UnitBasis, ApplicableDate, FixedUntilDate, Category, Condition, ArithmeticOperator, Components ];
 }
 
@@ -403,15 +403,15 @@ public partial class IfcApproval
     public const uint ENTITY_CODE = 771577372;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identifier = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> TimeOfApproval = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Status = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Level = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Qualifier = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcActorSelect> RequestingApproval = new(7, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcActorSelect> GivingApproval = new(8, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identifier = new("Identifier", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> TimeOfApproval = new("TimeOfApproval", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Status = new("Status", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Level = new("Level", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Qualifier = new("Qualifier", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcActorSelect> RequestingApproval = new("RequestingApproval", 7, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcActorSelect> GivingApproval = new("GivingApproval", 8, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Identifier, Name, Description, TimeOfApproval, Status, Level, Qualifier, RequestingApproval, GivingApproval ];
 }
 
@@ -423,8 +423,8 @@ public partial class IfcApprovalRelationship
     public const uint ENTITY_CODE = 1503631090;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcApproval> RelatingApproval = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcApproval> RelatedApprovals = new(3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcApproval> RelatingApproval = new("RelatingApproval", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcApproval> RelatedApprovals = new("RelatedApprovals", 3, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, RelatingApproval, RelatedApprovals ];
 }
 
@@ -436,7 +436,7 @@ public partial class IfcArbitraryClosedProfileDef
     public const uint ENTITY_CODE = 3961970563;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> OuterCurve = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurve> OuterCurve = new("OuterCurve", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, OuterCurve ];
 }
 
@@ -448,7 +448,7 @@ public partial class IfcArbitraryOpenProfileDef
     public const uint ENTITY_CODE = 3935482995;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoundedCurve> Curve = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoundedCurve> Curve = new("Curve", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Curve ];
 }
 
@@ -460,7 +460,7 @@ public partial class IfcArbitraryProfileDefWithVoids
     public const uint ENTITY_CODE = 833005510;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> InnerCurves = new(3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCurve> InnerCurves = new("InnerCurves", 3, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, OuterCurve, InnerCurves ];
 }
 
@@ -472,15 +472,15 @@ public partial class IfcAsset
     public const uint ENTITY_CODE = 3348313689;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCostValue> OriginalValue = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCostValue> CurrentValue = new(7, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCostValue> TotalReplacementCost = new(8, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcActorSelect> Owner = new(9, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcActorSelect> User = new(10, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcPerson> ResponsiblePerson = new(11, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDate> IncorporationDate = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCostValue> DepreciatedValue = new(13, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCostValue> OriginalValue = new("OriginalValue", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCostValue> CurrentValue = new("CurrentValue", 7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCostValue> TotalReplacementCost = new("TotalReplacementCost", 8, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcActorSelect> Owner = new("Owner", 9, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcActorSelect> User = new("User", 10, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcPerson> ResponsiblePerson = new("ResponsiblePerson", 11, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDate> IncorporationDate = new("IncorporationDate", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCostValue> DepreciatedValue = new("DepreciatedValue", 13, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, OriginalValue, CurrentValue, TotalReplacementCost, Owner, User, ResponsiblePerson, IncorporationDate, DepreciatedValue ];
 }
 
@@ -492,18 +492,18 @@ public partial class IfcAsymmetricIShapeProfileDef
     public const uint ENTITY_CODE = 3607974385;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> BottomFlangeWidth = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallDepth = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> BottomFlangeThickness = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> BottomFlangeFilletRadius = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> TopFlangeWidth = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> TopFlangeThickness = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> TopFlangeFilletRadius = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> BottomFlangeEdgeRadius = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> BottomFlangeSlope = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> TopFlangeEdgeRadius = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> TopFlangeSlope = new(14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> BottomFlangeWidth = new("BottomFlangeWidth", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallDepth = new("OverallDepth", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new("WebThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> BottomFlangeThickness = new("BottomFlangeThickness", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> BottomFlangeFilletRadius = new("BottomFlangeFilletRadius", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> TopFlangeWidth = new("TopFlangeWidth", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> TopFlangeThickness = new("TopFlangeThickness", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> TopFlangeFilletRadius = new("TopFlangeFilletRadius", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> BottomFlangeEdgeRadius = new("BottomFlangeEdgeRadius", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> BottomFlangeSlope = new("BottomFlangeSlope", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> TopFlangeEdgeRadius = new("TopFlangeEdgeRadius", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> TopFlangeSlope = new("TopFlangeSlope", 14, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, BottomFlangeWidth, OverallDepth, WebThickness, BottomFlangeThickness, BottomFlangeFilletRadius, TopFlangeWidth, TopFlangeThickness, TopFlangeFilletRadius, BottomFlangeEdgeRadius, BottomFlangeSlope, TopFlangeEdgeRadius, TopFlangeSlope ];
 }
 
@@ -515,7 +515,7 @@ public partial class IfcAudioVisualAppliance
     public const uint ENTITY_CODE = 3327421122;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAudioVisualApplianceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAudioVisualApplianceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -527,7 +527,7 @@ public partial class IfcAudioVisualApplianceType
     public const uint ENTITY_CODE = 2778215378;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAudioVisualApplianceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAudioVisualApplianceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -539,7 +539,7 @@ public partial class IfcAxis1Placement
     public const uint ENTITY_CODE = 2912178692;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> Axis = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> Axis = new("Axis", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Location, Axis ];
 }
 
@@ -551,7 +551,7 @@ public partial class IfcAxis2Placement2D
     public const uint ENTITY_CODE = 143557545;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> RefDirection = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> RefDirection = new("RefDirection", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Location, RefDirection ];
 }
 
@@ -563,8 +563,8 @@ public partial class IfcAxis2Placement3D
     public const uint ENTITY_CODE = 3800828224;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> Axis = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDirection> RefDirection = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> Axis = new("Axis", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> RefDirection = new("RefDirection", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Location, Axis, RefDirection ];
 }
 
@@ -576,8 +576,8 @@ public partial class IfcAxis2PlacementLinear
     public const uint ENTITY_CODE = 2371267666;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> Axis = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDirection> RefDirection = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> Axis = new("Axis", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> RefDirection = new("RefDirection", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Location, Axis, RefDirection ];
 }
 
@@ -589,7 +589,7 @@ public partial class IfcBeam
     public const uint ENTITY_CODE = 3562220184;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBeamTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBeamTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -601,7 +601,7 @@ public partial class IfcBeamType
     public const uint ENTITY_CODE = 2765867472;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBeamTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBeamTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -613,7 +613,7 @@ public partial class IfcBearing
     public const uint ENTITY_CODE = 871826411;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBearingTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBearingTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -625,7 +625,7 @@ public partial class IfcBearingType
     public const uint ENTITY_CODE = 1637502515;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBearingTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBearingTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -637,8 +637,8 @@ public partial class IfcBlobTexture
     public const uint ENTITY_CODE = 3517409251;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> RasterFormat = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBinary> RasterCode = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> RasterFormat = new("RasterFormat", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBinary> RasterCode = new("RasterCode", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ RepeatS, RepeatT, Mode, TextureTransform, Parameter, RasterFormat, RasterCode ];
 }
 
@@ -650,9 +650,9 @@ public partial class IfcBlock
     public const uint ENTITY_CODE = 3091221680;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> XLength = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> YLength = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> ZLength = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> XLength = new("XLength", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> YLength = new("YLength", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> ZLength = new("ZLength", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, XLength, YLength, ZLength ];
 }
 
@@ -664,7 +664,7 @@ public partial class IfcBoiler
     public const uint ENTITY_CODE = 3960141518;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoilerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBoilerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -676,7 +676,7 @@ public partial class IfcBoilerType
     public const uint ENTITY_CODE = 3116962222;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoilerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBoilerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -699,9 +699,9 @@ public partial class IfcBooleanResult
     public const uint ENTITY_CODE = 1312774956;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBooleanOperator> Operator = new(0, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcBooleanOperand> FirstOperand = new(1, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcBooleanOperand> SecondOperand = new(2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcBooleanOperator> Operator = new("Operator", 0, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBooleanOperand> FirstOperand = new("FirstOperand", 1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcBooleanOperand> SecondOperand = new("SecondOperand", 2, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Operator, FirstOperand, SecondOperand ];
 }
 
@@ -724,7 +724,7 @@ public partial class IfcBoundaryCondition
     public const uint ENTITY_CODE = 1350974706;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name ];
 }
 
@@ -747,12 +747,12 @@ public partial class IfcBoundaryEdgeCondition
     public const uint ENTITY_CODE = 2472611581;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcModulusOfTranslationalSubgradeReactionSelect> TranslationalStiffnessByLengthX = new(1, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcModulusOfTranslationalSubgradeReactionSelect> TranslationalStiffnessByLengthY = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcModulusOfTranslationalSubgradeReactionSelect> TranslationalStiffnessByLengthZ = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcModulusOfRotationalSubgradeReactionSelect> RotationalStiffnessByLengthX = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcModulusOfRotationalSubgradeReactionSelect> RotationalStiffnessByLengthY = new(5, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcModulusOfRotationalSubgradeReactionSelect> RotationalStiffnessByLengthZ = new(6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfTranslationalSubgradeReactionSelect> TranslationalStiffnessByLengthX = new("TranslationalStiffnessByLengthX", 1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfTranslationalSubgradeReactionSelect> TranslationalStiffnessByLengthY = new("TranslationalStiffnessByLengthY", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfTranslationalSubgradeReactionSelect> TranslationalStiffnessByLengthZ = new("TranslationalStiffnessByLengthZ", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfRotationalSubgradeReactionSelect> RotationalStiffnessByLengthX = new("RotationalStiffnessByLengthX", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfRotationalSubgradeReactionSelect> RotationalStiffnessByLengthY = new("RotationalStiffnessByLengthY", 5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfRotationalSubgradeReactionSelect> RotationalStiffnessByLengthZ = new("RotationalStiffnessByLengthZ", 6, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, TranslationalStiffnessByLengthX, TranslationalStiffnessByLengthY, TranslationalStiffnessByLengthZ, RotationalStiffnessByLengthX, RotationalStiffnessByLengthY, RotationalStiffnessByLengthZ ];
 }
 
@@ -764,9 +764,9 @@ public partial class IfcBoundaryFaceCondition
     public const uint ENTITY_CODE = 2562956589;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcModulusOfSubgradeReactionSelect> TranslationalStiffnessByAreaX = new(1, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcModulusOfSubgradeReactionSelect> TranslationalStiffnessByAreaY = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcModulusOfSubgradeReactionSelect> TranslationalStiffnessByAreaZ = new(3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfSubgradeReactionSelect> TranslationalStiffnessByAreaX = new("TranslationalStiffnessByAreaX", 1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfSubgradeReactionSelect> TranslationalStiffnessByAreaY = new("TranslationalStiffnessByAreaY", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcModulusOfSubgradeReactionSelect> TranslationalStiffnessByAreaZ = new("TranslationalStiffnessByAreaZ", 3, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, TranslationalStiffnessByAreaX, TranslationalStiffnessByAreaY, TranslationalStiffnessByAreaZ ];
 }
 
@@ -778,12 +778,12 @@ public partial class IfcBoundaryNodeCondition
     public const uint ENTITY_CODE = 2407292458;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTranslationalStiffnessSelect> TranslationalStiffnessX = new(1, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcTranslationalStiffnessSelect> TranslationalStiffnessY = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcTranslationalStiffnessSelect> TranslationalStiffnessZ = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcRotationalStiffnessSelect> RotationalStiffnessX = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcRotationalStiffnessSelect> RotationalStiffnessY = new(5, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcRotationalStiffnessSelect> RotationalStiffnessZ = new(6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcTranslationalStiffnessSelect> TranslationalStiffnessX = new("TranslationalStiffnessX", 1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcTranslationalStiffnessSelect> TranslationalStiffnessY = new("TranslationalStiffnessY", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcTranslationalStiffnessSelect> TranslationalStiffnessZ = new("TranslationalStiffnessZ", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcRotationalStiffnessSelect> RotationalStiffnessX = new("RotationalStiffnessX", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcRotationalStiffnessSelect> RotationalStiffnessY = new("RotationalStiffnessY", 5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcRotationalStiffnessSelect> RotationalStiffnessZ = new("RotationalStiffnessZ", 6, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, TranslationalStiffnessX, TranslationalStiffnessY, TranslationalStiffnessZ, RotationalStiffnessX, RotationalStiffnessY, RotationalStiffnessZ ];
 }
 
@@ -795,7 +795,7 @@ public partial class IfcBoundaryNodeConditionWarping
     public const uint ENTITY_CODE = 2919905048;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWarpingStiffnessSelect> WarpingStiffness = new(7, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcWarpingStiffnessSelect> WarpingStiffness = new("WarpingStiffness", 7, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, TranslationalStiffnessX, TranslationalStiffnessY, TranslationalStiffnessZ, RotationalStiffnessX, RotationalStiffnessY, RotationalStiffnessZ, WarpingStiffness ];
 }
 
@@ -829,10 +829,10 @@ public partial class IfcBoundingBox
     public const uint ENTITY_CODE = 1442717844;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCartesianPoint> Corner = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> XDim = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> YDim = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> ZDim = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> Corner = new("Corner", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> XDim = new("XDim", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> YDim = new("YDim", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> ZDim = new("ZDim", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Corner, XDim, YDim, ZDim ];
 }
 
@@ -844,7 +844,7 @@ public partial class IfcBoxedHalfSpace
     public const uint ENTITY_CODE = 3594319974;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoundingBox> Enclosure = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoundingBox> Enclosure = new("Enclosure", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ BaseSurface, AgreementFlag, Enclosure ];
 }
 
@@ -856,7 +856,7 @@ public partial class IfcBridge
     public const uint ENTITY_CODE = 2427817166;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBridgeTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBridgeTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, PredefinedType ];
 }
 
@@ -868,7 +868,7 @@ public partial class IfcBridgePart
     public const uint ENTITY_CODE = 1311799399;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBridgePartTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBridgePartTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, UsageType, PredefinedType ];
 }
 
@@ -880,11 +880,11 @@ public partial class IfcBSplineCurve
     public const uint ENTITY_CODE = 3214482937;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInteger> Degree = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCartesianPoint> ControlPointsList = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcBSplineCurveForm> CurveForm = new(2, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLogical> ClosedCurve = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> SelfIntersect = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> Degree = new("Degree", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> ControlPointsList = new("ControlPointsList", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcBSplineCurveForm> CurveForm = new("CurveForm", 2, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLogical> ClosedCurve = new("ClosedCurve", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> SelfIntersect = new("SelfIntersect", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Degree, ControlPointsList, CurveForm, ClosedCurve, SelfIntersect ];
 }
 
@@ -896,9 +896,9 @@ public partial class IfcBSplineCurveWithKnots
     public const uint ENTITY_CODE = 3823230804;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInteger> KnotMultiplicities = new(5, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcParameterValue> Knots = new(6, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcKnotType> KnotSpec = new(7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcInteger> KnotMultiplicities = new("KnotMultiplicities", 5, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcParameterValue> Knots = new("Knots", 6, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcKnotType> KnotSpec = new("KnotSpec", 7, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Degree, ControlPointsList, CurveForm, ClosedCurve, SelfIntersect, KnotMultiplicities, Knots, KnotSpec ];
 }
 
@@ -910,13 +910,13 @@ public partial class IfcBSplineSurface
     public const uint ENTITY_CODE = 805726709;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInteger> UDegree = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> VDegree = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCartesianPoint> ControlPointsList = new(2, IfcTypeKind.Entity, 2);
-    public readonly IfcAttribute<IfcBSplineSurfaceForm> SurfaceForm = new(3, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLogical> UClosed = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> VClosed = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> SelfIntersect = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> UDegree = new("UDegree", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> VDegree = new("VDegree", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> ControlPointsList = new("ControlPointsList", 2, IfcTypeKind.Entity, 2);
+    public readonly IfcAttribute<IfcBSplineSurfaceForm> SurfaceForm = new("SurfaceForm", 3, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLogical> UClosed = new("UClosed", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> VClosed = new("VClosed", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> SelfIntersect = new("SelfIntersect", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ UDegree, VDegree, ControlPointsList, SurfaceForm, UClosed, VClosed, SelfIntersect ];
 }
 
@@ -928,11 +928,11 @@ public partial class IfcBSplineSurfaceWithKnots
     public const uint ENTITY_CODE = 1048362608;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInteger> UMultiplicities = new(7, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcInteger> VMultiplicities = new(8, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcParameterValue> UKnots = new(9, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcParameterValue> VKnots = new(10, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcKnotType> KnotSpec = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcInteger> UMultiplicities = new("UMultiplicities", 7, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcInteger> VMultiplicities = new("VMultiplicities", 8, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcParameterValue> UKnots = new("UKnots", 9, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcParameterValue> VKnots = new("VKnots", 10, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcKnotType> KnotSpec = new("KnotSpec", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ UDegree, VDegree, ControlPointsList, SurfaceForm, UClosed, VClosed, SelfIntersect, UMultiplicities, VMultiplicities, UKnots, VKnots, KnotSpec ];
 }
 
@@ -944,9 +944,9 @@ public partial class IfcBuilding
     public const uint ENTITY_CODE = 761684107;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> ElevationOfRefHeight = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> ElevationOfTerrain = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPostalAddress> BuildingAddress = new(11, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ElevationOfRefHeight = new("ElevationOfRefHeight", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ElevationOfTerrain = new("ElevationOfTerrain", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPostalAddress> BuildingAddress = new("BuildingAddress", 11, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, ElevationOfRefHeight, ElevationOfTerrain, BuildingAddress ];
 }
 
@@ -958,7 +958,7 @@ public partial class IfcBuildingElementPart
     public const uint ENTITY_CODE = 145338828;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBuildingElementPartTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBuildingElementPartTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -970,7 +970,7 @@ public partial class IfcBuildingElementPartType
     public const uint ENTITY_CODE = 2064734788;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBuildingElementPartTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBuildingElementPartTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -982,7 +982,7 @@ public partial class IfcBuildingElementProxy
     public const uint ENTITY_CODE = 1258167731;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBuildingElementProxyTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBuildingElementProxyTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -994,7 +994,7 @@ public partial class IfcBuildingElementProxyType
     public const uint ENTITY_CODE = 365776395;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBuildingElementProxyTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBuildingElementProxyTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1006,7 +1006,7 @@ public partial class IfcBuildingStorey
     public const uint ENTITY_CODE = 2119311079;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> Elevation = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> Elevation = new("Elevation", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, Elevation ];
 }
 
@@ -1018,8 +1018,8 @@ public partial class IfcBuildingSystem
     public const uint ENTITY_CODE = 400067826;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBuildingSystemTypeEnum> PredefinedType = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> LongName = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBuildingSystemTypeEnum> PredefinedType = new("PredefinedType", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> LongName = new("LongName", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, PredefinedType, LongName ];
 }
 
@@ -1053,8 +1053,8 @@ public partial class IfcBuiltSystem
     public const uint ENTITY_CODE = 1344989052;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBuiltSystemTypeEnum> PredefinedType = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> LongName = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBuiltSystemTypeEnum> PredefinedType = new("PredefinedType", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> LongName = new("LongName", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, PredefinedType, LongName ];
 }
 
@@ -1066,7 +1066,7 @@ public partial class IfcBurner
     public const uint ENTITY_CODE = 2745453489;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBurnerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBurnerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1078,7 +1078,7 @@ public partial class IfcBurnerType
     public const uint ENTITY_CODE = 1710763865;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBurnerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBurnerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1090,7 +1090,7 @@ public partial class IfcCableCarrierFitting
     public const uint ENTITY_CODE = 189548391;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCableCarrierFittingTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCableCarrierFittingTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1102,7 +1102,7 @@ public partial class IfcCableCarrierFittingType
     public const uint ENTITY_CODE = 376683519;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCableCarrierFittingTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCableCarrierFittingTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1114,7 +1114,7 @@ public partial class IfcCableCarrierSegment
     public const uint ENTITY_CODE = 2919648569;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCableCarrierSegmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCableCarrierSegmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1126,7 +1126,7 @@ public partial class IfcCableCarrierSegmentType
     public const uint ENTITY_CODE = 2588811057;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCableCarrierSegmentTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCableCarrierSegmentTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1138,7 +1138,7 @@ public partial class IfcCableFitting
     public const uint ENTITY_CODE = 2859774459;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCableFittingTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCableFittingTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1150,7 +1150,7 @@ public partial class IfcCableFittingType
     public const uint ENTITY_CODE = 2199923043;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCableFittingTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCableFittingTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1162,7 +1162,7 @@ public partial class IfcCableSegment
     public const uint ENTITY_CODE = 2306544149;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCableSegmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCableSegmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1174,7 +1174,7 @@ public partial class IfcCableSegmentType
     public const uint ENTITY_CODE = 1401189693;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCableSegmentTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCableSegmentTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1186,7 +1186,7 @@ public partial class IfcCaissonFoundation
     public const uint ENTITY_CODE = 3992255512;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCaissonFoundationTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCaissonFoundationTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1198,7 +1198,7 @@ public partial class IfcCaissonFoundationType
     public const uint ENTITY_CODE = 757674832;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCaissonFoundationTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCaissonFoundationTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1210,7 +1210,7 @@ public partial class IfcCartesianPoint
     public const uint ENTITY_CODE = 2592642523;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> Coordinates = new(0, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLengthMeasure> Coordinates = new("Coordinates", 0, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Coordinates ];
 }
 
@@ -1233,8 +1233,8 @@ public partial class IfcCartesianPointList2D
     public const uint ENTITY_CODE = 1003991621;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> CoordList = new(0, IfcTypeKind.Alias, 2);
-    public readonly IfcAttribute<IfcLabel> TagList = new(1, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLengthMeasure> CoordList = new("CoordList", 0, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcLabel> TagList = new("TagList", 1, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ CoordList, TagList ];
 }
 
@@ -1246,8 +1246,8 @@ public partial class IfcCartesianPointList3D
     public const uint ENTITY_CODE = 2513727068;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> CoordList = new(0, IfcTypeKind.Alias, 2);
-    public readonly IfcAttribute<IfcLabel> TagList = new(1, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLengthMeasure> CoordList = new("CoordList", 0, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcLabel> TagList = new("TagList", 1, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ CoordList, TagList ];
 }
 
@@ -1259,10 +1259,10 @@ public partial class IfcCartesianTransformationOperator
     public const uint ENTITY_CODE = 4124277054;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> Axis1 = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDirection> Axis2 = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCartesianPoint> LocalOrigin = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcReal> Scale = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDirection> Axis1 = new("Axis1", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> Axis2 = new("Axis2", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> LocalOrigin = new("LocalOrigin", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcReal> Scale = new("Scale", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Axis1, Axis2, LocalOrigin, Scale ];
 }
 
@@ -1285,7 +1285,7 @@ public partial class IfcCartesianTransformationOperator2DnonUniform
     public const uint ENTITY_CODE = 1393209885;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReal> Scale2 = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> Scale2 = new("Scale2", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Axis1, Axis2, LocalOrigin, Scale, Scale2 ];
 }
 
@@ -1297,7 +1297,7 @@ public partial class IfcCartesianTransformationOperator3D
     public const uint ENTITY_CODE = 931556681;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> Axis3 = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> Axis3 = new("Axis3", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Axis1, Axis2, LocalOrigin, Scale, Axis3 ];
 }
 
@@ -1309,8 +1309,8 @@ public partial class IfcCartesianTransformationOperator3DnonUniform
     public const uint ENTITY_CODE = 483449928;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReal> Scale2 = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> Scale3 = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> Scale2 = new("Scale2", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> Scale3 = new("Scale3", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Axis1, Axis2, LocalOrigin, Scale, Axis3, Scale2, Scale3 ];
 }
 
@@ -1322,7 +1322,7 @@ public partial class IfcCenterLineProfileDef
     public const uint ENTITY_CODE = 2083666828;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Thickness = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Thickness = new("Thickness", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Curve, Thickness ];
 }
 
@@ -1334,7 +1334,7 @@ public partial class IfcChiller
     public const uint ENTITY_CODE = 1291268380;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcChillerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcChillerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1346,7 +1346,7 @@ public partial class IfcChillerType
     public const uint ENTITY_CODE = 1828365044;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcChillerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcChillerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1358,7 +1358,7 @@ public partial class IfcChimney
     public const uint ENTITY_CODE = 2390011906;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcChimneyTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcChimneyTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1370,7 +1370,7 @@ public partial class IfcChimneyType
     public const uint ENTITY_CODE = 3914401042;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcChimneyTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcChimneyTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1382,7 +1382,7 @@ public partial class IfcCircle
     public const uint ENTITY_CODE = 1749133735;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new("Radius", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, Radius ];
 }
 
@@ -1394,7 +1394,7 @@ public partial class IfcCircleHollowProfileDef
     public const uint ENTITY_CODE = 1758279288;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> WallThickness = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> WallThickness = new("WallThickness", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, Radius, WallThickness ];
 }
 
@@ -1406,7 +1406,7 @@ public partial class IfcCircleProfileDef
     public const uint ENTITY_CODE = 3866071551;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new("Radius", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, Radius ];
 }
 
@@ -1440,13 +1440,13 @@ public partial class IfcClassification
     public const uint ENTITY_CODE = 1675978639;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Source = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Edition = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDate> EditionDate = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcURIReference> Specification = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> ReferenceTokens = new(6, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> Source = new("Source", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Edition = new("Edition", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDate> EditionDate = new("EditionDate", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcURIReference> Specification = new("Specification", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> ReferenceTokens = new("ReferenceTokens", 6, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Source, Edition, EditionDate, Name, Description, Specification, ReferenceTokens ];
 }
 
@@ -1458,9 +1458,9 @@ public partial class IfcClassificationReference
     public const uint ENTITY_CODE = 1249450268;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcClassificationReferenceSelect> ReferencedSource = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcText> Description = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> Sort = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcClassificationReferenceSelect> ReferencedSource = new("ReferencedSource", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Sort = new("Sort", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Location, Identification, Name, ReferencedSource, Description, Sort ];
 }
 
@@ -1483,7 +1483,7 @@ public partial class IfcClothoid
     public const uint ENTITY_CODE = 969078135;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> ClothoidConstant = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ClothoidConstant = new("ClothoidConstant", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, ClothoidConstant ];
 }
 
@@ -1495,7 +1495,7 @@ public partial class IfcCoil
     public const uint ENTITY_CODE = 1409689212;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCoilTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCoilTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1507,7 +1507,7 @@ public partial class IfcCoilType
     public const uint ENTITY_CODE = 679451348;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCoilTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCoilTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1519,9 +1519,9 @@ public partial class IfcColourRgb
     public const uint ENTITY_CODE = 3581224902;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Red = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Green = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Blue = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Red = new("Red", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Green = new("Green", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Blue = new("Blue", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Red, Green, Blue ];
 }
 
@@ -1533,7 +1533,7 @@ public partial class IfcColourRgbList
     public const uint ENTITY_CODE = 3889447890;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> ColourList = new(0, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> ColourList = new("ColourList", 0, IfcTypeKind.Alias, 2);
     public override IfcAttribute[] Attributes => [ ColourList ];
 }
 
@@ -1545,7 +1545,7 @@ public partial class IfcColourSpecification
     public const uint ENTITY_CODE = 984402472;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name ];
 }
 
@@ -1557,7 +1557,7 @@ public partial class IfcColumn
     public const uint ENTITY_CODE = 4230436045;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcColumnTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcColumnTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1569,7 +1569,7 @@ public partial class IfcColumnType
     public const uint ENTITY_CODE = 2387334149;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcColumnTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcColumnTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1581,7 +1581,7 @@ public partial class IfcCommunicationsAppliance
     public const uint ENTITY_CODE = 3266413985;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCommunicationsApplianceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCommunicationsApplianceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1593,7 +1593,7 @@ public partial class IfcCommunicationsApplianceType
     public const uint ENTITY_CODE = 1113689321;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCommunicationsApplianceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCommunicationsApplianceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1605,8 +1605,8 @@ public partial class IfcComplexProperty
     public const uint ENTITY_CODE = 2192924248;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> UsageName = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcProperty> HasProperties = new(3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcIdentifier> UsageName = new("UsageName", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProperty> HasProperties = new("HasProperties", 3, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Specification, UsageName, HasProperties ];
 }
 
@@ -1618,9 +1618,9 @@ public partial class IfcComplexPropertyTemplate
     public const uint ENTITY_CODE = 1789814754;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> UsageName = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcComplexPropertyTemplateTypeEnum> TemplateType = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPropertyTemplate> HasPropertyTemplates = new(6, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> UsageName = new("UsageName", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcComplexPropertyTemplateTypeEnum> TemplateType = new("TemplateType", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPropertyTemplate> HasPropertyTemplates = new("HasPropertyTemplates", 6, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, UsageName, TemplateType, HasPropertyTemplates ];
 }
 
@@ -1632,8 +1632,8 @@ public partial class IfcCompositeCurve
     public const uint ENTITY_CODE = 3290217845;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSegment> Segments = new(0, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLogical> SelfIntersect = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSegment> Segments = new("Segments", 0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLogical> SelfIntersect = new("SelfIntersect", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Segments, SelfIntersect ];
 }
 
@@ -1656,8 +1656,8 @@ public partial class IfcCompositeCurveSegment
     public const uint ENTITY_CODE = 690703830;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoolean> SameSense = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCurve> ParentCurve = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> SameSense = new("SameSense", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurve> ParentCurve = new("ParentCurve", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Transition, SameSense, ParentCurve ];
 }
 
@@ -1669,8 +1669,8 @@ public partial class IfcCompositeProfileDef
     public const uint ENTITY_CODE = 1348311886;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileDef> Profiles = new(2, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> Label = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProfileDef> Profiles = new("Profiles", 2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Label = new("Label", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Profiles, Label ];
 }
 
@@ -1682,7 +1682,7 @@ public partial class IfcCompressor
     public const uint ENTITY_CODE = 2902755306;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCompressorTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCompressorTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1694,7 +1694,7 @@ public partial class IfcCompressorType
     public const uint ENTITY_CODE = 3297355082;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCompressorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCompressorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1706,7 +1706,7 @@ public partial class IfcCondenser
     public const uint ENTITY_CODE = 2517229806;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCondenserTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCondenserTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -1718,7 +1718,7 @@ public partial class IfcCondenserType
     public const uint ENTITY_CODE = 2094249038;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCondenserTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCondenserTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -1730,7 +1730,7 @@ public partial class IfcConic
     public const uint ENTITY_CODE = 2129705005;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement> Position = new(0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcAxis2Placement> Position = new("Position", 0, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Position ];
 }
 
@@ -1742,7 +1742,7 @@ public partial class IfcConnectedFaceSet
     public const uint ENTITY_CODE = 2025929673;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFace> CfsFaces = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcFace> CfsFaces = new("CfsFaces", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ CfsFaces ];
 }
 
@@ -1754,8 +1754,8 @@ public partial class IfcConnectionCurveGeometry
     public const uint ENTITY_CODE = 4068633818;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurveOrEdgeCurve> CurveOnRelatingElement = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcCurveOrEdgeCurve> CurveOnRelatedElement = new(1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCurveOrEdgeCurve> CurveOnRelatingElement = new("CurveOnRelatingElement", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCurveOrEdgeCurve> CurveOnRelatedElement = new("CurveOnRelatedElement", 1, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ CurveOnRelatingElement, CurveOnRelatedElement ];
 }
 
@@ -1778,9 +1778,9 @@ public partial class IfcConnectionPointEccentricity
     public const uint ENTITY_CODE = 2135620543;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> EccentricityInX = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> EccentricityInY = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> EccentricityInZ = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> EccentricityInX = new("EccentricityInX", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> EccentricityInY = new("EccentricityInY", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> EccentricityInZ = new("EccentricityInZ", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ PointOnRelatingElement, PointOnRelatedElement, EccentricityInX, EccentricityInY, EccentricityInZ ];
 }
 
@@ -1792,8 +1792,8 @@ public partial class IfcConnectionPointGeometry
     public const uint ENTITY_CODE = 247146535;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPointOrVertexPoint> PointOnRelatingElement = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcPointOrVertexPoint> PointOnRelatedElement = new(1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcPointOrVertexPoint> PointOnRelatingElement = new("PointOnRelatingElement", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcPointOrVertexPoint> PointOnRelatedElement = new("PointOnRelatedElement", 1, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ PointOnRelatingElement, PointOnRelatedElement ];
 }
 
@@ -1805,8 +1805,8 @@ public partial class IfcConnectionSurfaceGeometry
     public const uint ENTITY_CODE = 3292868022;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurfaceOrFaceSurface> SurfaceOnRelatingElement = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcSurfaceOrFaceSurface> SurfaceOnRelatedElement = new(1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcSurfaceOrFaceSurface> SurfaceOnRelatingElement = new("SurfaceOnRelatingElement", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcSurfaceOrFaceSurface> SurfaceOnRelatedElement = new("SurfaceOnRelatedElement", 1, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ SurfaceOnRelatingElement, SurfaceOnRelatedElement ];
 }
 
@@ -1818,8 +1818,8 @@ public partial class IfcConnectionVolumeGeometry
     public const uint ENTITY_CODE = 3055370909;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSolidOrShell> VolumeOnRelatingElement = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcSolidOrShell> VolumeOnRelatedElement = new(1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcSolidOrShell> VolumeOnRelatingElement = new("VolumeOnRelatingElement", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcSolidOrShell> VolumeOnRelatedElement = new("VolumeOnRelatedElement", 1, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ VolumeOnRelatingElement, VolumeOnRelatedElement ];
 }
 
@@ -1831,13 +1831,13 @@ public partial class IfcConstraint
     public const uint ENTITY_CODE = 3774606772;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcConstraintEnum> ConstraintGrade = new(2, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> ConstraintSource = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcActorSelect> CreatingActor = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcDateTime> CreationTime = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedGrade = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcConstraintEnum> ConstraintGrade = new("ConstraintGrade", 2, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> ConstraintSource = new("ConstraintSource", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcActorSelect> CreatingActor = new("CreatingActor", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcDateTime> CreationTime = new("CreationTime", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedGrade = new("UserDefinedGrade", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, ConstraintGrade, ConstraintSource, CreatingActor, CreationTime, UserDefinedGrade ];
 }
 
@@ -1849,7 +1849,7 @@ public partial class IfcConstructionEquipmentResource
     public const uint ENTITY_CODE = 325370190;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConstructionEquipmentResourceTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConstructionEquipmentResourceTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, Usage, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -1861,7 +1861,7 @@ public partial class IfcConstructionEquipmentResourceType
     public const uint ENTITY_CODE = 1033176110;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConstructionEquipmentResourceTypeEnum> PredefinedType = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConstructionEquipmentResourceTypeEnum> PredefinedType = new("PredefinedType", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ResourceType, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -1873,7 +1873,7 @@ public partial class IfcConstructionMaterialResource
     public const uint ENTITY_CODE = 3540649679;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConstructionMaterialResourceTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConstructionMaterialResourceTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, Usage, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -1885,7 +1885,7 @@ public partial class IfcConstructionMaterialResourceType
     public const uint ENTITY_CODE = 2484875575;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConstructionMaterialResourceTypeEnum> PredefinedType = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConstructionMaterialResourceTypeEnum> PredefinedType = new("PredefinedType", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ResourceType, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -1897,7 +1897,7 @@ public partial class IfcConstructionProductResource
     public const uint ENTITY_CODE = 1684371685;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConstructionProductResourceTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConstructionProductResourceTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, Usage, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -1909,7 +1909,7 @@ public partial class IfcConstructionProductResourceType
     public const uint ENTITY_CODE = 3087623469;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConstructionProductResourceTypeEnum> PredefinedType = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConstructionProductResourceTypeEnum> PredefinedType = new("PredefinedType", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ResourceType, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -1921,9 +1921,9 @@ public partial class IfcConstructionResource
     public const uint ENTITY_CODE = 1336170662;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcResourceTime> Usage = new(7, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcAppliedValue> BaseCosts = new(8, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcPhysicalQuantity> BaseQuantity = new(9, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcResourceTime> Usage = new("Usage", 7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAppliedValue> BaseCosts = new("BaseCosts", 8, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPhysicalQuantity> BaseQuantity = new("BaseQuantity", 9, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, Usage, BaseCosts, BaseQuantity ];
 }
 
@@ -1935,8 +1935,8 @@ public partial class IfcConstructionResourceType
     public const uint ENTITY_CODE = 228789974;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAppliedValue> BaseCosts = new(9, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcPhysicalQuantity> BaseQuantity = new(10, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAppliedValue> BaseCosts = new("BaseCosts", 9, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPhysicalQuantity> BaseQuantity = new("BaseQuantity", 10, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ResourceType, BaseCosts, BaseQuantity ];
 }
 
@@ -1948,11 +1948,11 @@ public partial class IfcContext
     public const uint ENTITY_CODE = 1157617030;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> ObjectType = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> LongName = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Phase = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcRepresentationContext> RepresentationContexts = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcUnitAssignment> UnitsInContext = new(8, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLabel> ObjectType = new("ObjectType", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> LongName = new("LongName", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Phase = new("Phase", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRepresentationContext> RepresentationContexts = new("RepresentationContexts", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcUnitAssignment> UnitsInContext = new("UnitsInContext", 8, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, LongName, Phase, RepresentationContexts, UnitsInContext ];
 }
 
@@ -1964,7 +1964,7 @@ public partial class IfcContextDependentUnit
     public const uint ENTITY_CODE = 3300513551;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Dimensions, UnitType, Name ];
 }
 
@@ -1976,7 +1976,7 @@ public partial class IfcControl
     public const uint ENTITY_CODE = 3313972656;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification ];
 }
 
@@ -1988,7 +1988,7 @@ public partial class IfcController
     public const uint ENTITY_CODE = 3462062371;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcControllerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcControllerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2000,7 +2000,7 @@ public partial class IfcControllerType
     public const uint ENTITY_CODE = 2931344475;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcControllerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcControllerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2012,8 +2012,8 @@ public partial class IfcConversionBasedUnit
     public const uint ENTITY_CODE = 1289124;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcMeasureWithUnit> ConversionFactor = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMeasureWithUnit> ConversionFactor = new("ConversionFactor", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Dimensions, UnitType, Name, ConversionFactor ];
 }
 
@@ -2025,7 +2025,7 @@ public partial class IfcConversionBasedUnitWithOffset
     public const uint ENTITY_CODE = 1872223463;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReal> ConversionOffset = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> ConversionOffset = new("ConversionOffset", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Dimensions, UnitType, Name, ConversionFactor, ConversionOffset ];
 }
 
@@ -2037,7 +2037,7 @@ public partial class IfcConveyorSegment
     public const uint ENTITY_CODE = 1215236927;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConveyorSegmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConveyorSegmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2049,7 +2049,7 @@ public partial class IfcConveyorSegmentType
     public const uint ENTITY_CODE = 2114148615;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConveyorSegmentTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConveyorSegmentTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2061,7 +2061,7 @@ public partial class IfcCooledBeam
     public const uint ENTITY_CODE = 3881119228;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCooledBeamTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCooledBeamTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2073,7 +2073,7 @@ public partial class IfcCooledBeamType
     public const uint ENTITY_CODE = 2912393812;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCooledBeamTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCooledBeamTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2085,7 +2085,7 @@ public partial class IfcCoolingTower
     public const uint ENTITY_CODE = 2051141211;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCoolingTowerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCoolingTowerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2097,7 +2097,7 @@ public partial class IfcCoolingTowerType
     public const uint ENTITY_CODE = 628467651;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCoolingTowerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCoolingTowerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2109,8 +2109,8 @@ public partial class IfcCoordinateOperation
     public const uint ENTITY_CODE = 3351271378;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCoordinateReferenceSystemSelect> SourceCRS = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcCoordinateReferenceSystem> TargetCRS = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCoordinateReferenceSystemSelect> SourceCRS = new("SourceCRS", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCoordinateReferenceSystem> TargetCRS = new("TargetCRS", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SourceCRS, TargetCRS ];
 }
 
@@ -2122,10 +2122,10 @@ public partial class IfcCoordinateReferenceSystem
     public const uint ENTITY_CODE = 3832139183;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> GeodeticDatum = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> VerticalDatum = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> GeodeticDatum = new("GeodeticDatum", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> VerticalDatum = new("VerticalDatum", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, GeodeticDatum, VerticalDatum ];
 }
 
@@ -2137,8 +2137,8 @@ public partial class IfcCosineSpiral
     public const uint ENTITY_CODE = 226879693;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> CosineTerm = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> CosineTerm = new("CosineTerm", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new("ConstantTerm", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, CosineTerm, ConstantTerm ];
 }
 
@@ -2150,9 +2150,9 @@ public partial class IfcCostItem
     public const uint ENTITY_CODE = 204301829;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCostItemTypeEnum> PredefinedType = new(6, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcCostValue> CostValues = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcPhysicalQuantity> CostQuantities = new(8, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCostItemTypeEnum> PredefinedType = new("PredefinedType", 6, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCostValue> CostValues = new("CostValues", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPhysicalQuantity> CostQuantities = new("CostQuantities", 8, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, PredefinedType, CostValues, CostQuantities ];
 }
 
@@ -2164,10 +2164,10 @@ public partial class IfcCostSchedule
     public const uint ENTITY_CODE = 1266701043;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCostScheduleTypeEnum> PredefinedType = new(6, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> Status = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> SubmittedOn = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> UpdateDate = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCostScheduleTypeEnum> PredefinedType = new("PredefinedType", 6, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> Status = new("Status", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> SubmittedOn = new("SubmittedOn", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> UpdateDate = new("UpdateDate", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, PredefinedType, Status, SubmittedOn, UpdateDate ];
 }
 
@@ -2190,7 +2190,7 @@ public partial class IfcCourse
     public const uint ENTITY_CODE = 1476518042;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCourseTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCourseTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2202,7 +2202,7 @@ public partial class IfcCourseType
     public const uint ENTITY_CODE = 4040396890;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCourseTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCourseTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2214,7 +2214,7 @@ public partial class IfcCovering
     public const uint ENTITY_CODE = 3840892682;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCoveringTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCoveringTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2226,7 +2226,7 @@ public partial class IfcCoveringType
     public const uint ENTITY_CODE = 1670716522;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCoveringTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCoveringTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2238,7 +2238,7 @@ public partial class IfcCrewResource
     public const uint ENTITY_CODE = 3676323422;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCrewResourceTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCrewResourceTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, Usage, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -2250,7 +2250,7 @@ public partial class IfcCrewResourceType
     public const uint ENTITY_CODE = 1960438110;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCrewResourceTypeEnum> PredefinedType = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCrewResourceTypeEnum> PredefinedType = new("PredefinedType", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ResourceType, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -2262,7 +2262,7 @@ public partial class IfcCsgPrimitive3D
     public const uint ENTITY_CODE = 1339626996;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new(0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new("Position", 0, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Position ];
 }
 
@@ -2274,7 +2274,7 @@ public partial class IfcCsgSolid
     public const uint ENTITY_CODE = 3465009481;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCsgSelect> TreeRootExpression = new(0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCsgSelect> TreeRootExpression = new("TreeRootExpression", 0, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ TreeRootExpression ];
 }
 
@@ -2286,11 +2286,11 @@ public partial class IfcCShapeProfileDef
     public const uint ENTITY_CODE = 1922922321;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Width = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> WallThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Girth = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> InternalFilletRadius = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new("Depth", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Width = new("Width", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> WallThickness = new("WallThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Girth = new("Girth", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> InternalFilletRadius = new("InternalFilletRadius", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, Depth, Width, WallThickness, Girth, InternalFilletRadius ];
 }
 
@@ -2302,11 +2302,11 @@ public partial class IfcCurrencyRelationship
     public const uint ENTITY_CODE = 3359804106;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMonetaryUnit> RelatingMonetaryUnit = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcMonetaryUnit> RelatedMonetaryUnit = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> ExchangeRate = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> RateDateTime = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLibraryInformation> RateSource = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcMonetaryUnit> RelatingMonetaryUnit = new("RelatingMonetaryUnit", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcMonetaryUnit> RelatedMonetaryUnit = new("RelatedMonetaryUnit", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> ExchangeRate = new("ExchangeRate", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> RateDateTime = new("RateDateTime", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLibraryInformation> RateSource = new("RateSource", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, RelatingMonetaryUnit, RelatedMonetaryUnit, ExchangeRate, RateDateTime, RateSource ];
 }
 
@@ -2318,7 +2318,7 @@ public partial class IfcCurtainWall
     public const uint ENTITY_CODE = 2095691047;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurtainWallTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCurtainWallTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2330,7 +2330,7 @@ public partial class IfcCurtainWallType
     public const uint ENTITY_CODE = 1160082879;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurtainWallTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCurtainWallTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2353,9 +2353,9 @@ public partial class IfcCurveBoundedPlane
     public const uint ENTITY_CODE = 676770975;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPlane> BasisSurface = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCurve> OuterBoundary = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCurve> InnerBoundaries = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPlane> BasisSurface = new("BasisSurface", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurve> OuterBoundary = new("OuterBoundary", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurve> InnerBoundaries = new("InnerBoundaries", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ BasisSurface, OuterBoundary, InnerBoundaries ];
 }
 
@@ -2367,9 +2367,9 @@ public partial class IfcCurveBoundedSurface
     public const uint ENTITY_CODE = 756924914;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurface> BasisSurface = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoundaryCurve> Boundaries = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcBoolean> ImplicitOuter = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSurface> BasisSurface = new("BasisSurface", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoundaryCurve> Boundaries = new("Boundaries", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcBoolean> ImplicitOuter = new("ImplicitOuter", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ BasisSurface, Boundaries, ImplicitOuter ];
 }
 
@@ -2381,10 +2381,10 @@ public partial class IfcCurveSegment
     public const uint ENTITY_CODE = 1588348887;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPlacement> Placement = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCurveMeasureSelect> SegmentStart = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcCurveMeasureSelect> SegmentLength = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcCurve> ParentCurve = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPlacement> Placement = new("Placement", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurveMeasureSelect> SegmentStart = new("SegmentStart", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCurveMeasureSelect> SegmentLength = new("SegmentLength", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCurve> ParentCurve = new("ParentCurve", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Transition, Placement, SegmentStart, SegmentLength, ParentCurve ];
 }
 
@@ -2396,10 +2396,10 @@ public partial class IfcCurveStyle
     public const uint ENTITY_CODE = 796586243;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurveFontOrScaledCurveFontSelect> CurveFont = new(1, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcSizeSelect> CurveWidth = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcColour> CurveColour = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcBoolean> ModelOrDraughting = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurveFontOrScaledCurveFontSelect> CurveFont = new("CurveFont", 1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcSizeSelect> CurveWidth = new("CurveWidth", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcColour> CurveColour = new("CurveColour", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcBoolean> ModelOrDraughting = new("ModelOrDraughting", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, CurveFont, CurveWidth, CurveColour, ModelOrDraughting ];
 }
 
@@ -2411,8 +2411,8 @@ public partial class IfcCurveStyleFont
     public const uint ENTITY_CODE = 1108523850;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCurveStyleFontPattern> PatternList = new(1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurveStyleFontPattern> PatternList = new("PatternList", 1, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, PatternList ];
 }
 
@@ -2424,9 +2424,9 @@ public partial class IfcCurveStyleFontAndScaling
     public const uint ENTITY_CODE = 320924324;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCurveStyleFontSelect> CurveStyleFont = new(1, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> CurveFontScaling = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurveStyleFontSelect> CurveStyleFont = new("CurveStyleFont", 1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> CurveFontScaling = new("CurveFontScaling", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, CurveStyleFont, CurveFontScaling ];
 }
 
@@ -2438,8 +2438,8 @@ public partial class IfcCurveStyleFontPattern
     public const uint ENTITY_CODE = 236994256;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> VisibleSegmentLength = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> InvisibleSegmentLength = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> VisibleSegmentLength = new("VisibleSegmentLength", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> InvisibleSegmentLength = new("InvisibleSegmentLength", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ VisibleSegmentLength, InvisibleSegmentLength ];
 }
 
@@ -2451,7 +2451,7 @@ public partial class IfcCylindricalSurface
     public const uint ENTITY_CODE = 3246384204;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new("Radius", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, Radius ];
 }
 
@@ -2463,7 +2463,7 @@ public partial class IfcDamper
     public const uint ENTITY_CODE = 1584011894;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDamperTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDamperTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2475,7 +2475,7 @@ public partial class IfcDamperType
     public const uint ENTITY_CODE = 4182524806;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDamperTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDamperTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2509,9 +2509,9 @@ public partial class IfcDerivedProfileDef
     public const uint ENTITY_CODE = 2084073208;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileDef> ParentProfile = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCartesianTransformationOperator2D> Operator = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLabel> Label = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProfileDef> ParentProfile = new("ParentProfile", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCartesianTransformationOperator2D> Operator = new("Operator", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLabel> Label = new("Label", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, ParentProfile, Operator, Label ];
 }
 
@@ -2523,10 +2523,10 @@ public partial class IfcDerivedUnit
     public const uint ENTITY_CODE = 2275012698;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDerivedUnitElement> Elements = new(0, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcDerivedUnitEnum> UnitType = new(1, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedType = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDerivedUnitElement> Elements = new("Elements", 0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcDerivedUnitEnum> UnitType = new("UnitType", 1, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedType = new("UserDefinedType", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Elements, UnitType, UserDefinedType, Name ];
 }
 
@@ -2538,8 +2538,8 @@ public partial class IfcDerivedUnitElement
     public const uint ENTITY_CODE = 1549914162;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcNamedUnit> Unit = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<INTEGER> Exponent = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNamedUnit> Unit = new("Unit", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<INTEGER> Exponent = new("Exponent", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Unit, Exponent ];
 }
 
@@ -2551,13 +2551,13 @@ public partial class IfcDimensionalExponents
     public const uint ENTITY_CODE = 1671467792;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<INTEGER> LengthExponent = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<INTEGER> MassExponent = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<INTEGER> TimeExponent = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<INTEGER> ElectricCurrentExponent = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<INTEGER> ThermodynamicTemperatureExponent = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<INTEGER> AmountOfSubstanceExponent = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<INTEGER> LuminousIntensityExponent = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<INTEGER> LengthExponent = new("LengthExponent", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<INTEGER> MassExponent = new("MassExponent", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<INTEGER> TimeExponent = new("TimeExponent", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<INTEGER> ElectricCurrentExponent = new("ElectricCurrentExponent", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<INTEGER> ThermodynamicTemperatureExponent = new("ThermodynamicTemperatureExponent", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<INTEGER> AmountOfSubstanceExponent = new("AmountOfSubstanceExponent", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<INTEGER> LuminousIntensityExponent = new("LuminousIntensityExponent", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ LengthExponent, MassExponent, TimeExponent, ElectricCurrentExponent, ThermodynamicTemperatureExponent, AmountOfSubstanceExponent, LuminousIntensityExponent ];
 }
 
@@ -2569,7 +2569,7 @@ public partial class IfcDirection
     public const uint ENTITY_CODE = 1116762488;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReal> DirectionRatios = new(0, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcReal> DirectionRatios = new("DirectionRatios", 0, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ DirectionRatios ];
 }
 
@@ -2581,9 +2581,9 @@ public partial class IfcDirectrixCurveSweptAreaSolid
     public const uint ENTITY_CODE = 145165971;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> Directrix = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCurveMeasureSelect> StartParam = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcCurveMeasureSelect> EndParam = new(4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCurve> Directrix = new("Directrix", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurveMeasureSelect> StartParam = new("StartParam", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCurveMeasureSelect> EndParam = new("EndParam", 4, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ SweptArea, Position, Directrix, StartParam, EndParam ];
 }
 
@@ -2606,7 +2606,7 @@ public partial class IfcDiscreteAccessory
     public const uint ENTITY_CODE = 1020050154;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDiscreteAccessoryTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDiscreteAccessoryTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2618,7 +2618,7 @@ public partial class IfcDiscreteAccessoryType
     public const uint ENTITY_CODE = 1499596874;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDiscreteAccessoryTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDiscreteAccessoryTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2630,7 +2630,7 @@ public partial class IfcDistributionBoard
     public const uint ENTITY_CODE = 1943937367;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDistributionBoardTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDistributionBoardTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2642,7 +2642,7 @@ public partial class IfcDistributionBoardType
     public const uint ENTITY_CODE = 860824207;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDistributionBoardTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDistributionBoardTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2654,7 +2654,7 @@ public partial class IfcDistributionChamberElement
     public const uint ENTITY_CODE = 1690940191;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDistributionChamberElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDistributionChamberElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2666,7 +2666,7 @@ public partial class IfcDistributionChamberElementType
     public const uint ENTITY_CODE = 2100497895;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDistributionChamberElementTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDistributionChamberElementTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2755,9 +2755,9 @@ public partial class IfcDistributionPort
     public const uint ENTITY_CODE = 996223226;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFlowDirectionEnum> FlowDirection = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDistributionPortTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDistributionSystemEnum> SystemType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFlowDirectionEnum> FlowDirection = new("FlowDirection", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDistributionPortTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDistributionSystemEnum> SystemType = new("SystemType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, FlowDirection, PredefinedType, SystemType ];
 }
 
@@ -2769,8 +2769,8 @@ public partial class IfcDistributionSystem
     public const uint ENTITY_CODE = 2966760840;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> LongName = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDistributionSystemEnum> PredefinedType = new(6, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> LongName = new("LongName", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDistributionSystemEnum> PredefinedType = new("PredefinedType", 6, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, LongName, PredefinedType ];
 }
 
@@ -2782,23 +2782,23 @@ public partial class IfcDocumentInformation
     public const uint ENTITY_CODE = 1365583644;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcURIReference> Location = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Purpose = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> IntendedUse = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Scope = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Revision = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcActorSelect> DocumentOwner = new(8, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcActorSelect> Editors = new(9, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcDateTime> CreationTime = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> LastRevisionTime = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> ElectronicFormat = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDate> ValidFrom = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDate> ValidUntil = new(14, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDocumentConfidentialityEnum> Confidentiality = new(15, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDocumentStatusEnum> Status = new(16, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcURIReference> Location = new("Location", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Purpose = new("Purpose", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> IntendedUse = new("IntendedUse", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Scope = new("Scope", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Revision = new("Revision", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcActorSelect> DocumentOwner = new("DocumentOwner", 8, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcActorSelect> Editors = new("Editors", 9, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcDateTime> CreationTime = new("CreationTime", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> LastRevisionTime = new("LastRevisionTime", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> ElectronicFormat = new("ElectronicFormat", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDate> ValidFrom = new("ValidFrom", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDate> ValidUntil = new("ValidUntil", 14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDocumentConfidentialityEnum> Confidentiality = new("Confidentiality", 15, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDocumentStatusEnum> Status = new("Status", 16, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Identification, Name, Description, Location, Purpose, IntendedUse, Scope, Revision, DocumentOwner, Editors, CreationTime, LastRevisionTime, ElectronicFormat, ValidFrom, ValidUntil, Confidentiality, Status ];
 }
 
@@ -2810,9 +2810,9 @@ public partial class IfcDocumentInformationRelationship
     public const uint ENTITY_CODE = 3622737906;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDocumentInformation> RelatingDocument = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDocumentInformation> RelatedDocuments = new(3, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> RelationshipType = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDocumentInformation> RelatingDocument = new("RelatingDocument", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDocumentInformation> RelatedDocuments = new("RelatedDocuments", 3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> RelationshipType = new("RelationshipType", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, RelatingDocument, RelatedDocuments, RelationshipType ];
 }
 
@@ -2824,8 +2824,8 @@ public partial class IfcDocumentReference
     public const uint ENTITY_CODE = 1468122623;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcText> Description = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDocumentInformation> ReferencedDocument = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDocumentInformation> ReferencedDocument = new("ReferencedDocument", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Location, Identification, Name, Description, ReferencedDocument ];
 }
 
@@ -2837,11 +2837,11 @@ public partial class IfcDoor
     public const uint ENTITY_CODE = 656740791;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallHeight = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallWidth = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDoorTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDoorTypeOperationEnum> OperationType = new(11, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedOperationType = new(12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallHeight = new("OverallHeight", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallWidth = new("OverallWidth", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDoorTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDoorTypeOperationEnum> OperationType = new("OperationType", 11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedOperationType = new("UserDefinedOperationType", 12, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, OverallHeight, OverallWidth, PredefinedType, OperationType, UserDefinedOperationType ];
 }
 
@@ -2853,19 +2853,19 @@ public partial class IfcDoorLiningProperties
     public const uint ENTITY_CODE = 3739251787;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> LiningDepth = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> LiningThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> ThresholdDepth = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> ThresholdThickness = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> TransomThickness = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> TransomOffset = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LiningOffset = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> ThresholdOffset = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> CasingThickness = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> CasingDepth = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new(14, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LiningToPanelOffsetX = new(15, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LiningToPanelOffsetY = new(16, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> LiningDepth = new("LiningDepth", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> LiningThickness = new("LiningThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> ThresholdDepth = new("ThresholdDepth", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> ThresholdThickness = new("ThresholdThickness", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> TransomThickness = new("TransomThickness", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> TransomOffset = new("TransomOffset", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LiningOffset = new("LiningOffset", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ThresholdOffset = new("ThresholdOffset", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> CasingThickness = new("CasingThickness", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> CasingDepth = new("CasingDepth", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new("ShapeAspectStyle", 14, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LiningToPanelOffsetX = new("LiningToPanelOffsetX", 15, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LiningToPanelOffsetY = new("LiningToPanelOffsetY", 16, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, LiningDepth, LiningThickness, ThresholdDepth, ThresholdThickness, TransomThickness, TransomOffset, LiningOffset, ThresholdOffset, CasingThickness, CasingDepth, ShapeAspectStyle, LiningToPanelOffsetX, LiningToPanelOffsetY ];
 }
 
@@ -2877,11 +2877,11 @@ public partial class IfcDoorPanelProperties
     public const uint ENTITY_CODE = 2042941894;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> PanelDepth = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDoorPanelOperationEnum> PanelOperation = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> PanelWidth = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDoorPanelPositionEnum> PanelPosition = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new(8, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> PanelDepth = new("PanelDepth", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDoorPanelOperationEnum> PanelOperation = new("PanelOperation", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> PanelWidth = new("PanelWidth", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDoorPanelPositionEnum> PanelPosition = new("PanelPosition", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new("ShapeAspectStyle", 8, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, PanelDepth, PanelOperation, PanelWidth, PanelPosition, ShapeAspectStyle ];
 }
 
@@ -2893,10 +2893,10 @@ public partial class IfcDoorType
     public const uint ENTITY_CODE = 2205326319;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDoorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDoorTypeOperationEnum> OperationType = new(10, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcBoolean> ParameterTakesPrecedence = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedOperationType = new(12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDoorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDoorTypeOperationEnum> OperationType = new("OperationType", 10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBoolean> ParameterTakesPrecedence = new("ParameterTakesPrecedence", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedOperationType = new("UserDefinedOperationType", 12, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType, OperationType, ParameterTakesPrecedence, UserDefinedOperationType ];
 }
 
@@ -2930,7 +2930,7 @@ public partial class IfcDuctFitting
     public const uint ENTITY_CODE = 286836086;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDuctFittingTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDuctFittingTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2942,7 +2942,7 @@ public partial class IfcDuctFittingType
     public const uint ENTITY_CODE = 922394246;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDuctFittingTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDuctFittingTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2954,7 +2954,7 @@ public partial class IfcDuctSegment
     public const uint ENTITY_CODE = 2069652084;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDuctSegmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDuctSegmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2966,7 +2966,7 @@ public partial class IfcDuctSegmentType
     public const uint ENTITY_CODE = 421111644;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDuctSegmentTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDuctSegmentTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -2978,7 +2978,7 @@ public partial class IfcDuctSilencer
     public const uint ENTITY_CODE = 821901792;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDuctSilencerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDuctSilencerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -2990,7 +2990,7 @@ public partial class IfcDuctSilencerType
     public const uint ENTITY_CODE = 3066515080;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDuctSilencerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDuctSilencerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3002,7 +3002,7 @@ public partial class IfcEarthworksCut
     public const uint ENTITY_CODE = 1926198179;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEarthworksCutTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEarthworksCutTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3025,7 +3025,7 @@ public partial class IfcEarthworksFill
     public const uint ENTITY_CODE = 2754986888;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEarthworksFillTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEarthworksFillTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3037,8 +3037,8 @@ public partial class IfcEdge
     public const uint ENTITY_CODE = 2965549882;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVertex> EdgeStart = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcVertex> EdgeEnd = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcVertex> EdgeStart = new("EdgeStart", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcVertex> EdgeEnd = new("EdgeEnd", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ EdgeStart, EdgeEnd ];
 }
 
@@ -3050,8 +3050,8 @@ public partial class IfcEdgeCurve
     public const uint ENTITY_CODE = 4051372493;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> EdgeGeometry = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoolean> SameSense = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurve> EdgeGeometry = new("EdgeGeometry", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> SameSense = new("SameSense", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ EdgeStart, EdgeEnd, EdgeGeometry, SameSense ];
 }
 
@@ -3063,7 +3063,7 @@ public partial class IfcEdgeLoop
     public const uint ENTITY_CODE = 1325479016;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOrientedEdge> EdgeList = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcOrientedEdge> EdgeList = new("EdgeList", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ EdgeList ];
 }
 
@@ -3075,7 +3075,7 @@ public partial class IfcElectricAppliance
     public const uint ENTITY_CODE = 3699799675;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricApplianceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricApplianceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3087,7 +3087,7 @@ public partial class IfcElectricApplianceType
     public const uint ENTITY_CODE = 4222203363;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricApplianceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricApplianceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3099,7 +3099,7 @@ public partial class IfcElectricDistributionBoard
     public const uint ENTITY_CODE = 317330310;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricDistributionBoardTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricDistributionBoardTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3111,7 +3111,7 @@ public partial class IfcElectricDistributionBoardType
     public const uint ENTITY_CODE = 3223010614;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricDistributionBoardTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricDistributionBoardTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3123,7 +3123,7 @@ public partial class IfcElectricFlowStorageDevice
     public const uint ENTITY_CODE = 2685000379;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricFlowStorageDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricFlowStorageDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3135,7 +3135,7 @@ public partial class IfcElectricFlowStorageDeviceType
     public const uint ENTITY_CODE = 2420788771;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricFlowStorageDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricFlowStorageDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3147,7 +3147,7 @@ public partial class IfcElectricFlowTreatmentDevice
     public const uint ENTITY_CODE = 2486467058;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricFlowTreatmentDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricFlowTreatmentDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3159,7 +3159,7 @@ public partial class IfcElectricFlowTreatmentDeviceType
     public const uint ENTITY_CODE = 2050120930;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricFlowTreatmentDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricFlowTreatmentDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3171,7 +3171,7 @@ public partial class IfcElectricGenerator
     public const uint ENTITY_CODE = 3133513153;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricGeneratorTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricGeneratorTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3183,7 +3183,7 @@ public partial class IfcElectricGeneratorType
     public const uint ENTITY_CODE = 1023952905;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricGeneratorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricGeneratorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3195,7 +3195,7 @@ public partial class IfcElectricMotor
     public const uint ENTITY_CODE = 2669811613;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricMotorTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricMotorTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3207,7 +3207,7 @@ public partial class IfcElectricMotorType
     public const uint ENTITY_CODE = 1069776885;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricMotorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricMotorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3219,7 +3219,7 @@ public partial class IfcElectricTimeControl
     public const uint ENTITY_CODE = 1186683830;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricTimeControlTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricTimeControlTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3231,7 +3231,7 @@ public partial class IfcElectricTimeControlType
     public const uint ENTITY_CODE = 3192508614;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElectricTimeControlTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElectricTimeControlTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3243,7 +3243,7 @@ public partial class IfcElement
     public const uint ENTITY_CODE = 2740753025;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Tag = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Tag = new("Tag", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag ];
 }
 
@@ -3255,7 +3255,7 @@ public partial class IfcElementarySurface
     public const uint ENTITY_CODE = 623044004;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new(0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new("Position", 0, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Position ];
 }
 
@@ -3267,8 +3267,8 @@ public partial class IfcElementAssembly
     public const uint ENTITY_CODE = 1851947721;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAssemblyPlaceEnum> AssemblyPlace = new(8, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcElementAssemblyTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAssemblyPlaceEnum> AssemblyPlace = new("AssemblyPlace", 8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElementAssemblyTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, AssemblyPlace, PredefinedType ];
 }
 
@@ -3280,7 +3280,7 @@ public partial class IfcElementAssemblyType
     public const uint ENTITY_CODE = 1884542241;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElementAssemblyTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElementAssemblyTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3314,8 +3314,8 @@ public partial class IfcElementQuantity
     public const uint ENTITY_CODE = 2079429220;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> MethodOfMeasurement = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPhysicalQuantity> Quantities = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> MethodOfMeasurement = new("MethodOfMeasurement", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPhysicalQuantity> Quantities = new("Quantities", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, MethodOfMeasurement, Quantities ];
 }
 
@@ -3327,7 +3327,7 @@ public partial class IfcElementType
     public const uint ENTITY_CODE = 172758729;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> ElementType = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ElementType = new("ElementType", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType ];
 }
 
@@ -3339,8 +3339,8 @@ public partial class IfcEllipse
     public const uint ENTITY_CODE = 1311295219;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> SemiAxis1 = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> SemiAxis2 = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> SemiAxis1 = new("SemiAxis1", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> SemiAxis2 = new("SemiAxis2", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, SemiAxis1, SemiAxis2 ];
 }
 
@@ -3352,8 +3352,8 @@ public partial class IfcEllipseProfileDef
     public const uint ENTITY_CODE = 135379651;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> SemiAxis1 = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> SemiAxis2 = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> SemiAxis1 = new("SemiAxis1", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> SemiAxis2 = new("SemiAxis2", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, SemiAxis1, SemiAxis2 ];
 }
 
@@ -3387,7 +3387,7 @@ public partial class IfcEngine
     public const uint ENTITY_CODE = 4060371041;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEngineTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEngineTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3399,7 +3399,7 @@ public partial class IfcEngineType
     public const uint ENTITY_CODE = 4186151849;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEngineTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEngineTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3411,7 +3411,7 @@ public partial class IfcEvaporativeCooler
     public const uint ENTITY_CODE = 1757195815;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEvaporativeCoolerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEvaporativeCoolerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3423,7 +3423,7 @@ public partial class IfcEvaporativeCoolerType
     public const uint ENTITY_CODE = 2775514815;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEvaporativeCoolerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEvaporativeCoolerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3435,7 +3435,7 @@ public partial class IfcEvaporator
     public const uint ENTITY_CODE = 2982541820;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEvaporatorTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEvaporatorTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3447,7 +3447,7 @@ public partial class IfcEvaporatorType
     public const uint ENTITY_CODE = 4048102996;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEvaporatorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEvaporatorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3459,10 +3459,10 @@ public partial class IfcEvent
     public const uint ENTITY_CODE = 3790317085;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEventTypeEnum> PredefinedType = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcEventTriggerTypeEnum> EventTriggerType = new(8, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedEventTriggerType = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcEventTime> EventOccurenceTime = new(10, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcEventTypeEnum> PredefinedType = new("PredefinedType", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEventTriggerTypeEnum> EventTriggerType = new("EventTriggerType", 8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedEventTriggerType = new("UserDefinedEventTriggerType", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcEventTime> EventOccurenceTime = new("EventOccurenceTime", 10, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, PredefinedType, EventTriggerType, UserDefinedEventTriggerType, EventOccurenceTime ];
 }
 
@@ -3474,10 +3474,10 @@ public partial class IfcEventTime
     public const uint ENTITY_CODE = 4110436668;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDateTime> ActualDate = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> EarlyDate = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> LateDate = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ScheduleDate = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ActualDate = new("ActualDate", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> EarlyDate = new("EarlyDate", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> LateDate = new("LateDate", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ScheduleDate = new("ScheduleDate", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, DataOrigin, UserDefinedDataOrigin, ActualDate, EarlyDate, LateDate, ScheduleDate ];
 }
 
@@ -3489,9 +3489,9 @@ public partial class IfcEventType
     public const uint ENTITY_CODE = 3342300789;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEventTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcEventTriggerTypeEnum> EventTriggerType = new(10, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedEventTriggerType = new(11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcEventTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcEventTriggerTypeEnum> EventTriggerType = new("EventTriggerType", 10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedEventTriggerType = new("UserDefinedEventTriggerType", 11, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ProcessType, PredefinedType, EventTriggerType, UserDefinedEventTriggerType ];
 }
 
@@ -3503,9 +3503,9 @@ public partial class IfcExtendedProperties
     public const uint ENTITY_CODE = 1853188283;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcProperty> Properties = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcIdentifier> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProperty> Properties = new("Properties", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, Properties ];
 }
 
@@ -3561,9 +3561,9 @@ public partial class IfcExternalReference
     public const uint ENTITY_CODE = 2775413369;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcURIReference> Location = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcURIReference> Location = new("Location", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Location, Identification, Name ];
 }
 
@@ -3575,8 +3575,8 @@ public partial class IfcExternalReferenceRelationship
     public const uint ENTITY_CODE = 1909211031;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcExternalReference> RelatingReference = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcResourceObjectSelect> RelatedResourceObjects = new(3, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcExternalReference> RelatingReference = new("RelatingReference", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcResourceObjectSelect> RelatedResourceObjects = new("RelatedResourceObjects", 3, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, RelatingReference, RelatedResourceObjects ];
 }
 
@@ -3588,7 +3588,7 @@ public partial class IfcExternalSpatialElement
     public const uint ENTITY_CODE = 1964571028;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcExternalSpatialElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcExternalSpatialElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, PredefinedType ];
 }
 
@@ -3611,8 +3611,8 @@ public partial class IfcExtrudedAreaSolid
     public const uint ENTITY_CODE = 760414336;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> ExtrudedDirection = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDirection> ExtrudedDirection = new("ExtrudedDirection", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new("Depth", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ SweptArea, Position, ExtrudedDirection, Depth ];
 }
 
@@ -3624,7 +3624,7 @@ public partial class IfcExtrudedAreaSolidTapered
     public const uint ENTITY_CODE = 2416391719;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileDef> EndSweptArea = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> EndSweptArea = new("EndSweptArea", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SweptArea, Position, ExtrudedDirection, Depth, EndSweptArea ];
 }
 
@@ -3636,7 +3636,7 @@ public partial class IfcFace
     public const uint ENTITY_CODE = 781347094;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFaceBound> Bounds = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcFaceBound> Bounds = new("Bounds", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Bounds ];
 }
 
@@ -3648,7 +3648,7 @@ public partial class IfcFaceBasedSurfaceModel
     public const uint ENTITY_CODE = 2994652321;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConnectedFaceSet> FbsmFaces = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcConnectedFaceSet> FbsmFaces = new("FbsmFaces", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ FbsmFaces ];
 }
 
@@ -3660,8 +3660,8 @@ public partial class IfcFaceBound
     public const uint ENTITY_CODE = 2152074782;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLoop> Bound = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoolean> Orientation = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLoop> Bound = new("Bound", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> Orientation = new("Orientation", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Bound, Orientation ];
 }
 
@@ -3684,8 +3684,8 @@ public partial class IfcFaceSurface
     public const uint ENTITY_CODE = 955478517;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurface> FaceSurface = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoolean> SameSense = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSurface> FaceSurface = new("FaceSurface", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> SameSense = new("SameSense", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Bounds, FaceSurface, SameSense ];
 }
 
@@ -3708,7 +3708,7 @@ public partial class IfcFacetedBrepWithVoids
     public const uint ENTITY_CODE = 712432441;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcClosedShell> Voids = new(1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcClosedShell> Voids = new("Voids", 1, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Outer, Voids ];
 }
 
@@ -3731,7 +3731,7 @@ public partial class IfcFacilityPart
     public const uint ENTITY_CODE = 1046131315;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFacilityUsageEnum> UsageType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFacilityUsageEnum> UsageType = new("UsageType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, UsageType ];
 }
 
@@ -3743,7 +3743,7 @@ public partial class IfcFacilityPartCommon
     public const uint ENTITY_CODE = 3018973202;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFacilityPartCommonTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFacilityPartCommonTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, UsageType, PredefinedType ];
 }
 
@@ -3755,12 +3755,12 @@ public partial class IfcFailureConnectionCondition
     public const uint ENTITY_CODE = 1679012808;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcForceMeasure> TensionFailureX = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcForceMeasure> TensionFailureY = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcForceMeasure> TensionFailureZ = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcForceMeasure> CompressionFailureX = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcForceMeasure> CompressionFailureY = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcForceMeasure> CompressionFailureZ = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> TensionFailureX = new("TensionFailureX", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> TensionFailureY = new("TensionFailureY", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> TensionFailureZ = new("TensionFailureZ", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> CompressionFailureX = new("CompressionFailureX", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> CompressionFailureY = new("CompressionFailureY", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> CompressionFailureZ = new("CompressionFailureZ", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, TensionFailureX, TensionFailureY, TensionFailureZ, CompressionFailureX, CompressionFailureY, CompressionFailureZ ];
 }
 
@@ -3772,7 +3772,7 @@ public partial class IfcFan
     public const uint ENTITY_CODE = 2700567456;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFanTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFanTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3784,7 +3784,7 @@ public partial class IfcFanType
     public const uint ENTITY_CODE = 3999264072;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFanTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFanTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3796,7 +3796,7 @@ public partial class IfcFastener
     public const uint ENTITY_CODE = 939314313;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFastenerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFastenerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3808,7 +3808,7 @@ public partial class IfcFastenerType
     public const uint ENTITY_CODE = 4273197281;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFastenerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFastenerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3853,8 +3853,8 @@ public partial class IfcFillAreaStyle
     public const uint ENTITY_CODE = 1860673172;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFillStyleSelect> FillStyles = new(1, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcBoolean> ModelOrDraughting = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcFillStyleSelect> FillStyles = new("FillStyles", 1, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcBoolean> ModelOrDraughting = new("ModelOrDraughting", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, FillStyles, ModelOrDraughting ];
 }
 
@@ -3866,11 +3866,11 @@ public partial class IfcFillAreaStyleHatching
     public const uint ENTITY_CODE = 11578102;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurveStyle> HatchLineAppearance = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcHatchLineDistanceSelect> StartOfNextHatchLine = new(1, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcCartesianPoint> PointOfReferenceHatchLine = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCartesianPoint> PatternStart = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> HatchLineAngle = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurveStyle> HatchLineAppearance = new("HatchLineAppearance", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcHatchLineDistanceSelect> StartOfNextHatchLine = new("StartOfNextHatchLine", 1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> PointOfReferenceHatchLine = new("PointOfReferenceHatchLine", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> PatternStart = new("PatternStart", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> HatchLineAngle = new("HatchLineAngle", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ HatchLineAppearance, StartOfNextHatchLine, PointOfReferenceHatchLine, PatternStart, HatchLineAngle ];
 }
 
@@ -3882,9 +3882,9 @@ public partial class IfcFillAreaStyleTiles
     public const uint ENTITY_CODE = 1624792585;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVector> TilingPattern = new(0, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcStyledItem> Tiles = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> TilingScale = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcVector> TilingPattern = new("TilingPattern", 0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcStyledItem> Tiles = new("Tiles", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> TilingScale = new("TilingScale", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ TilingPattern, Tiles, TilingScale ];
 }
 
@@ -3896,7 +3896,7 @@ public partial class IfcFilter
     public const uint ENTITY_CODE = 3218732281;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFilterTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFilterTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3908,7 +3908,7 @@ public partial class IfcFilterType
     public const uint ENTITY_CODE = 2892583665;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFilterTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFilterTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3920,7 +3920,7 @@ public partial class IfcFireSuppressionTerminal
     public const uint ENTITY_CODE = 734748586;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFireSuppressionTerminalTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFireSuppressionTerminalTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -3932,7 +3932,7 @@ public partial class IfcFireSuppressionTerminalType
     public const uint ENTITY_CODE = 1473808138;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFireSuppressionTerminalTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFireSuppressionTerminalTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -3944,7 +3944,7 @@ public partial class IfcFixedReferenceSweptAreaSolid
     public const uint ENTITY_CODE = 3182592983;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> FixedReference = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> FixedReference = new("FixedReference", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SweptArea, Position, Directrix, StartParam, EndParam, FixedReference ];
 }
 
@@ -4000,7 +4000,7 @@ public partial class IfcFlowInstrument
     public const uint ENTITY_CODE = 1686116054;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFlowInstrumentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFlowInstrumentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4012,7 +4012,7 @@ public partial class IfcFlowInstrumentType
     public const uint ENTITY_CODE = 2837527270;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFlowInstrumentTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFlowInstrumentTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4024,7 +4024,7 @@ public partial class IfcFlowMeter
     public const uint ENTITY_CODE = 340947456;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFlowMeterTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFlowMeterTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4036,7 +4036,7 @@ public partial class IfcFlowMeterType
     public const uint ENTITY_CODE = 2000178472;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFlowMeterTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFlowMeterTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4158,7 +4158,7 @@ public partial class IfcFooting
     public const uint ENTITY_CODE = 1345078513;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFootingTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFootingTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4170,7 +4170,7 @@ public partial class IfcFootingType
     public const uint ENTITY_CODE = 114099353;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFootingTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFootingTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4204,7 +4204,7 @@ public partial class IfcFurniture
     public const uint ENTITY_CODE = 3405948931;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcFurnitureTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFurnitureTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4216,8 +4216,8 @@ public partial class IfcFurnitureType
     public const uint ENTITY_CODE = 3998095675;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAssemblyPlaceEnum> AssemblyPlace = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcFurnitureTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAssemblyPlaceEnum> AssemblyPlace = new("AssemblyPlace", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcFurnitureTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, AssemblyPlace, PredefinedType ];
 }
 
@@ -4229,7 +4229,7 @@ public partial class IfcGeographicElement
     public const uint ENTITY_CODE = 471584060;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGeographicElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcGeographicElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4241,7 +4241,7 @@ public partial class IfcGeographicElementType
     public const uint ENTITY_CODE = 2041480852;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGeographicElementTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcGeographicElementTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4264,10 +4264,10 @@ public partial class IfcGeometricRepresentationContext
     public const uint ENTITY_CODE = 1928810440;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDimensionCount> CoordinateSpaceDimension = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> Precision = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAxis2Placement> WorldCoordinateSystem = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcDirection> TrueNorth = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDimensionCount> CoordinateSpaceDimension = new("CoordinateSpaceDimension", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> Precision = new("Precision", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAxis2Placement> WorldCoordinateSystem = new("WorldCoordinateSystem", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcDirection> TrueNorth = new("TrueNorth", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ ContextIdentifier, ContextType, CoordinateSpaceDimension, Precision, WorldCoordinateSystem, TrueNorth ];
 }
 
@@ -4290,10 +4290,10 @@ public partial class IfcGeometricRepresentationSubContext
     public const uint ENTITY_CODE = 704017320;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGeometricRepresentationContext> ParentContext = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> TargetScale = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcGeometricProjectionEnum> TargetView = new(8, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedTargetView = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcGeometricRepresentationContext> ParentContext = new("ParentContext", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> TargetScale = new("TargetScale", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcGeometricProjectionEnum> TargetView = new("TargetView", 8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedTargetView = new("UserDefinedTargetView", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ContextIdentifier, ContextType, CoordinateSpaceDimension, Precision, WorldCoordinateSystem, TrueNorth, ParentContext, TargetScale, TargetView, UserDefinedTargetView ];
 }
 
@@ -4305,7 +4305,7 @@ public partial class IfcGeometricSet
     public const uint ENTITY_CODE = 183455396;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGeometricSetSelect> Elements = new(0, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcGeometricSetSelect> Elements = new("Elements", 0, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ Elements ];
 }
 
@@ -4361,7 +4361,7 @@ public partial class IfcGeotechnicalStratum
     public const uint ENTITY_CODE = 506043921;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGeotechnicalStratumTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcGeotechnicalStratumTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4373,8 +4373,8 @@ public partial class IfcGradientCurve
     public const uint ENTITY_CODE = 3480717906;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoundedCurve> BaseCurve = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPlacement> EndPoint = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoundedCurve> BaseCurve = new("BaseCurve", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPlacement> EndPoint = new("EndPoint", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Segments, SelfIntersect, BaseCurve, EndPoint ];
 }
 
@@ -4386,10 +4386,10 @@ public partial class IfcGrid
     public const uint ENTITY_CODE = 2792790963;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGridAxis> UAxes = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcGridAxis> VAxes = new(8, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcGridAxis> WAxes = new(9, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcGridTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcGridAxis> UAxes = new("UAxes", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcGridAxis> VAxes = new("VAxes", 8, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcGridAxis> WAxes = new("WAxes", 9, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcGridTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, UAxes, VAxes, WAxes, PredefinedType ];
 }
 
@@ -4401,9 +4401,9 @@ public partial class IfcGridAxis
     public const uint ENTITY_CODE = 2705774078;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> AxisTag = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCurve> AxisCurve = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoolean> SameSense = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> AxisTag = new("AxisTag", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurve> AxisCurve = new("AxisCurve", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> SameSense = new("SameSense", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ AxisTag, AxisCurve, SameSense ];
 }
 
@@ -4415,8 +4415,8 @@ public partial class IfcGridPlacement
     public const uint ENTITY_CODE = 334024922;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVirtualGridIntersection> PlacementLocation = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcGridPlacementDirectionSelect> PlacementRefDirection = new(2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcVirtualGridIntersection> PlacementLocation = new("PlacementLocation", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcGridPlacementDirectionSelect> PlacementRefDirection = new("PlacementRefDirection", 2, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ PlacementRelTo, PlacementLocation, PlacementRefDirection ];
 }
 
@@ -4439,8 +4439,8 @@ public partial class IfcHalfSpaceSolid
     public const uint ENTITY_CODE = 3049817347;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurface> BaseSurface = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoolean> AgreementFlag = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSurface> BaseSurface = new("BaseSurface", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> AgreementFlag = new("AgreementFlag", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ BaseSurface, AgreementFlag ];
 }
 
@@ -4452,7 +4452,7 @@ public partial class IfcHeatExchanger
     public const uint ENTITY_CODE = 2012280710;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcHeatExchangerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcHeatExchangerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4464,7 +4464,7 @@ public partial class IfcHeatExchangerType
     public const uint ENTITY_CODE = 1470914870;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcHeatExchangerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcHeatExchangerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4476,7 +4476,7 @@ public partial class IfcHumidifier
     public const uint ENTITY_CODE = 4041992875;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcHumidifierTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcHumidifierTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4488,7 +4488,7 @@ public partial class IfcHumidifierType
     public const uint ENTITY_CODE = 4247700979;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcHumidifierTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcHumidifierTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4500,7 +4500,7 @@ public partial class IfcImageTexture
     public const uint ENTITY_CODE = 582144863;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcURIReference> URLReference = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcURIReference> URLReference = new("URLReference", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ RepeatS, RepeatT, Mode, TextureTransform, Parameter, URLReference ];
 }
 
@@ -4512,7 +4512,7 @@ public partial class IfcImpactProtectionDevice
     public const uint ENTITY_CODE = 3206231084;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcImpactProtectionDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcImpactProtectionDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4524,7 +4524,7 @@ public partial class IfcImpactProtectionDeviceType
     public const uint ENTITY_CODE = 2274240804;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcImpactProtectionDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcImpactProtectionDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4536,10 +4536,10 @@ public partial class IfcIndexedColourMap
     public const uint ENTITY_CODE = 4284624470;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTessellatedFaceSet> MappedTo = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Opacity = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcColourRgbList> Colours = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPositiveInteger> ColourIndex = new(3, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcTessellatedFaceSet> MappedTo = new("MappedTo", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Opacity = new("Opacity", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcColourRgbList> Colours = new("Colours", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveInteger> ColourIndex = new("ColourIndex", 3, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ MappedTo, Opacity, Colours, ColourIndex ];
 }
 
@@ -4551,9 +4551,9 @@ public partial class IfcIndexedPolyCurve
     public const uint ENTITY_CODE = 3849649469;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCartesianPointList> Points = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcSegmentIndexSelect> Segments = new(1, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcLogical> SelfIntersect = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCartesianPointList> Points = new("Points", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSegmentIndexSelect> Segments = new("Segments", 1, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcLogical> SelfIntersect = new("SelfIntersect", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Points, Segments, SelfIntersect ];
 }
 
@@ -4565,7 +4565,7 @@ public partial class IfcIndexedPolygonalFace
     public const uint ENTITY_CODE = 505122710;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveInteger> CoordIndex = new(0, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcPositiveInteger> CoordIndex = new("CoordIndex", 0, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ CoordIndex ];
 }
 
@@ -4577,7 +4577,7 @@ public partial class IfcIndexedPolygonalFaceWithVoids
     public const uint ENTITY_CODE = 964216797;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveInteger> InnerCoordIndices = new(1, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcPositiveInteger> InnerCoordIndices = new("InnerCoordIndices", 1, IfcTypeKind.Alias, 2);
     public override IfcAttribute[] Attributes => [ CoordIndex, InnerCoordIndices ];
 }
 
@@ -4589,7 +4589,7 @@ public partial class IfcIndexedPolygonalTextureMap
     public const uint ENTITY_CODE = 1609869528;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTextureCoordinateIndices> TexCoordIndices = new(3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcTextureCoordinateIndices> TexCoordIndices = new("TexCoordIndices", 3, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Maps, MappedTo, TexCoords, TexCoordIndices ];
 }
 
@@ -4601,8 +4601,8 @@ public partial class IfcIndexedTextureMap
     public const uint ENTITY_CODE = 3155363591;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTessellatedFaceSet> MappedTo = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcTextureVertexList> TexCoords = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcTessellatedFaceSet> MappedTo = new("MappedTo", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcTextureVertexList> TexCoords = new("TexCoords", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Maps, MappedTo, TexCoords ];
 }
 
@@ -4614,7 +4614,7 @@ public partial class IfcIndexedTriangleTextureMap
     public const uint ENTITY_CODE = 1236491587;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveInteger> TexCoordIndex = new(3, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcPositiveInteger> TexCoordIndex = new("TexCoordIndex", 3, IfcTypeKind.Alias, 2);
     public override IfcAttribute[] Attributes => [ Maps, MappedTo, TexCoords, TexCoordIndex ];
 }
 
@@ -4626,7 +4626,7 @@ public partial class IfcInterceptor
     public const uint ENTITY_CODE = 3747360886;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInterceptorTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcInterceptorTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4638,7 +4638,7 @@ public partial class IfcInterceptorType
     public const uint ENTITY_CODE = 3838425478;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInterceptorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcInterceptorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4661,12 +4661,12 @@ public partial class IfcInventory
     public const uint ENTITY_CODE = 3189971553;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInventoryTypeEnum> PredefinedType = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcActorSelect> Jurisdiction = new(6, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcPerson> ResponsiblePersons = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcDate> LastUpdateDate = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCostValue> CurrentValue = new(9, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCostValue> OriginalValue = new(10, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcInventoryTypeEnum> PredefinedType = new("PredefinedType", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcActorSelect> Jurisdiction = new("Jurisdiction", 6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcPerson> ResponsiblePersons = new("ResponsiblePersons", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcDate> LastUpdateDate = new("LastUpdateDate", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCostValue> CurrentValue = new("CurrentValue", 9, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCostValue> OriginalValue = new("OriginalValue", 10, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, PredefinedType, Jurisdiction, ResponsiblePersons, LastUpdateDate, CurrentValue, OriginalValue ];
 }
 
@@ -4678,7 +4678,7 @@ public partial class IfcIrregularTimeSeries
     public const uint ENTITY_CODE = 2786556632;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIrregularTimeSeriesValue> Values = new(8, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcIrregularTimeSeriesValue> Values = new("Values", 8, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, StartTime, EndTime, TimeSeriesDataType, DataOrigin, UserDefinedDataOrigin, Unit, Values ];
 }
 
@@ -4690,8 +4690,8 @@ public partial class IfcIrregularTimeSeriesValue
     public const uint ENTITY_CODE = 867697161;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDateTime> TimeStamp = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcValue> ListValues = new(1, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcDateTime> TimeStamp = new("TimeStamp", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcValue> ListValues = new("ListValues", 1, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ TimeStamp, ListValues ];
 }
 
@@ -4703,13 +4703,13 @@ public partial class IfcIShapeProfileDef
     public const uint ENTITY_CODE = 1683013415;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallWidth = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallDepth = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeThickness = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FlangeEdgeRadius = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> FlangeSlope = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallWidth = new("OverallWidth", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallDepth = new("OverallDepth", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new("WebThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeThickness = new("FlangeThickness", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new("FilletRadius", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FlangeEdgeRadius = new("FlangeEdgeRadius", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> FlangeSlope = new("FlangeSlope", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, OverallWidth, OverallDepth, WebThickness, FlangeThickness, FilletRadius, FlangeEdgeRadius, FlangeSlope ];
 }
 
@@ -4721,7 +4721,7 @@ public partial class IfcJunctionBox
     public const uint ENTITY_CODE = 2170279028;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcJunctionBoxTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcJunctionBoxTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4733,7 +4733,7 @@ public partial class IfcJunctionBoxType
     public const uint ENTITY_CODE = 4095621468;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcJunctionBoxTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcJunctionBoxTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4745,7 +4745,7 @@ public partial class IfcKerb
     public const uint ENTITY_CODE = 2608887403;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoolean> Mountable = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> Mountable = new("Mountable", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, Mountable ];
 }
 
@@ -4757,7 +4757,7 @@ public partial class IfcKerbType
     public const uint ENTITY_CODE = 3270011059;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoolean> Mountable = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> Mountable = new("Mountable", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, Mountable ];
 }
 
@@ -4769,7 +4769,7 @@ public partial class IfcLaborResource
     public const uint ENTITY_CODE = 1950317855;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLaborResourceTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLaborResourceTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, Usage, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -4781,7 +4781,7 @@ public partial class IfcLaborResourceType
     public const uint ENTITY_CODE = 951810023;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLaborResourceTypeEnum> PredefinedType = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLaborResourceTypeEnum> PredefinedType = new("PredefinedType", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ResourceType, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -4793,8 +4793,8 @@ public partial class IfcLagTime
     public const uint ENTITY_CODE = 2116801068;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTimeOrRatioSelect> LagValue = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcTaskDurationEnum> DurationType = new(4, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTimeOrRatioSelect> LagValue = new("LagValue", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcTaskDurationEnum> DurationType = new("DurationType", 4, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Name, DataOrigin, UserDefinedDataOrigin, LagValue, DurationType ];
 }
 
@@ -4806,7 +4806,7 @@ public partial class IfcLamp
     public const uint ENTITY_CODE = 377756397;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLampTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLampTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4818,7 +4818,7 @@ public partial class IfcLampType
     public const uint ENTITY_CODE = 584324773;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLampTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLampTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4830,12 +4830,12 @@ public partial class IfcLibraryInformation
     public const uint ENTITY_CODE = 368329652;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Version = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcActorSelect> Publisher = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcDateTime> VersionDate = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcURIReference> Location = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Version = new("Version", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcActorSelect> Publisher = new("Publisher", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcDateTime> VersionDate = new("VersionDate", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcURIReference> Location = new("Location", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Version, Publisher, VersionDate, Location, Description ];
 }
 
@@ -4847,9 +4847,9 @@ public partial class IfcLibraryReference
     public const uint ENTITY_CODE = 4036302135;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcText> Description = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLanguageId> Language = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLibraryInformation> ReferencedLibrary = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLanguageId> Language = new("Language", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLibraryInformation> ReferencedLibrary = new("ReferencedLibrary", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Location, Identification, Name, Description, Language, ReferencedLibrary ];
 }
 
@@ -4861,9 +4861,9 @@ public partial class IfcLightDistributionData
     public const uint ENTITY_CODE = 404276647;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> MainPlaneAngle = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> SecondaryPlaneAngle = new(1, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcLuminousIntensityDistributionMeasure> LuminousIntensity = new(2, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> MainPlaneAngle = new("MainPlaneAngle", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> SecondaryPlaneAngle = new("SecondaryPlaneAngle", 1, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLuminousIntensityDistributionMeasure> LuminousIntensity = new("LuminousIntensity", 2, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ MainPlaneAngle, SecondaryPlaneAngle, LuminousIntensity ];
 }
 
@@ -4875,7 +4875,7 @@ public partial class IfcLightFixture
     public const uint ENTITY_CODE = 2840077262;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLightFixtureTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLightFixtureTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -4887,7 +4887,7 @@ public partial class IfcLightFixtureType
     public const uint ENTITY_CODE = 351014574;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLightFixtureTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLightFixtureTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -4899,8 +4899,8 @@ public partial class IfcLightIntensityDistribution
     public const uint ENTITY_CODE = 762471812;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLightDistributionCurveEnum> LightDistributionCurve = new(0, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLightDistributionData> DistributionData = new(1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLightDistributionCurveEnum> LightDistributionCurve = new("LightDistributionCurve", 0, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLightDistributionData> DistributionData = new("DistributionData", 1, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ LightDistributionCurve, DistributionData ];
 }
 
@@ -4912,10 +4912,10 @@ public partial class IfcLightSource
     public const uint ENTITY_CODE = 1574621316;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcColourRgb> LightColour = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> AmbientIntensity = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Intensity = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcColourRgb> LightColour = new("LightColour", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> AmbientIntensity = new("AmbientIntensity", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Intensity = new("Intensity", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, LightColour, AmbientIntensity, Intensity ];
 }
 
@@ -4938,7 +4938,7 @@ public partial class IfcLightSourceDirectional
     public const uint ENTITY_CODE = 163866176;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> Orientation = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> Orientation = new("Orientation", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, LightColour, AmbientIntensity, Intensity, Orientation ];
 }
 
@@ -4950,12 +4950,12 @@ public partial class IfcLightSourceGoniometric
     public const uint ENTITY_CODE = 950122348;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcColourRgb> ColourAppearance = new(5, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcThermodynamicTemperatureMeasure> ColourTemperature = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLuminousFluxMeasure> LuminousFlux = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLightEmissionSourceEnum> LightEmissionSource = new(8, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLightDistributionDataSourceSelect> LightDistributionDataSource = new(9, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new("Position", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcColourRgb> ColourAppearance = new("ColourAppearance", 5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcThermodynamicTemperatureMeasure> ColourTemperature = new("ColourTemperature", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLuminousFluxMeasure> LuminousFlux = new("LuminousFlux", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLightEmissionSourceEnum> LightEmissionSource = new("LightEmissionSource", 8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLightDistributionDataSourceSelect> LightDistributionDataSource = new("LightDistributionDataSource", 9, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, LightColour, AmbientIntensity, Intensity, Position, ColourAppearance, ColourTemperature, LuminousFlux, LightEmissionSource, LightDistributionDataSource ];
 }
 
@@ -4967,11 +4967,11 @@ public partial class IfcLightSourcePositional
     public const uint ENTITY_CODE = 1991782538;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCartesianPoint> Position = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> ConstantAttenuation = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> DistanceAttenuation = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> QuadricAttenuation = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> Position = new("Position", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new("Radius", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> ConstantAttenuation = new("ConstantAttenuation", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> DistanceAttenuation = new("DistanceAttenuation", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> QuadricAttenuation = new("QuadricAttenuation", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, LightColour, AmbientIntensity, Intensity, Position, Radius, ConstantAttenuation, DistanceAttenuation, QuadricAttenuation ];
 }
 
@@ -4983,10 +4983,10 @@ public partial class IfcLightSourceSpot
     public const uint ENTITY_CODE = 2084681292;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> Orientation = new(9, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcReal> ConcentrationExponent = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositivePlaneAngleMeasure> SpreadAngle = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositivePlaneAngleMeasure> BeamWidthAngle = new(12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDirection> Orientation = new("Orientation", 9, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcReal> ConcentrationExponent = new("ConcentrationExponent", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositivePlaneAngleMeasure> SpreadAngle = new("SpreadAngle", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositivePlaneAngleMeasure> BeamWidthAngle = new("BeamWidthAngle", 12, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, LightColour, AmbientIntensity, Intensity, Position, Radius, ConstantAttenuation, DistanceAttenuation, QuadricAttenuation, Orientation, ConcentrationExponent, SpreadAngle, BeamWidthAngle ];
 }
 
@@ -4998,8 +4998,8 @@ public partial class IfcLine
     public const uint ENTITY_CODE = 2591592509;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCartesianPoint> Pnt = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcVector> Dir = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCartesianPoint> Pnt = new("Pnt", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcVector> Dir = new("Dir", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Pnt, Dir ];
 }
 
@@ -5022,8 +5022,8 @@ public partial class IfcLinearPlacement
     public const uint ENTITY_CODE = 3170425317;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2PlacementLinear> RelativePlacement = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcAxis2Placement3D> CartesianPosition = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2PlacementLinear> RelativePlacement = new("RelativePlacement", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> CartesianPosition = new("CartesianPosition", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ PlacementRelTo, RelativePlacement, CartesianPosition ];
 }
 
@@ -5046,7 +5046,7 @@ public partial class IfcLiquidTerminal
     public const uint ENTITY_CODE = 1767222947;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLiquidTerminalTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLiquidTerminalTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5058,7 +5058,7 @@ public partial class IfcLiquidTerminalType
     public const uint ENTITY_CODE = 66251227;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLiquidTerminalTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLiquidTerminalTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5070,7 +5070,7 @@ public partial class IfcLocalPlacement
     public const uint ENTITY_CODE = 4159386377;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement> RelativePlacement = new(1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcAxis2Placement> RelativePlacement = new("RelativePlacement", 1, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ PlacementRelTo, RelativePlacement ];
 }
 
@@ -5093,12 +5093,12 @@ public partial class IfcLShapeProfileDef
     public const uint ENTITY_CODE = 2455248390;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Width = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Thickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> EdgeRadius = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> LegSlope = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new("Depth", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Width = new("Width", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Thickness = new("Thickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new("FilletRadius", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> EdgeRadius = new("EdgeRadius", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> LegSlope = new("LegSlope", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, Depth, Width, Thickness, FilletRadius, EdgeRadius, LegSlope ];
 }
 
@@ -5110,7 +5110,7 @@ public partial class IfcManifoldSolidBrep
     public const uint ENTITY_CODE = 892381835;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcClosedShell> Outer = new(0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcClosedShell> Outer = new("Outer", 0, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Outer ];
 }
 
@@ -5122,14 +5122,14 @@ public partial class IfcMapConversion
     public const uint ENTITY_CODE = 1045754831;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> Eastings = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> Northings = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> OrthogonalHeight = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> XAxisAbscissa = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> XAxisOrdinate = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> Scale = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> ScaleY = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> ScaleZ = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> Eastings = new("Eastings", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> Northings = new("Northings", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> OrthogonalHeight = new("OrthogonalHeight", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> XAxisAbscissa = new("XAxisAbscissa", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> XAxisOrdinate = new("XAxisOrdinate", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> Scale = new("Scale", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> ScaleY = new("ScaleY", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> ScaleZ = new("ScaleZ", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ SourceCRS, TargetCRS, Eastings, Northings, OrthogonalHeight, XAxisAbscissa, XAxisOrdinate, Scale, ScaleY, ScaleZ ];
 }
 
@@ -5141,8 +5141,8 @@ public partial class IfcMappedItem
     public const uint ENTITY_CODE = 4243798619;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRepresentationMap> MappingSource = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCartesianTransformationOperator> MappingTarget = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcRepresentationMap> MappingSource = new("MappingSource", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCartesianTransformationOperator> MappingTarget = new("MappingTarget", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ MappingSource, MappingTarget ];
 }
 
@@ -5154,7 +5154,7 @@ public partial class IfcMarineFacility
     public const uint ENTITY_CODE = 2338166444;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMarineFacilityTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMarineFacilityTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, PredefinedType ];
 }
 
@@ -5166,7 +5166,7 @@ public partial class IfcMarinePart
     public const uint ENTITY_CODE = 1309270328;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMarinePartTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMarinePartTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, UsageType, PredefinedType ];
 }
 
@@ -5178,9 +5178,9 @@ public partial class IfcMaterial
     public const uint ENTITY_CODE = 1595842790;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Category = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Category = new("Category", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Category ];
 }
 
@@ -5192,8 +5192,8 @@ public partial class IfcMaterialClassificationRelationship
     public const uint ENTITY_CODE = 1549328080;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcClassificationSelect> MaterialClassifications = new(0, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcMaterial> ClassifiedMaterial = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcClassificationSelect> MaterialClassifications = new("MaterialClassifications", 0, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcMaterial> ClassifiedMaterial = new("ClassifiedMaterial", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ MaterialClassifications, ClassifiedMaterial ];
 }
 
@@ -5205,11 +5205,11 @@ public partial class IfcMaterialConstituent
     public const uint ENTITY_CODE = 1589642532;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcMaterial> Material = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Fraction = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Category = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterial> Material = new("Material", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Fraction = new("Fraction", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Category = new("Category", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Material, Fraction, Category ];
 }
 
@@ -5221,9 +5221,9 @@ public partial class IfcMaterialConstituentSet
     public const uint ENTITY_CODE = 3058901612;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcMaterialConstituent> MaterialConstituents = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterialConstituent> MaterialConstituents = new("MaterialConstituents", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, MaterialConstituents ];
 }
 
@@ -5246,7 +5246,7 @@ public partial class IfcMaterialDefinitionRepresentation
     public const uint ENTITY_CODE = 3831637234;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterial> RepresentedMaterial = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcMaterial> RepresentedMaterial = new("RepresentedMaterial", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Representations, RepresentedMaterial ];
 }
 
@@ -5258,13 +5258,13 @@ public partial class IfcMaterialLayer
     public const uint ENTITY_CODE = 3348622987;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterial> Material = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> LayerThickness = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> IsVentilated = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Category = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> Priority = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterial> Material = new("Material", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> LayerThickness = new("LayerThickness", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> IsVentilated = new("IsVentilated", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Category = new("Category", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> Priority = new("Priority", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Material, LayerThickness, IsVentilated, Name, Description, Category, Priority ];
 }
 
@@ -5276,9 +5276,9 @@ public partial class IfcMaterialLayerSet
     public const uint ENTITY_CODE = 104809689;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterialLayer> MaterialLayers = new(0, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> LayerSetName = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterialLayer> MaterialLayers = new("MaterialLayers", 0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> LayerSetName = new("LayerSetName", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ MaterialLayers, LayerSetName, Description ];
 }
 
@@ -5290,11 +5290,11 @@ public partial class IfcMaterialLayerSetUsage
     public const uint ENTITY_CODE = 1310956908;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterialLayerSet> ForLayerSet = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLayerSetDirectionEnum> LayerSetDirection = new(1, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDirectionSenseEnum> DirectionSense = new(2, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> OffsetFromReferenceLine = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> ReferenceExtent = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterialLayerSet> ForLayerSet = new("ForLayerSet", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLayerSetDirectionEnum> LayerSetDirection = new("LayerSetDirection", 1, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDirectionSenseEnum> DirectionSense = new("DirectionSense", 2, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> OffsetFromReferenceLine = new("OffsetFromReferenceLine", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> ReferenceExtent = new("ReferenceExtent", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ForLayerSet, LayerSetDirection, DirectionSense, OffsetFromReferenceLine, ReferenceExtent ];
 }
 
@@ -5306,8 +5306,8 @@ public partial class IfcMaterialLayerWithOffsets
     public const uint ENTITY_CODE = 2532930601;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLayerSetDirectionEnum> OffsetDirection = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> OffsetValues = new(8, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLayerSetDirectionEnum> OffsetDirection = new("OffsetDirection", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> OffsetValues = new("OffsetValues", 8, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Material, LayerThickness, IsVentilated, Name, Description, Category, Priority, OffsetDirection, OffsetValues ];
 }
 
@@ -5319,7 +5319,7 @@ public partial class IfcMaterialList
     public const uint ENTITY_CODE = 2456039154;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterial> Materials = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcMaterial> Materials = new("Materials", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Materials ];
 }
 
@@ -5331,12 +5331,12 @@ public partial class IfcMaterialProfile
     public const uint ENTITY_CODE = 72445323;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcMaterial> Material = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcProfileDef> Profile = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcInteger> Priority = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Category = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterial> Material = new("Material", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> Profile = new("Profile", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcInteger> Priority = new("Priority", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Category = new("Category", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Material, Profile, Priority, Category ];
 }
 
@@ -5348,10 +5348,10 @@ public partial class IfcMaterialProfileSet
     public const uint ENTITY_CODE = 2657384921;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcMaterialProfile> MaterialProfiles = new(2, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcCompositeProfileDef> CompositeProfile = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterialProfile> MaterialProfiles = new("MaterialProfiles", 2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCompositeProfileDef> CompositeProfile = new("CompositeProfile", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, MaterialProfiles, CompositeProfile ];
 }
 
@@ -5363,9 +5363,9 @@ public partial class IfcMaterialProfileSetUsage
     public const uint ENTITY_CODE = 388889708;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterialProfileSet> ForProfileSet = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCardinalPointReference> CardinalPoint = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> ReferenceExtent = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterialProfileSet> ForProfileSet = new("ForProfileSet", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCardinalPointReference> CardinalPoint = new("CardinalPoint", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> ReferenceExtent = new("ReferenceExtent", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ForProfileSet, CardinalPoint, ReferenceExtent ];
 }
 
@@ -5377,8 +5377,8 @@ public partial class IfcMaterialProfileSetUsageTapering
     public const uint ENTITY_CODE = 446790374;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterialProfileSet> ForProfileEndSet = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCardinalPointReference> CardinalEndPoint = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterialProfileSet> ForProfileEndSet = new("ForProfileEndSet", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCardinalPointReference> CardinalEndPoint = new("CardinalEndPoint", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ForProfileSet, CardinalPoint, ReferenceExtent, ForProfileEndSet, CardinalEndPoint ];
 }
 
@@ -5390,7 +5390,7 @@ public partial class IfcMaterialProfileWithOffsets
     public const uint ENTITY_CODE = 393234729;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> OffsetValues = new(6, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLengthMeasure> OffsetValues = new("OffsetValues", 6, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, Material, Profile, Priority, Category, OffsetValues ];
 }
 
@@ -5402,7 +5402,7 @@ public partial class IfcMaterialProperties
     public const uint ENTITY_CODE = 195900019;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterialDefinition> Material = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcMaterialDefinition> Material = new("Material", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Properties, Material ];
 }
 
@@ -5414,9 +5414,9 @@ public partial class IfcMaterialRelationship
     public const uint ENTITY_CODE = 1495515316;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterial> RelatingMaterial = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcMaterial> RelatedMaterials = new(3, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> MaterialExpression = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMaterial> RelatingMaterial = new("RelatingMaterial", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcMaterial> RelatedMaterials = new("RelatedMaterials", 3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> MaterialExpression = new("MaterialExpression", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, RelatingMaterial, RelatedMaterials, MaterialExpression ];
 }
 
@@ -5439,8 +5439,8 @@ public partial class IfcMeasureWithUnit
     public const uint ENTITY_CODE = 3172435307;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValue> ValueComponent = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcUnit> UnitComponent = new(1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcValue> ValueComponent = new("ValueComponent", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcUnit> UnitComponent = new("UnitComponent", 1, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ ValueComponent, UnitComponent ];
 }
 
@@ -5452,9 +5452,9 @@ public partial class IfcMechanicalFastener
     public const uint ENTITY_CODE = 747847214;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalLength = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcMechanicalFastenerTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new("NominalDiameter", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalLength = new("NominalLength", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMechanicalFastenerTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, NominalDiameter, NominalLength, PredefinedType ];
 }
 
@@ -5466,9 +5466,9 @@ public partial class IfcMechanicalFastenerType
     public const uint ENTITY_CODE = 1495427214;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMechanicalFastenerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalLength = new(11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMechanicalFastenerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new("NominalDiameter", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalLength = new("NominalLength", 11, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType, NominalDiameter, NominalLength ];
 }
 
@@ -5480,7 +5480,7 @@ public partial class IfcMedicalDevice
     public const uint ENTITY_CODE = 1859277080;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMedicalDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMedicalDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5492,7 +5492,7 @@ public partial class IfcMedicalDeviceType
     public const uint ENTITY_CODE = 3485915216;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMedicalDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMedicalDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5504,7 +5504,7 @@ public partial class IfcMember
     public const uint ENTITY_CODE = 1985401597;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMemberTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMemberTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5516,7 +5516,7 @@ public partial class IfcMemberType
     public const uint ENTITY_CODE = 370847317;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMemberTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMemberTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5528,10 +5528,10 @@ public partial class IfcMetric
     public const uint ENTITY_CODE = 3079980003;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBenchmarkEnum> Benchmark = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> ValueSource = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcMetricValueSelect> DataValue = new(9, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcReference> ReferencePath = new(10, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBenchmarkEnum> Benchmark = new("Benchmark", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> ValueSource = new("ValueSource", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMetricValueSelect> DataValue = new("DataValue", 9, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcReference> ReferencePath = new("ReferencePath", 10, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, ConstraintGrade, ConstraintSource, CreatingActor, CreationTime, UserDefinedGrade, Benchmark, ValueSource, DataValue, ReferencePath ];
 }
 
@@ -5554,7 +5554,7 @@ public partial class IfcMobileTelecommunicationsAppliance
     public const uint ENTITY_CODE = 3973920307;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMobileTelecommunicationsApplianceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMobileTelecommunicationsApplianceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5566,7 +5566,7 @@ public partial class IfcMobileTelecommunicationsApplianceType
     public const uint ENTITY_CODE = 4070928011;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMobileTelecommunicationsApplianceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMobileTelecommunicationsApplianceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5578,7 +5578,7 @@ public partial class IfcMonetaryUnit
     public const uint ENTITY_CODE = 4053228418;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Currency = new(0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Currency = new("Currency", 0, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Currency ];
 }
 
@@ -5590,7 +5590,7 @@ public partial class IfcMooringDevice
     public const uint ENTITY_CODE = 1832483912;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMooringDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMooringDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5602,7 +5602,7 @@ public partial class IfcMooringDeviceType
     public const uint ENTITY_CODE = 3623968288;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMooringDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMooringDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5614,7 +5614,7 @@ public partial class IfcMotorConnection
     public const uint ENTITY_CODE = 389971100;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMotorConnectionTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMotorConnectionTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5626,7 +5626,7 @@ public partial class IfcMotorConnectionType
     public const uint ENTITY_CODE = 1632314996;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMotorConnectionTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcMotorConnectionTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5638,8 +5638,8 @@ public partial class IfcNamedUnit
     public const uint ENTITY_CODE = 1984880438;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDimensionalExponents> Dimensions = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcUnitEnum> UnitType = new(1, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDimensionalExponents> Dimensions = new("Dimensions", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcUnitEnum> UnitType = new("UnitType", 1, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Dimensions, UnitType ];
 }
 
@@ -5651,7 +5651,7 @@ public partial class IfcNavigationElement
     public const uint ENTITY_CODE = 3767045443;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcNavigationElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcNavigationElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5663,7 +5663,7 @@ public partial class IfcNavigationElementType
     public const uint ENTITY_CODE = 2501193083;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcNavigationElementTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcNavigationElementTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5675,7 +5675,7 @@ public partial class IfcObject
     public const uint ENTITY_CODE = 670475612;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> ObjectType = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ObjectType = new("ObjectType", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType ];
 }
 
@@ -5698,10 +5698,10 @@ public partial class IfcObjective
     public const uint ENTITY_CODE = 3511015418;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConstraint> BenchmarkValues = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLogicalOperatorEnum> LogicalAggregator = new(8, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcObjectiveEnum> ObjectiveQualifier = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedQualifier = new(10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcConstraint> BenchmarkValues = new("BenchmarkValues", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLogicalOperatorEnum> LogicalAggregator = new("LogicalAggregator", 8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcObjectiveEnum> ObjectiveQualifier = new("ObjectiveQualifier", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedQualifier = new("UserDefinedQualifier", 10, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, ConstraintGrade, ConstraintSource, CreatingActor, CreationTime, UserDefinedGrade, BenchmarkValues, LogicalAggregator, ObjectiveQualifier, UserDefinedQualifier ];
 }
 
@@ -5713,7 +5713,7 @@ public partial class IfcObjectPlacement
     public const uint ENTITY_CODE = 3325497275;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcObjectPlacement> PlacementRelTo = new(0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcObjectPlacement> PlacementRelTo = new("PlacementRelTo", 0, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ PlacementRelTo ];
 }
 
@@ -5725,7 +5725,7 @@ public partial class IfcOccupant
     public const uint ENTITY_CODE = 4166916084;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOccupantTypeEnum> PredefinedType = new(6, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcOccupantTypeEnum> PredefinedType = new("PredefinedType", 6, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, TheActor, PredefinedType ];
 }
 
@@ -5737,7 +5737,7 @@ public partial class IfcOffsetCurve
     public const uint ENTITY_CODE = 350476239;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> BasisCurve = new(0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurve> BasisCurve = new("BasisCurve", 0, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ BasisCurve ];
 }
 
@@ -5749,8 +5749,8 @@ public partial class IfcOffsetCurve2D
     public const uint ENTITY_CODE = 542883257;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> Distance = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> SelfIntersect = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> Distance = new("Distance", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> SelfIntersect = new("SelfIntersect", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ BasisCurve, Distance, SelfIntersect ];
 }
 
@@ -5762,9 +5762,9 @@ public partial class IfcOffsetCurve3D
     public const uint ENTITY_CODE = 2052721872;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> Distance = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> SelfIntersect = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDirection> RefDirection = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> Distance = new("Distance", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> SelfIntersect = new("SelfIntersect", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDirection> RefDirection = new("RefDirection", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ BasisCurve, Distance, SelfIntersect, RefDirection ];
 }
 
@@ -5776,8 +5776,8 @@ public partial class IfcOffsetCurveByDistances
     public const uint ENTITY_CODE = 3033274150;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPointByDistanceExpression> OffsetValues = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> Tag = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPointByDistanceExpression> OffsetValues = new("OffsetValues", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Tag = new("Tag", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ BasisCurve, OffsetValues, Tag ];
 }
 
@@ -5789,11 +5789,11 @@ public partial class IfcOpenCrossProfileDef
     public const uint ENTITY_CODE = 4049949609;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoolean> HorizontalWidths = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> Widths = new(3, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> Slopes = new(4, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcLabel> Tags = new(5, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcCartesianPoint> OffsetPoint = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> HorizontalWidths = new("HorizontalWidths", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> Widths = new("Widths", 3, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> Slopes = new("Slopes", 4, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> Tags = new("Tags", 5, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcCartesianPoint> OffsetPoint = new("OffsetPoint", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, HorizontalWidths, Widths, Slopes, Tags, OffsetPoint ];
 }
 
@@ -5805,7 +5805,7 @@ public partial class IfcOpeningElement
     public const uint ENTITY_CODE = 1554121831;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOpeningElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcOpeningElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5828,11 +5828,11 @@ public partial class IfcOrganization
     public const uint ENTITY_CODE = 321185184;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcActorRole> Roles = new(3, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcAddress> Addresses = new(4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcActorRole> Roles = new("Roles", 3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcAddress> Addresses = new("Addresses", 4, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Identification, Name, Description, Roles, Addresses ];
 }
 
@@ -5844,8 +5844,8 @@ public partial class IfcOrganizationRelationship
     public const uint ENTITY_CODE = 1147128302;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOrganization> RelatingOrganization = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcOrganization> RelatedOrganizations = new(3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcOrganization> RelatingOrganization = new("RelatingOrganization", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcOrganization> RelatedOrganizations = new("RelatedOrganizations", 3, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, RelatingOrganization, RelatedOrganizations ];
 }
 
@@ -5857,8 +5857,8 @@ public partial class IfcOrientedEdge
     public const uint ENTITY_CODE = 381139790;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEdge> EdgeElement = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoolean> Orientation = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcEdge> EdgeElement = new("EdgeElement", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> Orientation = new("Orientation", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ EdgeStart, EdgeEnd, EdgeElement, Orientation ];
 }
 
@@ -5881,7 +5881,7 @@ public partial class IfcOutlet
     public const uint ENTITY_CODE = 1448912822;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOutletTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcOutletTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5893,7 +5893,7 @@ public partial class IfcOutletType
     public const uint ENTITY_CODE = 2310266054;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOutletTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcOutletTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5905,14 +5905,14 @@ public partial class IfcOwnerHistory
     public const uint ENTITY_CODE = 520332314;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPersonAndOrganization> OwningUser = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcApplication> OwningApplication = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcStateEnum> State = new(2, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcChangeActionEnum> ChangeAction = new(3, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcTimeStamp> LastModifiedDate = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPersonAndOrganization> LastModifyingUser = new(5, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcApplication> LastModifyingApplication = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcTimeStamp> CreationDate = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPersonAndOrganization> OwningUser = new("OwningUser", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcApplication> OwningApplication = new("OwningApplication", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcStateEnum> State = new("State", 2, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcChangeActionEnum> ChangeAction = new("ChangeAction", 3, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTimeStamp> LastModifiedDate = new("LastModifiedDate", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPersonAndOrganization> LastModifyingUser = new("LastModifyingUser", 5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcApplication> LastModifyingApplication = new("LastModifyingApplication", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcTimeStamp> CreationDate = new("CreationDate", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ OwningUser, OwningApplication, State, ChangeAction, LastModifiedDate, LastModifyingUser, LastModifyingApplication, CreationDate ];
 }
 
@@ -5924,7 +5924,7 @@ public partial class IfcParameterizedProfileDef
     public const uint ENTITY_CODE = 2511775720;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement2D> Position = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement2D> Position = new("Position", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position ];
 }
 
@@ -5936,7 +5936,7 @@ public partial class IfcPath
     public const uint ENTITY_CODE = 1414431256;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOrientedEdge> EdgeList = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcOrientedEdge> EdgeList = new("EdgeList", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ EdgeList ];
 }
 
@@ -5948,7 +5948,7 @@ public partial class IfcPavement
     public const uint ENTITY_CODE = 2505301345;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPavementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPavementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -5960,7 +5960,7 @@ public partial class IfcPavementType
     public const uint ENTITY_CODE = 1065775273;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPavementTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPavementTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -5972,8 +5972,8 @@ public partial class IfcPcurve
     public const uint ENTITY_CODE = 2486660828;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurface> BasisSurface = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCurve> ReferenceCurve = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSurface> BasisSurface = new("BasisSurface", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurve> ReferenceCurve = new("ReferenceCurve", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ BasisSurface, ReferenceCurve ];
 }
 
@@ -5985,8 +5985,8 @@ public partial class IfcPerformanceHistory
     public const uint ENTITY_CODE = 164555693;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> LifeCyclePhase = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPerformanceHistoryTypeEnum> PredefinedType = new(7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> LifeCyclePhase = new("LifeCyclePhase", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPerformanceHistoryTypeEnum> PredefinedType = new("PredefinedType", 7, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LifeCyclePhase, PredefinedType ];
 }
 
@@ -5998,11 +5998,11 @@ public partial class IfcPermeableCoveringProperties
     public const uint ENTITY_CODE = 691971400;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPermeableCoveringOperationEnum> OperationType = new(4, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcWindowPanelPositionEnum> PanelPosition = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FrameDepth = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FrameThickness = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new(8, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPermeableCoveringOperationEnum> OperationType = new("OperationType", 4, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWindowPanelPositionEnum> PanelPosition = new("PanelPosition", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FrameDepth = new("FrameDepth", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FrameThickness = new("FrameThickness", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new("ShapeAspectStyle", 8, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, OperationType, PanelPosition, FrameDepth, FrameThickness, ShapeAspectStyle ];
 }
 
@@ -6014,9 +6014,9 @@ public partial class IfcPermit
     public const uint ENTITY_CODE = 2074085164;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPermitTypeEnum> PredefinedType = new(6, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> Status = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> LongDescription = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPermitTypeEnum> PredefinedType = new("PredefinedType", 6, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> Status = new("Status", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> LongDescription = new("LongDescription", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, PredefinedType, Status, LongDescription ];
 }
 
@@ -6028,14 +6028,14 @@ public partial class IfcPerson
     public const uint ENTITY_CODE = 1697060002;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> FamilyName = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> GivenName = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> MiddleNames = new(3, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcLabel> PrefixTitles = new(4, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcLabel> SuffixTitles = new(5, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcActorRole> Roles = new(6, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcAddress> Addresses = new(7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> FamilyName = new("FamilyName", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> GivenName = new("GivenName", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> MiddleNames = new("MiddleNames", 3, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> PrefixTitles = new("PrefixTitles", 4, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> SuffixTitles = new("SuffixTitles", 5, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcActorRole> Roles = new("Roles", 6, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcAddress> Addresses = new("Addresses", 7, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Identification, FamilyName, GivenName, MiddleNames, PrefixTitles, SuffixTitles, Roles, Addresses ];
 }
 
@@ -6047,9 +6047,9 @@ public partial class IfcPersonAndOrganization
     public const uint ENTITY_CODE = 1637477396;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPerson> ThePerson = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcOrganization> TheOrganization = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcActorRole> Roles = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPerson> ThePerson = new("ThePerson", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcOrganization> TheOrganization = new("TheOrganization", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcActorRole> Roles = new("Roles", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ ThePerson, TheOrganization, Roles ];
 }
 
@@ -6061,10 +6061,10 @@ public partial class IfcPhysicalComplexQuantity
     public const uint ENTITY_CODE = 3770200107;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPhysicalQuantity> HasQuantities = new(2, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> Discrimination = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Quality = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Usage = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPhysicalQuantity> HasQuantities = new("HasQuantities", 2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Discrimination = new("Discrimination", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Quality = new("Quality", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Usage = new("Usage", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, HasQuantities, Discrimination, Quality, Usage ];
 }
 
@@ -6076,8 +6076,8 @@ public partial class IfcPhysicalQuantity
     public const uint ENTITY_CODE = 1923906739;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description ];
 }
 
@@ -6089,7 +6089,7 @@ public partial class IfcPhysicalSimpleQuantity
     public const uint ENTITY_CODE = 611700029;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcNamedUnit> Unit = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcNamedUnit> Unit = new("Unit", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Unit ];
 }
 
@@ -6101,8 +6101,8 @@ public partial class IfcPile
     public const uint ENTITY_CODE = 149965647;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPileTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPileConstructionEnum> ConstructionType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPileTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPileConstructionEnum> ConstructionType = new("ConstructionType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType, ConstructionType ];
 }
 
@@ -6114,7 +6114,7 @@ public partial class IfcPileType
     public const uint ENTITY_CODE = 2571255223;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPileTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPileTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -6126,7 +6126,7 @@ public partial class IfcPipeFitting
     public const uint ENTITY_CODE = 2595033550;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPipeFittingTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPipeFittingTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -6138,7 +6138,7 @@ public partial class IfcPipeFittingType
     public const uint ENTITY_CODE = 3677478062;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPipeFittingTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPipeFittingTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -6150,7 +6150,7 @@ public partial class IfcPipeSegment
     public const uint ENTITY_CODE = 3444543964;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPipeSegmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPipeSegmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -6162,7 +6162,7 @@ public partial class IfcPipeSegmentType
     public const uint ENTITY_CODE = 799408564;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPipeSegmentTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPipeSegmentTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -6174,10 +6174,10 @@ public partial class IfcPixelTexture
     public const uint ENTITY_CODE = 118615764;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInteger> Width = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> Height = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> ColourComponents = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBinary> Pixel = new(8, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcInteger> Width = new("Width", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> Height = new("Height", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> ColourComponents = new("ColourComponents", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBinary> Pixel = new("Pixel", 8, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ RepeatS, RepeatT, Mode, TextureTransform, Parameter, Width, Height, ColourComponents, Pixel ];
 }
 
@@ -6189,7 +6189,7 @@ public partial class IfcPlacement
     public const uint ENTITY_CODE = 184181550;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPoint> Location = new(0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPoint> Location = new("Location", 0, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Location ];
 }
 
@@ -6201,7 +6201,7 @@ public partial class IfcPlanarBox
     public const uint ENTITY_CODE = 2625056540;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement> Placement = new(2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcAxis2Placement> Placement = new("Placement", 2, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ SizeInX, SizeInY, Placement ];
 }
 
@@ -6213,8 +6213,8 @@ public partial class IfcPlanarExtent
     public const uint ENTITY_CODE = 3671944755;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> SizeInX = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> SizeInY = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SizeInX = new("SizeInX", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SizeInY = new("SizeInY", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ SizeInX, SizeInY ];
 }
 
@@ -6237,7 +6237,7 @@ public partial class IfcPlate
     public const uint ENTITY_CODE = 3954996169;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPlateTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPlateTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -6249,7 +6249,7 @@ public partial class IfcPlateType
     public const uint ENTITY_CODE = 3012845089;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPlateTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPlateTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -6272,11 +6272,11 @@ public partial class IfcPointByDistanceExpression
     public const uint ENTITY_CODE = 3184423839;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurveMeasureSelect> DistanceAlong = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> OffsetLateral = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> OffsetVertical = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> OffsetLongitudinal = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCurve> BasisCurve = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCurveMeasureSelect> DistanceAlong = new("DistanceAlong", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> OffsetLateral = new("OffsetLateral", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> OffsetVertical = new("OffsetVertical", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> OffsetLongitudinal = new("OffsetLongitudinal", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurve> BasisCurve = new("BasisCurve", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ DistanceAlong, OffsetLateral, OffsetVertical, OffsetLongitudinal, BasisCurve ];
 }
 
@@ -6288,8 +6288,8 @@ public partial class IfcPointOnCurve
     public const uint ENTITY_CODE = 154430901;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> BasisCurve = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcParameterValue> PointParameter = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurve> BasisCurve = new("BasisCurve", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcParameterValue> PointParameter = new("PointParameter", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ BasisCurve, PointParameter ];
 }
 
@@ -6301,9 +6301,9 @@ public partial class IfcPointOnSurface
     public const uint ENTITY_CODE = 3955153569;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurface> BasisSurface = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcParameterValue> PointParameterU = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcParameterValue> PointParameterV = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSurface> BasisSurface = new("BasisSurface", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcParameterValue> PointParameterU = new("PointParameterU", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcParameterValue> PointParameterV = new("PointParameterV", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ BasisSurface, PointParameterU, PointParameterV ];
 }
 
@@ -6315,8 +6315,8 @@ public partial class IfcPolygonalBoundedHalfSpace
     public const uint ENTITY_CODE = 797080096;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoundedCurve> PolygonalBoundary = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new("Position", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoundedCurve> PolygonalBoundary = new("PolygonalBoundary", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ BaseSurface, AgreementFlag, Position, PolygonalBoundary ];
 }
 
@@ -6328,8 +6328,8 @@ public partial class IfcPolygonalFaceSet
     public const uint ENTITY_CODE = 605400089;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIndexedPolygonalFace> Faces = new(2, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcPositiveInteger> PnIndex = new(3, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcIndexedPolygonalFace> Faces = new("Faces", 2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPositiveInteger> PnIndex = new("PnIndex", 3, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Coordinates, Closed, Faces, PnIndex ];
 }
 
@@ -6341,7 +6341,7 @@ public partial class IfcPolyline
     public const uint ENTITY_CODE = 1622455735;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCartesianPoint> Points = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCartesianPoint> Points = new("Points", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Points ];
 }
 
@@ -6353,7 +6353,7 @@ public partial class IfcPolyLoop
     public const uint ENTITY_CODE = 1197927195;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCartesianPoint> Polygon = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCartesianPoint> Polygon = new("Polygon", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Polygon ];
 }
 
@@ -6365,10 +6365,10 @@ public partial class IfcPolynomialCurve
     public const uint ENTITY_CODE = 2801833992;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPlacement> Position = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcReal> CoefficientsX = new(1, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcReal> CoefficientsY = new(2, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcReal> CoefficientsZ = new(3, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcPlacement> Position = new("Position", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcReal> CoefficientsX = new("CoefficientsX", 1, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcReal> CoefficientsY = new("CoefficientsY", 2, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcReal> CoefficientsZ = new("CoefficientsZ", 3, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Position, CoefficientsX, CoefficientsY, CoefficientsZ ];
 }
 
@@ -6402,13 +6402,13 @@ public partial class IfcPostalAddress
     public const uint ENTITY_CODE = 2167844468;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> InternalLocation = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> AddressLines = new(4, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcLabel> PostalBox = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Town = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Region = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> PostalCode = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Country = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> InternalLocation = new("InternalLocation", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> AddressLines = new("AddressLines", 4, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> PostalBox = new("PostalBox", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Town = new("Town", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Region = new("Region", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> PostalCode = new("PostalCode", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Country = new("Country", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Purpose, Description, UserDefinedPurpose, InternalLocation, AddressLines, PostalBox, Town, Region, PostalCode, Country ];
 }
 
@@ -6442,7 +6442,7 @@ public partial class IfcPreDefinedItem
     public const uint ENTITY_CODE = 827041254;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name ];
 }
 
@@ -6498,10 +6498,10 @@ public partial class IfcPresentationLayerAssignment
     public const uint ENTITY_CODE = 1407561121;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLayeredItem> AssignedItems = new(2, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcIdentifier> Identifier = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLayeredItem> AssignedItems = new("AssignedItems", 2, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcIdentifier> Identifier = new("Identifier", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, AssignedItems, Identifier ];
 }
 
@@ -6513,10 +6513,10 @@ public partial class IfcPresentationLayerWithStyle
     public const uint ENTITY_CODE = 792652293;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLogical> LayerOn = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> LayerFrozen = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> LayerBlocked = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPresentationStyle> LayerStyles = new(7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLogical> LayerOn = new("LayerOn", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> LayerFrozen = new("LayerFrozen", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> LayerBlocked = new("LayerBlocked", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPresentationStyle> LayerStyles = new("LayerStyles", 7, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, AssignedItems, Identifier, LayerOn, LayerFrozen, LayerBlocked, LayerStyles ];
 }
 
@@ -6528,7 +6528,7 @@ public partial class IfcPresentationStyle
     public const uint ENTITY_CODE = 4040404728;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name ];
 }
 
@@ -6540,7 +6540,7 @@ public partial class IfcProcedure
     public const uint ENTITY_CODE = 1774744644;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProcedureTypeEnum> PredefinedType = new(7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProcedureTypeEnum> PredefinedType = new("PredefinedType", 7, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, PredefinedType ];
 }
 
@@ -6552,7 +6552,7 @@ public partial class IfcProcedureType
     public const uint ENTITY_CODE = 1904674444;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProcedureTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProcedureTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ProcessType, PredefinedType ];
 }
 
@@ -6564,8 +6564,8 @@ public partial class IfcProcess
     public const uint ENTITY_CODE = 1826787596;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> LongDescription = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> LongDescription = new("LongDescription", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription ];
 }
 
@@ -6577,8 +6577,8 @@ public partial class IfcProduct
     public const uint ENTITY_CODE = 3372775790;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcObjectPlacement> ObjectPlacement = new(5, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcProductRepresentation> Representation = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcObjectPlacement> ObjectPlacement = new("ObjectPlacement", 5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProductRepresentation> Representation = new("Representation", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation ];
 }
 
@@ -6601,9 +6601,9 @@ public partial class IfcProductRepresentation
     public const uint ENTITY_CODE = 2978431027;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcRepresentation> Representations = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRepresentation> Representations = new("Representations", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, Representations ];
 }
 
@@ -6615,8 +6615,8 @@ public partial class IfcProfileDef
     public const uint ENTITY_CODE = 977691495;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileTypeEnum> ProfileType = new(0, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> ProfileName = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProfileTypeEnum> ProfileType = new("ProfileType", 0, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> ProfileName = new("ProfileName", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName ];
 }
 
@@ -6628,7 +6628,7 @@ public partial class IfcProfileProperties
     public const uint ENTITY_CODE = 2726116117;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileDef> ProfileDefinition = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> ProfileDefinition = new("ProfileDefinition", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Properties, ProfileDefinition ];
 }
 
@@ -6651,9 +6651,9 @@ public partial class IfcProjectedCRS
     public const uint ENTITY_CODE = 3762950369;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> MapProjection = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> MapZone = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNamedUnit> MapUnit = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcIdentifier> MapProjection = new("MapProjection", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> MapZone = new("MapZone", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNamedUnit> MapUnit = new("MapUnit", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, GeodeticDatum, VerticalDatum, MapProjection, MapZone, MapUnit ];
 }
 
@@ -6665,7 +6665,7 @@ public partial class IfcProjectionElement
     public const uint ENTITY_CODE = 2130597890;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProjectionElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProjectionElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -6688,9 +6688,9 @@ public partial class IfcProjectOrder
     public const uint ENTITY_CODE = 567771124;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProjectOrderTypeEnum> PredefinedType = new(6, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> Status = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> LongDescription = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProjectOrderTypeEnum> PredefinedType = new("PredefinedType", 6, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> Status = new("Status", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> LongDescription = new("LongDescription", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, PredefinedType, Status, LongDescription ];
 }
 
@@ -6702,8 +6702,8 @@ public partial class IfcProperty
     public const uint ENTITY_CODE = 3277779118;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Specification = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Specification = new("Specification", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Specification ];
 }
 
@@ -6726,10 +6726,10 @@ public partial class IfcPropertyBoundedValue
     public const uint ENTITY_CODE = 3087662268;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValue> UpperBoundValue = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcValue> LowerBoundValue = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcUnit> Unit = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcValue> SetPointValue = new(5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcValue> UpperBoundValue = new("UpperBoundValue", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcValue> LowerBoundValue = new("LowerBoundValue", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcUnit> Unit = new("Unit", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcValue> SetPointValue = new("SetPointValue", 5, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, Specification, UpperBoundValue, LowerBoundValue, Unit, SetPointValue ];
 }
 
@@ -6752,9 +6752,9 @@ public partial class IfcPropertyDependencyRelationship
     public const uint ENTITY_CODE = 2230335753;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProperty> DependingProperty = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcProperty> DependantProperty = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcText> Expression = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProperty> DependingProperty = new("DependingProperty", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProperty> DependantProperty = new("DependantProperty", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcText> Expression = new("Expression", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, DependingProperty, DependantProperty, Expression ];
 }
 
@@ -6766,8 +6766,8 @@ public partial class IfcPropertyEnumeratedValue
     public const uint ENTITY_CODE = 3538377801;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValue> EnumerationValues = new(2, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcPropertyEnumeration> EnumerationReference = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcValue> EnumerationValues = new("EnumerationValues", 2, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcPropertyEnumeration> EnumerationReference = new("EnumerationReference", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Specification, EnumerationValues, EnumerationReference ];
 }
 
@@ -6779,9 +6779,9 @@ public partial class IfcPropertyEnumeration
     public const uint ENTITY_CODE = 623736673;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcValue> EnumerationValues = new(1, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcUnit> Unit = new(2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcValue> EnumerationValues = new("EnumerationValues", 1, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcUnit> Unit = new("Unit", 2, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, EnumerationValues, Unit ];
 }
 
@@ -6793,8 +6793,8 @@ public partial class IfcPropertyListValue
     public const uint ENTITY_CODE = 2643420771;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValue> ListValues = new(2, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcUnit> Unit = new(3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcValue> ListValues = new("ListValues", 2, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcUnit> Unit = new("Unit", 3, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, Specification, ListValues, Unit ];
 }
 
@@ -6806,8 +6806,8 @@ public partial class IfcPropertyReferenceValue
     public const uint ENTITY_CODE = 3614615320;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcText> UsageName = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcObjectReferenceSelect> PropertyReference = new(3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcText> UsageName = new("UsageName", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcObjectReferenceSelect> PropertyReference = new("PropertyReference", 3, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, Specification, UsageName, PropertyReference ];
 }
 
@@ -6819,7 +6819,7 @@ public partial class IfcPropertySet
     public const uint ENTITY_CODE = 1978989174;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProperty> HasProperties = new(4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcProperty> HasProperties = new("HasProperties", 4, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, HasProperties ];
 }
 
@@ -6842,9 +6842,9 @@ public partial class IfcPropertySetTemplate
     public const uint ENTITY_CODE = 1300894696;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPropertySetTemplateTypeEnum> TemplateType = new(4, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcIdentifier> ApplicableEntity = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPropertyTemplate> HasPropertyTemplates = new(6, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPropertySetTemplateTypeEnum> TemplateType = new("TemplateType", 4, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcIdentifier> ApplicableEntity = new("ApplicableEntity", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPropertyTemplate> HasPropertyTemplates = new("HasPropertyTemplates", 6, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, TemplateType, ApplicableEntity, HasPropertyTemplates ];
 }
 
@@ -6856,8 +6856,8 @@ public partial class IfcPropertySingleValue
     public const uint ENTITY_CODE = 939331015;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValue> NominalValue = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcUnit> Unit = new(3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcValue> NominalValue = new("NominalValue", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcUnit> Unit = new("Unit", 3, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, Specification, NominalValue, Unit ];
 }
 
@@ -6869,12 +6869,12 @@ public partial class IfcPropertyTableValue
     public const uint ENTITY_CODE = 1981908299;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValue> DefiningValues = new(2, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcValue> DefinedValues = new(3, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcText> Expression = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcUnit> DefiningUnit = new(5, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcUnit> DefinedUnit = new(6, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcCurveInterpolationEnum> CurveInterpolation = new(7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcValue> DefiningValues = new("DefiningValues", 2, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcValue> DefinedValues = new("DefinedValues", 3, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcText> Expression = new("Expression", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcUnit> DefiningUnit = new("DefiningUnit", 5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcUnit> DefinedUnit = new("DefinedUnit", 6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcCurveInterpolationEnum> CurveInterpolation = new("CurveInterpolation", 7, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Name, Specification, DefiningValues, DefinedValues, Expression, DefiningUnit, DefinedUnit, CurveInterpolation ];
 }
 
@@ -6908,7 +6908,7 @@ public partial class IfcProtectiveDevice
     public const uint ENTITY_CODE = 2782420526;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProtectiveDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProtectiveDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -6920,7 +6920,7 @@ public partial class IfcProtectiveDeviceTrippingUnit
     public const uint ENTITY_CODE = 1244377875;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProtectiveDeviceTrippingUnitTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProtectiveDeviceTrippingUnitTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -6932,7 +6932,7 @@ public partial class IfcProtectiveDeviceTrippingUnitType
     public const uint ENTITY_CODE = 4173200747;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProtectiveDeviceTrippingUnitTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProtectiveDeviceTrippingUnitTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -6944,7 +6944,7 @@ public partial class IfcProtectiveDeviceType
     public const uint ENTITY_CODE = 3919153294;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProtectiveDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProtectiveDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -6956,7 +6956,7 @@ public partial class IfcPump
     public const uint ENTITY_CODE = 4168265165;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPumpTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPumpTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -6968,7 +6968,7 @@ public partial class IfcPumpType
     public const uint ENTITY_CODE = 640924933;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPumpTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPumpTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -6980,8 +6980,8 @@ public partial class IfcQuantityArea
     public const uint ENTITY_CODE = 3796205563;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAreaMeasure> AreaValue = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Formula = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> AreaValue = new("AreaValue", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Formula = new("Formula", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Unit, AreaValue, Formula ];
 }
 
@@ -6993,8 +6993,8 @@ public partial class IfcQuantityCount
     public const uint ENTITY_CODE = 2932049789;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCountMeasure> CountValue = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Formula = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCountMeasure> CountValue = new("CountValue", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Formula = new("Formula", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Unit, CountValue, Formula ];
 }
 
@@ -7006,8 +7006,8 @@ public partial class IfcQuantityLength
     public const uint ENTITY_CODE = 27827418;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> LengthValue = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Formula = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LengthValue = new("LengthValue", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Formula = new("Formula", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Unit, LengthValue, Formula ];
 }
 
@@ -7019,8 +7019,8 @@ public partial class IfcQuantityNumber
     public const uint ENTITY_CODE = 3645075915;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcNumericMeasure> NumberValue = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Formula = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNumericMeasure> NumberValue = new("NumberValue", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Formula = new("Formula", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Unit, NumberValue, Formula ];
 }
 
@@ -7043,8 +7043,8 @@ public partial class IfcQuantityTime
     public const uint ENTITY_CODE = 3727679831;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTimeMeasure> TimeValue = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Formula = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTimeMeasure> TimeValue = new("TimeValue", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Formula = new("Formula", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Unit, TimeValue, Formula ];
 }
 
@@ -7056,8 +7056,8 @@ public partial class IfcQuantityVolume
     public const uint ENTITY_CODE = 973298816;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVolumeMeasure> VolumeValue = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Formula = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcVolumeMeasure> VolumeValue = new("VolumeValue", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Formula = new("Formula", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Unit, VolumeValue, Formula ];
 }
 
@@ -7069,8 +7069,8 @@ public partial class IfcQuantityWeight
     public const uint ENTITY_CODE = 3233304038;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMassMeasure> WeightValue = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Formula = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcMassMeasure> WeightValue = new("WeightValue", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Formula = new("Formula", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, Unit, WeightValue, Formula ];
 }
 
@@ -7082,7 +7082,7 @@ public partial class IfcRail
     public const uint ENTITY_CODE = 2019186983;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRailTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRailTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -7094,7 +7094,7 @@ public partial class IfcRailing
     public const uint ENTITY_CODE = 3345183409;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRailingTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRailingTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -7106,7 +7106,7 @@ public partial class IfcRailingType
     public const uint ENTITY_CODE = 2218968665;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRailingTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRailingTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -7118,7 +7118,7 @@ public partial class IfcRailType
     public const uint ENTITY_CODE = 3757857215;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRailTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRailTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -7130,7 +7130,7 @@ public partial class IfcRailway
     public const uint ENTITY_CODE = 1711612782;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRailwayTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRailwayTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, PredefinedType ];
 }
 
@@ -7142,7 +7142,7 @@ public partial class IfcRailwayPart
     public const uint ENTITY_CODE = 1892473607;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRailwayPartTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRailwayPartTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, UsageType, PredefinedType ];
 }
 
@@ -7154,7 +7154,7 @@ public partial class IfcRamp
     public const uint ENTITY_CODE = 1952768055;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRampTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRampTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -7166,7 +7166,7 @@ public partial class IfcRampFlight
     public const uint ENTITY_CODE = 2713085869;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRampFlightTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRampFlightTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -7178,7 +7178,7 @@ public partial class IfcRampFlightType
     public const uint ENTITY_CODE = 386973029;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRampFlightTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRampFlightTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -7190,7 +7190,7 @@ public partial class IfcRampType
     public const uint ENTITY_CODE = 3598766703;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRampTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRampTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -7202,7 +7202,7 @@ public partial class IfcRationalBSplineCurveWithKnots
     public const uint ENTITY_CODE = 2136405382;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReal> WeightsData = new(8, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcReal> WeightsData = new("WeightsData", 8, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Degree, ControlPointsList, CurveForm, ClosedCurve, SelfIntersect, KnotMultiplicities, Knots, KnotSpec, WeightsData ];
 }
 
@@ -7214,7 +7214,7 @@ public partial class IfcRationalBSplineSurfaceWithKnots
     public const uint ENTITY_CODE = 2396975254;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReal> WeightsData = new(12, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcReal> WeightsData = new("WeightsData", 12, IfcTypeKind.Alias, 2);
     public override IfcAttribute[] Attributes => [ UDegree, VDegree, ControlPointsList, SurfaceForm, UClosed, VClosed, SelfIntersect, UMultiplicities, VMultiplicities, UKnots, VKnots, KnotSpec, WeightsData ];
 }
 
@@ -7226,9 +7226,9 @@ public partial class IfcRectangleHollowProfileDef
     public const uint ENTITY_CODE = 1283664311;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> WallThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> InnerFilletRadius = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> OuterFilletRadius = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> WallThickness = new("WallThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> InnerFilletRadius = new("InnerFilletRadius", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> OuterFilletRadius = new("OuterFilletRadius", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, XDim, YDim, WallThickness, InnerFilletRadius, OuterFilletRadius ];
 }
 
@@ -7240,8 +7240,8 @@ public partial class IfcRectangleProfileDef
     public const uint ENTITY_CODE = 2503913696;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> XDim = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> YDim = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> XDim = new("XDim", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> YDim = new("YDim", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, XDim, YDim ];
 }
 
@@ -7253,9 +7253,9 @@ public partial class IfcRectangularPyramid
     public const uint ENTITY_CODE = 954763055;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> XLength = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> YLength = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Height = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> XLength = new("XLength", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> YLength = new("YLength", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Height = new("Height", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, XLength, YLength, Height ];
 }
 
@@ -7267,13 +7267,13 @@ public partial class IfcRectangularTrimmedSurface
     public const uint ENTITY_CODE = 2893748188;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurface> BasisSurface = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcParameterValue> U1 = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcParameterValue> V1 = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcParameterValue> U2 = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcParameterValue> V2 = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBoolean> Usense = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBoolean> Vsense = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSurface> BasisSurface = new("BasisSurface", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcParameterValue> U1 = new("U1", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcParameterValue> V1 = new("V1", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcParameterValue> U2 = new("U2", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcParameterValue> V2 = new("V2", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> Usense = new("Usense", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> Vsense = new("Vsense", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ BasisSurface, U1, V1, U2, V2, Usense, Vsense ];
 }
 
@@ -7285,14 +7285,14 @@ public partial class IfcRecurrencePattern
     public const uint ENTITY_CODE = 1431445093;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRecurrenceTypeEnum> RecurrenceType = new(0, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDayInMonthNumber> DayComponent = new(1, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcDayInWeekNumber> WeekdayComponent = new(2, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcMonthInYearNumber> MonthComponent = new(3, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcInteger> Position = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> Interval = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> Occurrences = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTimePeriod> TimePeriods = new(7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcRecurrenceTypeEnum> RecurrenceType = new("RecurrenceType", 0, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDayInMonthNumber> DayComponent = new("DayComponent", 1, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcDayInWeekNumber> WeekdayComponent = new("WeekdayComponent", 2, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcMonthInYearNumber> MonthComponent = new("MonthComponent", 3, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcInteger> Position = new("Position", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> Interval = new("Interval", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> Occurrences = new("Occurrences", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTimePeriod> TimePeriods = new("TimePeriods", 7, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ RecurrenceType, DayComponent, WeekdayComponent, MonthComponent, Position, Interval, Occurrences, TimePeriods ];
 }
 
@@ -7304,11 +7304,11 @@ public partial class IfcReference
     public const uint ENTITY_CODE = 1936048460;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> TypeIdentifier = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> AttributeIdentifier = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> InstanceName = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> ListPositions = new(3, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcReference> InnerReference = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcIdentifier> TypeIdentifier = new("TypeIdentifier", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> AttributeIdentifier = new("AttributeIdentifier", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> InstanceName = new("InstanceName", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> ListPositions = new("ListPositions", 3, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcReference> InnerReference = new("InnerReference", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ TypeIdentifier, AttributeIdentifier, InstanceName, ListPositions, InnerReference ];
 }
 
@@ -7320,7 +7320,7 @@ public partial class IfcReferent
     public const uint ENTITY_CODE = 1564746148;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReferentTypeEnum> PredefinedType = new(7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcReferentTypeEnum> PredefinedType = new("PredefinedType", 7, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, PredefinedType ];
 }
 
@@ -7332,8 +7332,8 @@ public partial class IfcRegularTimeSeries
     public const uint ENTITY_CODE = 2717202733;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTimeMeasure> TimeStep = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTimeSeriesValue> Values = new(9, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcTimeMeasure> TimeStep = new("TimeStep", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTimeSeriesValue> Values = new("Values", 9, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, StartTime, EndTime, TimeSeriesDataType, DataOrigin, UserDefinedDataOrigin, Unit, TimeStep, Values ];
 }
 
@@ -7345,7 +7345,7 @@ public partial class IfcReinforcedSoil
     public const uint ENTITY_CODE = 784685403;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReinforcedSoilTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcReinforcedSoilTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -7357,12 +7357,12 @@ public partial class IfcReinforcementBarProperties
     public const uint ENTITY_CODE = 208435744;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAreaMeasure> TotalCrossSectionArea = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> SteelGrade = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReinforcingBarSurfaceEnum> BarSurface = new(2, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> EffectiveDepth = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalBarDiameter = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCountMeasure> BarCount = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> TotalCrossSectionArea = new("TotalCrossSectionArea", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> SteelGrade = new("SteelGrade", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReinforcingBarSurfaceEnum> BarSurface = new("BarSurface", 2, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> EffectiveDepth = new("EffectiveDepth", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalBarDiameter = new("NominalBarDiameter", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCountMeasure> BarCount = new("BarCount", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ TotalCrossSectionArea, SteelGrade, BarSurface, EffectiveDepth, NominalBarDiameter, BarCount ];
 }
 
@@ -7374,8 +7374,8 @@ public partial class IfcReinforcementDefinitionProperties
     public const uint ENTITY_CODE = 1501559820;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> DefinitionType = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcSectionReinforcementProperties> ReinforcementSectionDefinitions = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> DefinitionType = new("DefinitionType", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSectionReinforcementProperties> ReinforcementSectionDefinitions = new("ReinforcementSectionDefinitions", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, DefinitionType, ReinforcementSectionDefinitions ];
 }
 
@@ -7387,11 +7387,11 @@ public partial class IfcReinforcingBar
     public const uint ENTITY_CODE = 1424876924;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAreaMeasure> CrossSectionArea = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> BarLength = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReinforcingBarTypeEnum> PredefinedType = new(12, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcReinforcingBarSurfaceEnum> BarSurface = new(13, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new("NominalDiameter", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> CrossSectionArea = new("CrossSectionArea", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> BarLength = new("BarLength", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReinforcingBarTypeEnum> PredefinedType = new("PredefinedType", 12, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcReinforcingBarSurfaceEnum> BarSurface = new("BarSurface", 13, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, SteelGrade, NominalDiameter, CrossSectionArea, BarLength, PredefinedType, BarSurface ];
 }
 
@@ -7403,13 +7403,13 @@ public partial class IfcReinforcingBarType
     public const uint ENTITY_CODE = 333728212;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReinforcingBarTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAreaMeasure> CrossSectionArea = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> BarLength = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReinforcingBarSurfaceEnum> BarSurface = new(13, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> BendingShapeCode = new(14, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBendingParameterSelect> BendingParameters = new(15, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcReinforcingBarTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new("NominalDiameter", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> CrossSectionArea = new("CrossSectionArea", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> BarLength = new("BarLength", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReinforcingBarSurfaceEnum> BarSurface = new("BarSurface", 13, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> BendingShapeCode = new("BendingShapeCode", 14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBendingParameterSelect> BendingParameters = new("BendingParameters", 15, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType, NominalDiameter, CrossSectionArea, BarLength, BarSurface, BendingShapeCode, BendingParameters ];
 }
 
@@ -7421,7 +7421,7 @@ public partial class IfcReinforcingElement
     public const uint ENTITY_CODE = 1403002469;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> SteelGrade = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> SteelGrade = new("SteelGrade", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, SteelGrade ];
 }
 
@@ -7444,15 +7444,15 @@ public partial class IfcReinforcingMesh
     public const uint ENTITY_CODE = 3849051190;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> MeshLength = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> MeshWidth = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> LongitudinalBarNominalDiameter = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> TransverseBarNominalDiameter = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAreaMeasure> LongitudinalBarCrossSectionArea = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAreaMeasure> TransverseBarCrossSectionArea = new(14, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> LongitudinalBarSpacing = new(15, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> TransverseBarSpacing = new(16, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReinforcingMeshTypeEnum> PredefinedType = new(17, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> MeshLength = new("MeshLength", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> MeshWidth = new("MeshWidth", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> LongitudinalBarNominalDiameter = new("LongitudinalBarNominalDiameter", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> TransverseBarNominalDiameter = new("TransverseBarNominalDiameter", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> LongitudinalBarCrossSectionArea = new("LongitudinalBarCrossSectionArea", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> TransverseBarCrossSectionArea = new("TransverseBarCrossSectionArea", 14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> LongitudinalBarSpacing = new("LongitudinalBarSpacing", 15, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> TransverseBarSpacing = new("TransverseBarSpacing", 16, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReinforcingMeshTypeEnum> PredefinedType = new("PredefinedType", 17, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, SteelGrade, MeshLength, MeshWidth, LongitudinalBarNominalDiameter, TransverseBarNominalDiameter, LongitudinalBarCrossSectionArea, TransverseBarCrossSectionArea, LongitudinalBarSpacing, TransverseBarSpacing, PredefinedType ];
 }
 
@@ -7464,17 +7464,17 @@ public partial class IfcReinforcingMeshType
     public const uint ENTITY_CODE = 3449936198;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReinforcingMeshTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> MeshLength = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> MeshWidth = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> LongitudinalBarNominalDiameter = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> TransverseBarNominalDiameter = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAreaMeasure> LongitudinalBarCrossSectionArea = new(14, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAreaMeasure> TransverseBarCrossSectionArea = new(15, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> LongitudinalBarSpacing = new(16, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> TransverseBarSpacing = new(17, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> BendingShapeCode = new(18, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBendingParameterSelect> BendingParameters = new(19, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcReinforcingMeshTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> MeshLength = new("MeshLength", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> MeshWidth = new("MeshWidth", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> LongitudinalBarNominalDiameter = new("LongitudinalBarNominalDiameter", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> TransverseBarNominalDiameter = new("TransverseBarNominalDiameter", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> LongitudinalBarCrossSectionArea = new("LongitudinalBarCrossSectionArea", 14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> TransverseBarCrossSectionArea = new("TransverseBarCrossSectionArea", 15, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> LongitudinalBarSpacing = new("LongitudinalBarSpacing", 16, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> TransverseBarSpacing = new("TransverseBarSpacing", 17, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> BendingShapeCode = new("BendingShapeCode", 18, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBendingParameterSelect> BendingParameters = new("BendingParameters", 19, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType, MeshLength, MeshWidth, LongitudinalBarNominalDiameter, TransverseBarNominalDiameter, LongitudinalBarCrossSectionArea, TransverseBarCrossSectionArea, LongitudinalBarSpacing, TransverseBarSpacing, BendingShapeCode, BendingParameters ];
 }
 
@@ -7486,8 +7486,8 @@ public partial class IfcRelAdheresToElement
     public const uint ENTITY_CODE = 1976144953;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElement> RelatingElement = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcSurfaceFeature> RelatedSurfaceFeatures = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcElement> RelatingElement = new("RelatingElement", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSurfaceFeature> RelatedSurfaceFeatures = new("RelatedSurfaceFeatures", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingElement, RelatedSurfaceFeatures ];
 }
 
@@ -7499,8 +7499,8 @@ public partial class IfcRelAggregates
     public const uint ENTITY_CODE = 2084011922;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcObjectDefinition> RelatingObject = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcObjectDefinition> RelatedObjects = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcObjectDefinition> RelatingObject = new("RelatingObject", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcObjectDefinition> RelatedObjects = new("RelatedObjects", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingObject, RelatedObjects ];
 }
 
@@ -7512,8 +7512,8 @@ public partial class IfcRelAssigns
     public const uint ENTITY_CODE = 1077973036;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcObjectDefinition> RelatedObjects = new(4, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcObjectTypeEnum> RelatedObjectsType = new(5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcObjectDefinition> RelatedObjects = new("RelatedObjects", 4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcObjectTypeEnum> RelatedObjectsType = new("RelatedObjectsType", 5, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatedObjectsType ];
 }
 
@@ -7525,8 +7525,8 @@ public partial class IfcRelAssignsToActor
     public const uint ENTITY_CODE = 2605624762;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcActor> RelatingActor = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcActorRole> ActingRole = new(7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcActor> RelatingActor = new("RelatingActor", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcActorRole> ActingRole = new("ActingRole", 7, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatedObjectsType, RelatingActor, ActingRole ];
 }
 
@@ -7538,7 +7538,7 @@ public partial class IfcRelAssignsToControl
     public const uint ENTITY_CODE = 4063478366;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcControl> RelatingControl = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcControl> RelatingControl = new("RelatingControl", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatedObjectsType, RelatingControl ];
 }
 
@@ -7550,7 +7550,7 @@ public partial class IfcRelAssignsToGroup
     public const uint ENTITY_CODE = 4014863820;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGroup> RelatingGroup = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcGroup> RelatingGroup = new("RelatingGroup", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatedObjectsType, RelatingGroup ];
 }
 
@@ -7562,7 +7562,7 @@ public partial class IfcRelAssignsToGroupByFactor
     public const uint ENTITY_CODE = 2543087090;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRatioMeasure> Factor = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRatioMeasure> Factor = new("Factor", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatedObjectsType, RelatingGroup, Factor ];
 }
 
@@ -7574,8 +7574,8 @@ public partial class IfcRelAssignsToProcess
     public const uint ENTITY_CODE = 2767940218;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProcessSelect> RelatingProcess = new(6, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcMeasureWithUnit> QuantityInProcess = new(7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProcessSelect> RelatingProcess = new("RelatingProcess", 6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcMeasureWithUnit> QuantityInProcess = new("QuantityInProcess", 7, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatedObjectsType, RelatingProcess, QuantityInProcess ];
 }
 
@@ -7587,7 +7587,7 @@ public partial class IfcRelAssignsToProduct
     public const uint ENTITY_CODE = 719346156;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProductSelect> RelatingProduct = new(6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcProductSelect> RelatingProduct = new("RelatingProduct", 6, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatedObjectsType, RelatingProduct ];
 }
 
@@ -7599,7 +7599,7 @@ public partial class IfcRelAssignsToResource
     public const uint ENTITY_CODE = 3183946773;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcResourceSelect> RelatingResource = new(6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcResourceSelect> RelatingResource = new("RelatingResource", 6, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatedObjectsType, RelatingResource ];
 }
 
@@ -7611,7 +7611,7 @@ public partial class IfcRelAssociates
     public const uint ENTITY_CODE = 1295874853;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDefinitionSelect> RelatedObjects = new(4, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcDefinitionSelect> RelatedObjects = new("RelatedObjects", 4, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects ];
 }
 
@@ -7623,7 +7623,7 @@ public partial class IfcRelAssociatesApproval
     public const uint ENTITY_CODE = 4071643462;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcApproval> RelatingApproval = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcApproval> RelatingApproval = new("RelatingApproval", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingApproval ];
 }
 
@@ -7635,7 +7635,7 @@ public partial class IfcRelAssociatesClassification
     public const uint ENTITY_CODE = 3023068257;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcClassificationSelect> RelatingClassification = new(5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcClassificationSelect> RelatingClassification = new("RelatingClassification", 5, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingClassification ];
 }
 
@@ -7647,8 +7647,8 @@ public partial class IfcRelAssociatesConstraint
     public const uint ENTITY_CODE = 4261483450;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Intent = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcConstraint> RelatingConstraint = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLabel> Intent = new("Intent", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcConstraint> RelatingConstraint = new("RelatingConstraint", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, Intent, RelatingConstraint ];
 }
 
@@ -7660,7 +7660,7 @@ public partial class IfcRelAssociatesDocument
     public const uint ENTITY_CODE = 4288980404;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDocumentSelect> RelatingDocument = new(5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcDocumentSelect> RelatingDocument = new("RelatingDocument", 5, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingDocument ];
 }
 
@@ -7672,7 +7672,7 @@ public partial class IfcRelAssociatesLibrary
     public const uint ENTITY_CODE = 3433840528;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLibrarySelect> RelatingLibrary = new(5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcLibrarySelect> RelatingLibrary = new("RelatingLibrary", 5, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingLibrary ];
 }
 
@@ -7684,7 +7684,7 @@ public partial class IfcRelAssociatesMaterial
     public const uint ENTITY_CODE = 1645853056;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcMaterialSelect> RelatingMaterial = new(5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcMaterialSelect> RelatingMaterial = new("RelatingMaterial", 5, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingMaterial ];
 }
 
@@ -7696,7 +7696,7 @@ public partial class IfcRelAssociatesProfileDef
     public const uint ENTITY_CODE = 2246184837;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileDef> RelatingProfileDef = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> RelatingProfileDef = new("RelatingProfileDef", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingProfileDef ];
 }
 
@@ -7730,9 +7730,9 @@ public partial class IfcRelConnectsElements
     public const uint ENTITY_CODE = 1392017748;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConnectionGeometry> ConnectionGeometry = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcElement> RelatingElement = new(5, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcElement> RelatedElement = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcConnectionGeometry> ConnectionGeometry = new("ConnectionGeometry", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcElement> RelatingElement = new("RelatingElement", 5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcElement> RelatedElement = new("RelatedElement", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ConnectionGeometry, RelatingElement, RelatedElement ];
 }
 
@@ -7744,10 +7744,10 @@ public partial class IfcRelConnectsPathElements
     public const uint ENTITY_CODE = 3446495999;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInteger> RelatingPriorities = new(7, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcInteger> RelatedPriorities = new(8, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcConnectionTypeEnum> RelatedConnectionType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcConnectionTypeEnum> RelatingConnectionType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcInteger> RelatingPriorities = new("RelatingPriorities", 7, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcInteger> RelatedPriorities = new("RelatedPriorities", 8, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcConnectionTypeEnum> RelatedConnectionType = new("RelatedConnectionType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcConnectionTypeEnum> RelatingConnectionType = new("RelatingConnectionType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ConnectionGeometry, RelatingElement, RelatedElement, RelatingPriorities, RelatedPriorities, RelatedConnectionType, RelatingConnectionType ];
 }
 
@@ -7759,9 +7759,9 @@ public partial class IfcRelConnectsPorts
     public const uint ENTITY_CODE = 524223975;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPort> RelatingPort = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPort> RelatedPort = new(5, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcElement> RealizingElement = new(6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPort> RelatingPort = new("RelatingPort", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPort> RelatedPort = new("RelatedPort", 5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcElement> RealizingElement = new("RealizingElement", 6, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingPort, RelatedPort, RealizingElement ];
 }
 
@@ -7773,8 +7773,8 @@ public partial class IfcRelConnectsPortToElement
     public const uint ENTITY_CODE = 3149271205;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPort> RelatingPort = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDistributionElement> RelatedElement = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPort> RelatingPort = new("RelatingPort", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDistributionElement> RelatedElement = new("RelatedElement", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingPort, RelatedElement ];
 }
 
@@ -7786,8 +7786,8 @@ public partial class IfcRelConnectsStructuralActivity
     public const uint ENTITY_CODE = 2837201183;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStructuralActivityAssignmentSelect> RelatingElement = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcStructuralActivity> RelatedStructuralActivity = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcStructuralActivityAssignmentSelect> RelatingElement = new("RelatingElement", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcStructuralActivity> RelatedStructuralActivity = new("RelatedStructuralActivity", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingElement, RelatedStructuralActivity ];
 }
 
@@ -7799,12 +7799,12 @@ public partial class IfcRelConnectsStructuralMember
     public const uint ENTITY_CODE = 293880220;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStructuralMember> RelatingStructuralMember = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcStructuralConnection> RelatedStructuralConnection = new(5, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoundaryCondition> AppliedCondition = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcStructuralConnectionCondition> AdditionalConditions = new(7, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> SupportedLength = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAxis2Placement3D> ConditionCoordinateSystem = new(9, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcStructuralMember> RelatingStructuralMember = new("RelatingStructuralMember", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcStructuralConnection> RelatedStructuralConnection = new("RelatedStructuralConnection", 5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoundaryCondition> AppliedCondition = new("AppliedCondition", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcStructuralConnectionCondition> AdditionalConditions = new("AdditionalConditions", 7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SupportedLength = new("SupportedLength", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> ConditionCoordinateSystem = new("ConditionCoordinateSystem", 9, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingStructuralMember, RelatedStructuralConnection, AppliedCondition, AdditionalConditions, SupportedLength, ConditionCoordinateSystem ];
 }
 
@@ -7816,7 +7816,7 @@ public partial class IfcRelConnectsWithEccentricity
     public const uint ENTITY_CODE = 1769971157;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConnectionGeometry> ConnectionConstraint = new(10, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcConnectionGeometry> ConnectionConstraint = new("ConnectionConstraint", 10, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingStructuralMember, RelatedStructuralConnection, AppliedCondition, AdditionalConditions, SupportedLength, ConditionCoordinateSystem, ConnectionConstraint ];
 }
 
@@ -7828,8 +7828,8 @@ public partial class IfcRelConnectsWithRealizingElements
     public const uint ENTITY_CODE = 3738501035;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElement> RealizingElements = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> ConnectionType = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcElement> RealizingElements = new("RealizingElements", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> ConnectionType = new("ConnectionType", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ConnectionGeometry, RelatingElement, RelatedElement, RealizingElements, ConnectionType ];
 }
 
@@ -7841,8 +7841,8 @@ public partial class IfcRelContainedInSpatialStructure
     public const uint ENTITY_CODE = 3646459757;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProduct> RelatedElements = new(4, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcSpatialElement> RelatingStructure = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProduct> RelatedElements = new("RelatedElements", 4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcSpatialElement> RelatingStructure = new("RelatingStructure", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedElements, RelatingStructure ];
 }
 
@@ -7854,8 +7854,8 @@ public partial class IfcRelCoversBldgElements
     public const uint ENTITY_CODE = 2177806980;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElement> RelatingBuildingElement = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCovering> RelatedCoverings = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcElement> RelatingBuildingElement = new("RelatingBuildingElement", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCovering> RelatedCoverings = new("RelatedCoverings", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingBuildingElement, RelatedCoverings ];
 }
 
@@ -7867,8 +7867,8 @@ public partial class IfcRelCoversSpaces
     public const uint ENTITY_CODE = 1960584869;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpace> RelatingSpace = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcCovering> RelatedCoverings = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcSpace> RelatingSpace = new("RelatingSpace", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCovering> RelatedCoverings = new("RelatedCoverings", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingSpace, RelatedCoverings ];
 }
 
@@ -7880,8 +7880,8 @@ public partial class IfcRelDeclares
     public const uint ENTITY_CODE = 507665137;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcContext> RelatingContext = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDefinitionSelect> RelatedDefinitions = new(5, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcContext> RelatingContext = new("RelatingContext", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDefinitionSelect> RelatedDefinitions = new("RelatedDefinitions", 5, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingContext, RelatedDefinitions ];
 }
 
@@ -7915,8 +7915,8 @@ public partial class IfcRelDefinesByObject
     public const uint ENTITY_CODE = 3547409500;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcObject> RelatedObjects = new(4, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcObject> RelatingObject = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcObject> RelatedObjects = new("RelatedObjects", 4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcObject> RelatingObject = new("RelatingObject", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingObject ];
 }
 
@@ -7928,8 +7928,8 @@ public partial class IfcRelDefinesByProperties
     public const uint ENTITY_CODE = 3293188662;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcObjectDefinition> RelatedObjects = new(4, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcPropertySetDefinitionSelect> RelatingPropertyDefinition = new(5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcObjectDefinition> RelatedObjects = new("RelatedObjects", 4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPropertySetDefinitionSelect> RelatingPropertyDefinition = new("RelatingPropertyDefinition", 5, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingPropertyDefinition ];
 }
 
@@ -7941,8 +7941,8 @@ public partial class IfcRelDefinesByTemplate
     public const uint ENTITY_CODE = 3806156989;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPropertySetDefinition> RelatedPropertySets = new(4, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcPropertySetTemplate> RelatingTemplate = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPropertySetDefinition> RelatedPropertySets = new("RelatedPropertySets", 4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPropertySetTemplate> RelatingTemplate = new("RelatingTemplate", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedPropertySets, RelatingTemplate ];
 }
 
@@ -7954,8 +7954,8 @@ public partial class IfcRelDefinesByType
     public const uint ENTITY_CODE = 2782820839;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcObject> RelatedObjects = new(4, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcTypeObject> RelatingType = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcObject> RelatedObjects = new("RelatedObjects", 4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcTypeObject> RelatingType = new("RelatingType", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedObjects, RelatingType ];
 }
 
@@ -7967,8 +7967,8 @@ public partial class IfcRelFillsElement
     public const uint ENTITY_CODE = 2079473304;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcOpeningElement> RelatingOpeningElement = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcElement> RelatedBuildingElement = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcOpeningElement> RelatingOpeningElement = new("RelatingOpeningElement", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcElement> RelatedBuildingElement = new("RelatedBuildingElement", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingOpeningElement, RelatedBuildingElement ];
 }
 
@@ -7980,8 +7980,8 @@ public partial class IfcRelFlowControlElements
     public const uint ENTITY_CODE = 785226038;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDistributionControlElement> RelatedControlElements = new(4, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcDistributionFlowElement> RelatingFlowElement = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDistributionControlElement> RelatedControlElements = new("RelatedControlElements", 4, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcDistributionFlowElement> RelatingFlowElement = new("RelatingFlowElement", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedControlElements, RelatingFlowElement ];
 }
 
@@ -7993,12 +7993,12 @@ public partial class IfcRelInterferesElements
     public const uint ENTITY_CODE = 1364843556;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInterferenceSelect> RelatingElement = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcInterferenceSelect> RelatedElement = new(5, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcConnectionGeometry> InterferenceGeometry = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcSpatialZone> InterferenceSpace = new(7, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcIdentifier> InterferenceType = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> ImpliedOrder = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInterferenceSelect> RelatingElement = new("RelatingElement", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcInterferenceSelect> RelatedElement = new("RelatedElement", 5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcConnectionGeometry> InterferenceGeometry = new("InterferenceGeometry", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSpatialZone> InterferenceSpace = new("InterferenceSpace", 7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcIdentifier> InterferenceType = new("InterferenceType", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> ImpliedOrder = new("ImpliedOrder", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingElement, RelatedElement, InterferenceGeometry, InterferenceSpace, InterferenceType, ImpliedOrder ];
 }
 
@@ -8010,8 +8010,8 @@ public partial class IfcRelNests
     public const uint ENTITY_CODE = 1994019001;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcObjectDefinition> RelatingObject = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcObjectDefinition> RelatedObjects = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcObjectDefinition> RelatingObject = new("RelatingObject", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcObjectDefinition> RelatedObjects = new("RelatedObjects", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingObject, RelatedObjects ];
 }
 
@@ -8023,8 +8023,8 @@ public partial class IfcRelPositions
     public const uint ENTITY_CODE = 4167272558;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositioningElement> RelatingPositioningElement = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcProduct> RelatedProducts = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPositioningElement> RelatingPositioningElement = new("RelatingPositioningElement", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProduct> RelatedProducts = new("RelatedProducts", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingPositioningElement, RelatedProducts ];
 }
 
@@ -8036,8 +8036,8 @@ public partial class IfcRelProjectsElement
     public const uint ENTITY_CODE = 1615168284;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElement> RelatingElement = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcFeatureElementAddition> RelatedFeatureElement = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcElement> RelatingElement = new("RelatingElement", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcFeatureElementAddition> RelatedFeatureElement = new("RelatedFeatureElement", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingElement, RelatedFeatureElement ];
 }
 
@@ -8049,8 +8049,8 @@ public partial class IfcRelReferencedInSpatialStructure
     public const uint ENTITY_CODE = 702472959;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpatialReferenceSelect> RelatedElements = new(4, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcSpatialElement> RelatingStructure = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSpatialReferenceSelect> RelatedElements = new("RelatedElements", 4, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcSpatialElement> RelatingStructure = new("RelatingStructure", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatedElements, RelatingStructure ];
 }
 
@@ -8062,11 +8062,11 @@ public partial class IfcRelSequence
     public const uint ENTITY_CODE = 1835185919;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProcess> RelatingProcess = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcProcess> RelatedProcess = new(5, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLagTime> TimeLag = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcSequenceEnum> SequenceType = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedSequenceType = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProcess> RelatingProcess = new("RelatingProcess", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProcess> RelatedProcess = new("RelatedProcess", 5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLagTime> TimeLag = new("TimeLag", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSequenceEnum> SequenceType = new("SequenceType", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedSequenceType = new("UserDefinedSequenceType", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingProcess, RelatedProcess, TimeLag, SequenceType, UserDefinedSequenceType ];
 }
 
@@ -8078,8 +8078,8 @@ public partial class IfcRelServicesBuildings
     public const uint ENTITY_CODE = 2243065359;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSystem> RelatingSystem = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcSpatialElement> RelatedBuildings = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcSystem> RelatingSystem = new("RelatingSystem", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSpatialElement> RelatedBuildings = new("RelatedBuildings", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingSystem, RelatedBuildings ];
 }
 
@@ -8091,11 +8091,11 @@ public partial class IfcRelSpaceBoundary
     public const uint ENTITY_CODE = 4011216430;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpaceBoundarySelect> RelatingSpace = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcElement> RelatedBuildingElement = new(5, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcConnectionGeometry> ConnectionGeometry = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPhysicalOrVirtualEnum> PhysicalOrVirtualBoundary = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcInternalOrExternalEnum> InternalOrExternalBoundary = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSpaceBoundarySelect> RelatingSpace = new("RelatingSpace", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcElement> RelatedBuildingElement = new("RelatedBuildingElement", 5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcConnectionGeometry> ConnectionGeometry = new("ConnectionGeometry", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPhysicalOrVirtualEnum> PhysicalOrVirtualBoundary = new("PhysicalOrVirtualBoundary", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcInternalOrExternalEnum> InternalOrExternalBoundary = new("InternalOrExternalBoundary", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingSpace, RelatedBuildingElement, ConnectionGeometry, PhysicalOrVirtualBoundary, InternalOrExternalBoundary ];
 }
 
@@ -8107,7 +8107,7 @@ public partial class IfcRelSpaceBoundary1stLevel
     public const uint ENTITY_CODE = 1464397256;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRelSpaceBoundary1stLevel> ParentBoundary = new(9, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcRelSpaceBoundary1stLevel> ParentBoundary = new("ParentBoundary", 9, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingSpace, RelatedBuildingElement, ConnectionGeometry, PhysicalOrVirtualBoundary, InternalOrExternalBoundary, ParentBoundary ];
 }
 
@@ -8119,7 +8119,7 @@ public partial class IfcRelSpaceBoundary2ndLevel
     public const uint ENTITY_CODE = 141646748;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRelSpaceBoundary2ndLevel> CorrespondingBoundary = new(10, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcRelSpaceBoundary2ndLevel> CorrespondingBoundary = new("CorrespondingBoundary", 10, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingSpace, RelatedBuildingElement, ConnectionGeometry, PhysicalOrVirtualBoundary, InternalOrExternalBoundary, ParentBoundary, CorrespondingBoundary ];
 }
 
@@ -8131,8 +8131,8 @@ public partial class IfcRelVoidsElement
     public const uint ENTITY_CODE = 546583627;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElement> RelatingBuildingElement = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcFeatureElementSubtraction> RelatedOpeningElement = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcElement> RelatingBuildingElement = new("RelatingBuildingElement", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcFeatureElementSubtraction> RelatedOpeningElement = new("RelatedOpeningElement", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, RelatingBuildingElement, RelatedOpeningElement ];
 }
 
@@ -8144,7 +8144,7 @@ public partial class IfcReparametrisedCompositeCurveSegment
     public const uint ENTITY_CODE = 3026159936;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcParameterValue> ParamLength = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcParameterValue> ParamLength = new("ParamLength", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Transition, SameSense, ParentCurve, ParamLength ];
 }
 
@@ -8156,10 +8156,10 @@ public partial class IfcRepresentation
     public const uint ENTITY_CODE = 3427936786;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRepresentationContext> ContextOfItems = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLabel> RepresentationIdentifier = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> RepresentationType = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcRepresentationItem> Items = new(3, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcRepresentationContext> ContextOfItems = new("ContextOfItems", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLabel> RepresentationIdentifier = new("RepresentationIdentifier", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> RepresentationType = new("RepresentationType", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRepresentationItem> Items = new("Items", 3, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ ContextOfItems, RepresentationIdentifier, RepresentationType, Items ];
 }
 
@@ -8171,8 +8171,8 @@ public partial class IfcRepresentationContext
     public const uint ENTITY_CODE = 372806269;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> ContextIdentifier = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> ContextType = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ContextIdentifier = new("ContextIdentifier", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ContextType = new("ContextType", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ContextIdentifier, ContextType ];
 }
 
@@ -8195,8 +8195,8 @@ public partial class IfcRepresentationMap
     public const uint ENTITY_CODE = 229209244;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement> MappingOrigin = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcRepresentation> MappedRepresentation = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement> MappingOrigin = new("MappingOrigin", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcRepresentation> MappedRepresentation = new("MappedRepresentation", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ MappingOrigin, MappedRepresentation ];
 }
 
@@ -8208,8 +8208,8 @@ public partial class IfcResource
     public const uint ENTITY_CODE = 1376835163;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> LongDescription = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> LongDescription = new("LongDescription", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription ];
 }
 
@@ -8221,8 +8221,8 @@ public partial class IfcResourceApprovalRelationship
     public const uint ENTITY_CODE = 4146489870;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcResourceObjectSelect> RelatedResourceObjects = new(2, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcApproval> RelatingApproval = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcResourceObjectSelect> RelatedResourceObjects = new("RelatedResourceObjects", 2, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcApproval> RelatingApproval = new("RelatingApproval", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, RelatedResourceObjects, RelatingApproval ];
 }
 
@@ -8234,8 +8234,8 @@ public partial class IfcResourceConstraintRelationship
     public const uint ENTITY_CODE = 2861646214;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcConstraint> RelatingConstraint = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcResourceObjectSelect> RelatedResourceObjects = new(3, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcConstraint> RelatingConstraint = new("RelatingConstraint", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcResourceObjectSelect> RelatedResourceObjects = new("RelatedResourceObjects", 3, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ Name, Description, RelatingConstraint, RelatedResourceObjects ];
 }
 
@@ -8247,8 +8247,8 @@ public partial class IfcResourceLevelRelationship
     public const uint ENTITY_CODE = 2358873753;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, Description ];
 }
 
@@ -8260,21 +8260,21 @@ public partial class IfcResourceTime
     public const uint ENTITY_CODE = 930309330;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDuration> ScheduleWork = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> ScheduleUsage = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ScheduleStart = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ScheduleFinish = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> ScheduleContour = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> LevelingDelay = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBoolean> IsOverAllocated = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> StatusTime = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> ActualWork = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> ActualUsage = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ActualStart = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ActualFinish = new(14, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> RemainingWork = new(15, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> RemainingUsage = new(16, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> Completion = new(17, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> ScheduleWork = new("ScheduleWork", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> ScheduleUsage = new("ScheduleUsage", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ScheduleStart = new("ScheduleStart", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ScheduleFinish = new("ScheduleFinish", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ScheduleContour = new("ScheduleContour", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> LevelingDelay = new("LevelingDelay", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> IsOverAllocated = new("IsOverAllocated", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> StatusTime = new("StatusTime", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> ActualWork = new("ActualWork", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> ActualUsage = new("ActualUsage", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ActualStart = new("ActualStart", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ActualFinish = new("ActualFinish", 14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> RemainingWork = new("RemainingWork", 15, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> RemainingUsage = new("RemainingUsage", 16, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> Completion = new("Completion", 17, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, DataOrigin, UserDefinedDataOrigin, ScheduleWork, ScheduleUsage, ScheduleStart, ScheduleFinish, ScheduleContour, LevelingDelay, IsOverAllocated, StatusTime, ActualWork, ActualUsage, ActualStart, ActualFinish, RemainingWork, RemainingUsage, Completion ];
 }
 
@@ -8286,8 +8286,8 @@ public partial class IfcRevolvedAreaSolid
     public const uint ENTITY_CODE = 4258379750;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis1Placement> Axis = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> Angle = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAxis1Placement> Axis = new("Axis", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> Angle = new("Angle", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ SweptArea, Position, Axis, Angle ];
 }
 
@@ -8299,7 +8299,7 @@ public partial class IfcRevolvedAreaSolidTapered
     public const uint ENTITY_CODE = 3400071717;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileDef> EndSweptArea = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> EndSweptArea = new("EndSweptArea", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SweptArea, Position, Axis, Angle, EndSweptArea ];
 }
 
@@ -8311,8 +8311,8 @@ public partial class IfcRightCircularCone
     public const uint ENTITY_CODE = 882082613;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Height = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> BottomRadius = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Height = new("Height", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> BottomRadius = new("BottomRadius", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, Height, BottomRadius ];
 }
 
@@ -8324,8 +8324,8 @@ public partial class IfcRightCircularCylinder
     public const uint ENTITY_CODE = 864053624;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Height = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Height = new("Height", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new("Radius", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, Height, Radius ];
 }
 
@@ -8337,7 +8337,7 @@ public partial class IfcRoad
     public const uint ENTITY_CODE = 1041541469;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRoadTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRoadTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, PredefinedType ];
 }
 
@@ -8349,7 +8349,7 @@ public partial class IfcRoadPart
     public const uint ENTITY_CODE = 2741156652;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRoadPartTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRoadPartTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, UsageType, PredefinedType ];
 }
 
@@ -8361,7 +8361,7 @@ public partial class IfcRoof
     public const uint ENTITY_CODE = 1812914585;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRoofTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRoofTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8373,7 +8373,7 @@ public partial class IfcRoofType
     public const uint ENTITY_CODE = 1461819281;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRoofTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRoofTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8385,10 +8385,10 @@ public partial class IfcRoot
     public const uint ENTITY_CODE = 2047801251;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGloballyUniqueId> GlobalId = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcOwnerHistory> OwnerHistory = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcGloballyUniqueId> GlobalId = new("GlobalId", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcOwnerHistory> OwnerHistory = new("OwnerHistory", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description ];
 }
 
@@ -8400,7 +8400,7 @@ public partial class IfcRoundedRectangleProfileDef
     public const uint ENTITY_CODE = 3850779449;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> RoundingRadius = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> RoundingRadius = new("RoundingRadius", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, XDim, YDim, RoundingRadius ];
 }
 
@@ -8412,7 +8412,7 @@ public partial class IfcSanitaryTerminal
     public const uint ENTITY_CODE = 67389596;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSanitaryTerminalTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSanitaryTerminalTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8424,7 +8424,7 @@ public partial class IfcSanitaryTerminalType
     public const uint ENTITY_CODE = 3617698420;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSanitaryTerminalTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSanitaryTerminalTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8436,9 +8436,9 @@ public partial class IfcSchedulingTime
     public const uint ENTITY_CODE = 4270119168;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDataOriginEnum> DataOrigin = new(1, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedDataOrigin = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDataOriginEnum> DataOrigin = new("DataOrigin", 1, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedDataOrigin = new("UserDefinedDataOrigin", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, DataOrigin, UserDefinedDataOrigin ];
 }
 
@@ -8461,9 +8461,9 @@ public partial class IfcSecondOrderPolynomialSpiral
     public const uint ENTITY_CODE = 870065458;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> QuadraticTerm = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LinearTerm = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> QuadraticTerm = new("QuadraticTerm", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LinearTerm = new("LinearTerm", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new("ConstantTerm", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, QuadraticTerm, LinearTerm, ConstantTerm ];
 }
 
@@ -8475,8 +8475,8 @@ public partial class IfcSectionedSolid
     public const uint ENTITY_CODE = 1847523590;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> Directrix = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcProfileDef> CrossSections = new(1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCurve> Directrix = new("Directrix", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> CrossSections = new("CrossSections", 1, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Directrix, CrossSections ];
 }
 
@@ -8488,7 +8488,7 @@ public partial class IfcSectionedSolidHorizontal
     public const uint ENTITY_CODE = 1276374810;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2PlacementLinear> CrossSectionPositions = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcAxis2PlacementLinear> CrossSectionPositions = new("CrossSectionPositions", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Directrix, CrossSections, CrossSectionPositions ];
 }
 
@@ -8500,9 +8500,9 @@ public partial class IfcSectionedSpine
     public const uint ENTITY_CODE = 1370369702;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCompositeCurve> SpineCurve = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcProfileDef> CrossSections = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcAxis2Placement3D> CrossSectionPositions = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCompositeCurve> SpineCurve = new("SpineCurve", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> CrossSections = new("CrossSections", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcAxis2Placement3D> CrossSectionPositions = new("CrossSectionPositions", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ SpineCurve, CrossSections, CrossSectionPositions ];
 }
 
@@ -8514,9 +8514,9 @@ public partial class IfcSectionedSurface
     public const uint ENTITY_CODE = 667892294;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> Directrix = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcAxis2PlacementLinear> CrossSectionPositions = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcProfileDef> CrossSections = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcCurve> Directrix = new("Directrix", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2PlacementLinear> CrossSectionPositions = new("CrossSectionPositions", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcProfileDef> CrossSections = new("CrossSections", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Directrix, CrossSectionPositions, CrossSections ];
 }
 
@@ -8528,9 +8528,9 @@ public partial class IfcSectionProperties
     public const uint ENTITY_CODE = 2363997831;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSectionTypeEnum> SectionType = new(0, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcProfileDef> StartProfile = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcProfileDef> EndProfile = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSectionTypeEnum> SectionType = new("SectionType", 0, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProfileDef> StartProfile = new("StartProfile", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> EndProfile = new("EndProfile", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SectionType, StartProfile, EndProfile ];
 }
 
@@ -8542,12 +8542,12 @@ public partial class IfcSectionReinforcementProperties
     public const uint ENTITY_CODE = 180457210;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> LongitudinalStartPosition = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LongitudinalEndPosition = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> TransversePosition = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReinforcingBarRoleEnum> ReinforcementRole = new(3, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcSectionProperties> SectionDefinition = new(4, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcReinforcementBarProperties> CrossSectionReinforcementDefinitions = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLengthMeasure> LongitudinalStartPosition = new("LongitudinalStartPosition", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LongitudinalEndPosition = new("LongitudinalEndPosition", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> TransversePosition = new("TransversePosition", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReinforcingBarRoleEnum> ReinforcementRole = new("ReinforcementRole", 3, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSectionProperties> SectionDefinition = new("SectionDefinition", 4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcReinforcementBarProperties> CrossSectionReinforcementDefinitions = new("CrossSectionReinforcementDefinitions", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ LongitudinalStartPosition, LongitudinalEndPosition, TransversePosition, ReinforcementRole, SectionDefinition, CrossSectionReinforcementDefinitions ];
 }
 
@@ -8559,7 +8559,7 @@ public partial class IfcSegment
     public const uint ENTITY_CODE = 1820273696;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTransitionCode> Transition = new(0, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTransitionCode> Transition = new("Transition", 0, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Transition ];
 }
 
@@ -8571,8 +8571,8 @@ public partial class IfcSegmentedReferenceCurve
     public const uint ENTITY_CODE = 368995249;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoundedCurve> BaseCurve = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPlacement> EndPoint = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoundedCurve> BaseCurve = new("BaseCurve", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPlacement> EndPoint = new("EndPoint", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Segments, SelfIntersect, BaseCurve, EndPoint ];
 }
 
@@ -8584,7 +8584,7 @@ public partial class IfcSensor
     public const uint ENTITY_CODE = 4273072641;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSensorTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSensorTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8596,7 +8596,7 @@ public partial class IfcSensorType
     public const uint ENTITY_CODE = 629106249;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSensorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSensorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8608,14 +8608,14 @@ public partial class IfcSeventhOrderPolynomialSpiral
     public const uint ENTITY_CODE = 3983723411;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> SepticTerm = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> SexticTerm = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> QuinticTerm = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> QuarticTerm = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> CubicTerm = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> QuadraticTerm = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LinearTerm = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SepticTerm = new("SepticTerm", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SexticTerm = new("SexticTerm", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> QuinticTerm = new("QuinticTerm", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> QuarticTerm = new("QuarticTerm", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> CubicTerm = new("CubicTerm", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> QuadraticTerm = new("QuadraticTerm", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LinearTerm = new("LinearTerm", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new("ConstantTerm", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, SepticTerm, SexticTerm, QuinticTerm, QuarticTerm, CubicTerm, QuadraticTerm, LinearTerm, ConstantTerm ];
 }
 
@@ -8627,7 +8627,7 @@ public partial class IfcShadingDevice
     public const uint ENTITY_CODE = 1623335253;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcShadingDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcShadingDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8639,7 +8639,7 @@ public partial class IfcShadingDeviceType
     public const uint ENTITY_CODE = 2532923261;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcShadingDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcShadingDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8651,11 +8651,11 @@ public partial class IfcShapeAspect
     public const uint ENTITY_CODE = 2070624568;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcShapeModel> ShapeRepresentations = new(0, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> Name = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLogical> ProductDefinitional = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcProductRepresentationSelect> PartOfProductDefinitionShape = new(4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcShapeModel> ShapeRepresentations = new("ShapeRepresentations", 0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLogical> ProductDefinitional = new("ProductDefinitional", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcProductRepresentationSelect> PartOfProductDefinitionShape = new("PartOfProductDefinitionShape", 4, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ ShapeRepresentations, Name, Description, ProductDefinitional, PartOfProductDefinitionShape ];
 }
 
@@ -8689,7 +8689,7 @@ public partial class IfcShellBasedSurfaceModel
     public const uint ENTITY_CODE = 2611018834;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcShell> SbsmBoundary = new(0, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcShell> SbsmBoundary = new("SbsmBoundary", 0, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ SbsmBoundary ];
 }
 
@@ -8701,7 +8701,7 @@ public partial class IfcSign
     public const uint ENTITY_CODE = 1078373402;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSignTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSignTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8713,7 +8713,7 @@ public partial class IfcSignal
     public const uint ENTITY_CODE = 2983574903;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSignalTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSignalTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8725,7 +8725,7 @@ public partial class IfcSignalType
     public const uint ENTITY_CODE = 2490365359;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSignalTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSignalTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8737,7 +8737,7 @@ public partial class IfcSignType
     public const uint ENTITY_CODE = 1165595610;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSignTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSignTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8760,14 +8760,14 @@ public partial class IfcSimplePropertyTemplate
     public const uint ENTITY_CODE = 2292871058;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSimplePropertyTemplateTypeEnum> TemplateType = new(4, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> PrimaryMeasureType = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> SecondaryMeasureType = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPropertyEnumeration> Enumerators = new(7, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcUnit> PrimaryUnit = new(8, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcUnit> SecondaryUnit = new(9, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcLabel> Expression = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcStateEnum> AccessState = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSimplePropertyTemplateTypeEnum> TemplateType = new("TemplateType", 4, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> PrimaryMeasureType = new("PrimaryMeasureType", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> SecondaryMeasureType = new("SecondaryMeasureType", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPropertyEnumeration> Enumerators = new("Enumerators", 7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcUnit> PrimaryUnit = new("PrimaryUnit", 8, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcUnit> SecondaryUnit = new("SecondaryUnit", 9, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcLabel> Expression = new("Expression", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcStateEnum> AccessState = new("AccessState", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, TemplateType, PrimaryMeasureType, SecondaryMeasureType, Enumerators, PrimaryUnit, SecondaryUnit, Expression, AccessState ];
 }
 
@@ -8779,9 +8779,9 @@ public partial class IfcSineSpiral
     public const uint ENTITY_CODE = 713585971;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> SineTerm = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LinearTerm = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SineTerm = new("SineTerm", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LinearTerm = new("LinearTerm", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new("ConstantTerm", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, SineTerm, LinearTerm, ConstantTerm ];
 }
 
@@ -8793,11 +8793,11 @@ public partial class IfcSite
     public const uint ENTITY_CODE = 1193698164;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCompoundPlaneAngleMeasure> RefLatitude = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCompoundPlaneAngleMeasure> RefLongitude = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> RefElevation = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> LandTitleNumber = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPostalAddress> SiteAddress = new(13, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcCompoundPlaneAngleMeasure> RefLatitude = new("RefLatitude", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCompoundPlaneAngleMeasure> RefLongitude = new("RefLongitude", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> RefElevation = new("RefElevation", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> LandTitleNumber = new("LandTitleNumber", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPostalAddress> SiteAddress = new("SiteAddress", 13, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, RefLatitude, RefLongitude, RefElevation, LandTitleNumber, SiteAddress ];
 }
 
@@ -8809,8 +8809,8 @@ public partial class IfcSIUnit
     public const uint ENTITY_CODE = 3007951189;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSIPrefix> Prefix = new(2, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcSIUnitName> Name = new(3, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSIPrefix> Prefix = new("Prefix", 2, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSIUnitName> Name = new("Name", 3, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Dimensions, UnitType, Prefix, Name ];
 }
 
@@ -8822,7 +8822,7 @@ public partial class IfcSlab
     public const uint ENTITY_CODE = 634971579;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSlabTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSlabTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8834,7 +8834,7 @@ public partial class IfcSlabType
     public const uint ENTITY_CODE = 1254033699;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSlabTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSlabTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8846,9 +8846,9 @@ public partial class IfcSlippageConnectionCondition
     public const uint ENTITY_CODE = 1230785851;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> SlippageX = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> SlippageY = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> SlippageZ = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SlippageX = new("SlippageX", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SlippageY = new("SlippageY", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SlippageZ = new("SlippageZ", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, SlippageX, SlippageY, SlippageZ ];
 }
 
@@ -8860,7 +8860,7 @@ public partial class IfcSolarDevice
     public const uint ENTITY_CODE = 1816778314;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSolarDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSolarDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8872,7 +8872,7 @@ public partial class IfcSolarDeviceType
     public const uint ENTITY_CODE = 4276976042;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSolarDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSolarDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8895,8 +8895,8 @@ public partial class IfcSpace
     public const uint ENTITY_CODE = 679641035;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpaceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> ElevationWithFlooring = new(10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSpaceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ElevationWithFlooring = new("ElevationWithFlooring", 10, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType, PredefinedType, ElevationWithFlooring ];
 }
 
@@ -8908,7 +8908,7 @@ public partial class IfcSpaceHeater
     public const uint ENTITY_CODE = 3835376154;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpaceHeaterTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSpaceHeaterTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -8920,7 +8920,7 @@ public partial class IfcSpaceHeaterType
     public const uint ENTITY_CODE = 68188634;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpaceHeaterTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSpaceHeaterTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -8932,8 +8932,8 @@ public partial class IfcSpaceType
     public const uint ENTITY_CODE = 1212286099;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpaceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> LongName = new(10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSpaceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> LongName = new("LongName", 10, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType, LongName ];
 }
 
@@ -8945,7 +8945,7 @@ public partial class IfcSpatialElement
     public const uint ENTITY_CODE = 1736633951;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> LongName = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> LongName = new("LongName", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName ];
 }
 
@@ -8957,7 +8957,7 @@ public partial class IfcSpatialElementType
     public const uint ENTITY_CODE = 1742207527;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> ElementType = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ElementType = new("ElementType", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType ];
 }
 
@@ -8969,7 +8969,7 @@ public partial class IfcSpatialStructureElement
     public const uint ENTITY_CODE = 872665622;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcElementCompositionEnum> CompositionType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcElementCompositionEnum> CompositionType = new("CompositionType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, CompositionType ];
 }
 
@@ -8992,7 +8992,7 @@ public partial class IfcSpatialZone
     public const uint ENTITY_CODE = 2597717215;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpatialZoneTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSpatialZoneTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, LongName, PredefinedType ];
 }
 
@@ -9004,8 +9004,8 @@ public partial class IfcSpatialZoneType
     public const uint ENTITY_CODE = 551942311;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSpatialZoneTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> LongName = new(10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSpatialZoneTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> LongName = new("LongName", 10, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType, LongName ];
 }
 
@@ -9017,7 +9017,7 @@ public partial class IfcSphere
     public const uint ENTITY_CODE = 970498890;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new("Radius", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, Radius ];
 }
 
@@ -9029,7 +9029,7 @@ public partial class IfcSphericalSurface
     public const uint ENTITY_CODE = 3851516881;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new("Radius", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, Radius ];
 }
 
@@ -9041,7 +9041,7 @@ public partial class IfcSpiral
     public const uint ENTITY_CODE = 3563358330;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement> Position = new(0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcAxis2Placement> Position = new("Position", 0, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Position ];
 }
 
@@ -9053,7 +9053,7 @@ public partial class IfcStackTerminal
     public const uint ENTITY_CODE = 762701637;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStackTerminalTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStackTerminalTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -9065,7 +9065,7 @@ public partial class IfcStackTerminalType
     public const uint ENTITY_CODE = 557074701;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStackTerminalTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStackTerminalTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -9077,7 +9077,7 @@ public partial class IfcStair
     public const uint ENTITY_CODE = 3784347268;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStairTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStairTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -9089,11 +9089,11 @@ public partial class IfcStairFlight
     public const uint ENTITY_CODE = 1991789322;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInteger> NumberOfRisers = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> NumberOfTreads = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> RiserHeight = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> TreadLength = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcStairFlightTypeEnum> PredefinedType = new(12, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcInteger> NumberOfRisers = new("NumberOfRisers", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> NumberOfTreads = new("NumberOfTreads", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> RiserHeight = new("RiserHeight", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> TreadLength = new("TreadLength", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcStairFlightTypeEnum> PredefinedType = new("PredefinedType", 12, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, NumberOfRisers, NumberOfTreads, RiserHeight, TreadLength, PredefinedType ];
 }
 
@@ -9105,7 +9105,7 @@ public partial class IfcStairFlightType
     public const uint ENTITY_CODE = 335595626;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStairFlightTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStairFlightTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -9117,7 +9117,7 @@ public partial class IfcStairType
     public const uint ENTITY_CODE = 1263063756;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStairTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStairTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -9129,7 +9129,7 @@ public partial class IfcStructuralAction
     public const uint ENTITY_CODE = 3749586942;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoolean> DestabilizingLoad = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> DestabilizingLoad = new("DestabilizingLoad", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedLoad, GlobalOrLocal, DestabilizingLoad ];
 }
 
@@ -9141,8 +9141,8 @@ public partial class IfcStructuralActivity
     public const uint ENTITY_CODE = 3780403313;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStructuralLoad> AppliedLoad = new(7, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcGlobalOrLocalEnum> GlobalOrLocal = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStructuralLoad> AppliedLoad = new("AppliedLoad", 7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcGlobalOrLocalEnum> GlobalOrLocal = new("GlobalOrLocal", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedLoad, GlobalOrLocal ];
 }
 
@@ -9154,11 +9154,11 @@ public partial class IfcStructuralAnalysisModel
     public const uint ENTITY_CODE = 1204480891;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAnalysisModelTypeEnum> PredefinedType = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcAxis2Placement3D> OrientationOf2DPlane = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcStructuralLoadGroup> LoadedBy = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcStructuralResultGroup> HasResults = new(8, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcObjectPlacement> SharedPlacement = new(9, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAnalysisModelTypeEnum> PredefinedType = new("PredefinedType", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> OrientationOf2DPlane = new("OrientationOf2DPlane", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcStructuralLoadGroup> LoadedBy = new("LoadedBy", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcStructuralResultGroup> HasResults = new("HasResults", 8, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcObjectPlacement> SharedPlacement = new("SharedPlacement", 9, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, PredefinedType, OrientationOf2DPlane, LoadedBy, HasResults, SharedPlacement ];
 }
 
@@ -9170,7 +9170,7 @@ public partial class IfcStructuralConnection
     public const uint ENTITY_CODE = 3631885372;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoundaryCondition> AppliedCondition = new(7, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoundaryCondition> AppliedCondition = new("AppliedCondition", 7, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedCondition ];
 }
 
@@ -9182,7 +9182,7 @@ public partial class IfcStructuralConnectionCondition
     public const uint ENTITY_CODE = 1544900841;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name ];
 }
 
@@ -9194,8 +9194,8 @@ public partial class IfcStructuralCurveAction
     public const uint ENTITY_CODE = 2110656253;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProjectedOrTrueLengthEnum> ProjectedOrTrue = new(10, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcStructuralCurveActivityTypeEnum> PredefinedType = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProjectedOrTrueLengthEnum> ProjectedOrTrue = new("ProjectedOrTrue", 10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStructuralCurveActivityTypeEnum> PredefinedType = new("PredefinedType", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedLoad, GlobalOrLocal, DestabilizingLoad, ProjectedOrTrue, PredefinedType ];
 }
 
@@ -9207,7 +9207,7 @@ public partial class IfcStructuralCurveConnection
     public const uint ENTITY_CODE = 4144297951;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> AxisDirection = new(8, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDirection> AxisDirection = new("AxisDirection", 8, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedCondition, AxisDirection ];
 }
 
@@ -9219,8 +9219,8 @@ public partial class IfcStructuralCurveMember
     public const uint ENTITY_CODE = 2394259173;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStructuralCurveMemberTypeEnum> PredefinedType = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDirection> Axis = new(8, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcStructuralCurveMemberTypeEnum> PredefinedType = new("PredefinedType", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDirection> Axis = new("Axis", 8, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, PredefinedType, Axis ];
 }
 
@@ -9243,7 +9243,7 @@ public partial class IfcStructuralCurveReaction
     public const uint ENTITY_CODE = 1770286324;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStructuralCurveActivityTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStructuralCurveActivityTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedLoad, GlobalOrLocal, PredefinedType ];
 }
 
@@ -9277,7 +9277,7 @@ public partial class IfcStructuralLoad
     public const uint ENTITY_CODE = 1063824;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name ];
 }
 
@@ -9289,7 +9289,7 @@ public partial class IfcStructuralLoadCase
     public const uint ENTITY_CODE = 139790428;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRatioMeasure> SelfWeightCoefficients = new(10, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcRatioMeasure> SelfWeightCoefficients = new("SelfWeightCoefficients", 10, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, PredefinedType, ActionType, ActionSource, Coefficient, Purpose, SelfWeightCoefficients ];
 }
 
@@ -9301,8 +9301,8 @@ public partial class IfcStructuralLoadConfiguration
     public const uint ENTITY_CODE = 158648514;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStructuralLoadOrResult> Values = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLengthMeasure> Locations = new(2, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcStructuralLoadOrResult> Values = new("Values", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLengthMeasure> Locations = new("Locations", 2, IfcTypeKind.Alias, 2);
     public override IfcAttribute[] Attributes => [ Name, Values, Locations ];
 }
 
@@ -9314,11 +9314,11 @@ public partial class IfcStructuralLoadGroup
     public const uint ENTITY_CODE = 1375763539;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLoadGroupTypeEnum> PredefinedType = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcActionTypeEnum> ActionType = new(6, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcActionSourceTypeEnum> ActionSource = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcRatioMeasure> Coefficient = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Purpose = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLoadGroupTypeEnum> PredefinedType = new("PredefinedType", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcActionTypeEnum> ActionType = new("ActionType", 6, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcActionSourceTypeEnum> ActionSource = new("ActionSource", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcRatioMeasure> Coefficient = new("Coefficient", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Purpose = new("Purpose", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, PredefinedType, ActionType, ActionSource, Coefficient, Purpose ];
 }
 
@@ -9330,12 +9330,12 @@ public partial class IfcStructuralLoadLinearForce
     public const uint ENTITY_CODE = 2129281080;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLinearForceMeasure> LinearForceX = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLinearForceMeasure> LinearForceY = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLinearForceMeasure> LinearForceZ = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLinearMomentMeasure> LinearMomentX = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLinearMomentMeasure> LinearMomentY = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLinearMomentMeasure> LinearMomentZ = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLinearForceMeasure> LinearForceX = new("LinearForceX", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLinearForceMeasure> LinearForceY = new("LinearForceY", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLinearForceMeasure> LinearForceZ = new("LinearForceZ", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLinearMomentMeasure> LinearMomentX = new("LinearMomentX", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLinearMomentMeasure> LinearMomentY = new("LinearMomentY", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLinearMomentMeasure> LinearMomentZ = new("LinearMomentZ", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, LinearForceX, LinearForceY, LinearForceZ, LinearMomentX, LinearMomentY, LinearMomentZ ];
 }
 
@@ -9358,9 +9358,9 @@ public partial class IfcStructuralLoadPlanarForce
     public const uint ENTITY_CODE = 1395413487;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPlanarForceMeasure> PlanarForceX = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlanarForceMeasure> PlanarForceY = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlanarForceMeasure> PlanarForceZ = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlanarForceMeasure> PlanarForceX = new("PlanarForceX", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlanarForceMeasure> PlanarForceY = new("PlanarForceY", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlanarForceMeasure> PlanarForceZ = new("PlanarForceZ", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, PlanarForceX, PlanarForceY, PlanarForceZ ];
 }
 
@@ -9372,12 +9372,12 @@ public partial class IfcStructuralLoadSingleDisplacement
     public const uint ENTITY_CODE = 2476372503;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> DisplacementX = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> DisplacementY = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> DisplacementZ = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> RotationalDisplacementRX = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> RotationalDisplacementRY = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> RotationalDisplacementRZ = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> DisplacementX = new("DisplacementX", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> DisplacementY = new("DisplacementY", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> DisplacementZ = new("DisplacementZ", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> RotationalDisplacementRX = new("RotationalDisplacementRX", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> RotationalDisplacementRY = new("RotationalDisplacementRY", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> RotationalDisplacementRZ = new("RotationalDisplacementRZ", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, DisplacementX, DisplacementY, DisplacementZ, RotationalDisplacementRX, RotationalDisplacementRY, RotationalDisplacementRZ ];
 }
 
@@ -9389,7 +9389,7 @@ public partial class IfcStructuralLoadSingleDisplacementDistortion
     public const uint ENTITY_CODE = 799415584;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurvatureMeasure> Distortion = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurvatureMeasure> Distortion = new("Distortion", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, DisplacementX, DisplacementY, DisplacementZ, RotationalDisplacementRX, RotationalDisplacementRY, RotationalDisplacementRZ, Distortion ];
 }
 
@@ -9401,12 +9401,12 @@ public partial class IfcStructuralLoadSingleForce
     public const uint ENTITY_CODE = 4104008431;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcForceMeasure> ForceX = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcForceMeasure> ForceY = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcForceMeasure> ForceZ = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTorqueMeasure> MomentX = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTorqueMeasure> MomentY = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTorqueMeasure> MomentZ = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> ForceX = new("ForceX", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> ForceY = new("ForceY", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> ForceZ = new("ForceZ", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTorqueMeasure> MomentX = new("MomentX", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTorqueMeasure> MomentY = new("MomentY", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTorqueMeasure> MomentZ = new("MomentZ", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, ForceX, ForceY, ForceZ, MomentX, MomentY, MomentZ ];
 }
 
@@ -9418,7 +9418,7 @@ public partial class IfcStructuralLoadSingleForceWarping
     public const uint ENTITY_CODE = 348142703;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWarpingMomentMeasure> WarpingMoment = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcWarpingMomentMeasure> WarpingMoment = new("WarpingMoment", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, ForceX, ForceY, ForceZ, MomentX, MomentY, MomentZ, WarpingMoment ];
 }
 
@@ -9441,9 +9441,9 @@ public partial class IfcStructuralLoadTemperature
     public const uint ENTITY_CODE = 1901015690;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcThermodynamicTemperatureMeasure> DeltaTConstant = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcThermodynamicTemperatureMeasure> DeltaTY = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcThermodynamicTemperatureMeasure> DeltaTZ = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcThermodynamicTemperatureMeasure> DeltaTConstant = new("DeltaTConstant", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcThermodynamicTemperatureMeasure> DeltaTY = new("DeltaTY", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcThermodynamicTemperatureMeasure> DeltaTZ = new("DeltaTZ", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, DeltaTConstant, DeltaTY, DeltaTZ ];
 }
 
@@ -9488,7 +9488,7 @@ public partial class IfcStructuralPointConnection
     public const uint ENTITY_CODE = 3619564870;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis2Placement3D> ConditionCoordinateSystem = new(8, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> ConditionCoordinateSystem = new("ConditionCoordinateSystem", 8, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedCondition, ConditionCoordinateSystem ];
 }
 
@@ -9522,9 +9522,9 @@ public partial class IfcStructuralResultGroup
     public const uint ENTITY_CODE = 988038204;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAnalysisTheoryTypeEnum> TheoryType = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcStructuralLoadGroup> ResultForLoadGroup = new(6, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoolean> IsLinear = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAnalysisTheoryTypeEnum> TheoryType = new("TheoryType", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStructuralLoadGroup> ResultForLoadGroup = new("ResultForLoadGroup", 6, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> IsLinear = new("IsLinear", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, TheoryType, ResultForLoadGroup, IsLinear ];
 }
 
@@ -9536,8 +9536,8 @@ public partial class IfcStructuralSurfaceAction
     public const uint ENTITY_CODE = 882638445;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProjectedOrTrueLengthEnum> ProjectedOrTrue = new(10, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcStructuralSurfaceActivityTypeEnum> PredefinedType = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcProjectedOrTrueLengthEnum> ProjectedOrTrue = new("ProjectedOrTrue", 10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStructuralSurfaceActivityTypeEnum> PredefinedType = new("PredefinedType", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedLoad, GlobalOrLocal, DestabilizingLoad, ProjectedOrTrue, PredefinedType ];
 }
 
@@ -9560,8 +9560,8 @@ public partial class IfcStructuralSurfaceMember
     public const uint ENTITY_CODE = 2667159637;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStructuralSurfaceMemberTypeEnum> PredefinedType = new(7, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Thickness = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcStructuralSurfaceMemberTypeEnum> PredefinedType = new("PredefinedType", 7, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Thickness = new("Thickness", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, PredefinedType, Thickness ];
 }
 
@@ -9584,7 +9584,7 @@ public partial class IfcStructuralSurfaceReaction
     public const uint ENTITY_CODE = 2875859652;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcStructuralSurfaceActivityTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcStructuralSurfaceActivityTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, AppliedLoad, GlobalOrLocal, PredefinedType ];
 }
 
@@ -9596,9 +9596,9 @@ public partial class IfcStyledItem
     public const uint ENTITY_CODE = 3343780291;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRepresentationItem> Item = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPresentationStyle> Styles = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> Name = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRepresentationItem> Item = new("Item", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPresentationStyle> Styles = new("Styles", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Item, Styles, Name ];
 }
 
@@ -9632,7 +9632,7 @@ public partial class IfcSubContractResource
     public const uint ENTITY_CODE = 1994229565;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSubContractResourceTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSubContractResourceTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, Usage, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -9644,7 +9644,7 @@ public partial class IfcSubContractResourceType
     public const uint ENTITY_CODE = 1643137941;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSubContractResourceTypeEnum> PredefinedType = new(11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSubContractResourceTypeEnum> PredefinedType = new("PredefinedType", 11, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ResourceType, BaseCosts, BaseQuantity, PredefinedType ];
 }
 
@@ -9656,7 +9656,7 @@ public partial class IfcSubedge
     public const uint ENTITY_CODE = 2590396254;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcEdge> ParentEdge = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcEdge> ParentEdge = new("ParentEdge", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ EdgeStart, EdgeEnd, ParentEdge ];
 }
 
@@ -9679,9 +9679,9 @@ public partial class IfcSurfaceCurve
     public const uint ENTITY_CODE = 1255495565;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> Curve3D = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPcurve> AssociatedGeometry = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcPreferredSurfaceCurveRepresentation> MasterRepresentation = new(2, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCurve> Curve3D = new("Curve3D", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPcurve> AssociatedGeometry = new("AssociatedGeometry", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcPreferredSurfaceCurveRepresentation> MasterRepresentation = new("MasterRepresentation", 2, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Curve3D, AssociatedGeometry, MasterRepresentation ];
 }
 
@@ -9693,7 +9693,7 @@ public partial class IfcSurfaceCurveSweptAreaSolid
     public const uint ENTITY_CODE = 4130340898;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurface> ReferenceSurface = new(5, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcSurface> ReferenceSurface = new("ReferenceSurface", 5, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SweptArea, Position, Directrix, StartParam, EndParam, ReferenceSurface ];
 }
 
@@ -9705,7 +9705,7 @@ public partial class IfcSurfaceFeature
     public const uint ENTITY_CODE = 3635236316;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurfaceFeatureTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSurfaceFeatureTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -9717,8 +9717,8 @@ public partial class IfcSurfaceOfLinearExtrusion
     public const uint ENTITY_CODE = 3133299737;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> ExtrudedDirection = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> Depth = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDirection> ExtrudedDirection = new("ExtrudedDirection", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> Depth = new("Depth", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ SweptCurve, Position, ExtrudedDirection, Depth ];
 }
 
@@ -9730,7 +9730,7 @@ public partial class IfcSurfaceOfRevolution
     public const uint ENTITY_CODE = 12923976;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcAxis1Placement> AxisPosition = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis1Placement> AxisPosition = new("AxisPosition", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SweptCurve, Position, AxisPosition ];
 }
 
@@ -9742,9 +9742,9 @@ public partial class IfcSurfaceReinforcementArea
     public const uint ENTITY_CODE = 2518701742;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> SurfaceReinforcement1 = new(1, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcLengthMeasure> SurfaceReinforcement2 = new(2, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcRatioMeasure> ShearReinforcement = new(3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> SurfaceReinforcement1 = new("SurfaceReinforcement1", 1, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLengthMeasure> SurfaceReinforcement2 = new("SurfaceReinforcement2", 2, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcRatioMeasure> ShearReinforcement = new("ShearReinforcement", 3, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, SurfaceReinforcement1, SurfaceReinforcement2, ShearReinforcement ];
 }
 
@@ -9756,8 +9756,8 @@ public partial class IfcSurfaceStyle
     public const uint ENTITY_CODE = 4071505551;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurfaceSide> Side = new(1, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcSurfaceStyleElementSelect> Styles = new(2, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcSurfaceSide> Side = new("Side", 1, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSurfaceStyleElementSelect> Styles = new("Styles", 2, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ Name, Side, Styles ];
 }
 
@@ -9769,10 +9769,10 @@ public partial class IfcSurfaceStyleLighting
     public const uint ENTITY_CODE = 1409349527;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcColourRgb> DiffuseTransmissionColour = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcColourRgb> DiffuseReflectionColour = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcColourRgb> TransmissionColour = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcColourRgb> ReflectanceColour = new(3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcColourRgb> DiffuseTransmissionColour = new("DiffuseTransmissionColour", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcColourRgb> DiffuseReflectionColour = new("DiffuseReflectionColour", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcColourRgb> TransmissionColour = new("TransmissionColour", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcColourRgb> ReflectanceColour = new("ReflectanceColour", 3, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ DiffuseTransmissionColour, DiffuseReflectionColour, TransmissionColour, ReflectanceColour ];
 }
 
@@ -9784,8 +9784,8 @@ public partial class IfcSurfaceStyleRefraction
     public const uint ENTITY_CODE = 3213948220;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcReal> RefractionIndex = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> DispersionFactor = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> RefractionIndex = new("RefractionIndex", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> DispersionFactor = new("DispersionFactor", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ RefractionIndex, DispersionFactor ];
 }
 
@@ -9797,13 +9797,13 @@ public partial class IfcSurfaceStyleRendering
     public const uint ENTITY_CODE = 3420639349;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcColourOrFactor> DiffuseColour = new(2, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcColourOrFactor> TransmissionColour = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcColourOrFactor> DiffuseTransmissionColour = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcColourOrFactor> ReflectionColour = new(5, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcColourOrFactor> SpecularColour = new(6, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcSpecularHighlightSelect> SpecularHighlight = new(7, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcReflectanceMethodEnum> ReflectanceMethod = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcColourOrFactor> DiffuseColour = new("DiffuseColour", 2, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcColourOrFactor> TransmissionColour = new("TransmissionColour", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcColourOrFactor> DiffuseTransmissionColour = new("DiffuseTransmissionColour", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcColourOrFactor> ReflectionColour = new("ReflectionColour", 5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcColourOrFactor> SpecularColour = new("SpecularColour", 6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcSpecularHighlightSelect> SpecularHighlight = new("SpecularHighlight", 7, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcReflectanceMethodEnum> ReflectanceMethod = new("ReflectanceMethod", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ SurfaceColour, Transparency, DiffuseColour, TransmissionColour, DiffuseTransmissionColour, ReflectionColour, SpecularColour, SpecularHighlight, ReflectanceMethod ];
 }
 
@@ -9815,8 +9815,8 @@ public partial class IfcSurfaceStyleShading
     public const uint ENTITY_CODE = 2237861999;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcColourRgb> SurfaceColour = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Transparency = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcColourRgb> SurfaceColour = new("SurfaceColour", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> Transparency = new("Transparency", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ SurfaceColour, Transparency ];
 }
 
@@ -9828,7 +9828,7 @@ public partial class IfcSurfaceStyleWithTextures
     public const uint ENTITY_CODE = 2497588223;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurfaceTexture> Textures = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcSurfaceTexture> Textures = new("Textures", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Textures ];
 }
 
@@ -9840,11 +9840,11 @@ public partial class IfcSurfaceTexture
     public const uint ENTITY_CODE = 2119552589;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcBoolean> RepeatS = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBoolean> RepeatT = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcIdentifier> Mode = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcCartesianTransformationOperator2D> TextureTransform = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcIdentifier> Parameter = new(4, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcBoolean> RepeatS = new("RepeatS", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> RepeatT = new("RepeatT", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Mode = new("Mode", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCartesianTransformationOperator2D> TextureTransform = new("TextureTransform", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcIdentifier> Parameter = new("Parameter", 4, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ RepeatS, RepeatT, Mode, TextureTransform, Parameter ];
 }
 
@@ -9856,8 +9856,8 @@ public partial class IfcSweptAreaSolid
     public const uint ENTITY_CODE = 3734918784;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileDef> SweptArea = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> SweptArea = new("SweptArea", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new("Position", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SweptArea, Position ];
 }
 
@@ -9869,11 +9869,11 @@ public partial class IfcSweptDiskSolid
     public const uint ENTITY_CODE = 1837973444;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> Directrix = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> InnerRadius = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcParameterValue> StartParam = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcParameterValue> EndParam = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCurve> Directrix = new("Directrix", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Radius = new("Radius", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> InnerRadius = new("InnerRadius", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcParameterValue> StartParam = new("StartParam", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcParameterValue> EndParam = new("EndParam", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Directrix, Radius, InnerRadius, StartParam, EndParam ];
 }
 
@@ -9885,7 +9885,7 @@ public partial class IfcSweptDiskSolidPolygonal
     public const uint ENTITY_CODE = 3051361351;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new("FilletRadius", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Directrix, Radius, InnerRadius, StartParam, EndParam, FilletRadius ];
 }
 
@@ -9897,8 +9897,8 @@ public partial class IfcSweptSurface
     public const uint ENTITY_CODE = 2515609299;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcProfileDef> SweptCurve = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcProfileDef> SweptCurve = new("SweptCurve", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcAxis2Placement3D> Position = new("Position", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ SweptCurve, Position ];
 }
 
@@ -9910,7 +9910,7 @@ public partial class IfcSwitchingDevice
     public const uint ENTITY_CODE = 51716247;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSwitchingDeviceTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSwitchingDeviceTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -9922,7 +9922,7 @@ public partial class IfcSwitchingDeviceType
     public const uint ENTITY_CODE = 1062227407;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSwitchingDeviceTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSwitchingDeviceTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -9945,7 +9945,7 @@ public partial class IfcSystemFurnitureElement
     public const uint ENTITY_CODE = 3174040268;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSystemFurnitureElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSystemFurnitureElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -9957,7 +9957,7 @@ public partial class IfcSystemFurnitureElementType
     public const uint ENTITY_CODE = 1911274308;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSystemFurnitureElementTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcSystemFurnitureElementTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -9969,9 +9969,9 @@ public partial class IfcTable
     public const uint ENTITY_CODE = 1707516689;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTableRow> Rows = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcTableColumn> Columns = new(2, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTableRow> Rows = new("Rows", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcTableColumn> Columns = new("Columns", 2, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Name, Rows, Columns ];
 }
 
@@ -9983,11 +9983,11 @@ public partial class IfcTableColumn
     public const uint ENTITY_CODE = 756104283;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identifier = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> Name = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcUnit> Unit = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcReference> ReferencePath = new(4, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identifier = new("Identifier", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcUnit> Unit = new("Unit", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcReference> ReferencePath = new("ReferencePath", 4, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Identifier, Name, Description, Unit, ReferencePath ];
 }
 
@@ -9999,8 +9999,8 @@ public partial class IfcTableRow
     public const uint ENTITY_CODE = 4259718863;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValue> RowCells = new(0, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcBoolean> IsHeading = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcValue> RowCells = new("RowCells", 0, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcBoolean> IsHeading = new("IsHeading", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ RowCells, IsHeading ];
 }
 
@@ -10012,7 +10012,7 @@ public partial class IfcTank
     public const uint ENTITY_CODE = 17753987;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTankTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTankTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10024,7 +10024,7 @@ public partial class IfcTankType
     public const uint ENTITY_CODE = 1925107899;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTankTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTankTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10036,12 +10036,12 @@ public partial class IfcTask
     public const uint ENTITY_CODE = 13369750;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Status = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> WorkMethod = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBoolean> IsMilestone = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcInteger> Priority = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTaskTime> TaskTime = new(11, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcTaskTypeEnum> PredefinedType = new(12, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> Status = new("Status", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> WorkMethod = new("WorkMethod", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> IsMilestone = new("IsMilestone", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcInteger> Priority = new("Priority", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTaskTime> TaskTime = new("TaskTime", 11, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcTaskTypeEnum> PredefinedType = new("PredefinedType", 12, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, LongDescription, Status, WorkMethod, IsMilestone, Priority, TaskTime, PredefinedType ];
 }
 
@@ -10053,23 +10053,23 @@ public partial class IfcTaskTime
     public const uint ENTITY_CODE = 2181296591;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTaskDurationEnum> DurationType = new(3, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDuration> ScheduleDuration = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ScheduleStart = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ScheduleFinish = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> EarlyStart = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> EarlyFinish = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> LateStart = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> LateFinish = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> FreeFloat = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> TotalFloat = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcBoolean> IsCritical = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> StatusTime = new(14, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> ActualDuration = new(15, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ActualStart = new(16, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> ActualFinish = new(17, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> RemainingTime = new(18, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveRatioMeasure> Completion = new(19, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTaskDurationEnum> DurationType = new("DurationType", 3, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDuration> ScheduleDuration = new("ScheduleDuration", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ScheduleStart = new("ScheduleStart", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ScheduleFinish = new("ScheduleFinish", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> EarlyStart = new("EarlyStart", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> EarlyFinish = new("EarlyFinish", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> LateStart = new("LateStart", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> LateFinish = new("LateFinish", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> FreeFloat = new("FreeFloat", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> TotalFloat = new("TotalFloat", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcBoolean> IsCritical = new("IsCritical", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> StatusTime = new("StatusTime", 14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> ActualDuration = new("ActualDuration", 15, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ActualStart = new("ActualStart", 16, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> ActualFinish = new("ActualFinish", 17, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> RemainingTime = new("RemainingTime", 18, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveRatioMeasure> Completion = new("Completion", 19, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, DataOrigin, UserDefinedDataOrigin, DurationType, ScheduleDuration, ScheduleStart, ScheduleFinish, EarlyStart, EarlyFinish, LateStart, LateFinish, FreeFloat, TotalFloat, IsCritical, StatusTime, ActualDuration, ActualStart, ActualFinish, RemainingTime, Completion ];
 }
 
@@ -10081,7 +10081,7 @@ public partial class IfcTaskTimeRecurring
     public const uint ENTITY_CODE = 834701598;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRecurrencePattern> Recurrence = new(20, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcRecurrencePattern> Recurrence = new("Recurrence", 20, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Name, DataOrigin, UserDefinedDataOrigin, DurationType, ScheduleDuration, ScheduleStart, ScheduleFinish, EarlyStart, EarlyFinish, LateStart, LateFinish, FreeFloat, TotalFloat, IsCritical, StatusTime, ActualDuration, ActualStart, ActualFinish, RemainingTime, Completion, Recurrence ];
 }
 
@@ -10093,8 +10093,8 @@ public partial class IfcTaskType
     public const uint ENTITY_CODE = 905142182;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTaskTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> WorkMethod = new(10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTaskTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> WorkMethod = new("WorkMethod", 10, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ProcessType, PredefinedType, WorkMethod ];
 }
 
@@ -10106,12 +10106,12 @@ public partial class IfcTelecomAddress
     public const uint ENTITY_CODE = 2254656692;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> TelephoneNumbers = new(3, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcLabel> FacsimileNumbers = new(4, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcLabel> PagerNumber = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> ElectronicMailAddresses = new(6, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcURIReference> WWWHomePageURL = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcURIReference> MessagingIDs = new(8, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> TelephoneNumbers = new("TelephoneNumbers", 3, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> FacsimileNumbers = new("FacsimileNumbers", 4, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> PagerNumber = new("PagerNumber", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ElectronicMailAddresses = new("ElectronicMailAddresses", 6, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcURIReference> WWWHomePageURL = new("WWWHomePageURL", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcURIReference> MessagingIDs = new("MessagingIDs", 8, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Purpose, Description, UserDefinedPurpose, TelephoneNumbers, FacsimileNumbers, PagerNumber, ElectronicMailAddresses, WWWHomePageURL, MessagingIDs ];
 }
 
@@ -10123,14 +10123,14 @@ public partial class IfcTendon
     public const uint ENTITY_CODE = 3940259567;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTendonTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAreaMeasure> CrossSectionArea = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcForceMeasure> TensionForce = new(12, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPressureMeasure> PreStress = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> FrictionCoefficient = new(14, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> AnchorageSlip = new(15, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> MinCurvatureRadius = new(16, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTendonTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new("NominalDiameter", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> CrossSectionArea = new("CrossSectionArea", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcForceMeasure> TensionForce = new("TensionForce", 12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPressureMeasure> PreStress = new("PreStress", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> FrictionCoefficient = new("FrictionCoefficient", 14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> AnchorageSlip = new("AnchorageSlip", 15, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> MinCurvatureRadius = new("MinCurvatureRadius", 16, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, SteelGrade, PredefinedType, NominalDiameter, CrossSectionArea, TensionForce, PreStress, FrictionCoefficient, AnchorageSlip, MinCurvatureRadius ];
 }
 
@@ -10142,7 +10142,7 @@ public partial class IfcTendonAnchor
     public const uint ENTITY_CODE = 2726656758;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTendonAnchorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTendonAnchorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, SteelGrade, PredefinedType ];
 }
 
@@ -10154,7 +10154,7 @@ public partial class IfcTendonAnchorType
     public const uint ENTITY_CODE = 3520932870;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTendonAnchorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTendonAnchorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10166,7 +10166,7 @@ public partial class IfcTendonConduit
     public const uint ENTITY_CODE = 2367256711;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTendonConduitTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTendonConduitTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, SteelGrade, PredefinedType ];
 }
 
@@ -10178,7 +10178,7 @@ public partial class IfcTendonConduitType
     public const uint ENTITY_CODE = 770103455;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTendonConduitTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTendonConduitTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10190,10 +10190,10 @@ public partial class IfcTendonType
     public const uint ENTITY_CODE = 2376348759;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTendonTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAreaMeasure> CrossSectionArea = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> SheathDiameter = new(12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTendonTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> NominalDiameter = new("NominalDiameter", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAreaMeasure> CrossSectionArea = new("CrossSectionArea", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> SheathDiameter = new("SheathDiameter", 12, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType, NominalDiameter, CrossSectionArea, SheathDiameter ];
 }
 
@@ -10205,8 +10205,8 @@ public partial class IfcTessellatedFaceSet
     public const uint ENTITY_CODE = 2960336296;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCartesianPointList3D> Coordinates = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoolean> Closed = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcCartesianPointList3D> Coordinates = new("Coordinates", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoolean> Closed = new("Closed", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Coordinates, Closed ];
 }
 
@@ -10229,9 +10229,9 @@ public partial class IfcTextLiteral
     public const uint ENTITY_CODE = 134569191;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPresentableText> Literal = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcAxis2Placement> Placement = new(1, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcTextPath> Path = new(2, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPresentableText> Literal = new("Literal", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcAxis2Placement> Placement = new("Placement", 1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcTextPath> Path = new("Path", 2, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ Literal, Placement, Path ];
 }
 
@@ -10243,8 +10243,8 @@ public partial class IfcTextLiteralWithExtent
     public const uint ENTITY_CODE = 783027983;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPlanarExtent> Extent = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcBoxAlignment> BoxAlignment = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlanarExtent> Extent = new("Extent", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcBoxAlignment> BoxAlignment = new("BoxAlignment", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Literal, Placement, Path, Extent, BoxAlignment ];
 }
 
@@ -10256,10 +10256,10 @@ public partial class IfcTextStyle
     public const uint ENTITY_CODE = 1641706589;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTextStyleForDefinedFont> TextCharacterAppearance = new(1, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcTextStyleTextModel> TextStyle = new(2, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcTextFontSelect> TextFontStyle = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcBoolean> ModelOrDraughting = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTextStyleForDefinedFont> TextCharacterAppearance = new("TextCharacterAppearance", 1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcTextStyleTextModel> TextStyle = new("TextStyle", 2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcTextFontSelect> TextFontStyle = new("TextFontStyle", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcBoolean> ModelOrDraughting = new("ModelOrDraughting", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, TextCharacterAppearance, TextStyle, TextFontStyle, ModelOrDraughting ];
 }
 
@@ -10271,11 +10271,11 @@ public partial class IfcTextStyleFontModel
     public const uint ENTITY_CODE = 636760693;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTextFontName> FontFamily = new(1, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcFontStyle> FontStyle = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcFontVariant> FontVariant = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcFontWeight> FontWeight = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcSizeSelect> FontSize = new(5, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcTextFontName> FontFamily = new("FontFamily", 1, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcFontStyle> FontStyle = new("FontStyle", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcFontVariant> FontVariant = new("FontVariant", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcFontWeight> FontWeight = new("FontWeight", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSizeSelect> FontSize = new("FontSize", 5, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, FontFamily, FontStyle, FontVariant, FontWeight, FontSize ];
 }
 
@@ -10287,8 +10287,8 @@ public partial class IfcTextStyleForDefinedFont
     public const uint ENTITY_CODE = 4218362128;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcColour> Colour = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcColour> BackgroundColour = new(1, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcColour> Colour = new("Colour", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcColour> BackgroundColour = new("BackgroundColour", 1, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Colour, BackgroundColour ];
 }
 
@@ -10300,13 +10300,13 @@ public partial class IfcTextStyleTextModel
     public const uint ENTITY_CODE = 3190959443;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSizeSelect> TextIndent = new(0, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcTextAlignment> TextAlign = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTextDecoration> TextDecoration = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcSizeSelect> LetterSpacing = new(3, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcSizeSelect> WordSpacing = new(4, IfcTypeKind.Unknown, 0);
-    public readonly IfcAttribute<IfcTextTransformation> TextTransform = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcSizeSelect> LineHeight = new(6, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcSizeSelect> TextIndent = new("TextIndent", 0, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcTextAlignment> TextAlign = new("TextAlign", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTextDecoration> TextDecoration = new("TextDecoration", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSizeSelect> LetterSpacing = new("LetterSpacing", 3, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcSizeSelect> WordSpacing = new("WordSpacing", 4, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcTextTransformation> TextTransform = new("TextTransform", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcSizeSelect> LineHeight = new("LineHeight", 6, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ TextIndent, TextAlign, TextDecoration, LetterSpacing, WordSpacing, TextTransform, LineHeight ];
 }
 
@@ -10318,7 +10318,7 @@ public partial class IfcTextureCoordinate
     public const uint ENTITY_CODE = 1304733824;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcSurfaceTexture> Maps = new(0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcSurfaceTexture> Maps = new("Maps", 0, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ Maps ];
 }
 
@@ -10330,8 +10330,8 @@ public partial class IfcTextureCoordinateGenerator
     public const uint ENTITY_CODE = 986362205;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Mode = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcReal> Parameter = new(2, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcLabel> Mode = new("Mode", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcReal> Parameter = new("Parameter", 2, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Maps, Mode, Parameter ];
 }
 
@@ -10343,8 +10343,8 @@ public partial class IfcTextureCoordinateIndices
     public const uint ENTITY_CODE = 3543525805;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveInteger> TexCoordIndex = new(0, IfcTypeKind.Alias, 1);
-    public readonly IfcAttribute<IfcIndexedPolygonalFace> TexCoordsOf = new(1, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPositiveInteger> TexCoordIndex = new("TexCoordIndex", 0, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcIndexedPolygonalFace> TexCoordsOf = new("TexCoordsOf", 1, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ TexCoordIndex, TexCoordsOf ];
 }
 
@@ -10356,7 +10356,7 @@ public partial class IfcTextureCoordinateIndicesWithVoids
     public const uint ENTITY_CODE = 3719124592;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveInteger> InnerTexCoordIndices = new(2, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcPositiveInteger> InnerTexCoordIndices = new("InnerTexCoordIndices", 2, IfcTypeKind.Alias, 2);
     public override IfcAttribute[] Attributes => [ TexCoordIndex, TexCoordsOf, InnerTexCoordIndices ];
 }
 
@@ -10368,8 +10368,8 @@ public partial class IfcTextureMap
     public const uint ENTITY_CODE = 1189656152;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTextureVertex> Vertices = new(1, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcFace> MappedTo = new(2, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcTextureVertex> Vertices = new("Vertices", 1, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcFace> MappedTo = new("MappedTo", 2, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ Maps, Vertices, MappedTo ];
 }
 
@@ -10381,7 +10381,7 @@ public partial class IfcTextureVertex
     public const uint ENTITY_CODE = 1240493628;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcParameterValue> Coordinates = new(0, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcParameterValue> Coordinates = new("Coordinates", 0, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Coordinates ];
 }
 
@@ -10393,7 +10393,7 @@ public partial class IfcTextureVertexList
     public const uint ENTITY_CODE = 1829175844;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcParameterValue> TexCoordsList = new(0, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcParameterValue> TexCoordsList = new("TexCoordsList", 0, IfcTypeKind.Alias, 2);
     public override IfcAttribute[] Attributes => [ TexCoordsList ];
 }
 
@@ -10405,10 +10405,10 @@ public partial class IfcThirdOrderPolynomialSpiral
     public const uint ENTITY_CODE = 3471048375;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLengthMeasure> CubicTerm = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> QuadraticTerm = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LinearTerm = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new(4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> CubicTerm = new("CubicTerm", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> QuadraticTerm = new("QuadraticTerm", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LinearTerm = new("LinearTerm", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> ConstantTerm = new("ConstantTerm", 4, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, CubicTerm, QuadraticTerm, LinearTerm, ConstantTerm ];
 }
 
@@ -10420,8 +10420,8 @@ public partial class IfcTimePeriod
     public const uint ENTITY_CODE = 1007701959;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTime> StartTime = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTime> EndTime = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTime> StartTime = new("StartTime", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTime> EndTime = new("EndTime", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ StartTime, EndTime ];
 }
 
@@ -10433,14 +10433,14 @@ public partial class IfcTimeSeries
     public const uint ENTITY_CODE = 3335580439;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> Name = new(0, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> Description = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> StartTime = new(2, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> EndTime = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTimeSeriesDataTypeEnum> TimeSeriesDataType = new(4, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcDataOriginEnum> DataOrigin = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedDataOrigin = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcUnit> Unit = new(7, IfcTypeKind.Unknown, 0);
+    public readonly IfcAttribute<IfcLabel> Name = new("Name", 0, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> Description = new("Description", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> StartTime = new("StartTime", 2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> EndTime = new("EndTime", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTimeSeriesDataTypeEnum> TimeSeriesDataType = new("TimeSeriesDataType", 4, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDataOriginEnum> DataOrigin = new("DataOrigin", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedDataOrigin = new("UserDefinedDataOrigin", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcUnit> Unit = new("Unit", 7, IfcTypeKind.Unknown, 0);
     public override IfcAttribute[] Attributes => [ Name, Description, StartTime, EndTime, TimeSeriesDataType, DataOrigin, UserDefinedDataOrigin, Unit ];
 }
 
@@ -10452,7 +10452,7 @@ public partial class IfcTimeSeriesValue
     public const uint ENTITY_CODE = 3069996460;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValue> ListValues = new(0, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcValue> ListValues = new("ListValues", 0, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ ListValues ];
 }
 
@@ -10486,8 +10486,8 @@ public partial class IfcToroidalSurface
     public const uint ENTITY_CODE = 4062637252;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> MajorRadius = new(1, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> MinorRadius = new(2, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> MajorRadius = new("MajorRadius", 1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> MinorRadius = new("MinorRadius", 2, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Position, MajorRadius, MinorRadius ];
 }
 
@@ -10499,7 +10499,7 @@ public partial class IfcTrackElement
     public const uint ENTITY_CODE = 2682459974;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTrackElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTrackElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10511,7 +10511,7 @@ public partial class IfcTrackElementType
     public const uint ENTITY_CODE = 22383862;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTrackElementTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTrackElementTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10523,7 +10523,7 @@ public partial class IfcTransformer
     public const uint ENTITY_CODE = 1563906938;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTransformerTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTransformerTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10535,7 +10535,7 @@ public partial class IfcTransformerType
     public const uint ENTITY_CODE = 2567241530;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTransformerTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTransformerTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10569,7 +10569,7 @@ public partial class IfcTransportElement
     public const uint ENTITY_CODE = 2895867572;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTransportElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTransportElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10581,7 +10581,7 @@ public partial class IfcTransportElementType
     public const uint ENTITY_CODE = 92928668;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTransportElementTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTransportElementTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10593,10 +10593,10 @@ public partial class IfcTrapeziumProfileDef
     public const uint ENTITY_CODE = 2575033564;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> BottomXDim = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> TopXDim = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> YDim = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> TopXOffset = new(6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> BottomXDim = new("BottomXDim", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> TopXDim = new("TopXDim", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> YDim = new("YDim", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> TopXOffset = new("TopXOffset", 6, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, BottomXDim, TopXDim, YDim, TopXOffset ];
 }
 
@@ -10608,9 +10608,9 @@ public partial class IfcTriangulatedFaceSet
     public const uint ENTITY_CODE = 3363089572;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcParameterValue> Normals = new(2, IfcTypeKind.Alias, 2);
-    public readonly IfcAttribute<IfcPositiveInteger> CoordIndex = new(3, IfcTypeKind.Alias, 2);
-    public readonly IfcAttribute<IfcPositiveInteger> PnIndex = new(4, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcParameterValue> Normals = new("Normals", 2, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcPositiveInteger> CoordIndex = new("CoordIndex", 3, IfcTypeKind.Alias, 2);
+    public readonly IfcAttribute<IfcPositiveInteger> PnIndex = new("PnIndex", 4, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Coordinates, Closed, Normals, CoordIndex, PnIndex ];
 }
 
@@ -10622,7 +10622,7 @@ public partial class IfcTriangulatedIrregularNetwork
     public const uint ENTITY_CODE = 2191358852;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcInteger> Flags = new(5, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcInteger> Flags = new("Flags", 5, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ Coordinates, Closed, Normals, CoordIndex, PnIndex, Flags ];
 }
 
@@ -10634,11 +10634,11 @@ public partial class IfcTrimmedCurve
     public const uint ENTITY_CODE = 1528703406;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcCurve> BasisCurve = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcTrimmingSelect> Trim1 = new(1, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcTrimmingSelect> Trim2 = new(2, IfcTypeKind.Unknown, 1);
-    public readonly IfcAttribute<IfcBoolean> SenseAgreement = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcTrimmingPreference> MasterRepresentation = new(4, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcCurve> BasisCurve = new("BasisCurve", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcTrimmingSelect> Trim1 = new("Trim1", 1, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcTrimmingSelect> Trim2 = new("Trim2", 2, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcBoolean> SenseAgreement = new("SenseAgreement", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcTrimmingPreference> MasterRepresentation = new("MasterRepresentation", 4, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ BasisCurve, Trim1, Trim2, SenseAgreement, MasterRepresentation ];
 }
 
@@ -10650,15 +10650,15 @@ public partial class IfcTShapeProfileDef
     public const uint ENTITY_CODE = 217492446;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeWidth = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeThickness = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FlangeEdgeRadius = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> WebEdgeRadius = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> WebSlope = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> FlangeSlope = new(11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new("Depth", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeWidth = new("FlangeWidth", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new("WebThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeThickness = new("FlangeThickness", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new("FilletRadius", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FlangeEdgeRadius = new("FlangeEdgeRadius", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> WebEdgeRadius = new("WebEdgeRadius", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> WebSlope = new("WebSlope", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> FlangeSlope = new("FlangeSlope", 11, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, Depth, FlangeWidth, WebThickness, FlangeThickness, FilletRadius, FlangeEdgeRadius, WebEdgeRadius, WebSlope, FlangeSlope ];
 }
 
@@ -10670,7 +10670,7 @@ public partial class IfcTubeBundle
     public const uint ENTITY_CODE = 465216733;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTubeBundleTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTubeBundleTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10682,7 +10682,7 @@ public partial class IfcTubeBundleType
     public const uint ENTITY_CODE = 866369589;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcTubeBundleTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcTubeBundleTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10694,8 +10694,8 @@ public partial class IfcTypeObject
     public const uint ENTITY_CODE = 2249877892;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> ApplicableOccurrence = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPropertySetDefinition> HasPropertySets = new(5, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcIdentifier> ApplicableOccurrence = new("ApplicableOccurrence", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPropertySetDefinition> HasPropertySets = new("HasPropertySets", 5, IfcTypeKind.Entity, 1);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets ];
 }
 
@@ -10707,9 +10707,9 @@ public partial class IfcTypeProcess
     public const uint ENTITY_CODE = 1318230964;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> LongDescription = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> ProcessType = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> LongDescription = new("LongDescription", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ProcessType = new("ProcessType", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ProcessType ];
 }
 
@@ -10721,8 +10721,8 @@ public partial class IfcTypeProduct
     public const uint ENTITY_CODE = 658519926;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRepresentationMap> RepresentationMaps = new(6, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> Tag = new(7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRepresentationMap> RepresentationMaps = new("RepresentationMaps", 6, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Tag = new("Tag", 7, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag ];
 }
 
@@ -10734,9 +10734,9 @@ public partial class IfcTypeResource
     public const uint ENTITY_CODE = 2691944947;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcIdentifier> Identification = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcText> LongDescription = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> ResourceType = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcIdentifier> Identification = new("Identification", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcText> LongDescription = new("LongDescription", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> ResourceType = new("ResourceType", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, Identification, LongDescription, ResourceType ];
 }
 
@@ -10748,7 +10748,7 @@ public partial class IfcUnitaryControlElement
     public const uint ENTITY_CODE = 3969197810;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcUnitaryControlElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcUnitaryControlElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10760,7 +10760,7 @@ public partial class IfcUnitaryControlElementType
     public const uint ENTITY_CODE = 3744520674;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcUnitaryControlElementTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcUnitaryControlElementTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10772,7 +10772,7 @@ public partial class IfcUnitaryEquipment
     public const uint ENTITY_CODE = 3695978331;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcUnitaryEquipmentTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcUnitaryEquipmentTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10784,7 +10784,7 @@ public partial class IfcUnitaryEquipmentType
     public const uint ENTITY_CODE = 4163530947;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcUnitaryEquipmentTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcUnitaryEquipmentTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10796,7 +10796,7 @@ public partial class IfcUnitAssignment
     public const uint ENTITY_CODE = 990410120;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcUnit> Units = new(0, IfcTypeKind.Unknown, 1);
+    public readonly IfcAttribute<IfcUnit> Units = new("Units", 0, IfcTypeKind.Unknown, 1);
     public override IfcAttribute[] Attributes => [ Units ];
 }
 
@@ -10808,13 +10808,13 @@ public partial class IfcUShapeProfileDef
     public const uint ENTITY_CODE = 3931088027;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeWidth = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeThickness = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> EdgeRadius = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPlaneAngleMeasure> FlangeSlope = new(9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new("Depth", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeWidth = new("FlangeWidth", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new("WebThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeThickness = new("FlangeThickness", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new("FilletRadius", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> EdgeRadius = new("EdgeRadius", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPlaneAngleMeasure> FlangeSlope = new("FlangeSlope", 9, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, Depth, FlangeWidth, WebThickness, FlangeThickness, FilletRadius, EdgeRadius, FlangeSlope ];
 }
 
@@ -10826,7 +10826,7 @@ public partial class IfcValve
     public const uint ENTITY_CODE = 1892890335;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValveTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcValveTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10838,7 +10838,7 @@ public partial class IfcValveType
     public const uint ENTITY_CODE = 1040468647;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcValveTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcValveTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10850,8 +10850,8 @@ public partial class IfcVector
     public const uint ENTITY_CODE = 3000129244;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDirection> Orientation = new(0, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> Magnitude = new(1, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDirection> Orientation = new("Orientation", 0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> Magnitude = new("Magnitude", 1, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Orientation, Magnitude ];
 }
 
@@ -10863,7 +10863,7 @@ public partial class IfcVehicle
     public const uint ENTITY_CODE = 2519469701;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVehicleTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcVehicleTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10875,7 +10875,7 @@ public partial class IfcVehicleType
     public const uint ENTITY_CODE = 2997566797;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVehicleTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcVehicleTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10898,7 +10898,7 @@ public partial class IfcVertexLoop
     public const uint ENTITY_CODE = 1420919631;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVertex> LoopVertex = new(0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcVertex> LoopVertex = new("LoopVertex", 0, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ LoopVertex ];
 }
 
@@ -10910,7 +10910,7 @@ public partial class IfcVertexPoint
     public const uint ENTITY_CODE = 3704214141;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPoint> VertexGeometry = new(0, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcPoint> VertexGeometry = new("VertexGeometry", 0, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ VertexGeometry ];
 }
 
@@ -10922,7 +10922,7 @@ public partial class IfcVibrationDamper
     public const uint ENTITY_CODE = 3315837290;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDamperTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcDamperTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10934,7 +10934,7 @@ public partial class IfcVibrationDamperType
     public const uint ENTITY_CODE = 1381588682;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVibrationDamperTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcVibrationDamperTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10946,7 +10946,7 @@ public partial class IfcVibrationIsolator
     public const uint ENTITY_CODE = 3015712760;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVibrationIsolatorTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcVibrationIsolatorTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10958,7 +10958,7 @@ public partial class IfcVibrationIsolatorType
     public const uint ENTITY_CODE = 1874719280;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVibrationIsolatorTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcVibrationIsolatorTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -10970,7 +10970,7 @@ public partial class IfcVirtualElement
     public const uint ENTITY_CODE = 3712824770;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVirtualElementTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcVirtualElementTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -10982,8 +10982,8 @@ public partial class IfcVirtualGridIntersection
     public const uint ENTITY_CODE = 3806830111;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcGridAxis> IntersectingAxes = new(0, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLengthMeasure> OffsetDistances = new(1, IfcTypeKind.Alias, 1);
+    public readonly IfcAttribute<IfcGridAxis> IntersectingAxes = new("IntersectingAxes", 0, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLengthMeasure> OffsetDistances = new("OffsetDistances", 1, IfcTypeKind.Alias, 1);
     public override IfcAttribute[] Attributes => [ IntersectingAxes, OffsetDistances ];
 }
 
@@ -10995,7 +10995,7 @@ public partial class IfcVoidingFeature
     public const uint ENTITY_CODE = 2033415299;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcVoidingFeatureTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcVoidingFeatureTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -11007,7 +11007,7 @@ public partial class IfcWall
     public const uint ENTITY_CODE = 2077320315;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWallTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWallTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -11030,7 +11030,7 @@ public partial class IfcWallType
     public const uint ENTITY_CODE = 3895821283;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWallTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWallTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -11042,7 +11042,7 @@ public partial class IfcWasteTerminal
     public const uint ENTITY_CODE = 1978569455;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWasteTerminalTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWasteTerminalTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, PredefinedType ];
 }
 
@@ -11054,7 +11054,7 @@ public partial class IfcWasteTerminalType
     public const uint ENTITY_CODE = 3320508503;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWasteTerminalTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWasteTerminalTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType ];
 }
 
@@ -11066,11 +11066,11 @@ public partial class IfcWindow
     public const uint ENTITY_CODE = 548816575;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallHeight = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallWidth = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcWindowTypeEnum> PredefinedType = new(10, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcWindowTypePartitioningEnum> PartitioningType = new(11, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedPartitioningType = new(12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallHeight = new("OverallHeight", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> OverallWidth = new("OverallWidth", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcWindowTypeEnum> PredefinedType = new("PredefinedType", 10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWindowTypePartitioningEnum> PartitioningType = new("PartitioningType", 11, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedPartitioningType = new("UserDefinedPartitioningType", 12, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, ObjectPlacement, Representation, Tag, OverallHeight, OverallWidth, PredefinedType, PartitioningType, UserDefinedPartitioningType ];
 }
 
@@ -11082,18 +11082,18 @@ public partial class IfcWindowLiningProperties
     public const uint ENTITY_CODE = 399706723;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> LiningDepth = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> LiningThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> TransomThickness = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> MullionThickness = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> FirstTransomOffset = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> SecondTransomOffset = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> FirstMullionOffset = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNormalisedRatioMeasure> SecondMullionOffset = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new(12, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LiningOffset = new(13, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LiningToPanelOffsetX = new(14, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLengthMeasure> LiningToPanelOffsetY = new(15, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> LiningDepth = new("LiningDepth", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> LiningThickness = new("LiningThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> TransomThickness = new("TransomThickness", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> MullionThickness = new("MullionThickness", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> FirstTransomOffset = new("FirstTransomOffset", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> SecondTransomOffset = new("SecondTransomOffset", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> FirstMullionOffset = new("FirstMullionOffset", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNormalisedRatioMeasure> SecondMullionOffset = new("SecondMullionOffset", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new("ShapeAspectStyle", 12, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LiningOffset = new("LiningOffset", 13, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LiningToPanelOffsetX = new("LiningToPanelOffsetX", 14, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLengthMeasure> LiningToPanelOffsetY = new("LiningToPanelOffsetY", 15, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, LiningDepth, LiningThickness, TransomThickness, MullionThickness, FirstTransomOffset, SecondTransomOffset, FirstMullionOffset, SecondMullionOffset, ShapeAspectStyle, LiningOffset, LiningToPanelOffsetX, LiningToPanelOffsetY ];
 }
 
@@ -11105,11 +11105,11 @@ public partial class IfcWindowPanelProperties
     public const uint ENTITY_CODE = 1008424894;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWindowPanelOperationEnum> OperationType = new(4, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcWindowPanelPositionEnum> PanelPosition = new(5, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FrameDepth = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FrameThickness = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new(8, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcWindowPanelOperationEnum> OperationType = new("OperationType", 4, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWindowPanelPositionEnum> PanelPosition = new("PanelPosition", 5, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FrameDepth = new("FrameDepth", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FrameThickness = new("FrameThickness", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcShapeAspect> ShapeAspectStyle = new("ShapeAspectStyle", 8, IfcTypeKind.Entity, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, OperationType, PanelPosition, FrameDepth, FrameThickness, ShapeAspectStyle ];
 }
 
@@ -11121,10 +11121,10 @@ public partial class IfcWindowType
     public const uint ENTITY_CODE = 2623720583;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWindowTypeEnum> PredefinedType = new(9, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcWindowTypePartitioningEnum> PartitioningType = new(10, IfcTypeKind.Enum, 0);
-    public readonly IfcAttribute<IfcBoolean> ParameterTakesPrecedence = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcLabel> UserDefinedPartitioningType = new(12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcWindowTypeEnum> PredefinedType = new("PredefinedType", 9, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWindowTypePartitioningEnum> PartitioningType = new("PartitioningType", 10, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcBoolean> ParameterTakesPrecedence = new("ParameterTakesPrecedence", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> UserDefinedPartitioningType = new("UserDefinedPartitioningType", 12, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ApplicableOccurrence, HasPropertySets, RepresentationMaps, Tag, ElementType, PredefinedType, PartitioningType, ParameterTakesPrecedence, UserDefinedPartitioningType ];
 }
 
@@ -11136,9 +11136,9 @@ public partial class IfcWorkCalendar
     public const uint ENTITY_CODE = 2726223564;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWorkTime> WorkingTimes = new(6, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcWorkTime> ExceptionTimes = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcWorkCalendarTypeEnum> PredefinedType = new(8, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWorkTime> WorkingTimes = new("WorkingTimes", 6, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcWorkTime> ExceptionTimes = new("ExceptionTimes", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcWorkCalendarTypeEnum> PredefinedType = new("PredefinedType", 8, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, WorkingTimes, ExceptionTimes, PredefinedType ];
 }
 
@@ -11150,13 +11150,13 @@ public partial class IfcWorkControl
     public const uint ENTITY_CODE = 2134216975;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcDateTime> CreationDate = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPerson> Creators = new(7, IfcTypeKind.Entity, 1);
-    public readonly IfcAttribute<IfcLabel> Purpose = new(8, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> Duration = new(9, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDuration> TotalFloat = new(10, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> StartTime = new(11, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDateTime> FinishTime = new(12, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> CreationDate = new("CreationDate", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPerson> Creators = new("Creators", 7, IfcTypeKind.Entity, 1);
+    public readonly IfcAttribute<IfcLabel> Purpose = new("Purpose", 8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> Duration = new("Duration", 9, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDuration> TotalFloat = new("TotalFloat", 10, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> StartTime = new("StartTime", 11, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDateTime> FinishTime = new("FinishTime", 12, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, CreationDate, Creators, Purpose, Duration, TotalFloat, StartTime, FinishTime ];
 }
 
@@ -11168,7 +11168,7 @@ public partial class IfcWorkPlan
     public const uint ENTITY_CODE = 4262694961;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWorkPlanTypeEnum> PredefinedType = new(13, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWorkPlanTypeEnum> PredefinedType = new("PredefinedType", 13, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, CreationDate, Creators, Purpose, Duration, TotalFloat, StartTime, FinishTime, PredefinedType ];
 }
 
@@ -11180,7 +11180,7 @@ public partial class IfcWorkSchedule
     public const uint ENTITY_CODE = 302889391;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcWorkScheduleTypeEnum> PredefinedType = new(13, IfcTypeKind.Enum, 0);
+    public readonly IfcAttribute<IfcWorkScheduleTypeEnum> PredefinedType = new("PredefinedType", 13, IfcTypeKind.Enum, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, Identification, CreationDate, Creators, Purpose, Duration, TotalFloat, StartTime, FinishTime, PredefinedType ];
 }
 
@@ -11192,9 +11192,9 @@ public partial class IfcWorkTime
     public const uint ENTITY_CODE = 2564703307;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcRecurrencePattern> RecurrencePattern = new(3, IfcTypeKind.Entity, 0);
-    public readonly IfcAttribute<IfcDate> StartDate = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcDate> FinishDate = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcRecurrencePattern> RecurrencePattern = new("RecurrencePattern", 3, IfcTypeKind.Entity, 0);
+    public readonly IfcAttribute<IfcDate> StartDate = new("StartDate", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcDate> FinishDate = new("FinishDate", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ Name, DataOrigin, UserDefinedDataOrigin, RecurrencePattern, StartDate, FinishDate ];
 }
 
@@ -11206,7 +11206,7 @@ public partial class IfcZone
     public const uint ENTITY_CODE = 3177690381;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcLabel> LongName = new(5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcLabel> LongName = new("LongName", 5, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ GlobalId, OwnerHistory, Name, Description, ObjectType, LongName ];
 }
 
@@ -11218,11 +11218,11 @@ public partial class IfcZShapeProfileDef
     public const uint ENTITY_CODE = 3159577188;
     public override uint EntityTypeCode => ENTITY_CODE;
     public override ReadOnlySpan<byte> EntityTypeName => NAME;
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new(3, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeWidth = new(4, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new(5, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeThickness = new(6, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new(7, IfcTypeKind.Alias, 0);
-    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> EdgeRadius = new(8, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> Depth = new("Depth", 3, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeWidth = new("FlangeWidth", 4, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> WebThickness = new("WebThickness", 5, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcPositiveLengthMeasure> FlangeThickness = new("FlangeThickness", 6, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> FilletRadius = new("FilletRadius", 7, IfcTypeKind.Alias, 0);
+    public readonly IfcAttribute<IfcNonNegativeLengthMeasure> EdgeRadius = new("EdgeRadius", 8, IfcTypeKind.Alias, 0);
     public override IfcAttribute[] Attributes => [ ProfileType, ProfileName, Position, Depth, FlangeWidth, WebThickness, FlangeThickness, FilletRadius, EdgeRadius ];
 }

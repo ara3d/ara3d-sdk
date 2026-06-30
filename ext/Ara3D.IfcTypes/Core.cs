@@ -48,15 +48,17 @@ public readonly record struct TypeDetails
 
 public record IfcAttribute
 (
+    string Name,
     int Index, 
     TypeDetails Type
 );
 
 public record IfcAttribute<T>(
+    string Name,
     int Index,
     IfcTypeKind Kind,
     int Rank
-) : IfcAttribute(Index, new(typeof(T), Kind, Rank))
+) : IfcAttribute(Name, Index, new(typeof(T), Kind, Rank))
 {
     public string TypeName 
         => Type.Type.Name;
@@ -75,6 +77,21 @@ public class IfcSchema
 
     public IfcSchemaEnum Enum;
     public Dictionary<uint, IEntity> Entities = new();
+
+    public static IfcSchema GetSchema(IfcSchemaEnum ise)
+    {
+        switch (ise)
+        {
+            case IfcSchemaEnum.Ifc2x3:
+                return IfcSchemas.Ifc2x3;
+            case IfcSchemaEnum.Ifc4:
+                return IfcSchemas.Ifc4;
+            case IfcSchemaEnum.Ifc4x3:
+                return IfcSchemas.Ifc4x3;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(ise), ise, null);
+        }
+    }
 }
 
 public static class EntityExtensions

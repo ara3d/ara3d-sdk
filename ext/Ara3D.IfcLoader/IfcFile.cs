@@ -1,4 +1,5 @@
-﻿using Ara3D.IO.StepParser;
+﻿using Ara3D.IfcTypes;
+using Ara3D.IO.StepParser;
 using Ara3D.Logging;
 using Ara3D.Utils;
 
@@ -6,13 +7,12 @@ namespace Ara3D.IfcLoader;
 
 public class IfcFile : IDisposable
 {
-    public enum IfcSchemaEnum { Ifc2x3, Ifc4, Ifc4x3 };
-
     public StepDocument Document;
     public IfcModel Model;
     public IntPtr ApiPtr;
     public IfcEntityResolver EntityResolver { get; private set; }
-    public IfcSchemaEnum SchemaEnum { get; }
+    public IfcSchemaEnum SchemaEnum => Schema.Enum;
+    public IfcSchema Schema { get; }
     public FilePath FilePath { get; set; }
     public (double X, double Y, double Z) OriginOffset { get; }
 
@@ -29,11 +29,12 @@ public class IfcFile : IDisposable
             throw new Exception($"Could not load Document from {fp}");
 
         var header = Document.Header;
-        SchemaEnum = IfcSchemaEnum.Ifc2x3;
+        var tmp = IfcSchemaEnum.Ifc2x3;
         if (header.FileSchema.StartsWith("IFC4X3", StringComparison.InvariantCultureIgnoreCase))
-            SchemaEnum = IfcSchemaEnum.Ifc4x3;
+            tmp = IfcSchemaEnum.Ifc4x3;
         else if (header.FileSchema.StartsWith("IFC4", StringComparison.InvariantCultureIgnoreCase))
-            SchemaEnum = IfcSchemaEnum.Ifc4;
+            tmp = IfcSchemaEnum.Ifc4;
+        Schema = IfcSchema.GetSchema(tmp);
 
         logger?.Log($"Retrieving schema"); 
         EntityResolver = new(Document);
