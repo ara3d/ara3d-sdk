@@ -59,35 +59,5 @@ namespace Ara3D.Bowerbird.WinForms.Net48.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to using System.Collections.Generic;
-        ///using System.Diagnostics;
-        ///using System.IO;
-        ///using System.Windows.Forms;
-        ///using Ara3D.Bowerbird.Interfaces;
-        ///using Ara3D.Utils;
-        ///
-        ///namespace Ara3D.Bowerbird.WinForms.Net48.Samples
-        ///{
-        ///    public class HelloWorld : IBowerbirdCommand
-        ///    {
-        ///        public string Name =&gt; &quot;Hello World!&quot;;
-        ///
-        ///        public void Execute()
-        ///            =&gt; MessageBox.Show(Name);
-        ///    }
-        ///
-        ///    public class Counter : IBowerbirdCommand
-        ///    {
-        ///        public static int Count;
-        ///
-        ///        public strin [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string SampleCommands {
-            get {
-                return ResourceManager.GetString("SampleCommands", resourceCulture);
-            }
-        }
     }
 }

@@ -6,8 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Ara3D.ScriptService\Ara3D.ScriptService.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Services\Ara3D.Services.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 
 </Project>

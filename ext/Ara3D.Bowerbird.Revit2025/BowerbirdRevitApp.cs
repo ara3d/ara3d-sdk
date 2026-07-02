@@ -4,14 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using Ara3D.Bowerbird.Demo;
 using Ara3D.Domo;
 using Ara3D.Events;
 using Ara3D.Logging;
-using Ara3D.ScriptService;
 using Ara3D.Services;
 using Ara3D.Studio.Samples.Demos;
 using Ara3D.Utils;
@@ -30,8 +28,8 @@ namespace Ara3D.Bowerbird.Revit
 
         public UIControlledApplication UicApp { get; private set; }
         public UIApplication UiApp { get; private set; }
-        
-        public ScriptingOptions Options { get; private set; }
+
+        public BowerbirdOptions Options { get; private set; }
         public CommandExecutor CommandExecutor { get; set; }
 
         public BowerbirdService BowerbirdService { get; private set; }
@@ -56,11 +54,11 @@ namespace Ara3D.Bowerbird.Revit
 
         public static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            // TODO: upgrade this code for different Revit versions. 
+            // TODO: upgrade this code for different Revit versions.
             if (args.Name.Contains("Bowerbird.Revit") && !args.Name.Contains("resources"))
             {
-                // NOTE: this is horrible, but we have to do it. The assembly can't be found otherwise?! 
-                return typeof(BowerbirdRevitApp).Assembly;  
+                // NOTE: this is horrible, but we have to do it. The assembly can't be found otherwise?!
+                return typeof(BowerbirdRevitApp).Assembly;
             }
             return null;
         }
@@ -97,19 +95,18 @@ namespace Ara3D.Bowerbird.Revit
             // Store a reference to the UIApplication
             application.Idling += (sender, _) => { UiApp ??= sender as UIApplication; };
 
-            var rvtRibbonPanel = GetOrCreateRibbonPanel("Ara 3D"); 
-            var pushButtonData = new PushButtonData("Bowerbird", "Bowerbird\nC# Scripting", 
+            var rvtRibbonPanel = GetOrCreateRibbonPanel("Ara 3D");
+            var pushButtonData = new PushButtonData("Bowerbird", "Bowerbird\nC# Scripting",
                 Assembly.GetExecutingAssembly().Location,
                 typeof(BowerbirdExternalCommand).FullName);
-            // https://www.revitapidocs.com/2020/544c0af7-6124-4f64-a25d-46e81ac5300f.htm
             if (!(rvtRibbonPanel.AddItem(pushButtonData) is PushButton runButton))
                 return Result.Failed;
             runButton.LargeImage = BitmapToImageSource(GetImage());
-            runButton.ToolTip = "Compile and Load C# Scripts";
+            runButton.ToolTip = "Compile and run per-folder C# commands";
 
             const string AppName = "Bowerbird for Revit 2025";
-            var scriptsFolder = SpecialFolders.LocalApplicationData.RelativeFolder(
-                "Ara 3D", AppName, "Scripts");
+            var commandsFolder = SpecialFolders.LocalApplicationData.RelativeFolder(
+                "Ara 3D", AppName, "Commands");
             var libsFolder = SpecialFolders.LocalApplicationData.RelativeFolder(
                 "Ara 3D", AppName, "Libraries");
 
@@ -118,32 +115,20 @@ namespace Ara3D.Bowerbird.Revit
             var rangeType = typeof(RangeAttribute);
             Debug.WriteLine($"{rangeType.Assembly.Location}");
 
-            Options = new ScriptingOptions(AppName, scriptsFolder, libsFolder);
+            Options = new BowerbirdOptions(AppName, commandsFolder, libsFolder);
             BowerbirdService = new BowerbirdService(Options, logger);
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-            try
-            {
-                BowerbirdService.Compile();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Compilation failed: {ex}");
-            }
-            
             return Result.Succeeded;
         }
 
         private void App_DocumentOpened(object sender, DocumentOpenedEventArgs e)
         {
             var autoRunScript = Environment.GetEnvironmentVariable(BOWERBIRD_AUTORUN_ONLOAD_ENV_VAR);
+            if (autoRunScript.IsNullOrWhiteSpace())
+                return;
 
-            if (autoRunScript != null)
-            {
-                var command = BowerbirdService.Commands.First(c => c.Name == autoRunScript);
-                if (command != null) 
-                    command.Execute(UiApp);
-            }
+            BowerbirdService.RunCommandByName(autoRunScript, UiApp, CommandExecutor);
         }
 
         public BowerbirdForm Window { get; private set; }
@@ -169,9 +154,8 @@ namespace Ara3D.Bowerbird.Revit
         public void Run(UIApplication application)
         {
             if (UiApp == null)
-            {
                 UiApp = application;
-            }
+
             GetOrCreateWindow(BowerbirdService);
         }
 
@@ -196,7 +180,7 @@ namespace Ara3D.Bowerbird.Revit
             => _repositories.Add(repository);
 
         public IEventBus EventBus { get; private set; }
-        
+
         public void OnError(ISubscriber sub, IEvent ev, Exception ex)
         {
             Debug.WriteLine($"Error occurred in {sub} processing {ev} with exception {ex}");

@@ -140,6 +140,7 @@
             this.listBoxCommands.Name = "listBoxCommands";
             this.listBoxCommands.Size = new System.Drawing.Size(168, 470);
             this.listBoxCommands.TabIndex = 2;
+            this.listBoxCommands.SelectedIndexChanged += new System.EventHandler(this.listBoxCommands_SelectedIndexChanged);
             this.listBoxCommands.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxCommands_MouseDoubleClick);
             // 
             // contextMenuStripCommands
@@ -249,7 +250,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage2.Size = new System.Drawing.Size(353, 474);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Errors";
+            this.tabPage2.Text = "Diagnostics";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // listBoxErrors
@@ -273,7 +274,7 @@
             this.tabPage6.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage6.Size = new System.Drawing.Size(353, 474);
             this.tabPage6.TabIndex = 3;
-            this.tabPage6.Text = "Types";
+            this.tabPage6.Text = "Compile Log";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // listBoxTypes
@@ -447,7 +448,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(115, 15);
             this.label1.TabIndex = 10;
-            this.label1.Text = "Source File Directory";
+            this.label1.Text = "Commands Directory";
             // 
             // textBoxSourceFiles
             // 
@@ -481,7 +482,7 @@
             this.RecompileButton.Name = "RecompileButton";
             this.RecompileButton.Size = new System.Drawing.Size(344, 30);
             this.RecompileButton.TabIndex = 7;
-            this.RecompileButton.Text = "Recompile now";
+            this.RecompileButton.Text = "Compile selected command";
             this.RecompileButton.UseVisualStyleBackColor = true;
             this.RecompileButton.Click += new System.EventHandler(this.RecompileButton_Click);
             // 

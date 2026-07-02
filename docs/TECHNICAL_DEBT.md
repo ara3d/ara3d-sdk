@@ -56,7 +56,7 @@ group, roughly highest-impact first.
 
 | Area / file | What | Why it matters |
 | --- | --- | --- |
-| `src/Ara3D.ScriptService/` | Legacy Roslyn scripting service, marked to move to Bowerbird, **yet referenced by the `Ara3D.SDK` meta-package** | Ships to consumers while documented as "do not depend on" — contradictory public surface |
+| `src/Ara3D.ScriptService/` | Legacy Roslyn scripting service; **Bowerbird no longer references it** (per-command compile in `ext/Ara3D.Bowerbird`), but it remains in the `Ara3D.SDK` meta-package | Candidate for removal from the meta-package once no other consumers depend on it |
 | `src/Ara3D.BimOpenSchema` packaging | Core BOS not in the meta-package; its IO lives in `ext/` | Consumers must discover and wire up projects manually; split increases release friction |
 | `ext/Ara3D.BimOpenSchema.IO/BosBfastSerializer.cs` | Serializer helpers sit in the IO project with a "move this somewhere" note | Blurs the line between the core BOS model and serialization utilities |
 | `src/Ara3D.Memory/` (`Ara3D.MemoryMappedFiles` namespace) | MMF helpers merged in from a deleted project but keep the old `Ara3D.MemoryMappedFiles` namespace | Callers `using Ara3D.MemoryMappedFiles;` to get types from `Ara3D.Memory` — confusing after consolidation |

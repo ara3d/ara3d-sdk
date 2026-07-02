@@ -1,0 +1,5 @@
+{
+  "displayName": "Counter",
+  "typeName": "Ara3D.Bowerbird.TestSamples.Counter.CounterCommand",
+  "description": "Shows how many times the command has run"
+}

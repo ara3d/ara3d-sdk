@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Samples\bin\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Ara3D.Bowerbird\Ara3D.Bowerbird.csproj" />
   </ItemGroup>
 

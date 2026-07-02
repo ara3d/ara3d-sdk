@@ -1,0 +1,5 @@
+{
+  "displayName": "Launch Debugger",
+  "typeName": "Ara3D.Bowerbird.TestSamples.LaunchDebugger.LaunchDebuggerCommand",
+  "description": "Breaks into the debugger"
+}

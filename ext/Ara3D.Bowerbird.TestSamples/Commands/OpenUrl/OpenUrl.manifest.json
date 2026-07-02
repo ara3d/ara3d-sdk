@@ -1,0 +1,5 @@
+{
+  "displayName": "Open URL",
+  "typeName": "Ara3D.Bowerbird.TestSamples.OpenUrl.OpenUrlCommand",
+  "description": "Opens ara3d.com in the default browser"
+}

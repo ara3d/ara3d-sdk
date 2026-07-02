@@ -1,0 +1,5 @@
+{
+  "displayName": "Echo",
+  "typeName": "Ara3D.Bowerbird.TestSamples.Echo.EchoCommand",
+  "description": "Writes a greeting to stdout"
+}

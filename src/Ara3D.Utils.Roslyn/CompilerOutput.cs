@@ -14,6 +14,7 @@ public class CompilerOutput
     public bool Success => EmitResult.Success;
     public FilePath OutputFilePath => Input.Options.OutputFile;
     public IEnumerable<string> Errors => EmitResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.ToString());
+    public IEnumerable<string> AllDiagnostics => EmitResult.Diagnostics.Select(d => d.ToString());
     public Dictionary<string, string> TypeToSourceMap { get; }
 
     public CompilerOutput(ParsedCompilerInput input, CSharpCompilation compilation, EmitResult emitResult)

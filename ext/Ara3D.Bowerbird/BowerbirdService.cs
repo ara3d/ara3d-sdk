@@ -2,78 +2,65 @@
 using Ara3D.Domo;
 using Ara3D.Events;
 using Ara3D.Logging;
-using Ara3D.ScriptService;
 using Ara3D.Services;
 using Ara3D.Utils;
+using Ara3D.Utils.Roslyn;
 
 namespace Ara3D.Bowerbird;
 
 /// <summary>
-/// This wraps the ScriptingService interface provided byt the Ara 3D SDK,
-/// which is unfortunately more complicated than it needs to be. 
+/// Manifest-driven command host: catalog scan and compile-on-run execution.
 /// </summary>
 public class BowerbirdService
     : IServiceManager, IEventErrorHandler
 {
-    private readonly List<INamedCommand> _commands = new();
     private readonly List<IRepository> _repositories = new();
     private readonly List<IService> _services = new();
-    public IReadOnlyList<INamedCommand> Commands => _commands;
+
+    public BowerbirdOptions Options { get; }
+    public CommandRunner Runner { get; }
+    public CommandCatalog Catalog { get; private set; }
+    public CommandRunResult LastResult { get; private set; }
     public IEventBus EventBus { get; }
-    public ScriptingService ScriptingService { get; }
-    public ScriptingOptions Options => ScriptingService.Options;
+    public ILogger Logger { get; set; }
 
-    public ILogger Logger
+    public event EventHandler CatalogChanged;
+
+    public BowerbirdService(BowerbirdOptions options, ILogger logger)
     {
-        get => ScriptingService.Logger;
-        set => ScriptingService.Logger = value;
-    }
-
-    public ScriptingDataModel ScriptingData => ScriptingService.Value;
-    public event EventHandler RecompilationEvent;
-
-    public BowerbirdService(ScriptingOptions options, ILogger logger)
-    {
+        Options = options;
+        Logger = logger ?? Logging.Logger.Debug;
         EventBus = new EventBus(this);
-        ScriptingService = new ScriptingService(this, logger ?? Logging.Logger.Debug, options);
-        ScriptingService.Repository.OnModelChanged(DataModelChanged);
+        Runner = new CommandRunner(options, Logger);
+        RefreshCatalog();
     }
 
-    public void DataModelChanged(IModel<ScriptingDataModel> model)
+    public void RefreshCatalog()
     {
-        try
-        {
-            UpdateCommands(model.Value);
-            RecompilationEvent?.Invoke(this, EventArgs.Empty);
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex);
-        }
+        Catalog = new CommandCatalog(Options.CommandsRoot, Logger);
+        CatalogChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void UpdateCommands(ScriptingDataModel model)
+    public CommandRunResult CompileCommand(CommandDescriptor descriptor, CancellationToken token = default)
+        => LastResult = Runner.Compile(descriptor, token);
+
+    public CommandRunResult RunCommand(
+        CommandDescriptor descriptor,
+        object parameter = null,
+        ICommandExecutor executor = null,
+        CancellationToken token = default)
+        => LastResult = Runner.Run(descriptor, parameter, executor, token);
+
+    public CommandRunResult RunCommandByName(
+        string displayNameOrFolder,
+        object parameter = null,
+        ICommandExecutor executor = null,
+        CancellationToken token = default)
     {
-        _commands.Clear();
-        if (!model.LoadSuccess)
-            return;
-        var commandTypes = ScriptingService.Types.Where(t => t.Type.ImplementsInterface(typeof(INamedCommand)));
-        foreach (var t in commandTypes)
-        {
-            try
-            {
-                var command = Activator.CreateInstance(t.Type);
-                if (command != null)
-                    _commands.Add(command as INamedCommand);
-                else
-                    Logger.Log($"Failed to create command from {t}, returned null");
-                _commands.Sort((c1, c2) => string.Compare(c1.Name, c2.Name, StringComparison.Ordinal));
-            }
-            catch (Exception ex)
-            {
-                Logger.Log($"Failed to create command from {t}, exception thrown {ex}");
-            }
-        }
+        var descriptor = Catalog.ResolveByName(displayNameOrFolder);
+        if (descriptor == null)
+            throw new InvalidOperationException($"Command not found: {displayNameOrFolder}");
+        return RunCommand(descriptor, parameter, executor, token);
     }
 
     public IReadOnlyList<IRepository> GetRepositories()
@@ -93,7 +80,4 @@ public class BowerbirdService
         Debugger.Break();
         Debug.WriteLine($"Error occurred in {sub} with event {ev}: {ex}");
     }
-
-    public void Compile()
-        => ScriptingService.Compile();
 }

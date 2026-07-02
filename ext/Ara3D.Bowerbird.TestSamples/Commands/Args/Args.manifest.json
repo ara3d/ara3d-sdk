@@ -1,0 +1,5 @@
+{
+  "displayName": "Args",
+  "typeName": "Ara3D.Bowerbird.TestSamples.Args.ArgsCommand",
+  "description": "Prints the host parameter passed to Execute"
+}

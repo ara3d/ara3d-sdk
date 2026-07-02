@@ -1,0 +1,5 @@
+{
+  "displayName": "HTTP Server",
+  "typeName": "Ara3D.Bowerbird.TestSamples.HttpServer.HttpServerCommand",
+  "description": "Starts a tiny web server and opens it in a browser"
+}
