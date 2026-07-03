@@ -17,6 +17,8 @@ public class CommandRunResult
     public Exception Exception { get; init; }
     public IReadOnlyList<string> Diagnostics { get; init; } = Array.Empty<string>();
     public FilePath CompileLogPath { get; init; }
+    public bool FromCache { get; init; }
+    public FilePath OutputDll { get; init; }
 
     public bool Success => CompileSuccess && LoadSuccess && ExecuteSuccess;
 }

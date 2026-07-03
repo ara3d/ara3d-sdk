@@ -245,7 +245,10 @@ namespace Ara3D.Utils
         }
 
         public static byte[] SHA256Hash(this FilePath filePath)
-            => SHA256.Create().ComputeHash(File.OpenRead(filePath));
+        {
+            using var stream = File.OpenRead(filePath);
+            return SHA256.Create().ComputeHash(stream);
+        }
 
         public static byte[] MD5Hash(this FilePath filePath)
             => MD5.Create().ComputeHash(File.OpenRead(filePath));

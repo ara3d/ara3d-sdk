@@ -9,6 +9,8 @@ namespace Ara3D.Bowerbird;
 /// </summary>
 public class CommandRunner
 {
+    readonly Dictionary<string, CachedCommand> _instanceCache = new(StringComparer.OrdinalIgnoreCase);
+
     public CommandCompiler Compiler { get; }
     public BowerbirdOptions Options { get; }
     public ILogger Logger { get; }
@@ -33,28 +35,49 @@ public class CommandRunner
         ICommandExecutor executor,
         CancellationToken token)
     {
-        CompilerOutput output = null;
+        CommandCompileResult compileResult = null;
         INamedCommand command = null;
         Exception exception = null;
 
         try
         {
-            output = Compiler.Compile(descriptor, Options, token: token);
-            CompilationLogWriter.Write(descriptor, output);
+            compileResult = Compiler.Compile(descriptor, Options, token: token);
+            CompilationLogWriter.Write(descriptor, compileResult);
 
-            if (output == null || !output.Success)
+            var compileSuccess = compileResult.FromCache || compileResult.Compilation?.Success == true;
+            if (!compileSuccess)
             {
                 return new CommandRunResult
                 {
                     Descriptor = descriptor,
                     CompileSuccess = false,
-                    Compilation = output,
-                    Diagnostics = output?.AllDiagnostics.ToList() ?? [],
+                    Compilation = compileResult.Compilation,
+                    Diagnostics = compileResult.Compilation?.AllDiagnostics.ToList() ?? [],
                     CompileLogPath = descriptor.CompileLogPath,
+                    FromCache = compileResult.FromCache,
+                    OutputDll = compileResult.OutputDll,
                 };
             }
 
-            command = CommandLoader.Load(output.OutputFilePath, descriptor.Manifest.TypeName);
+            if (compileSuccess)
+            {
+                if (_instanceCache.TryGetValue(descriptor.FolderName, out var cached)
+                    && cached.Fingerprint == compileResult.CacheKey.Fingerprint
+                    && cached.OutputDll == compileResult.OutputDll)
+                {
+                    command = cached.Command;
+                }
+                else
+                {
+                    command = CommandLoader.Load(compileResult.OutputDll, descriptor.Manifest.TypeName);
+                    _instanceCache[descriptor.FolderName] = new CachedCommand
+                    {
+                        Fingerprint = compileResult.CacheKey.Fingerprint,
+                        OutputDll = compileResult.OutputDll,
+                        Command = command,
+                    };
+                }
+            }
 
             if (!execute)
             {
@@ -64,10 +87,12 @@ public class CommandRunner
                     CompileSuccess = true,
                     LoadSuccess = true,
                     ExecuteSuccess = true,
-                    Compilation = output,
+                    Compilation = compileResult.Compilation,
                     Command = command,
-                    Diagnostics = output.AllDiagnostics.ToList(),
+                    Diagnostics = compileResult.Compilation?.AllDiagnostics.ToList() ?? [],
                     CompileLogPath = descriptor.CompileLogPath,
+                    FromCache = compileResult.FromCache,
+                    OutputDll = compileResult.OutputDll,
                 };
             }
 
@@ -82,30 +107,42 @@ public class CommandRunner
                 CompileSuccess = true,
                 LoadSuccess = true,
                 ExecuteSuccess = true,
-                Compilation = output,
+                Compilation = compileResult.Compilation,
                 Command = command,
-                Diagnostics = output.AllDiagnostics.ToList(),
+                Diagnostics = compileResult.Compilation?.AllDiagnostics.ToList() ?? [],
                 CompileLogPath = descriptor.CompileLogPath,
+                FromCache = compileResult.FromCache,
+                OutputDll = compileResult.OutputDll,
             };
         }
         catch (Exception ex)
         {
             exception = ex;
             Logger?.LogError(ex);
-            CompilationLogWriter.Write(descriptor, output, ex);
+            if (compileResult != null)
+                CompilationLogWriter.Write(descriptor, compileResult, ex);
 
             return new CommandRunResult
             {
                 Descriptor = descriptor,
-                CompileSuccess = output?.Success ?? false,
+                CompileSuccess = compileResult is { FromCache: true } || compileResult?.Compilation?.Success == true,
                 LoadSuccess = command != null,
                 ExecuteSuccess = false,
-                Compilation = output,
+                Compilation = compileResult?.Compilation,
                 Command = command,
                 Exception = ex,
-                Diagnostics = output?.AllDiagnostics.ToList() ?? [],
+                Diagnostics = compileResult?.Compilation?.AllDiagnostics.ToList() ?? [],
                 CompileLogPath = descriptor.CompileLogPath,
+                FromCache = compileResult?.FromCache ?? false,
+                OutputDll = compileResult != null ? compileResult.OutputDll : default,
             };
         }
+    }
+
+    readonly struct CachedCommand
+    {
+        public string Fingerprint { get; init; }
+        public FilePath OutputDll { get; init; }
+        public INamedCommand Command { get; init; }
     }
 }

@@ -11,22 +11,28 @@ public static class CompilationLogWriter
 {
     public const string LogFileName = "compile.log";
 
-    public static void Write(CommandDescriptor descriptor, CompilerOutput output, Exception exception = null)
+    public static void Write(CommandDescriptor descriptor, CommandCompileResult result, Exception exception = null)
     {
         descriptor.OutputFolder.Create();
         var logPath = descriptor.CompileLogPath;
         var sb = new StringBuilder();
         sb.AppendLine($"Compiled at {DateTime.Now:O}");
-        sb.AppendLine($"Output: {output?.OutputFilePath ?? descriptor.OutputDll}");
+        sb.AppendLine($"Cache hit: {result.FromCache}");
+        sb.AppendLine($"Fingerprint: {result.CacheKey.Fingerprint}");
+        sb.AppendLine($"Output: {result.OutputDll}");
         sb.AppendLine("Source files:");
         foreach (var file in descriptor.SourceFiles)
             sb.AppendLine($"  {file}");
 
-        if (output != null)
+        if (result.Compilation != null)
         {
-            sb.AppendLine($"Success: {output.Success}");
-            foreach (var diagnostic in output.AllDiagnostics)
+            sb.AppendLine($"Success: {result.Compilation.Success}");
+            foreach (var diagnostic in result.Compilation.AllDiagnostics)
                 sb.AppendLine(diagnostic);
+        }
+        else if (result.FromCache)
+        {
+            sb.AppendLine("Success: True");
         }
 
         if (exception != null)

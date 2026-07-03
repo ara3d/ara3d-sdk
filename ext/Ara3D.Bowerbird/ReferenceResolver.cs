@@ -38,6 +38,19 @@ public class ReferenceResolver
         return refs.Distinct().ToList();
     }
 
+    /// <summary>refs.txt entries and per-folder/global Libraries only — stable for compile-cache fingerprints.</summary>
+    public IReadOnlyList<FilePath> ResolveFingerprintRefs(
+        DirectoryPath commandFolder,
+        DirectoryPath globalLibrariesFolder)
+    {
+        var refs = new List<FilePath>();
+        AddRefsFromFile(commandFolder, refs, GetLoadedAssemblies());
+        AddFolderLibraries(commandFolder.RelativeFolder(LibrariesFolderName), refs);
+        if (globalLibrariesFolder != null)
+            AddFolderLibraries(globalLibrariesFolder, refs);
+        return refs.Distinct().ToList();
+    }
+
     static IReadOnlyList<FilePath> GetLoadedAssemblies()
         => FilterCommandReferences(RoslynUtils.LoadedAssemblyLocations()).ToList();
 
@@ -98,9 +111,15 @@ public class ReferenceResolver
                 continue;
             if (ExcludedHostAssemblyNames.Contains(fp.GetFileNameWithoutExtension()))
                 continue;
+            if (IsCommandBinOutput(fp))
+                continue;
             yield return fp;
         }
     }
+
+    static bool IsCommandBinOutput(FilePath fp)
+        => fp.HasExtension(".dll")
+            && fp.GetDirectory().GetFolderName().Equals(CommandCompiler.BinaryFolderName, StringComparison.OrdinalIgnoreCase);
 
     static FilePath GetEntryAssemblyPath()
     {

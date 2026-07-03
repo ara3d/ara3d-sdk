@@ -10,6 +10,7 @@ public class BowerbirdOptions
     public string AppName { get; }
     public DirectoryPath CommandsRoot { get; }
     public DirectoryPath LibrariesFolder { get; }
+    public bool EnableCompileCache { get; init; } = true;
 
     public BowerbirdOptions(string appName, DirectoryPath commandsRoot)
         : this(appName, commandsRoot, "") { }

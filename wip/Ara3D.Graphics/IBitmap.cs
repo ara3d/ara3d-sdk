@@ -1,6 +1,4 @@
-﻿using Ara3D.Mathematics;
-
-namespace Ara3D.Graphics
+﻿namespace Ara3D.Graphics
 {
     public interface IBitmap
     {

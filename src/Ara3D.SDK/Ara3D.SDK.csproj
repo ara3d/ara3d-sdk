@@ -59,7 +59,6 @@
     <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
     <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
-    <ProjectReference Include="..\Ara3D.ScriptService\Ara3D.ScriptService.csproj" />
     <ProjectReference Include="..\Ara3D.Services\Ara3D.Services.csproj" />
     <ProjectReference Include="..\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
     <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
