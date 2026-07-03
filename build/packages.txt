@@ -23,9 +23,9 @@ src\Ara3D.Studio.API\Ara3D.Studio.API.csproj
 src\Ara3D.Utils\Ara3D.Utils.csproj
 src\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj
 src\Ara3D.WorkItems\Ara3D.WorkItems.csproj
+ext\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj
+ext\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj
 src\Ara3D.SDK.Core\Ara3D.SDK.Core.csproj
 src\Ara3D.SDK.Geometry\Ara3D.SDK.Geometry.csproj
 src\Ara3D.SDK.IO\Ara3D.SDK.IO.csproj
-src\Ara3D.SDK.BIM\Ara3D.SDK.BIM.csproj
-src\Ara3D.SDK.Studio\Ara3D.SDK.Studio.csproj
 src\Ara3D.SDK\Ara3D.SDK.csproj

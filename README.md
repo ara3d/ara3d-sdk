@@ -41,7 +41,8 @@ pack.bat
 ```
 
 Packages are written to [`artifacts/`](artifacts/) (gitignored). The pack list is
-[`build/packages.txt`](build/packages.txt). Release workflow:
+[`build/packages.txt`](build/packages.txt). Dependency diagrams:
+[`docs/PACKAGES.md`](docs/PACKAGES.md). Release workflow:
 [`docs/NUGET_RELEASE.md`](docs/NUGET_RELEASE.md).
 
 ### Meta-package hierarchy
@@ -54,20 +55,16 @@ Ara3D.SDK  (net8.0-windows — full Windows stack)
 ├── Ara3D.SDK.Core
 ├── Ara3D.SDK.Geometry
 ├── Ara3D.SDK.IO
-├── Ara3D.SDK.BIM
-├── Ara3D.SDK.Studio
-├── Ara3D.Utils.Wpf          (ext/)
-└── Ara3D.IfcLoader          (ext/)
+├── Ara3D.Studio.API
+└── Ara3D.Utils.Wpf          (ext/)
 ```
 
 | Meta-package | TFM | Use when |
 | --- | --- | --- |
 | [Ara3D.SDK.Core](src/Ara3D.SDK.Core) | `net8.0` | Minimal cross-platform foundation |
 | [Ara3D.SDK.Geometry](src/Ara3D.SDK.Geometry) | `net8.0` | Meshes, models, SIMD math |
-| [Ara3D.SDK.IO](src/Ara3D.SDK.IO) | `net8.0` | File format read/write |
-| [Ara3D.SDK.BIM](src/Ara3D.SDK.BIM) | `net8.0-windows` | BIM Open Schema model and IO |
-| [Ara3D.SDK.Studio](src/Ara3D.SDK.Studio) | `net8.0` | Studio flow graph and Roslyn helpers |
-| [Ara3D.SDK](src/Ara3D.SDK) | `net8.0-windows` | Everything above plus WPF and IFC |
+| [Ara3D.SDK.IO](src/Ara3D.SDK.IO) | `net8.0-windows` | File formats, BOS, and IFC conversion |
+| [Ara3D.SDK](src/Ara3D.SDK) | `net8.0-windows` | Everything above plus Studio API and WPF |
 
 ### What each meta-package includes
 
@@ -80,21 +77,17 @@ Ara3D.SDK  (net8.0-windows — full Windows stack)
 
 **Ara3D.SDK.IO** — `Ara3D.IO.BFAST`, `Ara3D.IO.G3D`, `Ara3D.IO.GeoJson`,
 `Ara3D.IO.GltfExporter`, `Ara3D.IO.PLY`, `Ara3D.IO.SharpGLTF`, `Ara3D.IO.StepParser`,
-`Ara3D.IO.VIM`
+`Ara3D.IO.VIM`, `Ara3D.BimOpenSchema`, `Ara3D.BimOpenSchema.IO`, `Ara3D.IfcLoader`
 
-**Ara3D.SDK.BIM** — `Ara3D.BimOpenSchema`, `Ara3D.BimOpenSchema.IO`
-
-**Ara3D.SDK.Studio** — `Ara3D.PropKit`, `Ara3D.Studio.API`, `Ara3D.Utils.Roslyn`,
-`Ara3D.WorkItems`
-
-**Ara3D.SDK** — all five meta-packages above, plus `Ara3D.Utils.Wpf` and `Ara3D.IfcLoader`
+**Ara3D.SDK** — all three meta-packages above, plus `Ara3D.Studio.API` and `Ara3D.Utils.Wpf`
 from `ext/`.
 
 ### Individual library packages
 
-Every library listed above is also published on its own (same version). You can reference
-individual packages instead of a meta-package when you want a smaller dependency graph.
-Project descriptions and links: [`src/README.md`](src/README.md).
+Every library listed above is also published on its own (same version). Windows extensions
+`Ara3D.IfcLoader` and `Ara3D.Utils.Wpf` from [`ext/`](ext/) are published separately as well.
+You can reference individual packages instead of a meta-package when you want a smaller
+dependency graph. Project descriptions and links: [`src/README.md`](src/README.md).
 
 Note: `Ara3D.IO.SharpGLTF` is the NuGet package ID; the assembly name remains `SharpGLTF.Core`
 for upstream API compatibility.

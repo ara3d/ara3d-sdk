@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
   	<UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <Description>WPF and WinForms helpers for Ara 3D SDK desktop applications.</Description>
   </PropertyGroup>
 
   <ItemGroup>

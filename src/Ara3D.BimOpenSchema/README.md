@@ -13,7 +13,7 @@ A typical workflow is to ingest BOS into DuckDB and build denormalized views wit
 specific use case.
 
 Serialization to disk is provided by [`Ara3D.BimOpenSchema.IO`](../Ara3D.BimOpenSchema.IO).
-Included in the [`Ara3D.SDK.BIM`](../Ara3D.SDK.BIM) and [`Ara3D.SDK`](../Ara3D.SDK) meta-packages.
+Included in the [`Ara3D.SDK.IO`](../Ara3D.SDK.IO) and [`Ara3D.SDK`](../Ara3D.SDK) meta-packages.
 
 Current schema version: **0.3** (`Manifest.CurrentVersion`).
 

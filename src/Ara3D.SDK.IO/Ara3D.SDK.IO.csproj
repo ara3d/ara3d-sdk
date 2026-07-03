@@ -1,12 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Description>Input/output format packages for Ara 3D SDK applications.</Description>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Description>File format, BIM Open Schema, and IFC conversion packages for Ara 3D SDK applications.</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageType>Dependency</PackageType>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj" />
+    <ProjectReference Include="..\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
     <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.IO.BFAST.csproj" />
     <ProjectReference Include="..\Ara3D.IO.G3D\Ara3D.IO.G3D.csproj" />
     <ProjectReference Include="..\Ara3D.IO.GeoJson\Ara3D.IO.GeoJson.csproj" />
@@ -15,5 +17,6 @@
     <ProjectReference Include="..\Ara3D.IO.SharpGLTF\Ara3D.IO.SharpGLTF.csproj" />
     <ProjectReference Include="..\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" />
     <ProjectReference Include="..\Ara3D.IO.VIM\Ara3D.IO.VIM.csproj" />
+    <ProjectReference Include="..\..\ext\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
   </ItemGroup>
 </Project>

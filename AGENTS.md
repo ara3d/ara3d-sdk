@@ -138,8 +138,9 @@ file on every call, cache the buffer" is useful.
 ## 7. Dependencies
 
 - The core `Ara3D.SDK` libraries in `src/` are .NET 8. Cross-platform consumers should use
-  `Ara3D.SDK.Core`, `Ara3D.SDK.Geometry`, or `Ara3D.SDK.IO`. The full `Ara3D.SDK` meta-package
-  targets `net8.0-windows` and includes Windows extensions from `ext/`.
+  `Ara3D.SDK.Core` or `Ara3D.SDK.Geometry`. File formats, BOS, and IFC are in `Ara3D.SDK.IO`
+  (`net8.0-windows`). The full `Ara3D.SDK` meta-package targets `net8.0-windows` and includes
+  Windows extensions from `ext/`.
 - **Do not add a NuGet dependency to a `src/` project** to save yourself a little code. Prefer
   writing a small helper. If a dependency is genuinely warranted, stop and propose it first.
 - Windows-only or heavier-dependency code belongs in `ext/`. Plug-ins and host apps belong in

@@ -13,9 +13,16 @@ public static class TestPaths
             var start = new FilePath(typeof(TestPaths).Assembly.Location).GetDirectory();
             foreach (var dir in start.GetSelfAndAncestors())
             {
-                var candidate = dir.RelativeFolder(@"ext\Ara3D.Bowerbird.TestSamples\Commands");
-                if (candidate.Exists())
-                    return candidate;
+                foreach (var relativePath in new[]
+                {
+                    @"plugins\Ara3D.Bowerbird.TestSamples\Commands",
+                    @"ext\Ara3D.Bowerbird.TestSamples\Commands",
+                })
+                {
+                    var candidate = dir.RelativeFolder(relativePath);
+                    if (candidate.Exists())
+                        return candidate;
+                }
             }
 
             throw new DirectoryNotFoundException("Could not find TestSamples Commands folder from test assembly location.");

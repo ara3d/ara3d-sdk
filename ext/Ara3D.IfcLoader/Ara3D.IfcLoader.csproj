@@ -6,12 +6,16 @@
     <Nullable>enable</Nullable>
     <PlatformTarget>x64</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Description>IFC to BIM Open Schema conversion via the native web-ifc library.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="../../vendor/web-ifc-library.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Link>web-ifc-library.dll</Link>
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/any/any</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
     </None>
   </ItemGroup>
 

@@ -145,7 +145,7 @@ exit /b 0
 echo   https://www.nuget.org/packages/Ara3D.SDK/%VERSION%
 echo   https://www.nuget.org/packages/Ara3D.Collections/%VERSION%
 echo   https://www.nuget.org/packages/Ara3D.Geometry/%VERSION%
-echo   https://www.nuget.org/packages/Ara3D.SDK.BIM/%VERSION%
+echo   https://www.nuget.org/packages/Ara3D.SDK.IO/%VERSION%
 exit /b 0
 
 :Usage

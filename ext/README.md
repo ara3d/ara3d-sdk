@@ -1,7 +1,8 @@
 # ext — Windows-only SDK extensions
 
 Projects here depend on Windows APIs, native Windows binaries, or WPF/WinForms. They are
-packaged as part of the SDK where noted, but are not cross-platform.
+published as individual NuGet packages and included in the `Ara3D.SDK.IO` / `Ara3D.SDK`
+meta-packages where noted.
 
 | Project | Role |
 | --- | --- |

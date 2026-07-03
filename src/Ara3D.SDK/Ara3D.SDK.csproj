@@ -4,7 +4,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>Convenience meta-package: core, geometry, IO, BIM, Studio, and Windows SDK libraries.</Description>
+    <Description>Convenience meta-package: core, geometry, IO, Studio API, and Windows SDK libraries.</Description>
     <PackageProjectUrl>https://github.com/ara3d/ara3d-sdk</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ara3d/ara3d-sdk</RepositoryUrl>
     <Copyright>Copyright (c) Ara 3D Inc 2026, Licensed under MIT License</Copyright>
@@ -43,9 +43,7 @@
     <ProjectReference Include="..\Ara3D.SDK.Core\Ara3D.SDK.Core.csproj" />
     <ProjectReference Include="..\Ara3D.SDK.Geometry\Ara3D.SDK.Geometry.csproj" />
     <ProjectReference Include="..\Ara3D.SDK.IO\Ara3D.SDK.IO.csproj" />
-    <ProjectReference Include="..\Ara3D.SDK.BIM\Ara3D.SDK.BIM.csproj" />
-    <ProjectReference Include="..\Ara3D.SDK.Studio\Ara3D.SDK.Studio.csproj" />
-    <ProjectReference Include="..\..\ext\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
+    <ProjectReference Include="..\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
     <ProjectReference Include="..\..\ext\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
   </ItemGroup>
 </Project>

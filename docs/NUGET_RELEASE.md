@@ -32,7 +32,7 @@ Set environment variables (or rely on defaults in `publish-nuget.bat` on your ma
 Review per-project `<Version>` overrides (e.g. `src\Ara3D.BimOpenSchema.IO`) before publishing.
 
 Meta-packages: `Ara3D.SDK` (full Windows stack), `Ara3D.SDK.Core`, `Ara3D.SDK.Geometry`,
-`Ara3D.SDK.IO`, `Ara3D.SDK.BIM`, `Ara3D.SDK.Studio`. See [`src/README.md`](../src/README.md).
+`Ara3D.SDK.IO`. See [`src/README.md`](../src/README.md).
 
 ## Integration tests
 

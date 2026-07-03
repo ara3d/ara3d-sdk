@@ -15,10 +15,8 @@ optional integrations live in [`../apps`](../apps), [`../plugins`](../plugins), 
 | --- | --- | --- |
 | [Ara3D.SDK.Core](Ara3D.SDK.Core) | `net8.0` | Low-level cross-platform foundation (Utils, Logging, Memory, Collections, …) |
 | [Ara3D.SDK.Geometry](Ara3D.SDK.Geometry) | `net8.0` | Geometry and modeling stack (Geometry, Models, F8, Memory, Utils) |
-| [Ara3D.SDK.IO](Ara3D.SDK.IO) | `net8.0` | File format libraries (BFAST, VIM, PLY, glTF, GeoJSON, STEP, …) |
-| [Ara3D.SDK.BIM](Ara3D.SDK.BIM) | `net8.0-windows` | BIM Open Schema model + IO (includes IFC conversion via `ext/`) |
-| [Ara3D.SDK.Studio](Ara3D.SDK.Studio) | `net8.0` | Studio API, PropKit, Roslyn helpers, WorkItems |
-| [Ara3D.SDK](Ara3D.SDK) | `net8.0-windows` | **All of the above** plus `Ara3D.Utils.Wpf` and `Ara3D.IfcLoader` |
+| [Ara3D.SDK.IO](Ara3D.SDK.IO) | `net8.0-windows` | File formats, BOS, and IFC conversion |
+| [Ara3D.SDK](Ara3D.SDK) | `net8.0-windows` | **All of the above** plus `Ara3D.Studio.API` and `Ara3D.Utils.Wpf` |
 
 Use `Ara3D.SDK.Core` or `Ara3D.SDK.Geometry` when you need a minimal, cross-platform reference.
 Use `Ara3D.SDK` on Windows when you want one package for almost any task.

@@ -186,18 +186,11 @@ public class IfcToBosConverter
 
             var attributes = ifcEntityPrototype.Attributes;
             
-            var name = e.GetEntityName();
             var gid = "";
+            if (attributes.Length > 0 && attributes[0].Name == "GlobalId")
+                gid = e.GetString(0);
 
-            if (attributes.Length > 2)
-            {
-                // Most have the following. 
-                // GlobalId, OwnerHistory, Name
-                if (attributes[0].Name == "GlobalId")
-                    gid = e.GetString(0);
-                if (attributes[2].Name == "Name")
-                    name = e.GetString(2).DecodeIfc();
-            }
+            var name = e.GetEntityLabel().DecodeIfc();
 
             if (TypeRelations.InstancesToTypes.TryGetValue(id, out var typeId))
                 typeEi = GetBosEntityIndexFromIfc(typeId);
@@ -206,10 +199,19 @@ public class IfcToBosConverter
             var ei = BimDataBuilder.AddEntity(id, gid, _docIndex, name, catEi, typeEi);
             IfcIdToBosId.Add(id, ei);
 
+            if (e.GetEntityName() == "IFCSPACE")
+            {
+                var roomNumber = e.GetStringOrEmpty(2).DecodeIfc();
+                if (!string.IsNullOrEmpty(roomNumber))
+                    BimDataBuilder.AddParameter(ei, roomNumber, "Ifc:Room:Number", "", e.GetEntityName());
+            }
+
             // Additional attributes are added as properties. 
             for (var i=3; i < attributes.Length; i++)
             {
-                ProcessAttributeAsProp(e, attributes[i], ei);
+                if (i >= e.Attributes.Count)
+                    break;
+                ProcessAttributeAsProp(e, attributes[i], i, ei);
             }
 
         }
@@ -393,12 +395,12 @@ public class IfcToBosConverter
     public static string ToIfcStdPropName(string name)
         => $"Ifc:{name}";
 
-    private void ProcessAttributeAsProp(IfcEntity entity, IfcAttribute attribute, EntityIndex bosId)
+    private void ProcessAttributeAsProp(IfcEntity entity, IfcAttribute attribute, int attributeIndex, EntityIndex bosId)
     {
         var name = attribute.Name;
         if (name == "GlobalId" || name == "OwnerHistory" || name == "Name")
             return;
-        var val = entity.GetAttribute(attribute.Index);
+        var val = entity.GetAttribute(attributeIndex);
         if (val.IsUnassignedOrRedeclared)
             return;
 
