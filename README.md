@@ -51,72 +51,64 @@ that fits your app:
 
 ```
 Ara3D.SDK  (net8.0-windows — full Windows stack)
-├── Ara3D.SDK.Core
-├── Ara3D.SDK.Geometry
-├── Ara3D.SDK.IO
-├── Ara3D.Studio.API
-└── Ara3D.Utils.Wpf          (ext/)
+├── Ara3D.SDK.Core            net8.0 — cross-platform foundation
+├── Ara3D.SDK.Geometry        net8.0 — meshes, models, SIMD math
+├── Ara3D.SDK.IO              net8.0-windows — file formats, BOS, IFC
+├── Ara3D.Studio.API          Studio plug-in API
+└── Ara3D.Utils.Wpf           WPF helpers (ext/)
 ```
 
-| Meta-package | TFM | Use when |
-| --- | --- | --- |
-| [Ara3D.SDK.Core](src/Ara3D.SDK.Core) | `net8.0` | Minimal cross-platform foundation |
-| [Ara3D.SDK.Geometry](src/Ara3D.SDK.Geometry) | `net8.0` | Meshes, models, SIMD math |
-| [Ara3D.SDK.IO](src/Ara3D.SDK.IO) | `net8.0-windows` | File formats, BOS, and IFC conversion |
-| [Ara3D.SDK](src/Ara3D.SDK) | `net8.0-windows` | Everything above plus Studio API and WPF |
+Each library below is also published on its own at the same version. Per-project READMEs:
+[`src/README.md`](src/README.md).
 
-Each meta-package pulls in the library projects below (every library is also published on its
-own at the same version):
+**Ara3D.SDK.Core** (`net8.0`)
 
-```
-Ara3D.SDK.Core  (net8.0 — cross-platform foundation)
-├── Ara3D.Collections
-├── Ara3D.DataTable
-├── Ara3D.Events
-├── Ara3D.F8
-├── Ara3D.Logging
-├── Ara3D.Memory
-├── Ara3D.PropKit
-├── Ara3D.Utils
-├── Ara3D.Utils.Roslyn
-└── Ara3D.WorkItems
-```
+| Package | Description |
+| --- | --- |
+| `Ara3D.Collections` | Read-only list views, sparse matrices, LINQ helpers |
+| `Ara3D.DataTable` | Columnar in-memory data interfaces |
+| `Ara3D.Events` | Thread-safe event bus |
+| `Ara3D.F8` | SIMD (`AVX`) 8-wide float math |
+| `Ara3D.Logging` | Logging, progress, and job management |
+| `Ara3D.Memory` | Aligned buffers, slices, memory-mapped file views |
+| `Ara3D.PropKit` | Runtime property descriptors for UI binding |
+| `Ara3D.Utils` | Paths, zip, profiling, and general utilities |
+| `Ara3D.Utils.Roslyn` | Roslyn compilation helpers |
+| `Ara3D.WorkItems` | Background work-item queues |
 
-```
-Ara3D.SDK.Geometry  (net8.0 — meshes, models, SIMD math)
-├── Ara3D.Collections
-├── Ara3D.F8
-├── Ara3D.Geometry
-├── Ara3D.Memory
-├── Ara3D.Models
-└── Ara3D.Utils
-```
+**Ara3D.SDK.Geometry** (`net8.0`)
 
-```
-Ara3D.SDK.IO  (net8.0-windows — file formats, BOS, IFC)
-├── Ara3D.IO.BFAST
-├── Ara3D.IO.G3D
-├── Ara3D.IO.GeoJson
-├── Ara3D.IO.GltfExporter
-├── Ara3D.IO.PLY
-├── Ara3D.IO.SharpGLTF
-├── Ara3D.IO.StepParser
-├── Ara3D.IO.VIM
-├── Ara3D.BimOpenSchema
-├── Ara3D.BimOpenSchema.IO
-└── Ara3D.IfcLoader          (ext/)
-```
+| Package | Description |
+| --- | --- |
+| `Ara3D.Collections` | Read-only list views, sparse matrices, LINQ helpers |
+| `Ara3D.F8` | SIMD (`AVX`) 8-wide float math |
+| `Ara3D.Geometry` | Meshes, topology, SDFs, voxels, spatial queries |
+| `Ara3D.Memory` | Aligned buffers, slices, memory-mapped file views |
+| `Ara3D.Models` | Scene models, instances, render buffers |
+| `Ara3D.Utils` | Paths, zip, profiling, and general utilities |
 
-`Ara3D.SDK` adds no libraries of its own — it references all three meta-packages above plus
-`Ara3D.Studio.API` and `Ara3D.Utils.Wpf` from [`ext/`](ext/).
+**Ara3D.SDK.IO** (`net8.0-windows`)
 
-### Individual library packages
+| Package | Description |
+| --- | --- |
+| `Ara3D.IO.BFAST` | Binary Format for Array Serialization and Transmission |
+| `Ara3D.IO.G3D` | G3D geometry exchange format (BFAST container) |
+| `Ara3D.IO.GeoJson` | GeoJSON and IMDF indoor mapping |
+| `Ara3D.IO.GltfExporter` | glTF/GLB export |
+| `Ara3D.IO.PLY` | PLY mesh import/export |
+| `Ara3D.IO.SharpGLTF` | glTF/GLB import and manipulation (assembly: `SharpGLTF.Core`) |
+| `Ara3D.IO.StepParser` | ISO STEP file tokenizer and parser |
+| `Ara3D.IO.VIM` | VIM BIM binary format |
+| `Ara3D.BimOpenSchema` | BIM Open Schema object model |
+| `Ara3D.BimOpenSchema.IO` | Parquet/DuckDB/Excel serialization and IFC import |
+| `Ara3D.IfcLoader` | IFC → BOS conversion (`ext/`) |
 
-Reference a single library instead of a meta-package when you want a smaller dependency graph.
-Project descriptions and links: [`src/README.md`](src/README.md).
+**Ara3D.SDK** (`net8.0-windows`) — all three meta-packages above, plus:
 
-Note: `Ara3D.IO.SharpGLTF` is the NuGet package ID; the assembly name remains `SharpGLTF.Core`
-for upstream API compatibility.
+| Package | Description |
+| --- | --- |
+| `Ara3D.Studio.API` | Flow graph, assets, and modifier pipeline types |
+| `Ara3D.Utils.Wpf` | WPF helpers (`ext/`) |
 
 ### Not published to NuGet
 
