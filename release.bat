@@ -10,10 +10,10 @@ set CONFIG=%1
 if "%CONFIG%"=="" set CONFIG=Release
 
 echo Building supported SDK packages (%CONFIG%) ...
-dotnet build "%ROOT%src\Ara3D.SDK\Ara3D.SDK.csproj" -c %CONFIG%
+dotnet build "%ROOT%src\Ara3D.SDK\Ara3D.SDK.csproj" -c %CONFIG% -m
 if errorlevel 1 exit /b %ERRORLEVEL%
 
-dotnet build "%ROOT%ext\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" -c %CONFIG%
+dotnet build "%ROOT%src\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" -c %CONFIG% -m
 if errorlevel 1 exit /b %ERRORLEVEL%
 
 echo.
@@ -31,5 +31,5 @@ call "%ROOT%test.bat" devtools
 if errorlevel 1 exit /b %ERRORLEVEL%
 
 echo.
-call "%ROOT%pack.bat" %CONFIG%
+call "%ROOT%pack.bat" %CONFIG% nobuild
 exit /b %ERRORLEVEL%

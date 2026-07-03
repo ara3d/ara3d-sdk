@@ -1,7 +1,9 @@
 # NuGet package dependencies
 
-Published packages are listed in [`build/packages.txt`](../build/packages.txt). All share the
-version in [`Directory.Build.props`](../Directory.Build.props). Pack with `pack.bat`; see
+Published packages are listed in [`build/packages.txt`](../build/packages.txt). That manifest
+includes **`src/` and `ext/` library projects only** — never `toolchain/`, `plugins/`, `apps/`,
+or other repo folders. All listed packages share the version in
+[`Directory.Build.props`](../Directory.Build.props). Pack with `pack.bat`; see
 [`NUGET_RELEASE.md`](NUGET_RELEASE.md).
 
 Arrows in the diagrams below point from a package **to what it depends on**.
@@ -155,10 +157,13 @@ Per-project descriptions: [`src/README.md`](../src/README.md).
 
 ## Not published to NuGet
 
-Built locally but excluded from meta-packages and [`build/packages.txt`](../build/packages.txt):
+Built locally but excluded from meta-packages and [`build/packages.txt`](../build/packages.txt).
+Projects under these folders set `IsPackable=false` (see `toolchain/Directory.Build.props`).
 
-- [`plugins/`](../plugins/) — Bowerbird, Revit add-ins
-- [`apps/`](../apps/) — BOS Browser
-- [`integrations/`](../integrations/) — Assimp loader
-- [`wip/`](../wip/) — work in progress
-- [`toolchain/`](../toolchain/) — dev tools and Plato experiments
+| Folder | Examples | Notes |
+| --- | --- | --- |
+| [`toolchain/`](../toolchain/) | Parakeet, Plato, IfcTypeGen | Dev/codegen tools; Parakeet is **not** packed from this repo |
+| [`plugins/`](../plugins/) | Bowerbird, Revit add-ins | Host plug-ins |
+| [`apps/`](../apps/) | BOS Browser | Standalone apps |
+| [`integrations/`](../integrations/) | Assimp loader | Optional adapters |
+| [`wip/`](../wip/) | Domo | Work in progress |

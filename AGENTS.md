@@ -146,6 +146,8 @@ file on every call, cache the buffer" is useful.
 - Windows-only or heavier-dependency code belongs in `ext/`. Plug-ins and host apps belong in
   `plugins/` and `apps/`. Optional third-party adapters belong in `integrations/`.
 - New standalone tools belong in `toolchain/`; tests and dev utilities in `tests/`.
+- **`toolchain/` is never NuGet-packed** — `toolchain/Directory.Build.props` sets `IsPackable=false`;
+  only projects in `build/packages.txt` (`src/` and `ext/`) are published.
 
 ---
 
@@ -199,7 +201,7 @@ Match the test scope to the blast radius of the change:
 
 - **Tiny / highly localized change** (a single function/file, no public signature change):
   run just the matching area, skip slow file-I/O tests, and narrow by name when helpful —
-  `test.bat geometry fast` or `test.bat sdk OpenVIM`. Iterate here until green.
+  `test.bat geometry fast` or `test.bat geometry Delaunay`. Iterate here until green.
 - **Area-level change** (one library, behavior changed but API stable): run that whole area —
   `test.bat geometry fast` during iteration; run `test.bat geometry` (includes Slow) if you
   touched I/O or serialization.
@@ -217,7 +219,7 @@ run the full suite.
 Run a single test by name within an area:
 
 ```bat
-test.bat sdk OpenVIM
+test.bat geometry Delaunay
 ```
 
 ### 8.2 Slow tests (`Category("Slow")`)

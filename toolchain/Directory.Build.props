@@ -1,0 +1,8 @@
+<Project>
+  <Import Project="..\Directory.Build.props" />
+
+  <PropertyGroup>
+    <!-- Dev tools only — never listed in build/packages.txt or published from this repo. -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+</Project>

@@ -1,5 +1,9 @@
 # One packable project path per line, relative to the repository root.
 # This is the source of truth for pack.bat and release.bat.
+#
+# Allowed: src/ and ext/ library projects only.
+# Excluded (never add here): toolchain/ (Parakeet, Plato, IfcTypeGen, …),
+# plugins/, apps/, integrations/, tests/, examples/, wip/.
 src\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj
 src\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj
 src\Ara3D.Collections\Ara3D.Collections.csproj

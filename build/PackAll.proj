@@ -1,0 +1,42 @@
+<Project>
+  <PropertyGroup>
+    <PackagesManifest Condition="'$(PackagesManifest)' == ''">$(MSBuildThisFileDirectory)packages.txt</PackagesManifest>
+  </PropertyGroup>
+
+  <Target Name="_ReadManifest">
+    <ReadLinesFromFile File="$(PackagesManifest)">
+      <Output TaskParameter="Lines" ItemName="_Line" />
+    </ReadLinesFromFile>
+    <ItemGroup>
+      <ProjectToPack Include="$(MSBuildThisFileDirectory)..\%(_Line.Identity)"
+                     Condition="$([System.String]::Copy('%(_Line.Identity)').Trim().Length) &gt; 0 And !$([System.String]::Copy('%(_Line.Identity)').Trim().StartsWith('#'))" />
+      <_ExcludedPack Include="@(ProjectToPack)"
+                    Condition="$([System.String]::Copy('%(Identity)').Contains('toolchain\')) Or $([System.String]::Copy('%(Identity)').Contains('toolchain/')) Or $([System.String]::Copy('%(Identity)').Contains('plugins\')) Or $([System.String]::Copy('%(Identity)').Contains('plugins/')) Or $([System.String]::Copy('%(Identity)').Contains('apps\')) Or $([System.String]::Copy('%(Identity)').Contains('apps/')) Or $([System.String]::Copy('%(Identity)').Contains('integrations\')) Or $([System.String]::Copy('%(Identity)').Contains('integrations/')) Or $([System.String]::Copy('%(Identity)').Contains('tests\')) Or $([System.String]::Copy('%(Identity)').Contains('tests/')) Or $([System.String]::Copy('%(Identity)').Contains('examples\')) Or $([System.String]::Copy('%(Identity)').Contains('examples/')) Or $([System.String]::Copy('%(Identity)').Contains('wip\')) Or $([System.String]::Copy('%(Identity)').Contains('wip/'))" />
+    </ItemGroup>
+    <Error Condition="'@(_ExcludedPack)' != ''"
+           Text="packages.txt must list only src/ and ext/ projects. Remove: @(_ExcludedPack->'%(Filename)%(Extension)', ', ')" />
+  </Target>
+
+  <Target Name="BuildForPack" DependsOnTargets="_ReadManifest">
+    <Message Importance="High" Text="Building @(ProjectToPack->'%(RecursiveDir)%(Filename)%(Extension)', ', ')" />
+    <MSBuild
+      Projects="@(ProjectToPack)"
+      Targets="Build"
+      BuildInParallel="true"
+      Properties="Configuration=$(Configuration)" />
+  </Target>
+
+  <Target Name="PackProjects" DependsOnTargets="_ReadManifest">
+    <Message Importance="High" Text="Packing @(ProjectToPack->'%(RecursiveDir)%(Filename)%(Extension)', ', ')" />
+    <MSBuild
+      Projects="@(ProjectToPack)"
+      Targets="Pack"
+      BuildInParallel="true"
+      Properties="Configuration=$(Configuration);NoBuild=true" />
+  </Target>
+
+  <Target Name="PackAll" DependsOnTargets="_ReadManifest">
+    <CallTarget Targets="BuildForPack" Condition="'$(SkipBuild)' != 'true'" />
+    <CallTarget Targets="PackProjects" />
+  </Target>
+</Project>

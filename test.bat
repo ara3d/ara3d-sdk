@@ -18,7 +18,7 @@ rem
 rem Examples:
 rem   test.bat geometry                Run all geometry tests
 rem   test.bat geometry fast           Run geometry tests except Slow (in-memory only)
-rem   test.bat sdk OpenVIM             Run SDK tests whose name contains "OpenVIM"
+rem   test.bat geometry Delaunay       Run geometry tests whose name contains "Delaunay"
 rem   test.bat fast                    Fast inner loop across all areas
 rem   test.bat                         Run everything (do this before committing)
 setlocal
