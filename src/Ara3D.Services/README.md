@@ -8,8 +8,8 @@ Lightweight application infrastructure: service registration and an event bus.
 * `IServiceManager` — holds services and an `IEventBus`
 
 Domo-backed model/repository service helpers (`BaseService`, `LoggingService`, etc.)
-live in [`deprecated/wip/Ara3D.Domo`](../../deprecated/wip/Ara3D.Domo) alongside
-[`Ara3D.Domo`](../../deprecated/wip/Ara3D.Domo).
+live in [`wip/Ara3D.Domo`](../../wip/Ara3D.Domo) alongside
+[`Ara3D.Domo`](../../wip/Ara3D.Domo).
 
 ## Related projects
 

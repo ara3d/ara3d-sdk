@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\deprecated\wip\Ara3D.Domo\Ara3D.Domo.csproj" />
+    <ProjectReference Include="..\..\wip\Ara3D.Domo\Ara3D.Domo.csproj" />
   </ItemGroup>
 
   <ItemGroup>

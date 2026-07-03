@@ -74,7 +74,7 @@ Serialization for BOS lives in [`../ext/Ara3D.BimOpenSchema.IO`](../ext/Ara3D.Bi
 | [Ara3D.WorkItems](Ara3D.WorkItems) | Background work-item queues |
 | [Ara3D.PropKit](Ara3D.PropKit) | Runtime property descriptors for UI binding |
 
-Domo-backed model/repository helpers live in [`../deprecated/wip/Ara3D.Domo`](../deprecated/wip/Ara3D.Domo) (WIP, not shipped).
+Domo-backed model/repository helpers live in [`../wip/Ara3D.Domo`](../wip/Ara3D.Domo) (WIP, not shipped).
 
 ---
 

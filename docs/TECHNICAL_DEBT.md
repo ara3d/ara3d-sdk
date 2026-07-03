@@ -41,8 +41,8 @@ group, roughly highest-impact first.
 | Area / file | What | Why it matters |
 | --- | --- | --- |
 | `src/Ara3D.Geometry/GeometryUtil.cs` | ~1,360-line catch-all for vectors, transforms, mesh helpers, tolerances | Hard to navigate/refactor; many functions belong in dedicated math/topology modules (inline `// TODO:` at line 19) |
-| `deprecated/wip/Ara3D.Domo/Repository.cs` | `SetModelValues` updates one-by-one — no bulk notification, no rollback, no functional update | Slow and non-atomic bulk edits; partial failure leaves the repository inconsistent |
-| `deprecated/wip/Ara3D.Domo/Model.cs` | `SetPropertyValue` writes read-only auto-props via the `<name>k__BackingField` reflection trick | Relies on an undocumented compiler naming convention; brittle and slow |
+| `wip/Ara3D.Domo/Repository.cs` | `SetModelValues` updates one-by-one — no bulk notification, no rollback, no functional update | Slow and non-atomic bulk edits; partial failure leaves the repository inconsistent |
+| `wip/Ara3D.Domo/Model.cs` | `SetPropertyValue` writes read-only auto-props via the `<name>k__BackingField` reflection trick | Relies on an undocumented compiler naming convention; brittle and slow |
 | `src/Ara3D.BimOpenSchema/BimGeometryExtensions.cs` | `ToBimGeometry` copies columns through `IDataSet` helpers instead of reading Parquet columns directly | Extra allocations and indirection on large BIM geometry loads |
 | `src/Ara3D.BimOpenSchema/BimDataBuilder.cs` | `Geometry` is a mutable property on the general builder, not a dedicated `BimGeometryBuilder` | Awkward API; easy to misuse when building BOS documents |
 | `src/Ara3D.Models/Model3DExtensions.cs` | Only a colored-mesh path; no separate non-colored fast path; copies buffers instead of reusing them; some helpers may belong in geometry extensions | Unnecessary work and allocations when building render models from large meshes |

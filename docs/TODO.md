@@ -98,8 +98,8 @@ None currently. (IFC-relations refactor landed — see Resolved.)
 
 - [ ] **21. [XL] Split `GeometryUtil.cs` (~1,360 lines)** — `src/Ara3D.Geometry/GeometryUtil.cs` line 19.
 - [ ] **22. [M] `BimDataBuilder.Geometry` should be `BimGeometryBuilder`** — `src/Ara3D.BimOpenSchema/BimDataBuilder.cs` line 66.
-- [ ] **23. [L] Domo bulk update API** — `deprecated/wip/Ara3D.Domo/Repository.cs` lines 166–168.
-- [ ] **24. [M] Domo `SetPropertyValue` reflection on backing fields** — `deprecated/wip/Ara3D.Domo/Model.cs`.
+- [ ] **23. [L] Domo bulk update API** — `wip/Ara3D.Domo/Repository.cs` lines 166–168.
+- [ ] **24. [M] Domo `SetPropertyValue` reflection on backing fields** — `wip/Ara3D.Domo/Model.cs`.
 - [ ] **25. [S] `ILogger.Create` should inherit parent writer** — `src/Ara3D.Logging/ILogger.cs` line 56.
 - [ ] **26. [L] Finish `PathUtil` `FilePath`/`DirectoryPath` migration** — `src/Ara3D.Utils/PathUtil.cs`.
 - [ ] **27. [L] Complete `Job` / chained-progress API** — `src/Ara3D.Logging/Job.cs` line 3.
