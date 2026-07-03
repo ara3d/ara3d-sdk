@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Ara3DVersion>1.6.0</Ara3DVersion>
+    <Ara3DVersion>1.6.1</Ara3DVersion>
     <Version Condition="'$(Version)' == ''">$(Ara3DVersion)</Version>
     <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">$(Ara3DVersion)</AssemblyVersion>
     <FileVersion Condition="'$(FileVersion)' == ''">$(Ara3DVersion)</FileVersion>

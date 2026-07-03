@@ -3,7 +3,7 @@
 We have edited and modified [SharpGLTF](https://github.com/vpenades/SharpGLTF) to optimize for performance and maintainability in our own use cases.
 Some of the major changes include removing guards and validation. 
 
-The assembly is published as `SharpGLTF.Core`; the project folder is `Ara3D.IO.SharpGLTF`.
+The NuGet package is `Ara3D.IO.SharpGLTF`; the assembly remains `SharpGLTF.Core` for upstream API compatibility.
 
 MIT License 
 

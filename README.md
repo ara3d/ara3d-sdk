@@ -11,17 +11,103 @@ Designed for high performance and scalability, the libraries handle massive 3D d
 
 ## 📁 Repository Structure
 
-- `artifacts/` - Built nuget packages 
-- `data/` – Testing data
-- `deprecated/` - Projects that are no longer being built or maintained
-- `dist/` – Pre-built binaries and tools, including `Ara3D.Studio.exe`
-- `examples/` – Sample applications and usage examples
-- `plato-src/` – [Plato](https://github.com/ara3d/plato) source code for core numerical and geometry types and functions 
-- `src/` – Core cross-platform C# libraries
-- `ext/` - Libraries with additional dependencies, or for Windows only 
-- `tests/` – NUnit projects for unit, regression, and developer testing
-- `vendor/` - Required 3rd party libraries 
-- `toolchain/` – Projects for parsing Plato and generating C# source code. 
+- `artifacts/` — built NuGet packages (gitignored; output of `pack.bat`)
+- `apps/` — standalone desktop apps (e.g. BOS Browser)
+- `data/` — testing data
+- `deprecated/` — projects that are no longer being built or maintained
+- `dist/` — pre-built binaries and tools, including `Ara3D.Studio.exe`
+- `examples/` — sample applications and usage examples
+- `ext/` — Windows-only SDK extensions (IFC loader, WPF helpers)
+- `integrations/` — optional third-party adapters (e.g. Assimp)
+- `plugins/` — host plug-ins (Bowerbird, Revit add-ins)
+- `plato-src/` — [Plato](https://github.com/ara3d/plato) source for core numerical and geometry types
+- `src/` — supported cross-platform libraries and NuGet meta-packages
+- `tests/` — NUnit projects for unit, regression, and developer testing
+- `vendor/` — required third-party libraries
+- `toolchain/` — Plato parsing and code-generation tools (unsupported)
+
+---
+
+## 📦 NuGet packages
+
+**Current version:** `1.6.1` (set by `Ara3DVersion` in [`Directory.Build.props`](Directory.Build.props)).
+
+All published packages share that version. Bump with `bump-version.bat patch|minor|major|X.Y.Z`, then
+build and pack:
+
+```bat
+build.bat Release
+pack.bat
+```
+
+Packages are written to [`artifacts/`](artifacts/) (gitignored). The pack list is
+[`build/packages.txt`](build/packages.txt). Release workflow:
+[`docs/NUGET_RELEASE.md`](docs/NUGET_RELEASE.md).
+
+### Meta-package hierarchy
+
+Meta-packages are dependency-only bundles (no source of their own). Pick the smallest tier
+that fits your app:
+
+```
+Ara3D.SDK  (net8.0-windows — full Windows stack)
+├── Ara3D.SDK.Core
+├── Ara3D.SDK.Geometry
+├── Ara3D.SDK.IO
+├── Ara3D.SDK.BIM
+├── Ara3D.SDK.Studio
+├── Ara3D.Utils.Wpf          (ext/)
+└── Ara3D.IfcLoader          (ext/)
+```
+
+| Meta-package | TFM | Use when |
+| --- | --- | --- |
+| [Ara3D.SDK.Core](src/Ara3D.SDK.Core) | `net8.0` | Minimal cross-platform foundation |
+| [Ara3D.SDK.Geometry](src/Ara3D.SDK.Geometry) | `net8.0` | Meshes, models, SIMD math |
+| [Ara3D.SDK.IO](src/Ara3D.SDK.IO) | `net8.0` | File format read/write |
+| [Ara3D.SDK.BIM](src/Ara3D.SDK.BIM) | `net8.0-windows` | BIM Open Schema model and IO |
+| [Ara3D.SDK.Studio](src/Ara3D.SDK.Studio) | `net8.0` | Studio flow graph and Roslyn helpers |
+| [Ara3D.SDK](src/Ara3D.SDK) | `net8.0-windows` | Everything above plus WPF and IFC |
+
+### What each meta-package includes
+
+**Ara3D.SDK.Core** — `Ara3D.Collections`, `Ara3D.DataTable`, `Ara3D.Events`, `Ara3D.F8`,
+`Ara3D.Logging`, `Ara3D.Memory`, `Ara3D.PropKit`, `Ara3D.Utils`, `Ara3D.Utils.Roslyn`,
+`Ara3D.WorkItems`
+
+**Ara3D.SDK.Geometry** — `Ara3D.Collections`, `Ara3D.F8`, `Ara3D.Geometry`, `Ara3D.Memory`,
+`Ara3D.Models`, `Ara3D.Utils`
+
+**Ara3D.SDK.IO** — `Ara3D.IO.BFAST`, `Ara3D.IO.G3D`, `Ara3D.IO.GeoJson`,
+`Ara3D.IO.GltfExporter`, `Ara3D.IO.PLY`, `Ara3D.IO.SharpGLTF`, `Ara3D.IO.StepParser`,
+`Ara3D.IO.VIM`
+
+**Ara3D.SDK.BIM** — `Ara3D.BimOpenSchema`, `Ara3D.BimOpenSchema.IO`
+
+**Ara3D.SDK.Studio** — `Ara3D.PropKit`, `Ara3D.Studio.API`, `Ara3D.Utils.Roslyn`,
+`Ara3D.WorkItems`
+
+**Ara3D.SDK** — all five meta-packages above, plus `Ara3D.Utils.Wpf` and `Ara3D.IfcLoader`
+from `ext/`.
+
+### Individual library packages
+
+Every library listed above is also published on its own (same version). You can reference
+individual packages instead of a meta-package when you want a smaller dependency graph.
+Project descriptions and links: [`src/README.md`](src/README.md).
+
+Note: `Ara3D.IO.SharpGLTF` is the NuGet package ID; the assembly name remains `SharpGLTF.Core`
+for upstream API compatibility.
+
+### Not published to NuGet
+
+These repo folders are built locally but excluded from meta-packages and `build/packages.txt`:
+
+- [`plugins/`](plugins/) — Bowerbird, Revit add-ins
+- [`apps/`](apps/) — BOS Browser
+- [`integrations/`](integrations/) — Assimp loader
+- [`wip/`](wip/) — work in progress (e.g. Domo)
+- [`toolchain/`](toolchain/) — dev tools and Plato experiments
 
 ---
 
@@ -50,11 +136,11 @@ They are not run automatically, and are not currently supported.
 
 ## 🗂️ Projects
 
-All core libraries live under [`src/`](src/). See the [src/ project index](src/README.md) for a
-full list grouped by category (geometry, I/O, BIM, architecture, Studio, utilities).
+All supported libraries live under [`src/`](src/). See the [src/ project index](src/README.md) for
+per-project READMEs grouped by category (geometry, I/O, BIM, Studio, utilities).
 
-Install via the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package, or reference
-individual projects from `src/`.
+Install via a meta-package (see [NuGet packages](#-nuget-packages) above) or reference individual
+library projects from `src/`.
 
 ---
 
