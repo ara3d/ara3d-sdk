@@ -65,7 +65,7 @@ namespace Ara3D.BimOpenSchema.IO
                 var sheetName = MakeValidSheetName(table.Name, i + 1, usedNames);
                 var ws = wb.Worksheets.Add(sheetName);
 
-                ws.FirstCell().InsertTable(table.GetDataRecords(), true);
+                ws.FirstCell().InsertTable(table.ToSystemDataTable(), true);
             }
 
             wb.SaveAs(filePath);   
