@@ -1,0 +1,5 @@
+{
+  "displayName": "Environment",
+  "typeName": "Ara3D.Bowerbird.TestSamples.Environment.EnvironmentCommand",
+  "description": "Prints OS, runtime, and working directory info"
+}

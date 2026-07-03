@@ -10,9 +10,10 @@ public class CommandCatalogTests
     public static void ScansTestSamples()
     {
         var catalog = new CommandCatalog(TestPaths.TestSamplesCommands);
-        Assert.That(catalog.Commands.Count, Is.GreaterThanOrEqualTo(7));
+        Assert.That(catalog.Commands.Count, Is.EqualTo(10));
         Assert.That(catalog.Commands.Select(c => c.DisplayName), Does.Contain("Echo"));
         Assert.That(catalog.Commands.Select(c => c.FolderName), Does.Contain("HelloWorld"));
+        Assert.That(catalog.Commands.Select(c => c.FolderName), Does.Contain("HttpEcho"));
         Assert.That(catalog.Commands, Is.Ordered.By("DisplayName"));
     }
 

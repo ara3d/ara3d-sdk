@@ -1,0 +1,5 @@
+{
+  "displayName": "Multi File",
+  "typeName": "Ara3D.Bowerbird.TestSamples.MultiFile.MultiFileCommand",
+  "description": "Compiles a folder with multiple source files"
+}

@@ -1,5 +1,5 @@
 {
   "displayName": "Hello World",
   "typeName": "Ara3D.Bowerbird.TestSamples.HelloWorld.HelloWorldCommand",
-  "description": "Prints a greeting"
+  "description": "Prints a greeting to stdout"
 }

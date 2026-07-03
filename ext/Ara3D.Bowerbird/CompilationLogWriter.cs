@@ -17,7 +17,7 @@ public static class CompilationLogWriter
         var logPath = descriptor.CompileLogPath;
         var sb = new StringBuilder();
         sb.AppendLine($"Compiled at {DateTime.Now:O}");
-        sb.AppendLine($"Output: {descriptor.OutputDll}");
+        sb.AppendLine($"Output: {output?.OutputFilePath ?? descriptor.OutputDll}");
         sb.AppendLine("Source files:");
         foreach (var file in descriptor.SourceFiles)
             sb.AppendLine($"  {file}");

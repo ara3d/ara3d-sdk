@@ -68,7 +68,13 @@ namespace Ara3D.Bowerbird.Demo
             var selected = GetSelectedDescriptor();
             textBoxSourceFiles.Text = Service.Options.CommandsRoot;
             textBoxLibraryDir.Text = selected?.Folder ?? "";
-            textBoxOutputDll.Text = selected?.OutputDll ?? "";
+            if (selected == null)
+                textBoxOutputDll.Text = "";
+            else
+            {
+                var latest = selected.GetLatestCompiledDll();
+                textBoxOutputDll.Text = latest.Exists() ? latest.ToString() : selected.OutputDll.ToString();
+            }
 
             UpdateListBox(listBoxCommands, Service.Catalog.Commands.Select(c => c.DisplayName));
             UpdateListBox(listBoxFiles, selected?.SourceFiles.Select(f => (object)f));

@@ -1,0 +1,5 @@
+{
+  "displayName": "Http Echo",
+  "typeName": "Ara3D.Bowerbird.TestSamples.HttpEcho.HttpEchoCommand",
+  "description": "Starts a local HTTP server, prints its URI, and stops after one response"
+}

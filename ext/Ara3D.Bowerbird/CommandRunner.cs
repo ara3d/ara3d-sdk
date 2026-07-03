@@ -54,7 +54,7 @@ public class CommandRunner
                 };
             }
 
-            command = CommandLoader.Load(descriptor.OutputDll, descriptor.Manifest.TypeName);
+            command = CommandLoader.Load(output.OutputFilePath, descriptor.Manifest.TypeName);
 
             if (!execute)
             {

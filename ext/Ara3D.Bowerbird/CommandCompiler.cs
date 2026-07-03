@@ -5,7 +5,7 @@ using Ara3D.Utils.Roslyn;
 namespace Ara3D.Bowerbird;
 
 /// <summary>
-/// Compiles one command folder to folder/bin/{folderName}.dll.
+/// Compiles one command folder to folder/bin/{folderName}-{timestamp}.dll.
 /// </summary>
 public class CommandCompiler
 {
@@ -26,13 +26,16 @@ public class CommandCompiler
         descriptor.OutputFolder.Create();
 
         var refs = ReferenceResolver.Resolve(descriptor.Folder, options.LibrariesFolder);
-        var outputFile = descriptor.OutputDll;
+        var outputFile = descriptor.NewOutputDll();
         var compilerOptions = CompilerOptions.CreateDefault()
             .WithNewOutputFilePath(outputFile)
             .WithNewReferences(refs);
 
         var input = new CompilerInput(descriptor.SourceFiles, compilerOptions, refs);
         var compilation = input.Compile(Logger, token);
-        return compilation.Output;
+        var output = compilation.Output;
+        if (output?.Success == true)
+            CommandBinaryCleanup.PruneOldDlls(descriptor.OutputFolder);
+        return output;
     }
 }

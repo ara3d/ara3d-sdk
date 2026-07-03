@@ -18,6 +18,11 @@ public class CommandDescriptor
     public FilePath OutputDll => OutputFolder.RelativeFile($"{FolderName}.dll");
     public FilePath CompileLogPath => OutputFolder.RelativeFile(CompilationLogWriter.LogFileName);
 
+    public FilePath NewOutputDll() => OutputDll.ToUniqueTimeStampedFileName();
+
+    public FilePath GetLatestCompiledDll()
+        => OutputFolder.GetMostRecentFile($"{FolderName}*.dll");
+
     public CommandDescriptor(
         DirectoryPath folder,
         CommandManifest manifest,

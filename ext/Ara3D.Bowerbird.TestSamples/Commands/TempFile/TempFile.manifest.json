@@ -1,0 +1,5 @@
+{
+  "displayName": "Temp File",
+  "typeName": "Ara3D.Bowerbird.TestSamples.TempFile.TempFileCommand",
+  "description": "Writes and reads back a temporary text file"
+}

@@ -1,0 +1,5 @@
+{
+  "displayName": "Clock",
+  "typeName": "Ara3D.Bowerbird.TestSamples.Clock.ClockCommand",
+  "description": "Prints ISO and local formatted timestamps"
+}

@@ -13,26 +13,35 @@ public class ReferenceResolver
     public const string RefsFileName = "refs.txt";
     public const string LibrariesFolderName = "Libraries";
 
-    public IReadOnlyList<FilePath> LoadedAssemblies { get; }
+    /// <summary>Host executables that must not be passed to Roslyn (namespace collisions, etc.).</summary>
+    static readonly HashSet<string> ExcludedHostAssemblyNames = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Ara3D.Bowerbird.Console",
+    };
+
     public ILogger Logger { get; }
 
     public ReferenceResolver(ILogger logger = null)
-        => (Logger, LoadedAssemblies) = (logger, RoslynUtils.LoadedAssemblyLocations().ToList());
+        => Logger = logger;
 
     public IReadOnlyList<FilePath> Resolve(
         DirectoryPath commandFolder,
         DirectoryPath globalLibrariesFolder,
         IReadOnlyList<FilePath> defaultReferences = null)
     {
-        var refs = new List<FilePath>(defaultReferences ?? LoadedAssemblies);
-        AddRefsFromFile(commandFolder, refs);
+        var loadedAssemblies = GetLoadedAssemblies();
+        var refs = new List<FilePath>(defaultReferences ?? loadedAssemblies);
+        AddRefsFromFile(commandFolder, refs, loadedAssemblies);
         AddFolderLibraries(commandFolder.RelativeFolder(LibrariesFolderName), refs);
         if (globalLibrariesFolder != null)
             AddFolderLibraries(globalLibrariesFolder, refs);
         return refs.Distinct().ToList();
     }
 
-    void AddRefsFromFile(DirectoryPath commandFolder, List<FilePath> refs)
+    static IReadOnlyList<FilePath> GetLoadedAssemblies()
+        => FilterCommandReferences(RoslynUtils.LoadedAssemblyLocations()).ToList();
+
+    void AddRefsFromFile(DirectoryPath commandFolder, List<FilePath> refs, IReadOnlyList<FilePath> loadedAssemblies)
     {
         var refsFile = commandFolder.RelativeFile(RefsFileName);
         if (!refsFile.Exists())
@@ -44,7 +53,7 @@ public class ReferenceResolver
             if (line.IsNullOrWhiteSpace())
                 continue;
 
-            var fp = LoadedAssemblies.FirstOrDefault(f => f.Value.EndsWith(line));
+            var fp = loadedAssemblies.FirstOrDefault(f => f.Value.EndsWith(line));
             if (fp != null && fp.Exists())
             {
                 refs.Add(fp);
@@ -78,5 +87,27 @@ public class ReferenceResolver
 
         foreach (var file in libsFolder.GetAllFilesRecursively())
             refs.Add(file);
+    }
+
+    static IEnumerable<FilePath> FilterCommandReferences(IEnumerable<FilePath> loaded)
+    {
+        var entryPath = GetEntryAssemblyPath();
+        foreach (var fp in loaded)
+        {
+            if (entryPath != null && fp == entryPath)
+                continue;
+            if (ExcludedHostAssemblyNames.Contains(fp.GetFileNameWithoutExtension()))
+                continue;
+            yield return fp;
+        }
+    }
+
+    static FilePath GetEntryAssemblyPath()
+    {
+        var entry = Assembly.GetEntryAssembly();
+        if (entry == null || entry.IsDynamic)
+            return null;
+        var loc = entry.Location;
+        return loc.IsNullOrWhiteSpace() ? null : new FilePath(loc);
     }
 }
