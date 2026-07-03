@@ -51,9 +51,9 @@ namespace Ara3D.Domo
             => GetModel(modelId);
 
         object IRepository.GetValue(Guid modelId)
-            => GetModel(modelId);
+            => _dict[modelId].Item1;
 
-        public void NotifyRepositoryChanged(RepositoryChangeType type, Guid modelId, object newValue, object oldValue)
+        public void NotifyRepositoryChanged(RepositoryChangeType type, Guid modelId, object newValue, object oldValue, IModel model = null)
         {
             var args = new RepositoryChangeArgs
             {
@@ -62,6 +62,7 @@ namespace Ara3D.Domo
                 NewValue = newValue,
                 OldValue = oldValue,
                 Repository = this,
+                Model = model,
             };
             RepositoryChanged?.Invoke(this, args);
             switch (type)
@@ -97,7 +98,7 @@ namespace Ara3D.Domo
             }
             _dict[modelId] = (newValue, _dict[modelId].Item2);
             model.TriggerChangeNotification();
-            NotifyRepositoryChanged(RepositoryChangeType.ModelUpdated, modelId, oldValue, newValue);
+            NotifyRepositoryChanged(RepositoryChangeType.ModelUpdated, modelId, newValue, oldValue, model);
             return true;
         }
 
@@ -121,7 +122,7 @@ namespace Ara3D.Domo
                 throw new Exception("Singleton repository cannot have more than one model");
             var model = new Model<T>(id, this);
             _dict.Add(id, (state, model));
-            NotifyRepositoryChanged(RepositoryChangeType.ModelAdded, id, model.Value, null);
+            NotifyRepositoryChanged(RepositoryChangeType.ModelAdded, id, model.Value, null, model);
             return model;
         }
 
@@ -143,11 +144,12 @@ namespace Ara3D.Domo
         public virtual void Delete(Guid id)
         {
             var oldValue = _dict[id].Item1;
+            var model = _dict[id].Item2;
             if (IsSingleton)
                 throw new Exception("Cannot remove model from Singleton repository");
-            _dict[id].Item2.Dispose();
+            NotifyRepositoryChanged(RepositoryChangeType.ModelRemoved, id, null, oldValue, model);
+            model.Dispose();
             _dict.Remove(id);
-            NotifyRepositoryChanged(RepositoryChangeType.ModelRemoved, id, null, oldValue);
         }
 
         public bool ModelExists(Guid id)

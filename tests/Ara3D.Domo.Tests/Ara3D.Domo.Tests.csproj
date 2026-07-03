@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="$(Ara3DCoverletCollectorVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Ara3DMicrosoftNetTestSdkVersion)" />
+    <PackageReference Include="NUnit" Version="$(Ara3DNUnitVersion)" />
+    <PackageReference Include="NUnit.Analyzers" Version="$(Ara3DNUnitAnalyzersVersion)" />
+    <PackageReference Include="NUnit3TestAdapter" Version="$(Ara3DNUnit3TestAdapterVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\deprecated\wip\Ara3D.Domo\Ara3D.Domo.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+  </ItemGroup>
+
+</Project>

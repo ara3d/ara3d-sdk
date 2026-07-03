@@ -3,7 +3,6 @@
 src\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj
 src\Ara3D.Collections\Ara3D.Collections.csproj
 src\Ara3D.DataTable\Ara3D.DataTable.csproj
-src\Ara3D.Domo\Ara3D.Domo.csproj
 src\Ara3D.Events\Ara3D.Events.csproj
 src\Ara3D.F8\Ara3D.F8.csproj
 src\Ara3D.Geometry\Ara3D.Geometry.csproj

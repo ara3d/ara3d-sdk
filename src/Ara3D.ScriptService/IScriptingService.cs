@@ -6,9 +6,9 @@ using Ara3D.Utils;
 
 namespace Ara3D.ScriptService
 {
-    public interface IScriptingService 
-        : ISingletonModelBackedService<ScriptingDataModel>, IDisposable
+    public interface IScriptingService : IDisposable
     {
+        ScriptingDataModel Value { get; }
         ScriptingOptions Options { get; }
         bool AutoRecompile { get; set; }
         ILogger Logger { get; set; }

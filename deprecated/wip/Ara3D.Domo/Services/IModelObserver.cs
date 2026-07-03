@@ -22,7 +22,7 @@ namespace Ara3D.Services
         /// <summary>
         /// This is the model that was added, changed, or deleted. 
         /// </summary>
-        public IModel<T> Model => (IModel<T>)Args.Repository.GetModel(Args.ModelId);
+        public IModel<T> Model => (IModel<T>)Args.Model;
     }
 
     public interface IModelObserver<T> : ISubscriber<ModelChangedEvent<T>>

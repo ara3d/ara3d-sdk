@@ -68,12 +68,13 @@ Serialization for BOS lives in [`../ext/Ara3D.BimOpenSchema.IO`](../ext/Ara3D.Bi
 
 | Project | Description |
 | --- | --- |
-| [Ara3D.Domo](Ara3D.Domo) | Model/repository state management with change notification |
 | [Ara3D.Events](Ara3D.Events) | Thread-safe event bus |
-| [Ara3D.Services](Ara3D.Services) | Service layer built on Domo and Events |
+| [Ara3D.Services](Ara3D.Services) | Service registration and event bus host |
 | [Ara3D.Logging](Ara3D.Logging) | Logging, progress, and job management |
 | [Ara3D.WorkItems](Ara3D.WorkItems) | Background work-item queues |
 | [Ara3D.PropKit](Ara3D.PropKit) | Runtime property descriptors for UI binding |
+
+Domo-backed model/repository helpers live in [`../deprecated/wip/Ara3D.Domo`](../deprecated/wip/Ara3D.Domo) (WIP, not shipped).
 
 ---
 

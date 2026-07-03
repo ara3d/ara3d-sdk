@@ -25,6 +25,7 @@ namespace Ara3D.Domo
     {
         public IRepository Repository { get; set; }
         public Guid ModelId { get; set; }
+        public IModel Model { get; set; }
         public object OldValue { get; set; }
         public object NewValue { get; set; }
         public RepositoryChangeType ChangeType { get; set; }

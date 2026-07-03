@@ -22,7 +22,6 @@ None — .NET 8 only.
 
 ## Related projects
 
-- [Ara3D.Domo](../Ara3D.Domo) — repository change events
 - [Ara3D.Services](../Ara3D.Services) — wires event bus into application services
 
 ## License

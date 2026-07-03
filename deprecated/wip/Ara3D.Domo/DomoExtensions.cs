@@ -35,10 +35,7 @@ namespace Ara3D.Domo
             => repository.RepositoryChanged += (sender, args) =>
             {
                 if (args.ChangeType == RepositoryChangeType.ModelRemoved)
-                {
-                    var model = (IModel<T>)args.Repository.GetModel(args.ModelId);
-                    action.Invoke(model);
-                }
+                    action.Invoke((IModel<T>)args.Model);
             };
 
         public static void OnModelUpdated<T>(this IAggregateRepository<T> repository, Action<IModel<T>> action)

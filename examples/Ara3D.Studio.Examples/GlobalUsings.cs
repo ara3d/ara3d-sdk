@@ -10,7 +10,6 @@ global using System.Text;
 
 global using Ara3D.Collections;
 global using Ara3D.DataTable;
-global using Ara3D.Domo;
 global using Ara3D.Geometry;
 global using Ara3D.Logging;
 global using Ara3D.Memory;

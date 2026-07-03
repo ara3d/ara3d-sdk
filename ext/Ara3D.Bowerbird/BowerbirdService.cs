@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
-using Ara3D.Domo;
 using Ara3D.Events;
 using Ara3D.Logging;
-using Ara3D.Services;
 using Ara3D.Utils;
 using Ara3D.Utils.Roslyn;
 
@@ -12,11 +10,8 @@ namespace Ara3D.Bowerbird;
 /// Manifest-driven command host: catalog scan and compile-on-run execution.
 /// </summary>
 public class BowerbirdService
-    : IServiceManager, IEventErrorHandler
+    : IEventErrorHandler
 {
-    private readonly List<IRepository> _repositories = new();
-    private readonly List<IService> _services = new();
-
     public BowerbirdOptions Options { get; }
     public CommandRunner Runner { get; }
     public CommandCatalog Catalog { get; private set; }
@@ -62,18 +57,6 @@ public class BowerbirdService
             throw new InvalidOperationException($"Command not found: {displayNameOrFolder}");
         return RunCommand(descriptor, parameter, executor, token);
     }
-
-    public IReadOnlyList<IRepository> GetRepositories()
-        => _repositories;
-
-    public IReadOnlyList<IService> GetServices()
-        => _services;
-
-    public void AddService(IService service)
-        => _services.Add(service);
-
-    public void AddRepository(IRepository repository)
-        => _repositories.Add(repository);
 
     public void OnError(ISubscriber sub, IEvent ev, Exception ex)
     {

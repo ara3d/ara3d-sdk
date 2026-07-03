@@ -2,32 +2,19 @@
 
 [![NuGet Version](https://img.shields.io/nuget/v/Ara3D.Services)](https://www.nuget.org/packages/Ara3D.Services)
 
-Ara 3D Services is a set of interfaces and classes
-designed to provide a foundation for software architecture 
-that supports building scalable and decoupled applications. 
+Lightweight application infrastructure: service registration and an event bus.
 
-It uses the [`Ara3D.Domo`](../Ara3D.Domo) state management library
-and provides additional concepts: 
+* `IService` — marker for application services
+* `IServiceManager` — holds services and an `IEventBus`
 
-* `IService` - Contains commands, optionally may house a repository, 
-and subscribe to or publish events. Usually one service of each 
-type is present in an application. 
+Domo-backed model/repository service helpers (`BaseService`, `LoggingService`, etc.)
+live in [`deprecated/wip/Ara3D.Domo`](../../deprecated/wip/Ara3D.Domo) alongside
+[`Ara3D.Domo`](../../deprecated/wip/Ara3D.Domo).
 
-* `IServiceManager` - Contains references to all services, repositories,
-and an event bus. 
+## Related projects
 
-## The following concepts are provided by [`Ara3D.Events`](../Ara3D.Events):
+* [`Ara3D.Events`](../Ara3D.Events) — thread-safe event bus
 
-* `IEventBus` - used to communicate messages (called events)
-from publishers to subscribers in a thread-safe way, without
-the resource leaking problem inherent in C# events.  
+## License
 
-## The following concepts are provided by Ara3D.Domo:
-
-* `IModel` - a wrapper around a data object that has an identity 
-if the underlying value changes, the identity stays the same, 
-but observers can be easily notified. 
-
-* `IRepository` - a static container for one or more models. 
-Associates model ID with an underlying value. 
-
+MIT — see [LICENSE](../../LICENSE).

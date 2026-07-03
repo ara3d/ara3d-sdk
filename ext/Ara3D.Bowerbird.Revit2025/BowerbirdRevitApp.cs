@@ -7,10 +7,8 @@ using System.IO.Pipes;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using Ara3D.Bowerbird.Demo;
-using Ara3D.Domo;
 using Ara3D.Events;
 using Ara3D.Logging;
-using Ara3D.Services;
 using Ara3D.Studio.Samples.Demos;
 using Ara3D.Utils;
 using Autodesk.Revit.DB.Events;
@@ -19,7 +17,7 @@ using Bitmap = System.Drawing.Bitmap;
 
 namespace Ara3D.Bowerbird.Revit
 {
-    public class BowerbirdRevitApp : IExternalApplication, IServiceManager, IEventErrorHandler
+    public class BowerbirdRevitApp : IExternalApplication, IEventErrorHandler
     {
         public const string BOWERBIRD_AUTORUN_ONLOAD_ENV_VAR = "BOWERBIRD_AUTORUN_ONLOAD";
 
@@ -163,21 +161,6 @@ namespace Ara3D.Bowerbird.Revit
         {
             RevitContext.Schedule(action, name);
         }
-
-        private readonly List<IRepository> _repositories = new();
-        private readonly List<IService> _services = new();
-
-        public IReadOnlyList<IRepository> GetRepositories()
-            => _repositories;
-
-        public IReadOnlyList<IService> GetServices()
-            => _services;
-
-        public void AddService(IService service)
-            => _services.Add(service);
-
-        public void AddRepository(IRepository repository)
-            => _repositories.Add(repository);
 
         public IEventBus EventBus { get; private set; }
 

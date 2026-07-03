@@ -14,7 +14,7 @@ For documentation of each bundled library, see the [src/ project index](../READM
 
 ## Bundled libraries
 
-Ara3D.Collections, Ara3D.DataTable, Ara3D.Domo, Ara3D.Events, Ara3D.Geometry,
+Ara3D.Collections, Ara3D.DataTable, Ara3D.Events, Ara3D.Geometry,
 Ara3D.IO.BFAST, Ara3D.IO.G3D, Ara3D.IO.GltfExporter, Ara3D.IO.PLY, Ara3D.IO.StepParser,
 Ara3D.IO.VIM, Ara3D.Logging, Ara3D.Memory, Ara3D.Models, Ara3D.PropKit, Ara3D.ScriptService,
 Ara3D.Services, Ara3D.Studio.API, Ara3D.Utils, Ara3D.Utils.Roslyn, Ara3D.WorkItems.

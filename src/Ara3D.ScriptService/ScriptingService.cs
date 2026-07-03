@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Ara3D.Logging;
-using Ara3D.Services;
 using Ara3D.Utils;
 using Ara3D.Utils.Roslyn;
 
@@ -11,9 +10,7 @@ namespace Ara3D.ScriptService;
 
 // NOTE: this is a LEGACY scripting service, that is used in Bowerbird only.
 // TODO: move to bowerbird 
-public class ScriptingService : 
-    SingletonModelBackedService<ScriptingDataModel>, 
-    IScriptingService
+public class ScriptingService : IScriptingService
 {
     public Compilation Compilation => WatchingCompiler?.Compilation;
     public DirectoryWatchingCompiler WatchingCompiler { get; }
@@ -21,9 +18,9 @@ public class ScriptingService :
     public ScriptingOptions Options { get; }
     public Assembly Assembly { get; set; }
     public IReadOnlyList<Script> Types { get; private set; } = [];
+    public ScriptingDataModel Value { get; private set; }
 
-    public ScriptingService(IServiceManager app, ILogger logger, ScriptingOptions options)
-        : base(app)
+    public ScriptingService(ILogger logger, ScriptingOptions options)
     {
         Logger = logger ?? new Logger(LogWriter.DebugWriter, "Scripting Service");
         Options = options;
@@ -41,9 +38,8 @@ public class ScriptingService :
         WatchingCompiler.Compile();
     }
 
-    public override void Dispose()
+    public void Dispose()
     {
-        base.Dispose();
         WatchingCompiler.Dispose();
     }
 
@@ -94,7 +90,7 @@ public class ScriptingService :
             }
         }
 
-        Repository.Value = new ScriptingDataModel()
+        Value = new ScriptingDataModel()
         {
             Dll = Assembly?.Location ?? "",
             Directory = WatchingCompiler?.Directory ?? default,

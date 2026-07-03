@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Ara3D.Domo;
 using static Ara3D.BimOpenSchema.CommonRevitParameters;
 using Document = Autodesk.Revit.DB.Document;
 using Domain = Autodesk.Revit.DB.Domain;

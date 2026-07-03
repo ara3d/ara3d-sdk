@@ -1,19 +1,15 @@
-﻿using Ara3D.Domo;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Ara3D.Events;
 
 namespace Ara3D.Services
 {
     /// <summary>
-    /// This is the interface that bridges services, repositories, and events.
-    /// In effect this is the infrastructure of an application.
-    /// For simplicity, services and repositories can be added, but never removed.
+    /// Application infrastructure: services and an event bus.
     /// </summary>
-    public interface IServiceManager : IRepositoryManager
+    public interface IServiceManager
     {
         IReadOnlyList<IService> GetServices();
         void AddService(IService service);
-        void AddRepository(IRepository repository);
-        IEventBus EventBus { get; } 
+        IEventBus EventBus { get; }
     }
 }
