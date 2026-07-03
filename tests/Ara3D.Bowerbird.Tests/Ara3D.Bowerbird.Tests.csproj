@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ext\Ara3D.Bowerbird.Console\Ara3D.Bowerbird.Console.csproj" />
-    <ProjectReference Include="..\..\ext\Ara3D.Bowerbird\Ara3D.Bowerbird.csproj" />
+    <ProjectReference Include="..\..\plugins\Ara3D.Bowerbird.Console\Ara3D.Bowerbird.Console.csproj" />
+    <ProjectReference Include="..\..\plugins\Ara3D.Bowerbird\Ara3D.Bowerbird.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 

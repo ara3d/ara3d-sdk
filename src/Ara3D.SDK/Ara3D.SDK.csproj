@@ -1,22 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>📚 C# libraries for efficient data driven applications and 3D tools.</Description>
+    <Description>Convenience meta-package: core, geometry, IO, BIM, Studio, and Windows SDK libraries.</Description>
     <PackageProjectUrl>https://github.com/ara3d/ara3d-sdk</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ara3d/ara3d-sdk</RepositoryUrl>
     <Copyright>Copyright (c) Ara 3D Inc 2026, Licensed under MIT License</Copyright>
 
-    <!-- https://devblogs.microsoft.com/dotnet/producing-packages-with-source-link/ -->
-    <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-
-    <!-- Embed source files that are not tracked by the source control manager in the PDB -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-
-    <!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
     <DebugType>embedded</DebugType>
     <IncludeSymbols>true</IncludeSymbols>
 
@@ -27,7 +21,6 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
-  <!-- Copy to PipingLabs location -->
   <Target Name="CopyPackageToLocalNuGetSource" AfterTargets="Pack" Condition="Exists('$(LocalNuGetSourcePath)')">
     <ItemGroup>
       <LocalNuGetPackages Include="$(PackageOutputPath)\$(PackageId).$(PackageVersion)*.nupkg" />
@@ -45,23 +38,14 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
-    <ProjectReference Include="..\Ara3D.Events\Ara3D.Events.csproj" />
-    <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.BFAST\Ara3D.IO.BFAST.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.G3D\Ara3D.IO.G3D.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.GltfExporter\Ara3D.IO.GltfExporter.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.PLY\Ara3D.IO.PLY.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" />
-    <ProjectReference Include="..\Ara3D.IO.VIM\Ara3D.IO.VIM.csproj" />
-    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
-    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
-    <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
-    <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
-    <ProjectReference Include="..\Ara3D.Studio.API\Ara3D.Studio.API.csproj" />
-    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
-    <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
-    <ProjectReference Include="..\Ara3D.WorkItems\Ara3D.WorkItems.csproj" />
+    <ProjectReference Include="..\Ara3D.SDK.Core\Ara3D.SDK.Core.csproj" />
+    <ProjectReference Include="..\Ara3D.SDK.Geometry\Ara3D.SDK.Geometry.csproj" />
+    <ProjectReference Include="..\Ara3D.SDK.IO\Ara3D.SDK.IO.csproj" />
+    <ProjectReference Include="..\Ara3D.SDK.BIM\Ara3D.SDK.BIM.csproj" />
+    <ProjectReference Include="..\Ara3D.SDK.Studio\Ara3D.SDK.Studio.csproj" />
+    <ProjectReference Include="..\..\ext\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
+    <ProjectReference Include="..\..\ext\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
   </ItemGroup>
 </Project>

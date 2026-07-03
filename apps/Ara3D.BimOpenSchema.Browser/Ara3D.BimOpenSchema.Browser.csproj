@@ -20,8 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Ara3D.IO.GltfExporter\Ara3D.IO.GltfExporter.csproj" />
-    <ProjectReference Include="..\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
-    <ProjectReference Include="..\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
+    <ProjectReference Include="..\..\ext\Ara3D.Utils.Wpf\Ara3D.Utils.Wpf.csproj" />
   </ItemGroup>
 
   <ItemGroup>

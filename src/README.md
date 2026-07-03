@@ -1,25 +1,27 @@
 # Ara 3D SDK — `src/`
 
-This folder contains the core libraries of the Ara 3D SDK.
+This folder contains the supported SDK libraries: cross-platform foundations, geometry, I/O,
+BIM, Studio APIs, and NuGet meta-packages.
 
-These projects are, for the most part, dependency-free, cross-platform, and intended for
-consumption from .NET 8. Additional projects which are executables, or have extra dependencies,
-can be found in [`../ext`](../ext) and [`../wip`](../wip).
-
-Install everything via the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package,
-or reference individual projects from this folder.
+Windows-only extensions (WPF, native IFC) live in [`../ext`](../ext). Apps, plug-ins, and
+optional integrations live in [`../apps`](../apps), [`../plugins`](../plugins), and
+[`../integrations`](../integrations).
 
 ---
 
-## Meta-package
+## Meta-packages
 
-| Project | Description |
-| --- | --- |
-| [Ara3D.SDK](Ara3D.SDK) | Bundles most libraries below into a single NuGet package |
-| [Ara3D.SDK.Geometry](Ara3D.SDK.Geometry) | Convenience bundle for geometry, models, memory, and SIMD |
-| [Ara3D.SDK.IO](Ara3D.SDK.IO) | Convenience bundle for BFAST, G3D, VIM, PLY, STEP, GeoJSON, and glTF |
-| [Ara3D.SDK.BIM](Ara3D.SDK.BIM) | Convenience bundle for BIM Open Schema model and IO packages |
-| [Ara3D.SDK.Studio](Ara3D.SDK.Studio) | Convenience bundle for Studio API, scripting, services, PropKit, and Roslyn helpers |
+| Package | TFM | Description |
+| --- | --- | --- |
+| [Ara3D.SDK.Core](Ara3D.SDK.Core) | `net8.0` | Low-level cross-platform foundation (Utils, Logging, Memory, Collections, …) |
+| [Ara3D.SDK.Geometry](Ara3D.SDK.Geometry) | `net8.0` | Geometry and modeling stack (Geometry, Models, F8, Memory, Utils) |
+| [Ara3D.SDK.IO](Ara3D.SDK.IO) | `net8.0` | File format libraries (BFAST, VIM, PLY, glTF, GeoJSON, STEP, …) |
+| [Ara3D.SDK.BIM](Ara3D.SDK.BIM) | `net8.0-windows` | BIM Open Schema model + IO (includes IFC conversion via `ext/`) |
+| [Ara3D.SDK.Studio](Ara3D.SDK.Studio) | `net8.0` | Studio API, PropKit, Roslyn helpers, WorkItems |
+| [Ara3D.SDK](Ara3D.SDK) | `net8.0-windows` | **All of the above** plus `Ara3D.Utils.Wpf` and `Ara3D.IfcLoader` |
+
+Use `Ara3D.SDK.Core` or `Ara3D.SDK.Geometry` when you need a minimal, cross-platform reference.
+Use `Ara3D.SDK` on Windows when you want one package for almost any task.
 
 ---
 
@@ -58,9 +60,8 @@ Shared math types used by Geometry are generated in [`Plato.Generated`](Plato.Ge
 
 | Project | Description |
 | --- | --- |
-| [Ara3D.BimOpenSchema](Ara3D.BimOpenSchema) | BIM Open Schema object model (not in meta-package) |
-
-Serialization for BOS lives in [`../ext/Ara3D.BimOpenSchema.IO`](../ext/Ara3D.BimOpenSchema.IO).
+| [Ara3D.BimOpenSchema](Ara3D.BimOpenSchema) | BIM Open Schema object model |
+| [Ara3D.BimOpenSchema.IO](Ara3D.BimOpenSchema.IO) | Parquet/DuckDB/Excel serialization and IFC import (Windows TFM for IFC) |
 
 ---
 
@@ -69,7 +70,6 @@ Serialization for BOS lives in [`../ext/Ara3D.BimOpenSchema.IO`](../ext/Ara3D.Bi
 | Project | Description |
 | --- | --- |
 | [Ara3D.Events](Ara3D.Events) | Thread-safe event bus |
-| [Ara3D.Services](Ara3D.Services) | Service registration and event bus host |
 | [Ara3D.Logging](Ara3D.Logging) | Logging, progress, and job management |
 | [Ara3D.WorkItems](Ara3D.WorkItems) | Background work-item queues |
 | [Ara3D.PropKit](Ara3D.PropKit) | Runtime property descriptors for UI binding |
@@ -78,21 +78,13 @@ Domo-backed model/repository helpers live in [`../wip/Ara3D.Domo`](../wip/Ara3D.
 
 ---
 
-## Studio and scripting
+## Studio
 
 | Project | Description |
 | --- | --- |
-| [Ara3D.Studio.API](Ara3D.Studio.API) | Plug-in and flow-graph API for Ara 3D Studio |
-| [Ara3D.ScriptService](Ara3D.ScriptService) | Legacy Roslyn scripting service (Bowerbird only) |
-| [Ara3D.Utils.Roslyn](Ara3D.Utils.Roslyn) | Roslyn compilation helpers |
-
----
-
-## Utilities
-
-| Project | Description |
-| --- | --- |
-| [Ara3D.Utils](Ara3D.Utils) | General-purpose helpers (paths, JSON, threading, web, …) |
+| [Ara3D.Studio.API](Ara3D.Studio.API) | Flow graph, assets, and modifier pipeline types |
+| [Ara3D.Utils.Roslyn](Ara3D.Utils.Roslyn) | Roslyn compilation helpers (used by Bowerbird) |
+| [Ara3D.Utils](Ara3D.Utils) | Paths, zip, profiling, and general utilities |
 
 ---
 

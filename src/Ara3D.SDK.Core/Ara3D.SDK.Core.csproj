@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Description>Low-level cross-platform foundation packages for Ara 3D SDK applications.</Description>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <PackageType>Dependency</PackageType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" />
+    <ProjectReference Include="..\Ara3D.Events\Ara3D.Events.csproj" />
+    <ProjectReference Include="..\Ara3D.F8\Ara3D.F8.csproj" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
+    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
+    <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\Ara3D.WorkItems\Ara3D.WorkItems.csproj" />
+  </ItemGroup>
+</Project>

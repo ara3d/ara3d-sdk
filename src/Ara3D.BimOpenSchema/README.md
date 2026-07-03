@@ -12,8 +12,8 @@ analytical tools (Parquet files, DuckDB, or in-memory C# workflows), not for ad-
 A typical workflow is to ingest BOS into DuckDB and build denormalized views with SQL for a
 specific use case.
 
-Serialization to disk is provided by [`Ara3D.BimOpenSchema.IO`](../../ext/Ara3D.BimOpenSchema.IO).
-This project is **not** included in the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package.
+Serialization to disk is provided by [`Ara3D.BimOpenSchema.IO`](../Ara3D.BimOpenSchema.IO).
+Included in the [`Ara3D.SDK.BIM`](../Ara3D.SDK.BIM) and [`Ara3D.SDK`](../Ara3D.SDK) meta-packages.
 
 Current schema version: **0.3** (`Manifest.CurrentVersion`).
 

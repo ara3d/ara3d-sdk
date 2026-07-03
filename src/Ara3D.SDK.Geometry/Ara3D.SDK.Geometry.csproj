@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Description>Geometry, model, math, and memory packages for Ara 3D SDK applications.</Description>
+    <Description>Cross-platform geometry and modeling stack: math, meshes, instances, materials, and render buffers.</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageType>Dependency</PackageType>
   </PropertyGroup>
@@ -12,5 +12,6 @@
     <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
     <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 </Project>

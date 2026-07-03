@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Description>BIM Open Schema model and IO packages for Ara 3D SDK applications.</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageType>Dependency</PackageType>
@@ -8,6 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj" />
-    <ProjectReference Include="..\..\ext\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
+    <ProjectReference Include="..\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
   </ItemGroup>
 </Project>

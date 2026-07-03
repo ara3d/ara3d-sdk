@@ -1,6 +1,7 @@
 # One packable project path per line, relative to the repository root.
 # This is the source of truth for pack.bat and release.bat.
 src\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj
+src\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj
 src\Ara3D.Collections\Ara3D.Collections.csproj
 src\Ara3D.DataTable\Ara3D.DataTable.csproj
 src\Ara3D.Events\Ara3D.Events.csproj
@@ -18,13 +19,11 @@ src\Ara3D.Logging\Ara3D.Logging.csproj
 src\Ara3D.Memory\Ara3D.Memory.csproj
 src\Ara3D.Models\Ara3D.Models.csproj
 src\Ara3D.PropKit\Ara3D.PropKit.csproj
-src\Ara3D.ScriptService\Ara3D.ScriptService.csproj
-src\Ara3D.Services\Ara3D.Services.csproj
 src\Ara3D.Studio.API\Ara3D.Studio.API.csproj
 src\Ara3D.Utils\Ara3D.Utils.csproj
 src\Ara3D.Utils.Roslyn\Ara3D.Utils.Roslyn.csproj
 src\Ara3D.WorkItems\Ara3D.WorkItems.csproj
-ext\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj
+src\Ara3D.SDK.Core\Ara3D.SDK.Core.csproj
 src\Ara3D.SDK.Geometry\Ara3D.SDK.Geometry.csproj
 src\Ara3D.SDK.IO\Ara3D.SDK.IO.csproj
 src\Ara3D.SDK.BIM\Ara3D.SDK.BIM.csproj

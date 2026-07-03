@@ -16,7 +16,7 @@ public static class NuGetPackageTests
     {
         Assert.That(Directory.Exists(ArtifactsFolder), Is.True, $"Missing artifacts folder: {ArtifactsFolder}");
 
-        foreach (var packageId in new[] { "Ara3D.SDK", "Ara3D.Collections" })
+        foreach (var packageId in new[] { "Ara3D.SDK", "Ara3D.SDK.Core", "Ara3D.Collections" })
         {
             var matches = Directory.GetFiles(ArtifactsFolder, $"{packageId}.*.nupkg");
             Assert.That(matches, Is.Not.Empty, $"Missing {packageId} package in {ArtifactsFolder}");

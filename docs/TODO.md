@@ -80,7 +80,7 @@ None currently. (IFC-relations refactor landed — see Resolved.)
 - [ ] **9. [M] `ZipUtil.CreateEntryFromText` sporadic failures** — `src/Ara3D.Utils/ZipUtil.cs` line 87; needs repro test before fix.
 - [ ] **10. [S] `BFast.CheckAlignment` skips at stream end** — `src/Ara3D.IO.BFAST/BFast.cs` line 69; open question: bail vs skip.
 - [ ] **11. [L] Isotropic remesher topology incomplete** — `src/Ara3D.Geometry/IsotropicRemesher.cs` lines 280–304.
-- [ ] **12. [M] Revit geometry computation doubt** — `ext/Ara3D.Bowerbird.RevitSamples/ExtensionsRevit.cs` line 259.
+- [ ] **12. [M] Revit geometry computation doubt** — `plugins/Ara3D.Bowerbird.RevitSamples/ExtensionsRevit.cs` line 259.
 - [ ] **13. [L] Known-issue triangulation bugs** — `tests/Ara3D.SDK.KnownIssues.Tests/PolygonTriangulatorKnownIssueTests.cs` (opt-in via `test.bat knownissues`).
 
 ---
@@ -90,7 +90,7 @@ None currently. (IFC-relations refactor landed — see Resolved.)
 - [ ] **17. [M] `IfcEntityResolver` creates `IfcEntity` for every STEP entity** — `ext/Ara3D.IfcLoader/IfcEntityResolver.cs` line 14.
 - [ ] **18. [M] `ToBimGeometry` copies via `IDataSet` instead of Parquet columns** — `src/Ara3D.BimOpenSchema/BimGeometryExtensions.cs` line 252.
 - [ ] **19. [M] `Model3DExtensions` buffer copies, no non-colored fast path** — `src/Ara3D.Models/Model3DExtensions.cs` lines 25, 69, 292.
-- [ ] **20. [M] Revit AST geometry path optimization** — `ext/Ara3D.Bowerbird.RevitSamples/GeometryAbstractSyntaxTree.cs` line 99.
+- [ ] **20. [M] Revit AST geometry path optimization** — `plugins/Ara3D.Bowerbird.RevitSamples/GeometryAbstractSyntaxTree.cs` line 99.
 
 ---
 
@@ -106,23 +106,21 @@ None currently. (IFC-relations refactor landed — see Resolved.)
 - [ ] **28. [XL] Vendored SharpGLTF fork maintenance** — scattered TODOs under `src/Ara3D.IO.SharpGLTF/`.
 - [ ] **29. [S] `ProfilingUtil` direct `Console` references** — `src/Ara3D.Utils/ProfilingUtil.cs` line 81.
 - [ ] **30. [M] PropKit vector descriptor generalization** — `src/Ara3D.PropKit/PropDescriptorVector3.cs` line 30.
-- [ ] **31. [S] BOS Browser Family vs Type naming confusion** — `ext/Ara3D.BimOpenSchema.Browser/MainWindow.xaml.cs` line 161.
+- [ ] **31. [S] BOS Browser Family vs Type naming confusion** — `apps/Ara3D.BimOpenSchema.Browser/MainWindow.xaml.cs` line 161.
 
 ---
 
 ## P4 — Packaging, cleanup, hygiene
 
-- [ ] **32. [M] `ScriptService` in meta-package but marked legacy** — `src/Ara3D.ScriptService/ScriptingService.cs` line 13.
-- [ ] **33. [M] BOS core not in meta-package; IO in `ext/`** — see `TECHNICAL_DEBT.md` packaging row.
-- [ ] **34. [S] Move `BosBfastSerializer` helpers** — `ext/Ara3D.BimOpenSchema.IO/BosBfastSerializer.cs` line 14.
+- [ ] **33. [M] Split `Ara3D.Models` into core / render / IO** — `RenderModelData` and `RenderModelBfastSerializer` drive extra dependencies; deferred per restructuring plan.
 - [ ] **35. [S] `Ara3D.MemoryMappedFiles` namespace after merge** — `src/Ara3D.Memory/`.
 - [ ] **36. [XS] Delete or restore dead types** — `src/Ara3D.IO.StepParser/StepGraph.cs`, `src/Ara3D.PropKit/PropAccessor.cs`.
 - [ ] **37. [XS] Move `MeshFeatures_Helpers` roadmap comment into debt log** — `src/Ara3D.Geometry/MeshFeatures_Helpers.cs`.
 - [ ] **38. [M] Prune or archive `deprecated/`**.
-- [ ] **39. [XL] Revit 2025 hard-coding / multi-version path** — `ext/Ara3D.Bowerbird.Revit2025/BowerbirdRevitApp.cs` line 59.
+- [ ] **39. [XL] Revit 2025 hard-coding / multi-version path** — `plugins/Ara3D.Bowerbird.Revit2025/BowerbirdRevitApp.cs` line 59.
 - [ ] **40. [S] Promote `GltfMaterialFactory` from tests** — `tests/Ara3D.BimOpenSchema.Tests/GltfMaterialFactory.cs` line 80.
 - [ ] **41. [S] Minor WPF utility moves** — `ext/Ara3D.Utils.Wpf/ObservablePair.cs`, `WpfHelpers.cs`.
-- [ ] **42. [M] Layout importer two-door path limit** — `ext/Ara3D.Bowerbird.RevitSamples/BowerbirdLayoutImporter.cs` line 335.
+- [ ] **42. [M] Layout importer two-door path limit** — `plugins/Ara3D.Bowerbird.RevitSamples/BowerbirdLayoutImporter.cs` line 335.
 
 ---
 
@@ -137,6 +135,7 @@ sections above.
 - [x] **43. [S] Consistent IFC string decoding** — `DecodeIfc` now applied to entity display names (`GetEntityLabel`) and string parameter values in `IfcToBosConverter`; covered by `ConverterDecodesEscapedEntityName` / `ConverterDecodesEscapedStringPropertyValue`.
 - [x] **44. [S] IfcSpace naming** — `GetEntityLabel` prefers `LongName` for `IfcSpace`, stops surfacing the GlobalId GUID as a name (unset `$`/`*` now treated as empty via `GetStringOrEmpty`); the room number (`Name`) is preserved as an `Ifc:Room:Number` parameter. Covered by `ConverterUsesSpaceLongNameAndKeepsRoomNumber`.
 - [x] **45. [M] `IFC-STR-001` schependomlaan string decoding** — closed as false alarm: `\uXXXX` in room JSON output is default `System.Text.Json` ASCII escaping of decoded Unicode (e.g. Dutch `ë`), not missing IFC decode. BOS string values round-trip correctly via `GetValue<string>()`.
+- [x] **32. [S] Move `Ara3D.BIMOpenSchema.Revit2025` to `plugins/`** — moved from `ext/`; solution and README paths updated.
 
 <!-- Example:
 - [x] **1. [XS] FlowObject.WithNewPresentation** — fixed in commit abc123; passes Studio modifier tests.

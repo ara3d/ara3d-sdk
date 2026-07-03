@@ -56,16 +56,14 @@ group, roughly highest-impact first.
 
 | Area / file | What | Why it matters |
 | --- | --- | --- |
-| `src/Ara3D.ScriptService/` | Legacy Roslyn scripting service; **Bowerbird no longer references it** (per-command compile in `ext/Ara3D.Bowerbird`), but it remains in the `Ara3D.SDK` meta-package | Candidate for removal from the meta-package once no other consumers depend on it |
-| `src/Ara3D.BimOpenSchema` packaging | Core BOS not in the meta-package; its IO lives in `ext/` | Consumers must discover and wire up projects manually; split increases release friction |
-| `ext/Ara3D.BimOpenSchema.IO/BosBfastSerializer.cs` | Serializer helpers sit in the IO project with a "move this somewhere" note | Blurs the line between the core BOS model and serialization utilities |
+| `src/Ara3D.Models/Ara3D.Models.csproj` | Pulls `IO.BFAST` for `RenderModelBfastSerializer`; unused `DataTable`/`Logging`/`PropKit` refs removed | Split core/render/IO into separate projects later (see plan) |
 | `src/Ara3D.Memory/` (`Ara3D.MemoryMappedFiles` namespace) | MMF helpers merged in from a deleted project but keep the old `Ara3D.MemoryMappedFiles` namespace | Callers `using Ara3D.MemoryMappedFiles;` to get types from `Ara3D.Memory` — confusing after consolidation |
 | `src/Ara3D.IO.StepParser/StepGraph.cs`, `src/Ara3D.PropKit/PropAccessor.cs` | Whole types commented out with "delete" TODOs | Dead-code noise; decide to delete or restore |
 | `src/Ara3D.Geometry/MeshFeatures_Helpers.cs` | ~12-point future-features roadmap (caching, units, BIM heuristics, …) embedded in a comment block | Not a shortcut — a plan living in source; move to an issue/this log or trim, so it's tracked rather than buried |
 | `deprecated/` | Former `Ara3D.Geometry`, PropKit WIP, graphics experiments — not built | Repo clutter; risk of copying stale patterns back into active code |
 | `ext/Ara3D.IfcLoader/IfcEntityResolver.cs` | Creates an `IfcEntity` for every STEP entity without filtering | Memory and parse cost on large IFC files |
-| `ext/Ara3D.Bowerbird.Revit2025/` | Hard-coded to Revit 2025; upgrade path noted in TODO | Each Revit year needs a sibling project or a version-abstraction layer |
-| `ext/Ara3D.Utils.Wpf/ObservablePair.cs` | WPF-specific helper that "should move to shared utilities" | Minor; duplication risk if similar binding helpers are needed elsewhere |
+| `plugins/Ara3D.BIMOpenSchema.Revit2025/` | Hard-coded to Revit 2025 | Each Revit year needs a sibling project or a version-abstraction layer |
+| `src/Ara3D.BimOpenSchema.IO/BosBfastSerializer.cs` | Serializer helpers sit in the IO project with a "move this somewhere" note | Blurs the line between the core BOS model and serialization utilities |
 | `tests/Ara3D.BimOpenSchema.Tests/GltfMaterialFactory.cs` | glTF → `Models.Material` conversion lives in test code with a "move to models" note | Duplicated or lost if tests change; belongs in production code if the mapping is real |
 
 ---

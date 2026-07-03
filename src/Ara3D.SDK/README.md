@@ -2,36 +2,36 @@
 
 [![NuGet Version](https://img.shields.io/nuget/v/Ara3D.SDK)](https://www.nuget.org/packages/Ara3D.SDK)
 
-Meta-package that bundles the core Ara 3D SDK libraries into a single NuGet reference.
+Windows convenience meta-package that pulls in the full supported SDK stack.
 
 ## Overview
 
-This project contains no source code. It references the individual library projects under
-`src/` and packs their assemblies into one `Ara3D.SDK` NuGet package via
-`IncludeReferencedProjects`.
+This project contains no source code. It references the tier meta-packages under `src/` plus
+Windows-only libraries from `ext/`, and packs their assemblies into one `Ara3D.SDK` NuGet
+package.
 
-For documentation of each bundled library, see the [src/ project index](../README.md).
+## Included meta-packages
 
-## Bundled libraries
+- [Ara3D.SDK.Core](../Ara3D.SDK.Core) — cross-platform foundation
+- [Ara3D.SDK.Geometry](../Ara3D.SDK.Geometry) — geometry and modeling
+- [Ara3D.SDK.IO](../Ara3D.SDK.IO) — file formats
+- [Ara3D.SDK.BIM](../Ara3D.SDK.BIM) — BIM Open Schema + IO
+- [Ara3D.SDK.Studio](../Ara3D.SDK.Studio) — Studio API and Roslyn helpers
 
-Ara3D.Collections, Ara3D.DataTable, Ara3D.Events, Ara3D.Geometry,
-Ara3D.IO.BFAST, Ara3D.IO.G3D, Ara3D.IO.GltfExporter, Ara3D.IO.PLY, Ara3D.IO.StepParser,
-Ara3D.IO.VIM, Ara3D.Logging, Ara3D.Memory, Ara3D.Models, Ara3D.PropKit, Ara3D.ScriptService,
-Ara3D.Services, Ara3D.Studio.API, Ara3D.Utils, Ara3D.Utils.Roslyn, Ara3D.WorkItems.
+## Windows extensions (also included)
+
+- [Ara3D.Utils.Wpf](../../ext/Ara3D.Utils.Wpf) — WPF helpers
+- [Ara3D.IfcLoader](../../ext/Ara3D.IfcLoader) — IFC conversion
 
 ## Not included
 
-These live in `src/` but are referenced separately:
+Plug-ins, apps, and optional integrations are repo-only:
 
-- [Ara3D.BimOpenSchema](../Ara3D.BimOpenSchema) — use `Ara3D.BimOpenSchema.IO` from `ext/`
-- [Ara3D.IO.SharpGLTF](../Ara3D.IO.SharpGLTF) — glTF import/manipulation
-- [Ara3D.IO.GeoJson](../Ara3D.IO.GeoJson) — GeoJSON / IMDF
+- [`plugins/`](../../plugins/) — Bowerbird, Revit add-ins
+- [`apps/`](../../apps/) — BOS Browser
+- [`integrations/`](../../integrations/) — Assimp loader
 
-## External dependencies
-
-- Microsoft.CodeAnalysis.CSharp 4.8.0
-- Microsoft.DiaSymReader.Native 1.7.0
-- System.Memory 4.6.0
+For cross-platform consumers, use `Ara3D.SDK.Core` or `Ara3D.SDK.Geometry` instead of this package.
 
 ## License
 

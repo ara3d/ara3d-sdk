@@ -26,10 +26,10 @@
     <PackageReference Include="System.Runtime.Loader" Version="$(Ara3DSystemRuntimeLoaderVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj" />
-    <ProjectReference Include="..\Ara3D.Bowerbird.Revit2025\Ara3D.Bowerbird.Revit2025.csproj" />
-    <ProjectReference Include="..\Ara3D.Bowerbird.RevitSamples\Ara3D.Bowerbird.RevitSamples.csproj" />
+    <ProjectReference Include="..\..\plugins\Ara3D.Bowerbird.Revit2025\Ara3D.Bowerbird.Revit2025.csproj" />
+    <ProjectReference Include="..\..\plugins\Ara3D.Bowerbird.RevitSamples\Ara3D.Bowerbird.RevitSamples.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AdWindows">

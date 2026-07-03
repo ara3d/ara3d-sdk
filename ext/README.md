@@ -1,5 +1,17 @@
-# Ara 3D SDK - EXT Folder
+# ext — Windows-only SDK extensions
 
-This folder contains extension projects which depend on and extend the capbilities of the core Ara 3D SDK. 
+Projects here depend on Windows APIs, native Windows binaries, or WPF/WinForms. They are
+packaged as part of the SDK where noted, but are not cross-platform.
 
-Unike the projects in the core Ara 3D SDK, these projects may be dependent on Windows, or require extra dependencies.
+| Project | Role |
+| --- | --- |
+| [Ara3D.Utils.Wpf](Ara3D.Utils.Wpf) | WPF controls and dialog helpers |
+| [Ara3D.IfcLoader](Ara3D.IfcLoader) | IFC → BOS conversion (native `web-ifc` DLL) |
+| [Ara3D.IfcTypes](Ara3D.IfcTypes) | Generated IFC entity types (shared project) |
+
+**Not in `ext/`** (see repo root folders):
+
+- [`src/`](../src/) — supported cross-platform libraries and meta-packages
+- [`apps/`](../apps/) — standalone desktop apps (e.g. BOS Browser)
+- [`plugins/`](../plugins/) — host plug-in systems and Revit/Bowerbird integrations
+- [`integrations/`](../integrations/) — optional third-party loaders (e.g. Assimp)
