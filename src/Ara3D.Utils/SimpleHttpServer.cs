@@ -11,7 +11,7 @@ namespace Ara3D.Utils
     /// A simple local HTTP server based on HttpListener.
     /// Intended for local/demo/plugin use, not production hosting.
     /// </summary>
-    public sealed class WebServer : IDisposable
+    public sealed class SimpleHttpServer : IDisposable
     {
         public delegate void RequestHandler(HttpListenerContext context);
 
@@ -31,11 +31,11 @@ namespace Ara3D.Utils
             Stream inputStream,
             Stream outputStream);
 
-        public WebServer(CallBackDelegate callback, int port = 3000, string host = "127.0.0.1")
+        public SimpleHttpServer(CallBackDelegate callback, int port = 3000, string host = "127.0.0.1")
             : this(AdaptLegacyCallback(callback), port, host)
         { }
 
-        public WebServer(RequestHandler handler, int port = 3000, string host = "127.0.0.1")
+        public SimpleHttpServer(RequestHandler handler, int port = 3000, string host = "127.0.0.1")
         {
             _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 

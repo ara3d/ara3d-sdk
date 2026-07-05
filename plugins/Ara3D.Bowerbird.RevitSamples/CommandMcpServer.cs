@@ -20,7 +20,7 @@ public class CommandMcpServer : NamedCommand
     const string McpPath = "/mcp";
     const int RevitBridgeTimeoutMs = 30_000;
 
-    static WebServer _server;
+    static SimpleHttpServer _server;
     static ExternalEvent _revitEvent;
     static RevitBridgeHandler _revitBridge;
 
@@ -36,7 +36,7 @@ public class CommandMcpServer : NamedCommand
 
         _revitBridge = new RevitBridgeHandler();
         _revitEvent = ExternalEvent.Create(_revitBridge);
-        _server = new WebServer(HandleRequest, Port);
+        _server = new SimpleHttpServer(HandleRequest, Port);
         _server.Start();
 
         var config = $@"Add to %USERPROFILE%\.cursor\mcp.json:
