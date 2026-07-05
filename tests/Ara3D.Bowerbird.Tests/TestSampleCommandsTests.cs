@@ -1,5 +1,3 @@
-using Ara3D.Bowerbird;
-
 namespace Ara3D.Bowerbird.Tests;
 
 public class TestSampleCommandsTests

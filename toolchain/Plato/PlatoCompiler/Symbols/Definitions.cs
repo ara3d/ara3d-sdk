@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using Ara3D.Geometry.AST;
 using Ara3D.Geometry.Compiler.Types;
 

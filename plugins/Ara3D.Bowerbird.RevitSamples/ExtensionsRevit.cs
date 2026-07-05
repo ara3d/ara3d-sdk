@@ -1,5 +1,4 @@
-﻿using Ara3D.Geometry;
-using Ara3D.Utils;
+﻿using Ara3D.Utils;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.ExternalService;

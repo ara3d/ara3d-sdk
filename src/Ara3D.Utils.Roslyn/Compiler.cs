@@ -1,6 +1,5 @@
 ﻿using Ara3D.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Ara3D.Utils.Roslyn

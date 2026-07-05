@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Ara3D.BimOpenSchema;
+﻿namespace Ara3D.BimOpenSchema;
 
 /// <summary>
 /// Contains all the BIM Data for a discipline or federated model.

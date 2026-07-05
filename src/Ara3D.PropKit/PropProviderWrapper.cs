@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using System.Dynamic;
 
 namespace Ara3D.PropKit;

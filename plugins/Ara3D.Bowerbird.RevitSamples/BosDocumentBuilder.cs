@@ -1,18 +1,13 @@
 ﻿using Ara3D.BimOpenSchema;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
-using Autodesk.Revit.DB.Electrical;
-using Autodesk.Revit.DB.Mechanical;
-using Autodesk.Revit.DB.Plumbing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using static Ara3D.BimOpenSchema.CommonRevitParameters;
 using Document = Autodesk.Revit.DB.Document;
-using Domain = Autodesk.Revit.DB.Domain;
 using Exception = System.Exception;
 using RevitParameter = Autodesk.Revit.DB.Parameter;
 

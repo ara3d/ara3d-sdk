@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Ara3D.Collections;
 
 namespace Ara3D.IO.G3D
 {

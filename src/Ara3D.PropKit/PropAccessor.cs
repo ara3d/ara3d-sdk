@@ -1,6 +1,4 @@
-﻿using Ara3D.Utils;
-
-namespace Ara3D.PropKit;
+﻿namespace Ara3D.PropKit;
 
 // TODO: delete, I think.
 /*

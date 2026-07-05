@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Ara3D.Geometry.AST;
 using Ara3D.Geometry.Compiler;

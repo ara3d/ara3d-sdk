@@ -1,5 +1,3 @@
-using Ara3D.Studio.Samples.Generators;
-
 namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(nameof(Categories.Meshes))]

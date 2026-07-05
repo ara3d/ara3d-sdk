@@ -1,5 +1,4 @@
 ﻿using Ara3D.Geometry;
-using Ara3D.Collections;
 
 namespace Ara3D.Models;
 
@@ -46,11 +45,29 @@ public class Model3DBuilder
     public int AddInstance(TriangleMesh3D mesh)
         => AddInstance(mesh, Matrix4x4.Identity, Material.Default);
 
-    // TODO: this is potentially confusing. 
     public int AddMeshWithoutInstance(TriangleMesh3D mesh)
     {
         var r = Meshes.Count;
         Meshes.Add(mesh);
         return r;
+    }
+
+    public void AddInstanceAndRemapMesh(InstanceStruct inst, IModel3D other, Dictionary<int, int> meshRemap)
+    {
+        if (inst.MeshIndex < 0)
+        {
+            Instances.Add(inst);
+        }
+        else if (meshRemap.ContainsKey(inst.MeshIndex))
+        {
+            Instances.Add(inst.WithMeshIndex(meshRemap[inst.MeshIndex]));
+        }
+        else
+        {
+            var otherMesh = other.Meshes[inst.MeshIndex];
+            var newMeshIndex = AddMeshWithoutInstance(otherMesh);
+            meshRemap.Add(inst.MeshIndex, newMeshIndex);
+            Instances.Add(inst.WithMeshIndex(newMeshIndex));
+        }
     }
 }

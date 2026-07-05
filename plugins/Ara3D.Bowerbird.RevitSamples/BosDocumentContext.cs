@@ -1,5 +1,4 @@
-﻿using Ara3D.BimOpenSchema;
-using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;

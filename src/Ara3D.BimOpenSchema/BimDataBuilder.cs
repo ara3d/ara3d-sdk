@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq.Expressions;
-using Ara3D.Geometry;
 
 namespace Ara3D.BimOpenSchema;
 

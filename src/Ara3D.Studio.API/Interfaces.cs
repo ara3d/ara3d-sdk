@@ -1,5 +1,4 @@
-﻿using Ara3D.Geometry;
-using Ara3D.Logging;
+﻿using Ara3D.Logging;
 using Ara3D.Models;
 using Ara3D.Utils;
 

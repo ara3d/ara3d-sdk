@@ -1,9 +1,4 @@
-﻿using Ara3D.Geometry;
-using Matrix4x4 = System.Numerics.Matrix4x4;
-using Plane = System.Numerics.Plane;
-using Vector3 = System.Numerics.Vector3;
-
-namespace Ara3D.Geometry
+﻿namespace Ara3D.Geometry
 {
 
 

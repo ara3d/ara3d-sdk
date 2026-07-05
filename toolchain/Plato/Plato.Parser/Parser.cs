@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ara3D.Logging;
-using Ara3D.Parakeet;
-using Ara3D.Parakeet.Cst.PlatoGrammarNameSpace;
-
 namespace Ara3D.Geometry.Parser
 {
     /*

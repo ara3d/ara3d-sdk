@@ -9,7 +9,6 @@ using Ara3D.Logging;
 using Ara3D.Utils;
 using Ara3D.Parakeet;
 using Ara3D.Geometry.Compiler.Types;
-using Ara3D.Geometry.Compiler.Vsg;
 using FunctionAnalysis = Ara3D.Geometry.Compiler.Types.FunctionAnalysis;
 using FunctionGroupCallAnalysis = Ara3D.Geometry.Compiler.Types.FunctionGroupCallAnalysis;
 using ReifiedFunction = Ara3D.Geometry.Compiler.Types.ReifiedFunction;

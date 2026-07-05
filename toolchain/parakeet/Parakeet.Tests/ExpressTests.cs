@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Ara3D.Parakeet.Grammars;
+﻿using Ara3D.Parakeet.Grammars;
 using Ara3D.Utils;
 
 namespace Ara3D.Parakeet.Tests;

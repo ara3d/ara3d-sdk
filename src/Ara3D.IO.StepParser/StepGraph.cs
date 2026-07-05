@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Ara3D.Utils;
-
-namespace Ara3D.IO.StepParser
+﻿namespace Ara3D.IO.StepParser
 {
     // TODO: delete
     /*

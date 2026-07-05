@@ -1,6 +1,4 @@
-﻿using System.Windows.Shapes;
-
-namespace Ara3D.Studio.Samples.Generators
+﻿namespace Ara3D.Studio.Samples.Generators
 {
     public class BlockMesh : IGenerator
     {

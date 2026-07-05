@@ -1,6 +1,4 @@
-﻿using Autodesk.Revit.DB;
-
-namespace Ara3D.Bowerbird.RevitSamples;
+﻿namespace Ara3D.Bowerbird.RevitSamples;
 
 /*
 public static class RenderUtils

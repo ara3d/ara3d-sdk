@@ -1,5 +1,4 @@
 ﻿using Ara3D.BimOpenSchema;
-using Ara3D.Studio.Samples.Generators;
 
 namespace Ara3D.Studio.Samples.BIM_Tools;
 

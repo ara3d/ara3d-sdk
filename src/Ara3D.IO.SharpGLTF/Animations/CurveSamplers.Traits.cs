@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Numerics;
 using SEGMENT = System.ArraySegment<float>;
 using SPARSE = SharpGLTF.Transforms.SparseWeight8;

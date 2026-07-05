@@ -5,7 +5,6 @@ using System.IO;
 using System.Windows.Forms;
 using Ara3D.Logging;
 using Autodesk.Revit.UI;
-using Ara3D.Utils;
 
 namespace Ara3D.BIMOpenSchema.Revit2025
 {

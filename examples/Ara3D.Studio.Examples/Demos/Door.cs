@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace Ara3D.Studio.Samples.Demos;
+﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(nameof(Categories.Demos))]
 public class Door : IGenerator

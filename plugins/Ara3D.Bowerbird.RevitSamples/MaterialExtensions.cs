@@ -1,6 +1,5 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Visual;
-using System;
 using Color = Ara3D.Geometry.Color;
 using Material = Autodesk.Revit.DB.Material;
 

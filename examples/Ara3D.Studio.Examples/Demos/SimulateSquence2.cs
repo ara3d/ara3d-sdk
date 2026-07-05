@@ -1,6 +1,4 @@
-﻿using Ara3D.BimOpenSchema;
-
-namespace Ara3D.Studio.Samples.Demos;
+﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(nameof(Categories.Demos))]
 public class SimulateSequence2 : IModifier

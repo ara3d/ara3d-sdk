@@ -1,6 +1,4 @@
-﻿using Ara3D.Utils;
-
-namespace Ara3D.Studio.API;
+﻿namespace Ara3D.Studio.API;
 
 public abstract class SimpleCommand : IScriptedCommand
 {

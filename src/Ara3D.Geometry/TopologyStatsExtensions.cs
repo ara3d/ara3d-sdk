@@ -1,7 +1,5 @@
 ﻿namespace Ara3D.Geometry;
 
-using System.Diagnostics;
-
 public readonly record struct NormalOrientationStats(
     double UpFacingAreaRatio,
     double DownFacingAreaRatio,

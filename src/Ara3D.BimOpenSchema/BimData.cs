@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Ara3D.BimOpenSchema;
+﻿namespace Ara3D.BimOpenSchema;
 
 public class BimData : IBimData
 {

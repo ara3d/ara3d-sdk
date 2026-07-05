@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Ara3D.Geometry.Compiler.Symbols;
 using Ara3D.Utils;

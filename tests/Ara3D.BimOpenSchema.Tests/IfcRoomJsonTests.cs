@@ -1,8 +1,6 @@
-using Ara3D.BimOpenSchema;
 using Ara3D.BimOpenSchema.IO;
-using System.Text;
-using System.Text.Json.Nodes;
 using Ara3D.Logging;
+using static Ara3D.BimOpenSchema.Tests.IfcBosJsonTestHelpers;
 using static Ara3D.BimOpenSchema.Tests.IfcToBosConverterDiagnosticsTests;
 
 namespace Ara3D.BimOpenSchema.Tests;
@@ -34,13 +32,6 @@ public static class IfcRoomJsonTests
         END-ISO-10303-21;
         """;
 
-    static string WriteTempIfc(string content)
-    {
-        var path = Path.Combine(Path.GetTempPath(), $"ara3d-room-json-{Guid.NewGuid():N}.ifc");
-        File.WriteAllText(path, content, Encoding.ASCII);
-        return path;
-    }
-
     public static IfcSample[] Samples => IfcToBosConverterDiagnosticsTests.Samples;
 
     [TestCaseSource(nameof(Samples))]
@@ -54,15 +45,13 @@ public static class IfcRoomJsonTests
         var rooms = bimData.ToRoomJsonObjects();
         logger.Log($"Found {rooms.Count} rooms");
         foreach (var room in rooms)
-        {
             logger.Log(room.ToString());
-        }
     }
 
     [Test]
     public static void ConvertIfcToRoomJson()
     {
-        var path = WriteTempIfc(RoomIfc);
+        var path = WriteTempIfc("room-json", RoomIfc);
         IfcToBosConverter? converter = null;
         try
         {
@@ -98,23 +87,5 @@ public static class IfcRoomJsonTests
             converter?.IfcFile.Dispose();
             try { File.Delete(path); } catch (IOException) { }
         }
-    }
-
-    static void AssertEntity(JsonObject entity, string name, string globalId, long localId)
-    {
-        Assert.That(entity["name"]!.GetValue<string>(), Is.EqualTo(name));
-        Assert.That(entity["globalId"]!.GetValue<string>(), Is.EqualTo(globalId));
-        Assert.That(entity["localId"]!.GetValue<long>(), Is.EqualTo(localId));
-        Assert.That(entity["id"]!.GetValue<int>(), Is.GreaterThanOrEqualTo(0));
-    }
-
-    static void AssertRelation(JsonObject relation, string type, string targetName, string targetCategory)
-    {
-        Assert.That(relation["type"]!.GetValue<string>(), Is.EqualTo(type));
-
-        var target = relation["entity"]!.AsObject();
-        Assert.That(target["name"]!.GetValue<string>(), Is.EqualTo(targetName));
-        Assert.That(target["category"]!.GetValue<string>(), Is.EqualTo(targetCategory));
-        Assert.That(target["id"]!.GetValue<int>(), Is.GreaterThanOrEqualTo(0));
     }
 }

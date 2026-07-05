@@ -5,7 +5,6 @@ using Autodesk.Revit.UI.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Ara3D.Utils;
 
 namespace Ara3D.Bowerbird.RevitSamples;
 

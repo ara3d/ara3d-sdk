@@ -1,6 +1,4 @@
 using System.Data;
-using System.Data.Common;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Ara3D.Collections;
 using Ara3D.PropKit;

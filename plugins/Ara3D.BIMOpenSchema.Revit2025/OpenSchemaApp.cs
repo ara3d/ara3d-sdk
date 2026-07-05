@@ -5,7 +5,6 @@ using Autodesk.Revit.UI;
 using System;
 using System.Reflection;
 using System.Windows.Media.Imaging;
-using Ara3D.BimOpenSchema;
 
 namespace Ara3D.BIMOpenSchema.Revit2025
 {

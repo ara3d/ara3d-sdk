@@ -6,7 +6,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ara3D.BimOpenSchema;
 using Ara3D.DataTable;
 using Ara3D.Extras;
 using Ara3D.Logging;

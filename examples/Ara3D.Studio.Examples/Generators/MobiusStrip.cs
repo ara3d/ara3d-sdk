@@ -1,10 +1,3 @@
-using System;
-using Ara3D;
-using Ara3D.Geometry;
-using Ara3D.Studio.API;
-using Ara3D.Collections;
-using System.ComponentModel.DataAnnotations;
-
 public class MobiusStrip : IGenerator
 {
     [Range(0.01f, 10f)] public float Radius = 2f;

@@ -1,4 +1,3 @@
-using Ara3D.BimOpenSchema;
 using Ara3D.BimOpenSchema.IO;
 using Ara3D.BIMOpenSchema.Tests;
 using Ara3D.IfcLoader;

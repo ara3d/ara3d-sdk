@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Ara3D.Memory;
 using Ara3D.Utils;
 

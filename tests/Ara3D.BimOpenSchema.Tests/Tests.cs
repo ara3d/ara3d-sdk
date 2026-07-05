@@ -1,6 +1,5 @@
 using Ara3D.Utils;
 using System.Diagnostics;
-using System.IO.Compression;
 using Ara3D.BimOpenSchema;
 using Ara3D.BimOpenSchema.IO;
 using Ara3D.BimOpenSchema.Tests;

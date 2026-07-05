@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using Ara3D.Utils;
-
-namespace Ara3D.IfcTypes;
+﻿namespace Ara3D.IfcTypes;
 
 public enum IfcSchemaEnum
 {
