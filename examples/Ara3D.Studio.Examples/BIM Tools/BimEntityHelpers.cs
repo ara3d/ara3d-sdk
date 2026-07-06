@@ -41,6 +41,27 @@ public static class BimEntityHelpers
         return cat == "IFCDOOR" || cat.StartsWith("door", true, CultureInfo.InvariantCulture);
     }
 
+    /// <summary>Windows and curtain panels — categories that typically admit daylight.</summary>
+    public static bool IsGlazing(EntityModel entity)
+    {
+        var cat = entity.Category;
+        if (!entity.IsNotTypeOrCategory || cat == null)
+            return false;
+        return cat.Equals("IFCWINDOW", StringComparison.OrdinalIgnoreCase)
+               || cat.Equals("Windows", StringComparison.OrdinalIgnoreCase)
+               || cat.Contains("curtain panel", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool IsGlazingByTransparency(EntityModel entity, float transparencyThreshold)
+    {
+        if (entity.GetParameterAsNumber(CommonRevitParameters.MaterialTransparency.Name) >= transparencyThreshold)
+            return true;
+        return entity.Instances.Any(i => i.Material.Color.A < 0.5f);
+    }
+
+    public static bool IsLightSource(EntityModel entity, bool useTransparencyHeuristic, float transparencyThreshold)
+        => IsGlazing(entity) || (useTransparencyHeuristic && IsGlazingByTransparency(entity, transparencyThreshold));
+
     public static Bounds3D GetEntityWorldBounds(EntityModel entity, IReadOnlyList<Bounds3D> meshBounds)
     {
         var bounds = Bounds3D.Empty;
