@@ -12,6 +12,8 @@ public class RoomDoorArrows : IModifier
     [Range(0f, 1f)] public float OriginalTransparency = 0.25f;
     [Range(0.01f, 1f)] public float ArrowScale = 0.15f;
     [Range(0.1f, 3f)] public float ProximityTolerance = 1f;
+    [Range(0.05f, 1f)] public float LengthFraction = 0.35f;
+    [Range(0f, 10f)] public float MaxArrowLength = 3f;
     public Color ArrowColor = new(1f, 0.5f, 0.1f, 1f);
 
     private BimData? _data;
@@ -74,7 +76,7 @@ public class RoomDoorArrows : IModifier
                     continue;
 
                 var doorCenter = doorBox.Center;
-                var line = new Line3D(roomCenter, doorCenter);
+                var line = ShortenedArrowLine(roomCenter, doorCenter, LengthFraction, MaxArrowLength);
                 if (line.Length < 1e-4f)
                     continue;
 
@@ -165,5 +167,22 @@ public class RoomDoorArrows : IModifier
         }
 
         return links;
+    }
+
+    /// <summary>Arrow from room center toward door, scaled by fraction and optionally capped in meters.</summary>
+    static Line3D ShortenedArrowLine(Point3D from, Point3D to, float fraction, float maxLength)
+    {
+        var fullLine = new Line3D(from, to);
+        var fullLen = (float)fullLine.Length;
+        if (fullLen < 1e-4f)
+            return fullLine;
+
+        var t = Math.Clamp(fraction, 0.05f, 1f);
+        var len = fullLen * t;
+        if (maxLength > 0)
+            len = Math.Min(len, maxLength);
+
+        var end = from.Lerp(to, len / fullLen);
+        return new Line3D(from, end);
     }
 }
