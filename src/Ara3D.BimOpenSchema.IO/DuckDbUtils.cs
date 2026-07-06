@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -28,7 +28,6 @@ public static class DuckDbUtils
         var sqlColumns = string.Join(", ",
             table.Columns.Select(c => $"\"{c.Descriptor.Name}\" {ToDuckType(c.Descriptor.Type)}"));
 
-        // Create table if needed
         using (var cmd = conn.CreateCommand())
         {
             cmd.CommandText =
@@ -36,19 +35,18 @@ public static class DuckDbUtils
             cmd.ExecuteNonQuery();
         }
 
-        // Bulk-insert with Appender
         using var app = conn.CreateAppender(tableName);
-        
+
         foreach (var row in table.Rows)
         {
             var appRow = app.CreateRow();
             foreach (var c in table.Columns)
                 Append(appRow, row[c.ColumnIndex], c.Descriptor.Type);
-            appRow.EndRow();                       
+            appRow.EndRow();
         }
     }
 
-    private static string ToDuckType(Type t)
+    static string ToDuckType(Type t)
         => t.IsEnum ? "INTEGER"
             : t == typeof(byte) ? "UTINYINT"
             : t == typeof(sbyte) ? "TINYINT"
@@ -64,12 +62,12 @@ public static class DuckDbUtils
             : t == typeof(bool) ? "BOOLEAN"
             : t == typeof(DateTime) ? "TIMESTAMP"
             : t == typeof(Guid) ? "UUID"
-            : "VARCHAR"; // fall-back
+            : "VARCHAR";
 
-    private static void Append(IDuckDBAppenderRow row, object? v, Type t)
+    static void Append(IDuckDBAppenderRow row, object? v, Type t)
     {
         if (v is null) { row.AppendNullValue(); return; }
-        if (t.IsEnum) t = Enum.GetUnderlyingType(t); 
+        if (t.IsEnum) t = Enum.GetUnderlyingType(t);
 
         switch (Type.GetTypeCode(t))
         {
@@ -93,7 +91,7 @@ public static class DuckDbUtils
                 break;
         }
     }
-    
+
     public static object[] ReadColumnValuesAsObjects(
         this DuckDBConnection conn,
         string tableName,
@@ -104,7 +102,7 @@ public static class DuckDbUtils
         using var rdr = cmd.ExecuteReader();
         var buffer = new List<object>();
         while (rdr.Read())
-            buffer.Add(rdr.IsDBNull(0) ? default : rdr.GetValue(0));
+            buffer.Add(rdr.IsDBNull(0) ? default! : rdr.GetValue(0));
         return buffer.ToArray();
     }
 
@@ -118,7 +116,7 @@ public static class DuckDbUtils
         using var rdr = cmd.ExecuteReader();
         var buffer = new List<T>();
         while (rdr.Read())
-            buffer.Add(rdr.IsDBNull(0) ? default : rdr.GetFieldValue<T>(0));
+            buffer.Add(rdr.IsDBNull(0) ? default! : rdr.GetFieldValue<T>(0));
         return buffer.ToArray();
     }
 
@@ -127,10 +125,30 @@ public static class DuckDbUtils
         if (conn.State == ConnectionState.Closed)
             conn.Open();
         using var cmd = conn.CreateCommand();
-        // We only need metadata, so LIMIT 0 avoids scanning the table.
-        cmd.CommandText = $"SELECT * FROM \"{tableName}\" LIMIT 0;";
-        using var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly);
-        return reader.ToDataTable(tableName);
+        cmd.CommandText = $"SELECT * FROM \"{tableName}\";";
+        using var reader = cmd.ExecuteReader();
+
+        var fieldCount = reader.FieldCount;
+        var names = new string[fieldCount];
+        var types = new Type[fieldCount];
+        var values = new List<object>[fieldCount];
+        for (var i = 0; i < fieldCount; i++)
+        {
+            names[i] = reader.GetName(i);
+            types[i] = reader.GetFieldType(i);
+            values[i] = new List<object>();
+        }
+
+        while (reader.Read())
+        {
+            for (var i = 0; i < fieldCount; i++)
+                values[i].Add(reader.IsDBNull(i) ? null! : reader.GetValue(i));
+        }
+
+        var builder = new DataTableBuilder(tableName);
+        for (var i = 0; i < fieldCount; i++)
+            builder.AddColumn(values[i].ToArray(), names[i], types[i]);
+        return builder.Build();
     }
 
     public static IReadOnlyList<string> GetTableNames(this DuckDBConnection conn,
@@ -150,7 +168,7 @@ public static class DuckDbUtils
             .ToList();
     }
 
-    public static IDataSet ToDataSet<T>(this DuckDBConnection conn)
+    public static IDataSet ToDataSet(this DuckDBConnection conn)
     {
         if (conn.State == ConnectionState.Closed)
             conn.Open();

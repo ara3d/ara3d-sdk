@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="$(Ara3DClosedXmlVersion)" />
     <PackageReference Include="DuckDB.NET.Data.Full" Version="$(Ara3DDuckDbNetDataFullVersion)" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.6" />
     <PackageReference Include="Parquet.Net" Version="$(Ara3DParquetNetVersion)" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using Ara3D.BimOpenSchema.IO;
+﻿using Ara3D.BimOpenSchema;
+using Ara3D.BimOpenSchema.IO;
 using Ara3D.DataTable;
 using Ara3D.IO.GltfExporter;
 using Ara3D.Models;

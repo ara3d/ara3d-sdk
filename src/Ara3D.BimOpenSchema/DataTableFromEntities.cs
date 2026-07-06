@@ -1,7 +1,10 @@
-﻿using Ara3D.DataTable;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Ara3D.DataTable;
 using Ara3D.Utils;
 
-namespace Ara3D.BimOpenSchema.Browser;
+namespace Ara3D.BimOpenSchema;
 
 public class DataTableFromEntities : IDataTable
 {
@@ -45,8 +48,6 @@ public class DataTableFromEntities : IDataTable
 
     public Column AddColumn(string name, Type type)
     {
-        // NOTE: this prevents the same column appearing twice when the parameter names are capitalized differently.
-        // That should be flagged as a bug, 
         if (ColumnLookup.TryGetValue(name.ToLowerInvariant(), out var column))
             return column;
         var r = new Column(name, type, ColumnLookup.Count);
@@ -61,17 +62,20 @@ public class DataTableFromEntities : IDataTable
             ParameterType.Number => typeof(float),
             ParameterType.Entity => typeof(int),
             ParameterType.Int => typeof(int),
-            // TEMP: Points are skipped, for now.
             _ => null
         };
 
-    public DataTableFromEntities(IReadOnlyList<EntityModel> entities, string name, bool includeParameters)
+    public DataTableFromEntities(
+        IReadOnlyList<EntityModel> entities,
+        string name,
+        bool includeParameters,
+        IReadOnlyList<string>? parameterNames = null)
     {
         Entities = entities;
         ColumnLookup.Clear();
         var nameColumn = AddColumn("Name", typeof(string));
         var localIdColumn = AddColumn("LocalId", typeof(long));
-        var documentColumn = AddColumn("Document", typeof(int));
+        var documentColumn = AddColumn("Document", typeof(string));
         var categoryColumn = AddColumn("Category", typeof(string));
         var categoryTypeColumn = AddColumn("CategoryType", typeof(string));
         var classNameColumn = AddColumn("ClassName", typeof(string));
@@ -80,27 +84,27 @@ public class DataTableFromEntities : IDataTable
         var roomColumn = AddColumn("Room", typeof(string));
         var familyTypeColumn = AddColumn("Type", typeof(string));
 
-        //var assemblyColumn = AddColumn("Assembly", typeof(string));
-        //var worksetColumn = AddColumn("Workset", typeof(int));
-        //var globalIdColumn = AddColumn("GlobalId", typeof(string));
-        //var categoryTypeColumn = AddColumn("CategoryType", typeof(string));
-
         var nonParameterColumnCount = ColumnLookup.Count;
-        
-        // Create the parameter columns
+        var parameterFilter = parameterNames is { Count: > 0 }
+            ? new HashSet<string>(parameterNames, StringComparer.OrdinalIgnoreCase)
+            : null;
+
         foreach (var e in Entities)
         {
-            if (includeParameters)
+            if (!includeParameters)
+                continue;
+
+            foreach (var pm in e.Parameters)
             {
-                foreach (var pm in e.Parameters)
-                {
-                    var pt = pm.Descriptor.ParameterType;
-                    var paramType = GetColumnDotNetType(pt);
-                    if (paramType == null)
-                        continue;
-                    var paramName = pm.Descriptor.Name;
-                    AddColumn(paramName, paramType);
-                }
+                var paramName = pm.Descriptor.Name;
+                if (parameterFilter != null && !parameterFilter.Contains(paramName))
+                    continue;
+
+                var paramType = GetColumnDotNetType(pm.Descriptor.ParameterType);
+                if (paramType == null)
+                    continue;
+
+                AddColumn(paramName, paramType);
             }
         }
 
@@ -117,35 +121,19 @@ public class DataTableFromEntities : IDataTable
             roomColumn.Values.Add(e.RoomName);
             familyTypeColumn.Values.Add(e.TypeName);
 
-            //globalIdColumn.Values.Add(e.GlobalId);
-            //assemblyColumn.Values.Add(e.AssemblyName);
-            //worksetColumn.Values.Add(e.WorksetId);
-            //categoryTypeColumn.Values.Add(e.CategoryT ype);
-
-            // Add values or default values 
             foreach (var column in ColumnLookup.Values)
             {
-                // Skip the first columns
                 if (column.ColumnIndex < nonParameterColumnCount)
                     continue;
 
-                if (e.ParameterValues.TryGetValue(column.Name, out var val) && val != null) 
+                if (e.ParameterValues.TryGetValue(column.Name, out var val) && val != null)
                 {
-                    // EntityModel is just stored as an integer
                     if (val is EntityModel em)
-                    {
                         column.Values.Add((int)em.Index);
-                    }
-                    // String, Int, Float
                     else if (val.GetType() == column.Type)
-                    {
                         column.Values.Add(val);
-                    }
-                    // Default to the default value if the type is wrong (e.g., a string value for a number parameter)
                     else
-                    {
                         column.Values.Add(column.DefaultValue);
-                    }
                 }
                 else
                 {
