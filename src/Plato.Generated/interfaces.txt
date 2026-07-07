@@ -380,6 +380,8 @@ FigureEightKnot
       - IShape
         - IGeometry
 
+FrenetFrame
+
 Function0
 
 Function1
