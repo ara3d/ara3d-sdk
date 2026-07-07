@@ -123,6 +123,12 @@ public partial class BosDocumentBuilder
     public PointIndex AddPoint(XYZ xyz)
         => AddPoint(DataBuilder, xyz);
 
+    // TODO: Revit XYZ values are in Revit internal units (feet), but BimGeometry documents
+    // meters as the unit for geometry, so point parameters are inconsistent with geometry.
+    // Converting here (x 0.3048) would change the meaning of all newly exported files, so it
+    // must be coordinated with consumers, validated inside Revit, and the geometry path audited
+    // for double conversion. Until then, Ara3D.BimOpenSchema.Harmonizer converts Revit-sourced
+    // points to meters when producing canonical parameters.
     public static PointIndex AddPoint(BimDataBuilder bdb, XYZ xyz)
         => bdb.AddPoint(new((float)xyz.X, (float)xyz.Y, (float)xyz.Z));
 
@@ -428,6 +434,11 @@ public partial class BosDocumentBuilder
         return UnitUtils.GetTypeCatalogStringForUnit(unitId);
     }
 
+    // TODO: unlike the curated parameters above (which use "Rvt:" prefixed descriptor names),
+    // user/built-in parameters are exported under their raw display name. This collides with
+    // raw IFC property names in merged datasets and makes source detection rely on the curated
+    // set. Renaming would break existing consumers; the harmonizer matches these by
+    // (group, name) instead.
     public void ProcessParameters(EntityIndex entityIndex, Element element)
     {
         if (!Settings.IncludeParameters)
@@ -435,7 +446,7 @@ public partial class BosDocumentBuilder
 
         foreach (RevitParameter p in element.Parameters)
         {
-            try 
+            try
             {
                 if (p == null) continue;
                 var def = p.Definition;
@@ -463,7 +474,9 @@ public partial class BosDocumentBuilder
                         break;
                 }
             }
-            catch (Exception ex) 
+            // TODO: parameter export failures are silently swallowed here; they should at least
+            // be recorded via AddError/AddDiagnostic so missing parameters are diagnosable.
+            catch (Exception)
             {
             }
         }

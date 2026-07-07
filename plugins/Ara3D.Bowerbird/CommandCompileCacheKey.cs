@@ -10,7 +10,7 @@ namespace Ara3D.Bowerbird;
 /// </summary>
 public readonly struct CommandCompileCacheKey
 {
-    public const string SchemaVersion = "2";
+    public const string SchemaVersion = "3";
 
     public CommandCompileCacheKey(string fingerprint) => Fingerprint = fingerprint;
 
@@ -44,15 +44,14 @@ public readonly struct CommandCompileCacheKey
         => Convert.ToHexString(file.SHA256Hash()).ToLowerInvariant();
 
     static SourceFileRecord ToSourceFileRecord(FilePath file)
-        => new(file.GetFileName(), file.GetFileSize(), file.GetModifiedTime().Ticks);
+        => new(file.GetFileName(), ToFileHash(file));
 
     static string HashJson<T>(T value)
         => Sha256.Compute(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(value, JsonOptions))).ToHex();
 
     sealed record SourceFileRecord(
         [property: JsonPropertyName("fileName")] string FileName,
-        [property: JsonPropertyName("fileSize")] long FileSize,
-        [property: JsonPropertyName("lastModifiedUtcTicks")] long LastModifiedUtcTicks);
+        [property: JsonPropertyName("sha256")] string Sha256);
 
     static readonly JsonSerializerOptions JsonOptions = new()
     {

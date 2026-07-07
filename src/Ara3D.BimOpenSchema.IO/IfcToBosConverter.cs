@@ -111,6 +111,9 @@ public class IfcToBosConverter
     {
         Input = input;
 
+        BimDataBuilder.Manifest.GeneratorApplication = "Ara3D IFC to BIM Open Schema Converter";
+        BimDataBuilder.Manifest.GeneratorVersion = "0.1.0";
+
         IfcFile = new IfcFile(input, true, logger);
 
         logger?.Log("Loaded file");
@@ -140,7 +143,7 @@ public class IfcToBosConverter
 
         logger?.Log($"Found {BosEntities.Count} entities, among {IfcFile.EntityResolver.EntityLookup.Count} total entities");
 
-        _docIndex = (DocumentIndex)(-1);
+        _docIndex = BimDataBuilder.AddDocument(input.GetFileNameWithoutExtension(), input);
 
         logger?.Log($"Creating categories");
         var uniqueNames = BosEntities.Select(e => e.GetEntityName().DecodeIfc()).Distinct().ToList();
@@ -188,7 +191,7 @@ public class IfcToBosConverter
             
             var gid = "";
             if (attributes.Length > 0 && attributes[0].Name == "GlobalId")
-                gid = e.GetString(0);
+                gid = e.GetString(0).DecodeIfc();
 
             var name = e.GetEntityLabel().DecodeIfc();
 
@@ -221,7 +224,9 @@ public class IfcToBosConverter
         var addedRelations = 0;
         foreach (var rel in ifcRels.Relations)
         {
-            // TODO: this should not create new entities. 
+            // TODO: relations whose endpoints were filtered out (not in IfcIdToBosId) are silently
+            // dropped here. Consider counting/reporting them as diagnostics, and check whether
+            // upstream IfcRelations yields endpoints that should have been converted as entities.
             var a = GetBosEntityIndexFromIfc(rel.From);
             var b = GetBosEntityIndexFromIfc(rel.To);
             if (a == InvalidEntityIndex || b == InvalidEntityIndex)
@@ -331,6 +336,10 @@ public class IfcToBosConverter
 
             if (ifcIdList.Count > 1)
             {
+                // TODO: this drops the geometry instance entirely, after the material and
+                // transform above were already added (leaving unused entries). Instances whose
+                // definition maps to multiple IFC ids should instead be emitted once per id,
+                // or at least once with the first id.
                 logger?.Log($"Found multiple ids for {inst.EntityIndex}");
                 continue;
             }

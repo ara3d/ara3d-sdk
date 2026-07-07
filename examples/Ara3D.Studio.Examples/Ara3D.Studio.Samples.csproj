@@ -11,6 +11,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!--
+    <Compile Remove="BIM Tools\**\*.cs" />
+    -->
+    <Compile Remove="Lakehouse\**\*.cs" />
+    <Compile Remove="Demos\SimulateSequence.cs" />
+    <Compile Remove="Demos\SimulateSquence2.cs" />
+    <Compile Remove="GeoJsonDemo2.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Ara3D.BimOpenSchema\Ara3D.BimOpenSchema.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.IO.GeoJson\Ara3D.IO.GeoJson.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />

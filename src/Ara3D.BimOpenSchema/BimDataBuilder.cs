@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Ara3D.BimOpenSchema;
@@ -28,6 +29,7 @@ public class BimDataBuilder
     {
         return new BimData()
         {
+            Manifest = Manifest,
             Descriptors = _descriptors.ToArray(),
             Documents = _documents.ToArray(),
             Diagnostics = _diagnostics.ToArray(),
@@ -69,10 +71,11 @@ public class BimDataBuilder
         Debug.Assert(val != null);
         if (d.TryGetValue(val, out var index))
             return index;
-        var r = d.Count;
+        // The new index must come from the list, not the dictionary: AddBimData appends
+        // items to the lists that may be duplicates, so the dictionary can be smaller.
+        var r = list.Count;
         d.Add(val, r);
         list.Add(val);
-        Debug.Assert(d.Count == list.Count);
         return r;
     }
     
@@ -149,27 +152,50 @@ public class BimDataBuilder
         => AddParameter(e, p, AddDescriptor(name, units, group, ParameterType.Point));
 
     public void AddParameter(EntityIndex e, PointIndex pi, string name, string units, string group)
-        => AddParameter(e, pi, AddDescriptor(name, units, group, ParameterType.Int));
+        => AddParameter(e, pi, AddDescriptor(name, units, group, ParameterType.Point));
 
     public void AddDiagnostic(DiagnosticType type, string msg, DocumentIndex di, EntityIndex e)
         => _diagnostics.Add(new(type, di, e, AddString(msg)));
 
+    /// <summary>
+    /// Adds all data from the given IBimData, re-assigning every entity to a single
+    /// new document created from the given title and path.
+    /// </summary>
     public void AddBimData(IBimData bd, string title, string path)
+        => AddBimData(bd, title, path, preserveDocuments: false);
+
+    /// <summary>
+    /// Adds all data from the given IBimData, preserving its document table
+    /// (documents are appended and entity document indices remapped).
+    /// </summary>
+    public void AddBimData(IBimData bd)
+        => AddBimData(bd, null, null, preserveDocuments: true);
+
+    private void AddBimData(IBimData bd, string title, string path, bool preserveDocuments)
     {
         var numEntities = _entities.Count;
-        var numDocs = _documents.Count;
         var numPoints = _points.Count;
-        var numParameters = _parameters.Count;
         var numDescriptors = _descriptors.Count;
         var numNumbers = _numbers.Count;
+        var numStrings = _strings.Count;
+
+        // The string table is copied positionally, so string indices are remapped by a
+        // fixed offset. When the builder is empty, all indices of the added data are
+        // preserved verbatim, making the copy lossless.
+        foreach (var s in bd.Strings)
+        {
+            var s2 = s ?? "";
+            _stringLookup.TryAdd(s2, _strings.Count);
+            _strings.Add(s2);
+        }
 
         //========================================
         // Helper functions
 
         StringIndex NewStr(StringIndex i) =>
-            i == InvalidStringIndex ? InvalidStringIndex : AddString(bd.Strings[(int)i]);
-        
-        EntityIndex NewEntity(EntityIndex i) 
+            i == InvalidStringIndex ? InvalidStringIndex : numStrings + i;
+
+        EntityIndex NewEntity(EntityIndex i)
             => i == InvalidEntityIndex ? InvalidEntityIndex : numEntities + i;
 
         DescriptorIndex NewDesc(DescriptorIndex i)
@@ -180,18 +206,53 @@ public class BimDataBuilder
 
         //========================================
 
+        Func<DocumentIndex, DocumentIndex> documentMapper;
+        if (preserveDocuments)
+        {
+            var numDocs = _documents.Count;
+            foreach (var d in bd.Documents)
+            {
+                var d2 = new Document(NewStr(d.Title), NewStr(d.Path));
+                _documentLookup.TryAdd(d2, _documents.Count);
+                _documents.Add(d2);
+            }
+            documentMapper = i => i == InvalidDocumentIndex ? InvalidDocumentIndex : numDocs + i;
+        }
+        else
+        {
+            var docIndex = (DocumentIndex)_documents.Count;
+            var doc = new Document(AddString(title), AddString(path));
+            _documentLookup.TryAdd(doc, _documents.Count);
+            _documents.Add(doc);
+            documentMapper = _ => docIndex;
+        }
+
         foreach (var e in bd.Entities)
-            _entities.Add(new(e.LocalId, NewStr(e.GlobalId), (DocumentIndex)numDocs, NewStr(e.Name), NewEntity(e.Category),
+            _entities.Add(new(e.LocalId, NewStr(e.GlobalId), documentMapper(e.Document), NewStr(e.Name), NewEntity(e.Category),
                 NewEntity(e.Type)));
 
+        // Items are appended positionally (the parameter remapping below relies on fixed
+        // offsets), so duplicates are kept. The lookup dictionaries are still updated
+        // (first occurrence wins) so that Add* calls made after AddBimData return valid indices.
         foreach (var d in bd.Descriptors)
-            _descriptors.Add(new(NewStr(d.Name), NewStr(d.Units), NewStr(d.Group), d.Type));
+        {
+            var d2 = new ParameterDescriptor(NewStr(d.Name), NewStr(d.Units), NewStr(d.Group), d.Type);
+            _descriptorLookup.TryAdd(d2, _descriptors.Count);
+            _descriptors.Add(d2);
+        }
 
         foreach (var p in bd.Points)
-            _points.Add(new Point(p.X, p.Y, p.Z));
+        {
+            var p2 = new Point(p.X, p.Y, p.Z);
+            _pointLookup.TryAdd(p2, _points.Count);
+            _points.Add(p2);
+        }
 
         foreach (var x in bd.Numbers)
+        {
+            _numberLookup.TryAdd(x, _numbers.Count);
             _numbers.Add(x);
+        }
 
         foreach (var r in bd.Relations)
             _relations.Add(new(NewEntity(r.EntityA), NewEntity(r.EntityB), r.RelationType));
@@ -220,8 +281,8 @@ public class BimDataBuilder
             _parameters.Add(p2);
         }
 
-        // TEMP: right now we add the document 
-        _documents.Add(new(AddString(title), AddString(path)));
+        foreach (var d in bd.Diagnostics)
+            _diagnostics.Add(new(d.Type, documentMapper(d.Document), NewEntity(d.Entity), NewStr(d.Message)));
     }
 }
 

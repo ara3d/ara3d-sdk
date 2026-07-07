@@ -59,8 +59,19 @@ public static class CommandManifestReader
             return false;
         }
 
+        if (!manifest.Kind.IsNullOrWhiteSpace() && !IsKnownKind(manifest.Kind))
+        {
+            error = $"Manifest has invalid kind '{manifest.Kind}': {manifestPath}";
+            return false;
+        }
+
         return true;
     }
+
+    static bool IsKnownKind(string kind)
+        => string.Equals(kind, "command", StringComparison.OrdinalIgnoreCase)
+           || string.Equals(kind, "generator", StringComparison.OrdinalIgnoreCase)
+           || string.Equals(kind, "modifier", StringComparison.OrdinalIgnoreCase);
 
     static readonly JsonSerializerOptions JsonOptions = new()
     {

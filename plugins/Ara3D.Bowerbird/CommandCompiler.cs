@@ -25,7 +25,11 @@ public class CommandCompiler
         descriptor.OutputFolder.Create();
 
         var refs = ReferenceResolver.Resolve(descriptor.Folder, options.LibrariesFolder);
-        var fingerprintRefs = ReferenceResolver.ResolveFingerprintRefs(descriptor.Folder, options.LibrariesFolder);
+        var fingerprintRefs = ReferenceResolver
+            .ResolveFingerprintRefs(descriptor.Folder, options.LibrariesFolder)
+            .Concat(ReferenceResolver.ResolveHostFingerprintRefs())
+            .Distinct()
+            .ToList();
         var cacheKey = CommandCompileCacheKey.Compute(descriptor, fingerprintRefs);
 
         if (options.EnableCompileCache)

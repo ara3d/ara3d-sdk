@@ -314,6 +314,11 @@ public static class ParquetUtils
 
         var bimData = new BimData();
 
+        // Older BOS files store parameters in per-type tables instead of the unified
+        // "Parameters" table. Each task fills its own slot; they are merged after the reads.
+        var legacyParams = new Parameter[LegacyParameterTableNames.Length][];
+        (int Entity, int Descriptor, float Value)[] legacySingles = null;
+
         async Task ReadOneAsync(int i)
         {
             await sem.WaitAsync().ConfigureAwait(false);
@@ -326,6 +331,19 @@ public static class ParquetUtils
 
                 if (stream.CanSeek)
                     stream.Position = 0;
+
+                var legacyIndex = Array.IndexOf(LegacyParameterTableNames, name);
+                if (legacyIndex >= 0)
+                {
+                    legacyParams[legacyIndex] = (await ReadParquetAsync(stream, name, ToParameter).ConfigureAwait(false)).ToArray();
+                    return;
+                }
+                if (name == LegacySingleParameterTableName)
+                {
+                    legacySingles = (await ReadParquetAsync(stream, name,
+                        row => (I32(row[0]), I32(row[1]), F32(row[2]))).ConfigureAwait(false)).ToArray();
+                    return;
+                }
 
                 var ctor = GetTableCtor(name);
 
@@ -358,6 +376,8 @@ public static class ParquetUtils
         logger?.Log("Executing tasks");
         await Task.WhenAll(tasks).ConfigureAwait(false);
 
+        MergeLegacyParameters(bimData, legacyParams, legacySingles);
+
         logger?.Log("Create BIM geometry from geometry data tables");
         foreach (var table in tables)
         {
@@ -375,6 +395,52 @@ public static class ParquetUtils
         return bimData;
     }
 
+
+    // Table names used by BOS files written before the unified "Parameters" table.
+    // Integer, string, entity, and point values were already stored as raw values or
+    // indices, so their rows convert directly to Parameter. Single (float) values were
+    // stored inline and must be interned into the Numbers table.
+    private static readonly string[] LegacyParameterTableNames =
+        ["IntegerParameters", "StringParameters", "EntityParameters", "PointParameters"];
+
+    private const string LegacySingleParameterTableName = "SingleParameters";
+
+    private static void MergeLegacyParameters(
+        BimData data,
+        Parameter[][] legacyParams,
+        (int Entity, int Descriptor, float Value)[] legacySingles)
+    {
+        if (legacySingles == null && legacyParams.All(x => x == null))
+            return;
+
+        var parameters = new List<Parameter>(data.Parameters);
+        foreach (var arr in legacyParams)
+            if (arr != null)
+                parameters.AddRange(arr);
+
+        if (legacySingles != null)
+        {
+            var numbers = new List<float>(data.Numbers);
+            var numberLookup = new Dictionary<float, int>();
+            for (var i = 0; i < numbers.Count; ++i)
+                numberLookup.TryAdd(numbers[i], i);
+
+            foreach (var (entity, descriptor, value) in legacySingles)
+            {
+                if (!numberLookup.TryGetValue(value, out var ni))
+                {
+                    ni = numbers.Count;
+                    numberLookup.Add(value, ni);
+                    numbers.Add(value);
+                }
+                parameters.Add(new((EntityIndex)entity, (DescriptorIndex)descriptor, ni));
+            }
+
+            data.Numbers = numbers.ToArray();
+        }
+
+        data.Parameters = parameters.ToArray();
+    }
 
     public static Diagnostic ToDiagnostic(object[] row)
         => new((DiagnosticType)I32(row[0]), (DocumentIndex)I32(row[1]), (EntityIndex)I32(row[2]), (StringIndex)I32(row[3]));

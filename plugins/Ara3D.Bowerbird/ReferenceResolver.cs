@@ -51,6 +51,12 @@ public class ReferenceResolver
         return refs.Distinct().ToList();
     }
 
+    public IReadOnlyList<FilePath> ResolveHostFingerprintRefs()
+        => GetLoadedAssemblies()
+            .Where(fp => IsHostVersionReference(fp.GetFileNameWithoutExtension()))
+            .Distinct()
+            .ToList();
+
     static IReadOnlyList<FilePath> GetLoadedAssemblies()
         => FilterCommandReferences(RoslynUtils.LoadedAssemblyLocations()).ToList();
 
@@ -120,6 +126,11 @@ public class ReferenceResolver
     static bool IsCommandBinOutput(FilePath fp)
         => fp.HasExtension(".dll")
             && fp.GetDirectory().GetFolderName().Equals(CommandCompiler.BinaryFolderName, StringComparison.OrdinalIgnoreCase);
+
+    static bool IsHostVersionReference(string assemblyName)
+        => assemblyName.Equals("Ara3D.Bowerbird", StringComparison.OrdinalIgnoreCase)
+           || assemblyName.Equals("Ara3D.Studio.API", StringComparison.OrdinalIgnoreCase)
+           || assemblyName.Equals("ara3d", StringComparison.OrdinalIgnoreCase);
 
     static FilePath GetEntryAssemblyPath()
     {
