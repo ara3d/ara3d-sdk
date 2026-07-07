@@ -1,3 +1,0 @@
-let f =_
-let x =_
-throw new Exception("Parakeet.CstFilter`1[Parakeet.Demos.CSharp.CstExpression] had no case statement")

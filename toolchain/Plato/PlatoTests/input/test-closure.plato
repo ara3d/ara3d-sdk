@@ -1,3 +1,0 @@
-﻿var k = 12;
-var f = x => x + k;
-Print(f(5).ToString());

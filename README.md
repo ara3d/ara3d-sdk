@@ -18,11 +18,10 @@ Designed for high performance and scalability, the libraries handle massive 3D d
 - `ext/` — Windows-only SDK extensions (IFC loader, WPF helpers)
 - `integrations/` — optional third-party adapters (e.g. Assimp)
 - `plugins/` — host plug-ins (Bowerbird, Revit add-ins)
-- `plato-src/` — [Plato](https://github.com/ara3d/plato) source for core numerical and geometry types
 - `src/` — supported SDK libraries and NuGet meta-packages
 - `tests/` — NUnit projects for unit, regression, and developer testing
 - `vendor/` — required third-party libraries
-- `toolchain/` — Plato parsing and code-generation tools (unsupported)
+- `toolchain/` — dev tools (IfcTypeGen); `IsPackable=false`, not in `packages.txt`
 
 ---
 
@@ -40,7 +39,7 @@ pack.bat
 
 Packages are written to [`artifacts/`](artifacts/) (gitignored). Only `src/` and `ext/`
 libraries are packed — see [`build/packages.txt`](build/packages.txt) (nothing under
-`toolchain/`, including Parakeet). Dependency diagrams:
+`toolchain/`). Dependency diagrams:
 [`docs/PACKAGES.md`](docs/PACKAGES.md). Release workflow:
 [`docs/NUGET_RELEASE.md`](docs/NUGET_RELEASE.md).
 
@@ -118,7 +117,7 @@ These repo folders are built locally but excluded from meta-packages and `build/
 - [`apps/`](apps/) — BOS Browser
 - [`integrations/`](integrations/) — Assimp loader
 - [`wip/`](wip/) — work in progress (e.g. Domo)
-- [`toolchain/`](toolchain/) — dev tools (Parakeet, Plato, IfcTypeGen); `IsPackable=false`, not in `packages.txt`
+- [`toolchain/`](toolchain/) — dev tools (IfcTypeGen); `IsPackable=false`, not in `packages.txt`
 
 ---
 
@@ -142,8 +141,8 @@ Most library packages have **zero** external NuGet dependencies. The exceptions:
 (not a NuGet package). See [`docs/PACKAGES.md`](docs/PACKAGES.md) for the full dependency graph.
 
 Test projects and samples are Windows-specific and use NUnit 3. Auto-generated code from Plato
-uses projects in [`toolchain/`](toolchain/); they are not run automatically and are not
-currently supported. 
+lives in [`src/Plato.Generated/`](src/Plato.Generated/). The compiler and Plato source are in the
+[Plato repository](https://github.com/cdiggins/plato) (studio monorepo: `submodules/Plato`).
 
 ---
 
