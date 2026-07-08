@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Plato conformance suite, V2 emitter edition (docs/plato-roadmap.md Phase 2.4).
+
+    Identical to Ara3D.SDK.ConformanceTests except that Generated\ is produced with the
+    extension-style C# emitter (Plato.CLI "csharp-style=extensions" flag), which requires
+    LangVersion 14 (C# 14 `extension` blocks; builds with the .NET 10 SDK targeting net8.0).
+
+    The test sources and KnownFailures.json are LINKED from the V1 project (never copied):
+    the two suites must stay literally the same code so any result difference is
+    attributable to the emitter alone. Expected result: identical to V1
+    (178 tests: 142 pass / 36 ignored-known / 0 fail).
+
+    Run tools\regen-conformance-v2.ps1 before building: Generated\ is not committed.
+
+    Deliberately not added to any .sln (wire into CI explicitly).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>14</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU;x64</Platforms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Generated code produces a large number of benign warnings; keep test output readable. -->
+    <NoWarn>$(NoWarn);CS0108;CS0114;CS0660;CS0661;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <Import Project="..\..\src\Plato.Intrinsics\Plato.Intrinsics.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(Ara3DMicrosoftNetTestSdkVersion)" />
+    <PackageReference Include="NUnit" Version="$(Ara3DNUnitVersion)" />
+    <PackageReference Include="NUnit3TestAdapter" Version="$(Ara3DNUnit3TestAdapterVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Collections\Ara3D.Collections.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Memory\Ara3D.Memory.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The SAME test sources as the V1 suite, linked (do not copy, do not fork). -->
+    <Compile Include="..\Ara3D.SDK.ConformanceTests\ConformanceSupport.cs" Link="ConformanceSupport.cs" />
+    <Compile Include="..\Ara3D.SDK.ConformanceTests\LawTests.cs" Link="LawTests.cs" />
+    <Compile Include="..\Ara3D.SDK.ConformanceTests\WitnessRunnerTests.cs" Link="WitnessRunnerTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+    <None Include="..\Ara3D.SDK.ConformanceTests\KnownFailures.json" Link="KnownFailures.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
