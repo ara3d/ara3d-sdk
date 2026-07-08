@@ -79,6 +79,8 @@ Box
         - IGeometry3D
           - IGeometry
 
+Buffer
+
 ButterflyCurve
   - IAngularCurve2D
     - ICurve2D
@@ -575,6 +577,8 @@ Lissajous
     - IOpenClosedShape
       - IShape
         - IGeometry
+
+List
 
 LogarithmicSpiral
   - IPolarCurve

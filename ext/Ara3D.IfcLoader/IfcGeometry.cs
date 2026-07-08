@@ -11,7 +11,7 @@ public class IfcGeometry
     {
         ApiPtr = apiPtr;
         GeometryPtr = geometryPtr;
-        Id = WebIfcDll.GetMeshId(ApiPtr, GeometryPtr);
+        Id = WebIfcDll.GetGeometryId(ApiPtr, GeometryPtr);
         NumMeshes = WebIfcDll.GetNumMeshes(ApiPtr, GeometryPtr);
     }
     public IfcMesh GetMesh(int i) 

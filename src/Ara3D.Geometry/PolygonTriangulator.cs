@@ -79,8 +79,7 @@ public static class PolygonTriangulator
     }
 
     public static bool HasSelfIntersection(IReadOnlyList<Vector2> ring)
-        => PolygonEdges(ring).Any(e1 => PolygonEdges(ring).Any(e2 =>
-            !ReferenceEquals(e1, e2) && NonAdjacentIntersect(e1, e2, ring)));
+        => PolygonSelfIntersectionTester.HasSelfIntersectionsSweep(new SimplePolygon2D(ring), includeTouching: false).HasValue;
 
     public static bool HasDuplicateConsecutiveVertices(IReadOnlyList<Vector2> ring)
     {

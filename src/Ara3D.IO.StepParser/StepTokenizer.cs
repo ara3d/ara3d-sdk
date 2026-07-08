@@ -215,6 +215,15 @@ public static unsafe class StepTokenizer
                 while (cur < end && IsDigitLookup[*cur]) cur++;
                 return StepTokenType.Id;
 
+            case (byte)'+':
+            case (byte)'-':
+                if (cur < end && (IsDigitLookup[*cur] || *cur == (byte)'.'))
+                {
+                    while (cur < end && IsNumberLookup[*cur]) cur++;
+                    return StepTokenType.Number;
+                }
+                return StepTokenType.Unknown;
+
             case (byte)'/':
                 var prev = *cur++;
                 while (cur < end && (prev != '*' || *cur != '/'))
