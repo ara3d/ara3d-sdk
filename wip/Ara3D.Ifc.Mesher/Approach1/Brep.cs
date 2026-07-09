@@ -90,12 +90,10 @@ public static class Brep
             if (outer.Count < 3)
                 continue;
 
-            var plane = IsFaceSurfaceEntity(face) && TryGetFacePlane(ctx, face, out var facePlane)
-                ? facePlane
-                : ComputeNewellPlane(outer);
-            var outer2 = DedupeConsecutive(outer.Select(p => ProjectToPlane2D(p, plane)).ToList());
+            var map = ResolveSurfaceMap(ctx, face, outer);
+            var outer2 = DedupeConsecutive(map.ProjectRing(outer));
             var holes2 = holes
-                .Select(h => DedupeConsecutive(h.Select(p => ProjectToPlane2D(p, plane)).ToList()))
+                .Select(h => DedupeConsecutive(map.ProjectRing(h)))
                 .Where(h => h.Count >= 3)
                 .ToList();
             if (outer2.Count < 3)
@@ -133,9 +131,9 @@ public static class Brep
 
             foreach (var tri in tris)
             {
-                var a = GetIndex(Unproject(tri.A.Vector2, plane));
-                var b = GetIndex(Unproject(tri.B.Vector2, plane));
-                var c = GetIndex(Unproject(tri.C.Vector2, plane));
+                var a = GetIndex(map.Unproject(tri.A.Vector2));
+                var b = GetIndex(map.Unproject(tri.B.Vector2));
+                var c = GetIndex(map.Unproject(tri.C.Vector2));
                 if (sameSense)
                     faces.Add(new Integer3(a, b, c));
                 else
@@ -156,6 +154,11 @@ public static class Brep
             {
                 ctx.Diagnostics.RecordSupported(surface.GetEntityName());
                 ctx.Diagnostics.RecordApproximate(name, "Planar advanced face via edge-loop bounds");
+            }
+            else if (surface?.GetEntityName() is "IFCCYLINDRICALSURFACE")
+            {
+                ctx.Diagnostics.RecordSupported(surface.GetEntityName());
+                ctx.Diagnostics.RecordApproximate(name, "Cylindrical advanced face tessellated in surface parameter space");
             }
             else
                 ctx.Diagnostics.RecordApproximate(name, "Bounds only; curved advanced-face surfaces ignored");
@@ -359,6 +362,93 @@ public static class Brep
         if (cleaned.Count > 1 && cleaned[0].DistanceSquared(cleaned[^1]) <= epsSq)
             cleaned.RemoveAt(cleaned.Count - 1);
         return cleaned;
+    }
+
+    /// <summary>
+    /// Maps face-bound points between 3D world space and a 2D domain suitable for triangulation,
+    /// and back. Planar faces use an in-plane projection; parametric surfaces (cylinder) project
+    /// into surface parameter space so wrapping curved patches triangulate without self-overlap and
+    /// unproject back onto the true curved surface.
+    /// </summary>
+    abstract class SurfaceMap
+    {
+        public abstract List<Vector2> ProjectRing(IReadOnlyList<Vector3> ring);
+        public abstract Vector3 Unproject(Vector2 uv);
+    }
+
+    sealed class PlanarMap(FacePlane plane) : SurfaceMap
+    {
+        public override List<Vector2> ProjectRing(IReadOnlyList<Vector3> ring)
+            => ring.Select(p => ProjectToPlane2D(p, plane)).ToList();
+
+        public override Vector3 Unproject(Vector2 uv) => Brep.Unproject(uv, plane);
+    }
+
+    /// <summary>
+    /// Cylindrical surface parameterization: 2D domain is (arc-length = radius*angle, height).
+    /// Angles are unwrapped along each ring so a partial or full wrap forms a simple 2D polygon;
+    /// holes align to the outer ring's angular band.
+    /// </summary>
+    sealed class CylinderMap(Frame3D frame, float radius) : SurfaceMap
+    {
+        float _refU;
+        bool _hasRef;
+
+        public override List<Vector2> ProjectRing(IReadOnlyList<Vector3> ring)
+        {
+            var result = new List<Vector2>(ring.Count);
+            var prevU = 0f;
+            var first = true;
+            foreach (var p in ring)
+            {
+                var local = frame.ToLocal(p);
+                var u = MathF.Atan2(local.Y.Value, local.X.Value);
+                if (!first)
+                    u += MathF.Round((prevU - u) / MathF.Tau) * MathF.Tau;
+                else if (_hasRef)
+                    u += MathF.Round((_refU - u) / MathF.Tau) * MathF.Tau;
+                prevU = u;
+                first = false;
+                result.Add(new Vector2(radius * u, local.Z.Value));
+            }
+            if (!_hasRef && result.Count > 0)
+            {
+                _refU = result[0].X / radius;
+                _hasRef = true;
+            }
+            return result;
+        }
+
+        public override Vector3 Unproject(Vector2 uv)
+        {
+            var u = uv.X / radius;
+            return frame.ToWorld(new Vector3(radius * MathF.Cos(u), radius * MathF.Sin(u), uv.Y));
+        }
+    }
+
+    static SurfaceMap ResolveSurfaceMap(MeshingContext ctx, IfcEntity face, IReadOnlyList<Vector3> outer)
+    {
+        if (IsFaceSurfaceEntity(face))
+        {
+            var surface = MeshHelpers.ResolveOptional(ctx, face, IfcFaceSurface.Instance.FaceSurface);
+            if (surface?.GetEntityName() == "IFCCYLINDRICALSURFACE"
+                && TryBuildCylinderMap(ctx, surface, out var cyl))
+                return cyl;
+            if (TryGetFacePlane(ctx, face, out var facePlane))
+                return new PlanarMap(facePlane);
+        }
+        return new PlanarMap(ComputeNewellPlane(outer));
+    }
+
+    static bool TryBuildCylinderMap(MeshingContext ctx, IfcEntity surface, out CylinderMap map)
+    {
+        map = null!;
+        var radius = (float)ctx.ScaleLength(MeshHelpers.ReadNumber(surface, IfcCylindricalSurface.Instance.Radius));
+        if (radius <= 1e-7f)
+            return false;
+        var frame = Placements.ReadOptionalAxis2Placement3D(ctx, surface, IfcElementarySurface.Instance.Position);
+        map = new CylinderMap(frame, radius);
+        return true;
     }
 
     readonly record struct FacePlane(Vector3 Origin, Vector3 Normal, Vector3 U, Vector3 V);

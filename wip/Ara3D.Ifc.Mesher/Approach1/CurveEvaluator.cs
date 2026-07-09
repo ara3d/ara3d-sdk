@@ -352,11 +352,29 @@ public static class CurveEvaluator
 
     static List<Vector3> TrimCircle3D(MeshingContext ctx, IfcEntity circle, IfcEntity trimmed, bool sense)
     {
-        var u1 = ReadTrimParameter(ctx, trimmed, circle, IfcTrimmedCurve.Instance.Trim1);
-        var u2 = ReadTrimParameter(ctx, trimmed, circle, IfcTrimmedCurve.Instance.Trim2);
         var radius = (float)ctx.ScaleLength(MeshHelpers.ReadNumber(circle, IfcCircle.Instance.Radius));
         var placement = Placements.ReadOptionalAxis2Placement3D(ctx, circle, IfcConic.Instance.Position);
+        // .CARTESIAN master representation gives trim endpoints as points, not angle parameters
+        // (advanced-BRep cylindrical/curved face rim arcs use this). Derive angles from the points.
+        if (PrefersCartesianTrim(trimmed) && TryReadTrimPoints3D(ctx, trimmed, out var cp1, out var cp2))
+        {
+            var a1 = CircleAngleAtPoint(placement, cp1);
+            var a2 = CircleAngleAtPoint(placement, cp2);
+            return SampleConicArc3D(placement, radius, radius, a1, a2, sense, ctx.CircleSegments);
+        }
+        var u1 = ReadTrimParameter(ctx, trimmed, circle, IfcTrimmedCurve.Instance.Trim1);
+        var u2 = ReadTrimParameter(ctx, trimmed, circle, IfcTrimmedCurve.Instance.Trim2);
         return SampleConicArc3D(placement, radius, radius, u1, u2, sense, ctx.CircleSegments);
+    }
+
+    static bool PrefersCartesianTrim(IfcEntity trimmed)
+        => trimmed.GetString(IfcTrimmedCurve.Instance.MasterRepresentation.Index)
+            .Contains("CARTESIAN", StringComparison.Ordinal);
+
+    static float CircleAngleAtPoint(Frame3D placement, Vector3 world)
+    {
+        var local = placement.ToLocal(world);
+        return MathF.Atan2(local.Y.Value, local.X.Value);
     }
 
     static List<Vector2> TrimEllipse2D(MeshingContext ctx, IfcEntity ellipse, IfcEntity trimmed, bool sense)

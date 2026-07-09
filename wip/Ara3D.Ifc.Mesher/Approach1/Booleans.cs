@@ -35,6 +35,12 @@ public static class Booleans
         if (mesh is null)
             return null;
 
+        if (second.GetEntityName() == "IFCPOLYGONALBOUNDEDHALFSPACE")
+        {
+            ctx.Diagnostics.RecordApproximate("IFCBOOLEANRESULT", "Polygonal-bounded half-space difference clipping");
+            return ClipByPolygonalBoundedHalfSpace(ctx, mesh.Value, second);
+        }
+
         if (second.GetEntityName() == "IFCHALFSPACESOLID")
         {
             ctx.Diagnostics.RecordApproximate("IFCBOOLEANRESULT", "Planar half-space difference clipping");
@@ -90,6 +96,93 @@ public static class Booleans
             }
         }
         return new TriangleMesh3D(points, faces);
+    }
+
+    /// <summary>
+    /// Clips <paramref name="mesh"/> by an IFCPOLYGONALBOUNDEDHALFSPACE: geometry is removed only where it is BOTH
+    /// on the cut side of the base plane AND inside the polygonal bounding prism. The boundary (a 2D closed curve in
+    /// the Position frame's XY plane) is extruded along local Z to form the prism. A per-triangle gate keeps any
+    /// triangle whose centroid projects OUTSIDE the polygon fully intact, so this can never over-clip beyond a plain
+    /// half-space clip (guaranteeing >= unclipped-baseline parity).
+    /// </summary>
+    static TriangleMesh3D ClipByPolygonalBoundedHalfSpace(
+        MeshingContext ctx,
+        TriangleMesh3D mesh,
+        IfcEntity halfSpace)
+    {
+        ctx.Diagnostics.RecordSupported("IFCPOLYGONALBOUNDEDHALFSPACE");
+
+        var agreement = halfSpace.GetString(IfcHalfSpaceSolid.Instance.AgreementFlag.Index).Contains(".T.");
+        var (planePoint, planeNormal) = ReadHalfSpacePlane(ctx, halfSpace);
+        var keepPositiveSide = MathF.Abs(planeNormal.X) >= MathF.Abs(planeNormal.Z)
+            ? agreement
+            : !agreement;
+
+        // Position frame + 2D polygonal boundary (bounding-prism cross-section, in the frame's XY plane).
+        var positionFrame = Placements.ReadAxis2Placement3D(ctx,
+            MeshHelpers.ResolveRequired(ctx, halfSpace, IfcPolygonalBoundedHalfSpace.Instance.Position));
+        var boundaryCurve = MeshHelpers.ResolveRequired(ctx, halfSpace, IfcPolygonalBoundedHalfSpace.Instance.PolygonalBoundary);
+        var polygon = CurveEvaluator.Evaluate2D(ctx, boundaryCurve, dropClosure: true);
+
+        // Without a usable boundary we cannot gate; keep the operand unclipped rather than risk over-clipping.
+        if (polygon.Count < 3)
+            return mesh;
+
+        var points = new List<Point3D>();
+        var faces = new List<Integer3>();
+        foreach (var face in mesh.FaceIndices)
+        {
+            var a = mesh.Points[face.A].Vector3;
+            var b = mesh.Points[face.B].Vector3;
+            var c = mesh.Points[face.C].Vector3;
+
+            var centroid = (a + b + c) / 3f;
+            var local = positionFrame.ToLocal(centroid);
+            if (!PointInPolygon(polygon, local.X, local.Y))
+            {
+                // Outside the bounding prism: this half-space does not remove it. Keep the triangle intact.
+                var k0 = AddPoint(points, a);
+                var k1 = AddPoint(points, b);
+                var k2 = AddPoint(points, c);
+                faces.Add(new Integer3(k0, k1, k2));
+                continue;
+            }
+
+            // Inside the prism: apply the base-plane clip.
+            var clipped = ClipTriangle(a, b, c, planePoint, planeNormal, keepPositiveSide);
+            if (clipped.Count == 3)
+            {
+                var i0 = AddPoint(points, clipped[0]);
+                var i1 = AddPoint(points, clipped[1]);
+                var i2 = AddPoint(points, clipped[2]);
+                faces.Add(new Integer3(i0, i1, i2));
+            }
+            else if (clipped.Count == 4)
+            {
+                var i0 = AddPoint(points, clipped[0]);
+                var i1 = AddPoint(points, clipped[1]);
+                var i2 = AddPoint(points, clipped[2]);
+                var i3 = AddPoint(points, clipped[3]);
+                faces.Add(new Integer3(i0, i1, i2));
+                faces.Add(new Integer3(i0, i2, i3));
+            }
+        }
+        return new TriangleMesh3D(points, faces);
+    }
+
+    /// <summary>Even-odd ray-cast point-in-polygon test on the 2D boundary ring.</summary>
+    static bool PointInPolygon(IReadOnlyList<Vector2> poly, float px, float py)
+    {
+        var inside = false;
+        for (int i = 0, j = poly.Count - 1; i < poly.Count; j = i++)
+        {
+            float xi = poly[i].X, yi = poly[i].Y;
+            float xj = poly[j].X, yj = poly[j].Y;
+            if (((yi > py) != (yj > py)) &&
+                (px < (xj - xi) * (py - yi) / (yj - yi) + xi))
+                inside = !inside;
+        }
+        return inside;
     }
 
     static (Vector3 point, Vector3 normal) ResolveClipPlane(

@@ -943,6 +943,67 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    public void MeshesCylindricalAdvancedFace()
+    {
+        // Quarter-cylinder patch (radius 1, axis Z, angular span 0..pi/2, height 0..1).
+        // Rim arcs are IFCTRIMMEDCURVE on IFCCIRCLE with .CARTESIAN trim points; the face
+        // surface is IFCCYLINDRICALSURFACE. Should tessellate on the curved surface, not flat.
+        using var model = MicroIfc.Parse("""
+            #1=IFCCARTESIANPOINT((1.,0.,0.));
+            #2=IFCCARTESIANPOINT((0.,1.,0.));
+            #3=IFCCARTESIANPOINT((0.,1.,1.));
+            #4=IFCCARTESIANPOINT((1.,0.,1.));
+            #5=IFCCARTESIANPOINT((0.,0.,0.));
+            #6=IFCCARTESIANPOINT((0.,0.,1.));
+            #10=IFCAXIS2PLACEMENT3D(#5,$,$);
+            #11=IFCAXIS2PLACEMENT3D(#6,$,$);
+            #12=IFCCIRCLE(#10,1.);
+            #13=IFCCIRCLE(#11,1.);
+            #14=IFCCYLINDRICALSURFACE(#10,1.);
+            #20=IFCVERTEXPOINT(#1);
+            #21=IFCVERTEXPOINT(#2);
+            #22=IFCVERTEXPOINT(#3);
+            #23=IFCVERTEXPOINT(#4);
+            #30=IFCTRIMMEDCURVE(#12,(#1),(#2),.T.,.CARTESIAN.);
+            #31=IFCPOLYLINE((#2,#3));
+            #32=IFCTRIMMEDCURVE(#13,(#3),(#4),.T.,.CARTESIAN.);
+            #33=IFCPOLYLINE((#4,#1));
+            #40=IFCEDGECURVE(#20,#21,#30,.T.);
+            #41=IFCEDGECURVE(#21,#22,#31,.T.);
+            #42=IFCEDGECURVE(#22,#23,#32,.T.);
+            #43=IFCEDGECURVE(#23,#20,#33,.T.);
+            #50=IFCORIENTEDEDGE(*,*,#40,.T.);
+            #51=IFCORIENTEDEDGE(*,*,#41,.T.);
+            #52=IFCORIENTEDEDGE(*,*,#42,.T.);
+            #53=IFCORIENTEDEDGE(*,*,#43,.T.);
+            #60=IFCEDGELOOP((#50,#51,#52,#53));
+            #61=IFCFACEOUTERBOUND(#60,.T.);
+            #62=IFCADVANCEDFACE((#61),#14,.T.);
+            #63=IFCCLOSEDSHELL((#62));
+            #64=IFCADVANCEDBREP(#63);
+            """);
+
+        var mesh = MeshRequired(model, 64);
+
+        // A flat projection would yield ~2 triangles / 4 points; the curved tessellation is denser.
+        Assert.That(mesh.FaceIndices, Has.Count.GreaterThan(4), "cylindrical patch should tessellate with curvature");
+        Assert.That(mesh.Points, Has.Count.GreaterThan(4));
+        // Mid-arc bulge: a vertex near angle pi/4 => (~0.707, ~0.707) proves points lie on the cylinder.
+        var hasMidArc = false;
+        foreach (var p in mesh.Points)
+        {
+            if (p.X.Value is > 0.6f and < 0.78f && p.Y.Value is > 0.6f and < 0.78f)
+            {
+                hasMidArc = true;
+                break;
+            }
+        }
+        Assert.That(hasMidArc, Is.True, "expected a vertex on the curved surface near the arc midpoint");
+        AssertBounds(mesh, (0f, 0f, 0f), (1f, 1f, 1f));
+        Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCCYLINDRICALSURFACE"));
+    }
+
+    [Test]
     [Category("Slow")]
     public void DigitalHub_BicycleProxyAdvancedBrep_Builds()
     {
