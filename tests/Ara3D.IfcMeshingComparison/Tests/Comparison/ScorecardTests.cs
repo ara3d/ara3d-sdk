@@ -259,6 +259,31 @@ public sealed class ScorecardTests
     }
 
     [Test]
+    [Explicit("Tier 1 diagnostic dump: per-entity voxel/OBB/silhouette IoU for duplex")]
+    public void Tier1DiagnosticsDuplex()
+    {
+        var ifcPath = TestFiles.Duplex;
+        TestFiles.RequireExists(ifcPath);
+        using var stepFile = new IfcFile(ifcPath, includeGeometry: false);
+        var candidate = ModelComparer.LoadCandidate(ifcPath);
+        var oracle = ModelComparer.LoadOracle(ifcPath);
+
+        var diagnostics = ShapeDiagnostics.CompareEntities(candidate, oracle);
+        TestContext.WriteLine(
+            $"Tier 1 diagnostics ({diagnostics.Count} shared entities), worst 20 by voxel IoU:");
+        foreach (var d in diagnostics.Take(20))
+        {
+            var entity = stepFile.EntityResolver.GetEntityOrDefault(d.EntityId);
+            TestContext.WriteLine(
+                $"  #{d.EntityId} {entity?.GetEntityName() ?? "?"}: voxel={d.VoxelIoU:F3} obb={d.ObbIoU:F3} " +
+                $"silXY={d.SilhouetteXY:F3} silXZ={d.SilhouetteXZ:F3} silYZ={d.SilhouetteYZ:F3}");
+        }
+        if (diagnostics.Count > 0)
+            TestContext.WriteLine($"Mean voxel IoU {diagnostics.Average(d => d.VoxelIoU):F3}, " +
+                $"mean OBB IoU {diagnostics.Average(d => d.ObbIoU):F3}");
+    }
+
+    [Test]
     [Explicit("WP-P-stretch: FM_ARC_DigitalHub advanced-brep parity")]
     [Category("Slow")]
     public void ScoreDigitalHubStretch()

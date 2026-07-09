@@ -351,7 +351,7 @@ public static class ModelComparer
     }
 
     /// <summary>Per-entity world-space merged mesh (one mesh per entity, all instances baked in).</summary>
-    static Dictionary<int, TriangleMesh3D> EntityMeshes(Model3D model)
+    internal static Dictionary<int, TriangleMesh3D> EntityMeshes(Model3D model)
     {
         var byEntity = new Dictionary<int, List<TriangleMesh3D>>();
         var meshes = model.Meshes;

@@ -38,6 +38,28 @@ public sealed class EntityShapeMetricTests
         Assert.That(scaled.EntityShape.Score, Is.LessThan(0.6), "2x rescale is penalized");
     }
 
+    // Tier 1 is the complement: voxel/OBB IoU are placement-sensitive (identical -> 1, displaced -> low),
+    // where the rotation-invariant Tier 0 entityShape would still read ~1 for a mere translation.
+    [Test]
+    public void Tier1_VoxelAndObbIoU_ArePlacementSensitive()
+    {
+        var rod = Box(3f, 0.6f, 0.6f);
+        var baseModel = SingleInstanceModel(rod, entityId: 100, Matrix4x4.Identity);
+
+        var identical = ShapeDiagnostics.CompareEntities(
+            baseModel, SingleInstanceModel(rod, 100, Matrix4x4.Identity));
+        Assert.That(identical, Has.Count.EqualTo(1));
+        Assert.That(identical[0].VoxelIoU, Is.GreaterThan(0.98), "identical geometry fully overlaps");
+        Assert.That(identical[0].ObbIoU, Is.GreaterThan(0.95));
+
+        // Shift the rod by half its length: the boxes only partially overlap.
+        var shifted = SingleInstanceModel(rod, 100, Matrix4x4.CreateTranslation(new Vector3(1.5f, 0f, 0f)));
+        var displaced = ShapeDiagnostics.CompareEntities(baseModel, shifted);
+        Assert.That(displaced[0].VoxelIoU, Is.LessThan(0.7), "half-length displacement roughly halves overlap");
+        Assert.That(displaced[0].ObbIoU, Is.LessThan(0.9), "offset boxes do not fully overlap");
+        Assert.That(displaced[0].VoxelIoU, Is.LessThan(identical[0].VoxelIoU));
+    }
+
     static Model3D SingleInstanceModel(TriangleMesh3D mesh, int entityId, Matrix4x4 matrix)
     {
         var builder = new Model3DBuilder();
