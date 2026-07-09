@@ -197,6 +197,30 @@ public sealed class ScorecardTests
             .Sum(id => candidateInstByEntity[id] - oracleInstByEntity.GetValueOrDefault(id));
         TestContext.WriteLine($"Total extra candidate instances: {extraInst}");
 
+        TestContext.WriteLine("Instance count deltas (candidate > oracle):");
+        foreach (var entityId in candidateInstByEntity.Keys
+                     .Where(id => candidateInstByEntity[id] > oracleInstByEntity.GetValueOrDefault(id))
+                     .OrderByDescending(id => candidateInstByEntity[id] - oracleInstByEntity.GetValueOrDefault(id)))
+        {
+            var entity = stepFile.EntityResolver.GetEntityOrDefault(entityId);
+            var name = entity?.GetEntityName() ?? "?";
+            TestContext.WriteLine(
+                $"  #{entityId} {name}: cand={candidateInstByEntity[entityId]} oracle={oracleInstByEntity.GetValueOrDefault(entityId)}");
+        }
+
+        TestContext.WriteLine("Extra instances by product type (candidate > oracle):");
+        foreach (var group in map.ProductRepresentationTrees
+                     .Where(t => candidateInstByEntity.GetValueOrDefault(t.EntityId) >
+                                 oracleInstByEntity.GetValueOrDefault(t.EntityId))
+                     .GroupBy(t => t.EntityName)
+                     .OrderByDescending(g => g.Sum(t =>
+                         candidateInstByEntity.GetValueOrDefault(t.EntityId) - oracleInstByEntity.GetValueOrDefault(t.EntityId))))
+        {
+            var delta = group.Sum(t =>
+                candidateInstByEntity.GetValueOrDefault(t.EntityId) - oracleInstByEntity.GetValueOrDefault(t.EntityId));
+            TestContext.WriteLine($"  {group.Key}: {delta} extra across {group.Count()} products");
+        }
+
         TestContext.WriteLine("Missing instances by product type (oracle > candidate):");
         foreach (var group in map.ProductRepresentationTrees
                      .Where(t => oracleInstByEntity.GetValueOrDefault(t.EntityId) >
