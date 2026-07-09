@@ -763,13 +763,54 @@ public sealed class GoldenMeshTests
         // Outer wall envelope is preserved (the hole is interior to the broad faces).
         AssertBounds(wall, (-0.15f, -2f, 0f), (0.15f, 2f, 3f), tolerance: 1e-4f);
 
-        // Material was removed: the two broad faces lose the window area (no reveal added),
-        // so the carved surface area is strictly below the solid wall's surface area.
+        // The window (1.0 x 1.0) pierces both broad faces, removing ~2.0 m^2; the reveal caps that
+        // line the hole through the wall thickness add ~1.2 m^2 back. So the carved area (~solidArea-0.8)
+        // sits well above the ~solidArea-2.0 a bare carve (no reveal) would leave.
         var solidArea = SurfaceArea(MeshRequired(model, 3));
         var carvedArea = SurfaceArea(wall);
-        Assert.That(carvedArea, Is.LessThan(solidArea - 0.5f), "Opening removes host surface area");
+        Assert.That(carvedArea, Is.GreaterThan(solidArea - 1.4f), "Reveal caps line the hole through the wall thickness");
 
         Assert.That(diagnostics.EntityStatus.Keys, Does.Contain("IFCRELVOIDSELEMENT"));
+    }
+
+    [Test]
+    public void AggregatedVoidHostRoofGetsChildSlabGeometry()
+    {
+        // A flat roof (#10) with NO representation aggregates a slab (#9) via IFCRELAGGREGATES and
+        // hosts a window opening via IFCRELVOIDSELEMENT. web-ifc materialises the roof solid from the
+        // aggregated slab and carves the opening, emitting an instance for the roof entity in addition
+        // to the slab. Mirror that: two instances, keyed to {slab #9, roof #10}.
+        using var model = MicroIfc.WriteTemp("""
+            #1=IFCRECTANGLEPROFILEDEF(.AREA.,'S',$,2.,2.);
+            #2=IFCDIRECTION((0.,0.,1.));
+            #3=IFCEXTRUDEDAREASOLID(#1,$,#2,0.3);
+            #4=IFCSHAPEREPRESENTATION($,'Body','SweptSolid',(#3));
+            #5=IFCPRODUCTDEFINITIONSHAPE($,$,(#4));
+            #6=IFCCARTESIANPOINT((0.,0.,0.));
+            #7=IFCAXIS2PLACEMENT3D(#6,$,$);
+            #8=IFCLOCALPLACEMENT($,#7);
+            #9=IFCSLAB('slab-guid',$,'Slab',$,$,#8,#5,.ROOF.);
+            #10=IFCROOF('roof-guid',$,'Roof',$,$,#8,$,$,.NOTDEFINED.);
+            #11=IFCRELAGGREGATES('agg-guid',$,$,$,#10,(#9));
+            #12=IFCRECTANGLEPROFILEDEF(.AREA.,'O',$,0.5,0.5);
+            #13=IFCEXTRUDEDAREASOLID(#12,#7,#2,0.3);
+            #14=IFCSHAPEREPRESENTATION($,'Body','SweptSolid',(#13));
+            #15=IFCPRODUCTDEFINITIONSHAPE($,$,(#14));
+            #16=IFCOPENINGELEMENT('open-guid',$,'Opening',$,$,#8,#15,$);
+            #17=IFCRELVOIDSELEMENT('void-guid',$,$,$,#10,#16);
+            """);
+
+        var (built, diagnostics) = ModelAssembler.BuildModel(model.Context.File!);
+
+        Assert.That(built.Instances.Select(i => i.EntityIndex).OrderBy(x => x),
+            Is.EqualTo(new[] { 9, 10 }), "Both the slab and the aggregated roof are emitted");
+
+        var roof = built.Instances.Single(i => i.EntityIndex == 10);
+        var roofMesh = built.Meshes[roof.MeshIndex];
+        // The roof solid is the slab box (carved by its own opening), spanning the slab extent.
+        Assert.That(roofMesh.FaceIndices.Count, Is.GreaterThan(12), "Roof opening carves the aggregated slab");
+        AssertBounds(roofMesh, (-1f, -1f, 0f), (1f, 1f, 0.3f), tolerance: 1e-4f);
+        Assert.That(diagnostics.EntityStatus.Keys, Does.Contain("IFCRELAGGREGATES"));
     }
 
     [Test]
@@ -1047,6 +1088,115 @@ public sealed class GoldenMeshTests
         Assert.That(hasMidArc, Is.True, "expected a vertex on the curved surface near the arc midpoint");
         AssertBounds(mesh, (0f, 0f, 0f), (1f, 1f, 1f));
         Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCCYLINDRICALSURFACE"));
+    }
+
+    [Test]
+    public void MeshesSurfaceOfRevolutionAdvancedFace()
+    {
+        // Quarter-cylinder patch (radius 1, height 0..1, angle 0..pi/2) whose face surface is an
+        // IFCSURFACEOFREVOLUTION: a vertical meridian line (1,0,0)->(1,0,1) revolved about the Z axis.
+        // Should tessellate on the revolved surface (mid-arc bulge), not flat across the chord.
+        using var model = MicroIfc.Parse("""
+            #1=IFCCARTESIANPOINT((1.,0.,0.));
+            #2=IFCCARTESIANPOINT((0.,1.,0.));
+            #3=IFCCARTESIANPOINT((0.,1.,1.));
+            #4=IFCCARTESIANPOINT((1.,0.,1.));
+            #5=IFCCARTESIANPOINT((0.,0.,0.));
+            #6=IFCCARTESIANPOINT((0.,0.,1.));
+            #7=IFCDIRECTION((0.,0.,1.));
+            #8=IFCAXIS1PLACEMENT(#5,#7);
+            #9=IFCCARTESIANPOINT((1.,0.,0.));
+            #10=IFCCARTESIANPOINT((1.,0.,1.));
+            #11=IFCPOLYLINE((#9,#10));
+            #12=IFCARBITRARYOPENPROFILEDEF(.CURVE.,'Meridian',#11);
+            #13=IFCSURFACEOFREVOLUTION(#12,$,#8);
+            #14=IFCAXIS2PLACEMENT3D(#5,$,$);
+            #15=IFCAXIS2PLACEMENT3D(#6,$,$);
+            #16=IFCCIRCLE(#14,1.);
+            #17=IFCCIRCLE(#15,1.);
+            #18=IFCVERTEXPOINT(#1);
+            #19=IFCVERTEXPOINT(#2);
+            #20=IFCVERTEXPOINT(#3);
+            #21=IFCVERTEXPOINT(#4);
+            #22=IFCTRIMMEDCURVE(#16,(#1),(#2),.T.,.CARTESIAN.);
+            #23=IFCPOLYLINE((#2,#3));
+            #24=IFCTRIMMEDCURVE(#17,(#3),(#4),.T.,.CARTESIAN.);
+            #25=IFCPOLYLINE((#4,#1));
+            #26=IFCEDGECURVE(#18,#19,#22,.T.);
+            #27=IFCEDGECURVE(#19,#20,#23,.T.);
+            #28=IFCEDGECURVE(#20,#21,#24,.T.);
+            #29=IFCEDGECURVE(#21,#18,#25,.T.);
+            #30=IFCORIENTEDEDGE(*,*,#26,.T.);
+            #31=IFCORIENTEDEDGE(*,*,#27,.T.);
+            #32=IFCORIENTEDEDGE(*,*,#28,.T.);
+            #33=IFCORIENTEDEDGE(*,*,#29,.T.);
+            #34=IFCEDGELOOP((#30,#31,#32,#33));
+            #35=IFCFACEOUTERBOUND(#34,.T.);
+            #36=IFCADVANCEDFACE((#35),#13,.T.);
+            #37=IFCCLOSEDSHELL((#36));
+            #38=IFCADVANCEDBREP(#37);
+            """);
+
+        var mesh = MeshRequired(model, 38);
+
+        Assert.That(mesh.FaceIndices, Has.Count.GreaterThan(4), "revolved patch should tessellate with curvature");
+        var hasMidArc = false;
+        foreach (var p in mesh.Points)
+            if (p.X.Value is > 0.6f and < 0.78f && p.Y.Value is > 0.6f and < 0.78f)
+                hasMidArc = true;
+        Assert.That(hasMidArc, Is.True, "expected a vertex on the revolved surface near the arc midpoint");
+        AssertBounds(mesh, (0f, 0f, 0f), (1f, 1f, 1f), tolerance: 1e-4f);
+        Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCSURFACEOFREVOLUTION"));
+    }
+
+    [Test]
+    public void MeshesBSplineSurfaceAdvancedFace()
+    {
+        // Curved "arch" B-spline surface: quadratic in U (control (0,0),(1,1),(2,0) => an arc peaking
+        // at y=0.5 on the true surface), linear in V (extruded along z 0..1). The two z-constant boundary
+        // edges are B-spline curves; the sides are straight. A flat projection keeps the boundary curve's
+        // control-polygon sampling (y up to 1.0); the surface map pulls the boundary onto the evaluated
+        // surface (y ~0.5), which is what distinguishes a genuine surface tessellation here.
+        using var model = MicroIfc.Parse("""
+            #1=IFCCARTESIANPOINT((0.,0.,0.));
+            #2=IFCCARTESIANPOINT((1.,1.,0.));
+            #3=IFCCARTESIANPOINT((2.,0.,0.));
+            #4=IFCCARTESIANPOINT((0.,0.,1.));
+            #5=IFCCARTESIANPOINT((1.,1.,1.));
+            #6=IFCCARTESIANPOINT((2.,0.,1.));
+            #10=IFCBSPLINESURFACEWITHKNOTS(2,1,((#1,#4),(#2,#5),(#3,#6)),.UNSPECIFIED.,.F.,.F.,.F.,(3,3),(2,2),(0.,1.),(0.,1.),.UNSPECIFIED.);
+            #21=IFCVERTEXPOINT(#1);
+            #22=IFCVERTEXPOINT(#3);
+            #23=IFCVERTEXPOINT(#6);
+            #24=IFCVERTEXPOINT(#4);
+            #31=IFCBSPLINECURVE(2,(#1,#2,#3),.UNSPECIFIED.,.F.,.F.);
+            #32=IFCPOLYLINE((#3,#6));
+            #33=IFCBSPLINECURVE(2,(#6,#5,#4),.UNSPECIFIED.,.F.,.F.);
+            #34=IFCPOLYLINE((#4,#1));
+            #41=IFCEDGECURVE(#21,#22,#31,.T.);
+            #42=IFCEDGECURVE(#22,#23,#32,.T.);
+            #43=IFCEDGECURVE(#23,#24,#33,.T.);
+            #44=IFCEDGECURVE(#24,#21,#34,.T.);
+            #51=IFCORIENTEDEDGE(*,*,#41,.T.);
+            #52=IFCORIENTEDEDGE(*,*,#42,.T.);
+            #53=IFCORIENTEDEDGE(*,*,#43,.T.);
+            #54=IFCORIENTEDEDGE(*,*,#44,.T.);
+            #60=IFCEDGELOOP((#51,#52,#53,#54));
+            #61=IFCFACEOUTERBOUND(#60,.T.);
+            #62=IFCADVANCEDFACE((#61),#10,.T.);
+            #63=IFCCLOSEDSHELL((#62));
+            #64=IFCADVANCEDBREP(#63);
+            """);
+
+        var mesh = MeshRequired(model, 64);
+
+        Assert.That(mesh.FaceIndices, Has.Count.GreaterThan(4), "B-spline patch should tessellate over its parameter grid");
+        var maxY = mesh.Points.Max(p => p.Y.Value);
+        Assert.That(maxY, Is.GreaterThan(0.2f), "the arch is curved in Y");
+        Assert.That(maxY, Is.LessThan(0.8f), "boundary is pulled onto the evaluated surface (peak ~0.5), not left on the control polygon (peak 1.0)");
+        Assert.That(mesh.Points.Min(p => p.X.Value), Is.EqualTo(0f).Within(0.05f));
+        Assert.That(mesh.Points.Max(p => p.X.Value), Is.EqualTo(2f).Within(0.05f));
+        Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCBSPLINESURFACEWITHKNOTS"));
     }
 
     [Test]

@@ -8,7 +8,11 @@ Measurement-driven parity work against web-ifc `ToModel3D()` oracle. Triangle bo
 
 ---
 
-## Scorecard (last run: 2026-07-08, WP-V duplex surface-model instancing)
+## Scorecard (last run: 2026-07-09, WP-W8 + WP-W7b + WP-W2b)
+
+> ⚠️ **Parity below uses v1 metric weights.** WP-M-tier0 switched the default weighting to **v2**
+> (shape-aware: adds rotation-invariant `entityShape`, demotes AABB + triangle-count). v2 parity for
+> the re-measured files is in the WP-M-tier0 log entry; the full v2 table lands on the next T2 run.
 
 | File | Score | Inst | Mesh | EntityInst | EntityBBox | MeshBBox | Shape | Merged |
 |------|------:|-----:|-----:|-----------:|-----------:|---------:|------:|-------:|
@@ -17,10 +21,30 @@ Measurement-driven parity work against web-ifc `ToModel3D()` oracle. Triangle bo
 | steelplates.ifc | 0.870 | 1.000 | 0.857 | 1.000 | 1.000 | 0.971 | 0.698 | 0.553 |
 | AC20-FZK-Haus.ifc | 0.898 | 1.000 | 0.968 | 1.000 | 0.938 | 0.732 | 0.940 | 0.664 |
 | 171210AISC_Sculpture_brep.ifc | 0.920 | 1.000 | 0.828 | 1.000 | 1.000 | 0.966 | 0.934 | 0.673 |
-| FM_ARC_DigitalHub.ifc | 0.840 | 0.998 | 0.756 | 0.980 | 0.999 | 0.371 | 0.860 | 0.663 |
-| duplex.ifc | 0.848 | 0.957 | 0.947 | 0.984 | 0.866 | 0.602 | 0.830 | 0.697 |
+| FM_ARC_DigitalHub.ifc | 0.844 | 0.999 | 0.768 | 0.998 | 0.999 | 0.382 | 0.857 | 0.672 |
+| duplex.ifc | 0.851 | 0.955 | 0.949 | 0.986 | 0.868 | 0.604 | 0.826 | 0.712 |
 
-_Metric columns are per-metric scores in [0,1]. Quick-file counts from `Category=IfcMesherScore`; **AC20**, **sculpture**, **DigitalHub** from stretch tests; **duplex** from `ScoreDuplexStretch` (**713/682 inst**, parity **0.843**)._
+_Metric columns are per-metric scores in [0,1]. Quick-file counts from `Category=IfcMesherScore` (unchanged: OpenHouse 0.918 / example 0.910 / steelplates 0.870); **AC20**, **sculpture**, **DigitalHub** from stretch tests; **duplex** from `ScoreDuplexStretch` (**714/682 inst**, parity **0.851**, merged tris 24404/27686, entity Jaccard 1.000). DigitalHub merged tris 242801/311811._
+
+**WP-M-tier0-shape-metrics (round 1):** Wired **Tier 0 shape metrics** into `ModelComparer` (harness only; no mesher change). New `entityShape` metric: per shared entity, build the world-space merged mesh for candidate + oracle, describe each with **rotation/translation-invariant** descriptors (|signed volume|, surface area, sorted OBB extents via `PrincipalComponentAnalysis`+`FitOrientedBox`, PCA linearity/planarity/scattering, Ritter bounding-sphere radius, welded open-boundary length), and blend into a [0,1] similarity. Headline weights → **v2**: `entityShape` 0.25 (largest term), AABB terms + triangle count demoted (kept as readouts). Entities whose oracle mesh has no comparable surface/volume are skipped (same guard the rest of the harness uses for the duplex BFAST gaps). `EntityShapeGap` per-entity diagnostics (worst-first) added to `FormatResult` + `ScoreDuplexStretch`. Unit test `EntityShapeMetricTests` proves rotation-invariance (a 90°-rotated rod keeps shape≈1.0 while its AABB score collapses) and scale-sensitivity (2× → <0.6).
+
+Before/after (v1 → v2 parity), with the new `entityShape` value:
+
+| File | v1 parity | v2 parity | entityShape (matched) | reading |
+|------|----------:|----------:|-----------------------|---------|
+| IfcOpenHouse_IFC4.ifc | 0.918 | **0.942** | 0.969 (32/35) | shapes agree; old score under-credited it |
+| steelplates.ifc | 0.870 | **0.895** | 0.914 (10/14) | shapes agree |
+| FM_ARC_DigitalHub.ifc | 0.844 | **0.888** | 0.911 (538/766) | shapes largely right; v1 was dragged by tessellation-density (tris) + per-mesh AABB |
+| duplex.ifc | 0.851 | **0.868** | 0.862 (135/235) | real per-entity shape gaps surfaced |
+| example.ifc | 0.910 | **0.896** | 0.813 (84/116) | *fell* — real shape disagreement the AABB/tri metrics masked |
+
+**Finding (next shape WP target):** the duplex diagnostic localizes ~30 `IFCSLAB` + `#5399 IFCWALL` + stair flights with **>3× area/volume disagreement** vs oracle (e.g. `#22492` also shows an open-vs-watertight boundary mismatch) — invisible to the old count/AABB metrics, now a concrete target. Cross-validated: these overlap the AABB-unmatched set, and the metric scores sane/high elsewhere (OpenHouse 0.969, DigitalHub 0.911), so it is not a metric artifact. **Perf:** per-entity PCA/OBB adds a little to Compare; quick files negligible, DigitalHub stretch ~unchanged (~1 min).
+
+**WP-W7b-reveal-caps (round 1):** Follow-up to WP-W7: the opening carve dropped interior host material but added no hole-wall geometry, leaving duplex merged tris at 23916 vs oracle 27686. `OpeningCarver.CarveConvex` now takes a **prism list** and, after carving, adds **reveal caps** = each prism's lateral surface clipped to the interior of the *original* (convex) host via `BuildReveal` (Sutherland-Hodgman against host planes, wound to face the void). Clipping against the original host — not the progressively-carved mesh — means every opening on a multi-opening host still gets caps (after the first carve the working mesh is non-convex). Through-opening end caps fall outside the host and clip away, leaving only the lateral hole walls. `ModelAssembler.CarveOpenings` and the roof aggregation path now pass all prisms in one `CarveConvex` call. Non-convex hosts get no reveals (graceful skip). Golden `OpeningElementCarvesHoleIntoHostWall` updated (reveal ~1.2 m² lines a 2.0 m² through-window). **Duplex 0.849→0.851** (merged-tri 0.698→0.712, tris 23916→24404; mesh bbox 0.604 held, mesh shape 0.828→0.826 noise). **Bonus DigitalHub 0.843→0.844** (its openings gain reveals; merged tris 241109→242801). Quick files unchanged (OpenHouse 0.918 / example 0.910 / steelplates 0.870). Remaining merged-tri gap (24404 vs 27686) is non-reveal geometry (web-ifc's finer tessellation of FBSM/curved profiles).
+
+**WP-W8-revolution-nurbs (round 1):** Closed the WP-W3 remaining-headroom: DigitalHub `IFCSURFACEOFREVOLUTION` (52) + `IFCRATIONALBSPLINESURFACEWITHKNOTS` (8) advanced faces were still flat-projected onto a Newell plane. Extended the `Brep.SurfaceMap` abstraction (alongside `CylinderMap`) with two maps. **`RevolutionMap`**: builds an axis frame (Z = revolution axis, X = meridian radial ref), samples the swept-profile curve into a meridian (radial, axial, cumulative arc-length), and parameterizes boundary points as (refRadius·angle, meridian arc-length) with per-ring angle unwrapping; unprojects by evaluating the meridian at the arc-length and rotating about the axis. **`BSplineSurfaceMap`**: a Cox-de Boor tensor-product evaluator (`FindSpan`/`BasisFuns`, rational weights, expanded knot vectors) over the control net; boundary points are located to (u,v) by nearest-point search on a 32×32 pre-sampled surface grid, triangulated in scaled (u,v), and unprojected via de Boor. Both are gated with try/catch → flat-projection fallback (zero regression risk on malformed surfaces). Goldens `MeshesSurfaceOfRevolutionAdvancedFace`, `MeshesBSplineSurfaceAdvancedFace`. **DigitalHub merged tris 239079→241109** (the 60 curved faces now follow their true surfaces), inst 3592→3596, mesh bbox 0.380→0.381; **parity held 0.843** (60 of ~10070 advanced faces is a correctness/capability win, not an aggregate-parity mover — the bulk deficit is elsewhere). Quick files + goldens unchanged. `Brep.cs` now `using Ara3D.IO.StepParser` (nested control-point list reads).
+
+**WP-W2b-roof-aggregation (round 1):** Closed the last duplex oracle-only gap — `#22475 IFCROOF` (20 tris). The roof has an **empty representation**; its geometry is the aggregated slab `#22492` (`IFCRELAGGREGATES`), which web-ifc attributes up to the roof and carves with the roof's own openings. New `ModelAssembler.EmitAggregatedVoidHosts` post-pass: for a parent that has **no representation of its own AND is a void host** (`IFCRELVOIDSELEMENT`), it builds the union of its aggregated children's world meshes, carves the parent's openings, and emits one identity-transform instance keyed to the parent. The **void-host gate** is the discriminator that distinguishes the roof (emitted) from the other 7 empty-rep aggregate parents in duplex — 2 stairs + site + building + 3 storeys — which the oracle does *not* emit (they have no openings, so web-ifc never materialises their solid; their children emit individually). Zero overshoot on the spatial containers. Golden `AggregatedVoidHostRoofGetsChildSlabGeometry`. **Duplex 0.848→0.849**, entity Jaccard **0.996→1.000** (shared 236→237), entity bbox 191→192, oracle-only list now empty. Quick files unchanged.
 
 **WP-W7-opening-carve (round 1):** `IFCRELVOIDSELEMENT` (50 in duplex, 30 hosts) was unsupported → window/door openings never cut into hosts. New `OpeningCarver.cs` wired into `ModelAssembler.BuildModel`: `CollectVoidRelations` maps host→openings; opening solids built by reusing `GeometryPartCollector` on the `IFCOPENINGELEMENT` `Body/SweptSolid` (extruded prism) + world placement; `CarveConvex` is a self-contained **convex-prism carve** — ≤6 outward bounding planes derived from the prism mesh (centroid-oriented, with a convexity guard that no-ops on non-convex openings), then per host triangle: AABB/separating-plane reject, drop fully-inside, Sutherland-Hodgman split straddlers keeping only outside fragments. No `Booleans.cs` edits; reveal (hole-wall) caps intentionally omitted. Golden `OpeningElementCarvesHoleIntoHostWall`. **Duplex 0.843→0.848** (merged-tri 0.681→0.697, mesh bbox 0.591→0.602, mesh count 404→412, +~1020 carved-frame tris); no metric regressed. **Bonus: OpenHouse 0.906→0.918, steelplates 0.862→0.870** (their openings carve too); example/DigitalHub unchanged. Remaining: reveal caps (candidate 23864 vs oracle 27686 merged tris).
 
@@ -74,7 +98,7 @@ _Metric columns are per-metric scores in [0,1]. Quick-file counts from `Category
 | M2 Structure | instance + entity histogram within 2× on quick files | **done** — inst ratio within 2× on all 3 quick files; example **120/120 inst**, entity Jaccard **1.0** |
 | M3 Coverage | merged tri count within 5× on IfcOpenHouse + steelplates | **done** — OpenHouse 1060/1098 (1.0×); steelplates 356/1428 (4.0×) |
 | M4 Shape | per-entity bbox match > 70% shared ids on quick files | **done** — OpenHouse 33/35 (94%), example 97/98 (99%), steelplates 11/14 (79%) |
-| M5 Stretch | progress on one large file (AC20-FZK-Haus or duplex) | **in progress** — AC20 **252/252 inst**, parity **0.898**; duplex **713/682 inst**, parity **0.843** (was 436/682, 0.730) |
+| M5 Stretch | progress on one large file (AC20-FZK-Haus or duplex) | **in progress** — AC20 **252/252 inst**, parity **0.898**; duplex **714/682 inst**, parity **0.851** (was 436/682, 0.730), entity Jaccard **1.000** (no oracle-only gaps); DigitalHub **0.844** |
 
 ---
 
@@ -111,6 +135,10 @@ _Metric columns are per-metric scores in [0,1]. Quick-file counts from `Category
 | WP-W3-digitalhub-cylindrical | done | — | WP-P | high | Round 1: cylindrical advanced-face tessellation (surface-param map) + `.CARTESIAN` circle trims; DigitalHub 0.775→0.840, 3592/3599 inst, merged-tri 0.17→0.75 |
 | WP-W7-opening-carve | done | — | — | high | Round 1: IFCRELVOIDSELEMENT opening subtraction (convex-prism carve, new `OpeningCarver.cs`); duplex 0.843→0.848, OpenHouse 0.906→0.918, steelplates 0.862→0.870 |
 | WP-W2-polygonal-halfspace | done | — | — | med | Round 1: boundary-gated `IFCPOLYGONALBOUNDEDHALFSPACE` clip; duplex 0.843 held, 7 cases now clip correctly (no over-clip) |
+| WP-W2b-roof-aggregation | done | — | WP-W2 | high | Round 1: `IFCRELAGGREGATES` attribution for empty-rep void-host parents (`ModelAssembler.EmitAggregatedVoidHosts`); duplex #22475 roof emitted, Jaccard 0.996→1.000, 0.848→0.849 |
+| WP-W8-revolution-nurbs | done | — | WP-W3 | med | Round 1: `IFCSURFACEOFREVOLUTION` (RevolutionMap) + NURBS (`BSplineSurfaceMap`, de Boor) advanced-face tessellation; DigitalHub merged 239079→241109, parity 0.843 held (correctness/capability) |
+| WP-W7b-reveal-caps | done | — | WP-W7 | high | Round 1: opening reveal (hole-wall) caps in `OpeningCarver` (prism lateral ∩ convex host); duplex 0.849→0.851 (merged 0.698→0.712), DigitalHub 0.843→0.844, mesh pairing held |
+| WP-M-tier0-shape-metrics | done | — | — | high | Round 1: rotation-invariant `entityShape` metric (vol/area/OBB/PCA/sphere/boundary) + per-entity diagnostics in `ModelComparer`; weights v2. DigitalHub 0.844→0.888, OpenHouse 0.918→0.942; example 0.910→0.896 (surfaced hidden shape gaps). Localized ~30 duplex slab/wall shape defects for a future WP |
 
 ---
 

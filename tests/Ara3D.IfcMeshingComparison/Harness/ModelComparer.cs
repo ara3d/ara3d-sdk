@@ -20,16 +20,20 @@ public sealed record ModelComparerOptions(
 
     public IReadOnlyDictionary<string, double> Weights => MetricWeights ?? DefaultWeights;
 
+    // Metrics v2 (Tier 0): rotation-invariant per-entity shape (volume/area/OBB/PCA/boundary/sphere)
+    // carries the largest single weight; the frame-sensitive AABB terms and the tessellation-density
+    // triangle count are demoted from the headline (they remain reported readouts).
     static readonly IReadOnlyDictionary<string, double> DefaultWeights =
         new Dictionary<string, double>(StringComparer.Ordinal)
         {
-            ["meshCount"] = 0.10,
+            ["meshCount"] = 0.05,
             ["instanceCount"] = 0.15,
             ["entityInstances"] = 0.15,
-            ["entityBoundingBox"] = 0.20,
-            ["meshBoundingBox"] = 0.10,
-            ["meshShape"] = 0.15,
-            ["mergedMesh"] = 0.15,
+            ["entityBoundingBox"] = 0.15,
+            ["entityShape"] = 0.25,
+            ["meshBoundingBox"] = 0.05,
+            ["meshShape"] = 0.10,
+            ["mergedMesh"] = 0.10,
         };
 }
 
@@ -58,6 +62,26 @@ public sealed record BoundingBoxMetricScore(
     int CandidateOnlyCount,
     int OracleOnlyCount);
 
+/// <summary>
+/// Rotation- and translation-invariant per-entity shape agreement, built from Tier 0 descriptors
+/// (volume, surface area, sorted OBB extents, PCA linearity/planarity/scattering, bounding-sphere
+/// radius, open-boundary length). Unlike the AABB metrics it is frame-independent, so a correct mesh
+/// in a different local frame still scores high; unlike triangle count it ignores tessellation density.
+/// </summary>
+public sealed record EntityShapeMetricScore(
+    double Score,
+    int ComparedCount,
+    int MatchedCount,
+    IReadOnlyList<EntityShapeGap> WorstEntities);
+
+/// <summary>One shared entity's shape agreement, for diagnostics (lowest-scoring first).</summary>
+public sealed record EntityShapeGap(
+    int EntityId,
+    double Score,
+    double VolumeRatio,
+    double AreaRatio,
+    double BoundaryRatio);
+
 public sealed record ModelComparisonResult(
     string FileName,
     double ParityScore,
@@ -65,6 +89,7 @@ public sealed record ModelComparisonResult(
     CountMetricScore InstanceCount,
     EntityInstanceMetricScore EntityInstances,
     BoundingBoxMetricScore EntityBoundingBox,
+    EntityShapeMetricScore EntityShape,
     BoundingBoxMetricScore MeshBoundingBox,
     double MeshShapeScore,
     MergedMeshMetricScore MergedMesh,
@@ -76,6 +101,7 @@ public sealed record ModelComparisonResult(
         ["instanceCount"] = InstanceCount.Score,
         ["entityInstances"] = EntityInstances.Score,
         ["entityBoundingBox"] = EntityBoundingBox.Score,
+        ["entityShape"] = EntityShape.Score,
         ["meshBoundingBox"] = MeshBoundingBox.Score,
         ["meshShape"] = MeshShapeScore,
         ["mergedMesh"] = MergedMesh.Score,
@@ -97,6 +123,7 @@ public static class ModelComparer
         var instanceCount = CompareCounts(candidate.Instances.Count, oracle.Instances.Count);
         var entityInstances = CompareEntityInstances(candidate, oracle);
         var entityBoundingBox = CompareEntityBoundingBoxes(candidate, oracle, options.BoundsRelativeTolerance);
+        var entityShape = CompareEntityShapes(candidate, oracle, options);
         var meshBoundingBox = CompareMeshBoundingBoxes(candidate, oracle, options.BoundsRelativeTolerance);
         var meshShape = CompareMeshShapes(candidate, oracle, options);
         var mergedMesh = CompareMergedMesh(candidate, oracle, options.BoundsRelativeTolerance);
@@ -107,6 +134,7 @@ public static class ModelComparer
             instanceCount.Score * weights["instanceCount"] +
             entityInstances.Score * weights["entityInstances"] +
             entityBoundingBox.Score * weights["entityBoundingBox"] +
+            entityShape.Score * weights.GetValueOrDefault("entityShape") +
             meshBoundingBox.Score * weights["meshBoundingBox"] +
             meshShape * weights["meshShape"] +
             mergedMesh.Score * weights["mergedMesh"];
@@ -118,6 +146,7 @@ public static class ModelComparer
             instanceCount,
             entityInstances,
             entityBoundingBox,
+            entityShape,
             meshBoundingBox,
             meshShape,
             mergedMesh,
@@ -187,6 +216,7 @@ public static class ModelComparer
             | Instance count | {m["instanceCount"]:F3} | {result.InstanceCount.Candidate} vs {result.InstanceCount.Oracle} |
             | Entity instances | {m["entityInstances"]:F3} | Jaccard={result.EntityInstances.KeyJaccard:F3}, shared={result.EntityInstances.SharedEntityCount} |
             | Entity bbox | {m["entityBoundingBox"]:F3} | {result.EntityBoundingBox.MatchedCount}/{result.EntityBoundingBox.ComparedCount} matched |
+            | Entity shape | {m["entityShape"]:F3} | {result.EntityShape.MatchedCount}/{result.EntityShape.ComparedCount} matched (vol/OBB/PCA/bndry, rot-inv) |
             | Mesh bbox | {m["meshBoundingBox"]:F3} | {result.MeshBoundingBox.MatchedCount}/{result.MeshBoundingBox.ComparedCount} matched |
             | Mesh shape | {m["meshShape"]:F3} | fingerprint pairs |
             | Merged mesh | {m["mergedMesh"]:F3} | tris {result.MergedMesh.CandidateTriangleCount} vs {result.MergedMesh.OracleTriangleCount} |
@@ -229,6 +259,238 @@ public static class ModelComparer
         var mine = EntityBounds(candidate);
         var theirs = EntityBounds(oracle);
         return CompareBoundingBoxMaps(mine, theirs, relTolerance);
+    }
+
+    // ---- Tier 0 per-entity shape metric (rotation/translation invariant) ----
+
+    static EntityShapeMetricScore CompareEntityShapes(Model3D candidate, Model3D oracle, ModelComparerOptions options)
+    {
+        var mine = EntityMeshes(candidate);
+        var theirs = EntityMeshes(oracle);
+        var shared = mine.Keys.Intersect(theirs.Keys).ToList();
+        if (shared.Count == 0)
+        {
+            var empty = mine.Count == 0 && theirs.Count == 0 ? 1.0 : 0.0;
+            return new EntityShapeMetricScore(empty, 0, 0, []);
+        }
+
+        var gaps = new List<EntityShapeGap>(shared.Count);
+        foreach (var id in shared)
+        {
+            var b = DescribeShape(theirs[id]);
+            // If the oracle provides no comparable geometry for this entity (an empty/degenerate mesh
+            // — the known duplex BFAST invalid-MeshIndex gaps), skip it rather than scoring the
+            // candidate 0; the rest of the harness applies the same guard.
+            if (!IsComparable(b))
+                continue;
+
+            var a = DescribeShape(mine[id]);
+            if (!IsComparable(a))
+            {
+                gaps.Add(new EntityShapeGap(id, 0.0, 0.0, 0.0, 0.0)); // real candidate gap
+                continue;
+            }
+            gaps.Add(new EntityShapeGap(
+                id,
+                ShapeSimilarity(a!, b!),
+                RatioSimilarity(a!.Volume, b!.Volume),
+                RatioSimilarity(a.Area, b.Area),
+                RatioSimilarity(a.BoundaryLength, b.BoundaryLength)));
+        }
+
+        if (gaps.Count == 0)
+            return new EntityShapeMetricScore(1.0, 0, 0, []);
+
+        var score = gaps.Select(g => g.Score).Average();
+        var matched = gaps.Count(g => g.Score >= 1.0 - options.ShapeExtentTolerance);
+        var worst = gaps.OrderBy(g => g.Score).Take(10).ToList();
+        return new EntityShapeMetricScore(score, gaps.Count, matched, worst);
+    }
+
+    /// <summary>Per-entity world-space merged mesh (one mesh per entity, all instances baked in).</summary>
+    static Dictionary<int, TriangleMesh3D> EntityMeshes(Model3D model)
+    {
+        var byEntity = new Dictionary<int, List<TriangleMesh3D>>();
+        var meshes = model.Meshes;
+        foreach (var inst in model.Instances)
+        {
+            if (inst.EntityIndex < 0 || inst.MeshIndex < 0 || inst.MeshIndex >= meshes.Count)
+                continue;
+            var transformed = MeshHelpers.Transform(meshes[inst.MeshIndex], inst.Matrix4x4);
+            if (!byEntity.TryGetValue(inst.EntityIndex, out var list))
+                byEntity[inst.EntityIndex] = list = [];
+            list.Add(transformed);
+        }
+        return byEntity.ToDictionary(
+            kv => kv.Key,
+            kv => kv.Value.Count == 1 ? kv.Value[0] : MeshHelpers.Merge(kv.Value));
+    }
+
+    sealed record ShapeDescriptor(
+        double Volume,
+        double Area,
+        double BoundaryLength,
+        double SphereRadius,
+        float[] ObbExtents,
+        double Linearity,
+        double Planarity,
+        double Scattering);
+
+    static ShapeDescriptor? DescribeShape(TriangleMesh3D mesh)
+    {
+        if (mesh.FaceIndices.Count < 1 || mesh.Points.Count < 3)
+            return null;
+        try
+        {
+            var vectors = mesh.Points.Select(p => p.Vector3).ToList();
+            var pca = new PrincipalComponentAnalysis(vectors);
+            var obb = vectors.FitOrientedBox(pca.Frame);
+            return new ShapeDescriptor(
+                Math.Abs(MeshHelpers.SignedVolume(mesh)),
+                SurfaceArea(mesh),
+                BoundaryLength(mesh),
+                BoundingSphereRadius(mesh.Points),
+                SortedExtents(obb.Size),
+                pca.Linearity,
+                pca.Planarity,
+                pca.Scattering);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>Shape comparison needs an actual surface or volume — a bare point spread is not comparable.</summary>
+    static bool IsComparable(ShapeDescriptor? d)
+        => d is not null && (d.Area > 1e-9 || d.Volume > 1e-9);
+
+    static double ShapeSimilarity(ShapeDescriptor a, ShapeDescriptor b)
+    {
+        var volume = RatioSimilarity(a.Volume, b.Volume);
+        var area = RatioSimilarity(a.Area, b.Area);
+        var obb = (
+            ExtentRatioScore(a.ObbExtents[0], b.ObbExtents[0]) +
+            ExtentRatioScore(a.ObbExtents[1], b.ObbExtents[1]) +
+            ExtentRatioScore(a.ObbExtents[2], b.ObbExtents[2])) / 3.0;
+        var sphere = RatioSimilarity(a.SphereRadius, b.SphereRadius);
+        var pca = Math.Clamp(1.0 - (
+            Math.Abs(a.Linearity - b.Linearity) +
+            Math.Abs(a.Planarity - b.Planarity) +
+            Math.Abs(a.Scattering - b.Scattering)) / 3.0, 0.0, 1.0);
+        var boundary = RatioSimilarity(a.BoundaryLength, b.BoundaryLength);
+
+        return 0.25 * volume + 0.15 * area + 0.25 * obb + 0.10 * sphere + 0.15 * pca + 0.10 * boundary;
+    }
+
+    static double RatioSimilarity(double a, double b, double maxRatio = 3.0)
+    {
+        var absA = Math.Abs(a);
+        var absB = Math.Abs(b);
+        if (absA <= 1e-9 && absB <= 1e-9)
+            return 1.0;
+        if (absA <= 1e-9 || absB <= 1e-9)
+            return 0.0;
+        var ratio = Math.Max(absA, absB) / Math.Min(absA, absB);
+        return ratio <= maxRatio ? 1.0 - (ratio - 1.0) / (maxRatio - 1.0) : 0.0;
+    }
+
+    static double SurfaceArea(TriangleMesh3D mesh)
+    {
+        var area = 0.0;
+        foreach (var f in mesh.FaceIndices)
+        {
+            var p = mesh.Points[f.A].Vector3;
+            var q = mesh.Points[f.B].Vector3;
+            var r = mesh.Points[f.C].Vector3;
+            area += 0.5 * Vector3.Cross(q - p, r - p).Length.Value;
+        }
+        return area;
+    }
+
+    /// <summary>Total length of open (once-used) edges after welding by position — 0 for a watertight solid.</summary>
+    static double BoundaryLength(TriangleMesh3D mesh)
+    {
+        if (mesh.FaceIndices.Count == 0)
+            return 0.0;
+
+        var canon = new Dictionary<(int, int, int), int>();
+        var pos = new List<Vector3>();
+        int Canon(int i)
+        {
+            var v = mesh.Points[i].Vector3;
+            var key = ((int)MathF.Round(v.X * 1e5f), (int)MathF.Round(v.Y * 1e5f), (int)MathF.Round(v.Z * 1e5f));
+            if (canon.TryGetValue(key, out var idx))
+                return idx;
+            idx = pos.Count;
+            pos.Add(v);
+            canon[key] = idx;
+            return idx;
+        }
+
+        var edges = new Dictionary<(int, int), int>();
+        void AddEdge(int a, int b)
+        {
+            var k = a < b ? (a, b) : (b, a);
+            edges.TryGetValue(k, out var c);
+            edges[k] = c + 1;
+        }
+
+        foreach (var f in mesh.FaceIndices)
+        {
+            var a = Canon(f.A);
+            var b = Canon(f.B);
+            var c = Canon(f.C);
+            AddEdge(a, b);
+            AddEdge(b, c);
+            AddEdge(c, a);
+        }
+
+        var length = 0.0;
+        foreach (var (edge, count) in edges)
+            if (count == 1)
+                length += (pos[edge.Item1] - pos[edge.Item2]).Length.Value;
+        return length;
+    }
+
+    /// <summary>Approximate minimal bounding-sphere radius (Ritter).</summary>
+    static double BoundingSphereRadius(IReadOnlyList<Point3D> pts)
+    {
+        if (pts.Count == 0)
+            return 0.0;
+        var x = FarthestFrom(pts, pts[0].Vector3);
+        var y = FarthestFrom(pts, x);
+        var center = (x + y) * 0.5f;
+        var radius = (y - center).Length.Value;
+        foreach (var p in pts)
+        {
+            var v = p.Vector3;
+            var d = (v - center).Length.Value;
+            if (d > radius)
+            {
+                var newRadius = (radius + d) * 0.5f;
+                center += (v - center) * ((newRadius - radius) / d);
+                radius = newRadius;
+            }
+        }
+        return radius;
+    }
+
+    static Vector3 FarthestFrom(IReadOnlyList<Point3D> pts, Vector3 from)
+    {
+        var best = from;
+        var bestDist = -1f;
+        foreach (var p in pts)
+        {
+            var v = p.Vector3;
+            var d = (v - from).LengthSquared.Value;
+            if (d > bestDist)
+            {
+                bestDist = d;
+                best = v;
+            }
+        }
+        return best;
     }
 
     static BoundingBoxMetricScore CompareMeshBoundingBoxes(
@@ -746,6 +1008,7 @@ public static class ModelComparer
         CountMetricScore InstanceCount,
         EntityInstanceMetricScore EntityInstances,
         BoundingBoxMetricScore EntityBoundingBox,
+        EntityShapeMetricScore EntityShape,
         BoundingBoxMetricScore MeshBoundingBox,
         double MeshShapeScore,
         MergedMeshMetricScore MergedMesh,
@@ -760,6 +1023,7 @@ public static class ModelComparer
                 result.InstanceCount,
                 result.EntityInstances,
                 result.EntityBoundingBox,
+                result.EntityShape,
                 result.MeshBoundingBox,
                 result.MeshShapeScore,
                 result.MergedMesh,

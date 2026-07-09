@@ -50,8 +50,109 @@ public static class ModelAssembler
             }, entity.GetEntityName(), $"product #{entity.Id}");
         }
 
+        EmitAggregatedVoidHosts(ctx, builder, meshIndexByFingerprint, voidRelations, openingSolidCache);
         RecordOpeningRelations(ctx);
         return (builder.Build(), ctx.Diagnostics);
+    }
+
+    /// <summary>
+    /// Emits geometry for elements that declare openings (<c>IFCRELVOIDSELEMENT</c> hosts) but carry
+    /// no representation of their own, deriving the host solid from their <c>IFCRELAGGREGATES</c>
+    /// children and carving the host's openings from it. This mirrors web-ifc, which must materialise
+    /// such a host's solid (from its aggregated parts) before it can subtract the voids — e.g. the
+    /// duplex flat roof <c>#22475</c>, whose geometry is the aggregated slab <c>#22492</c>. Aggregate
+    /// parents that are not void hosts (stairs, and spatial containers such as building/storey/site)
+    /// are left to emit their children individually, matching the oracle.
+    /// </summary>
+    static void EmitAggregatedVoidHosts(
+        MeshingContext ctx,
+        Model3DBuilder builder,
+        Dictionary<int, int> meshIndexByFingerprint,
+        Dictionary<int, List<int>> voidRelations,
+        Dictionary<int, List<TriangleMesh3D>> openingSolidCache)
+    {
+        foreach (var (parentId, childIds) in CollectAggregateChildren(ctx))
+        {
+            if (!voidRelations.TryGetValue(parentId, out var openingIds))
+                continue;
+            var parent = ctx.GetEntityOrDefault(parentId);
+            if (parent is null || IsProduct(parent))
+                continue; // products with their own representation already emitted above
+
+            ctx.Try(() =>
+            {
+                var worldMeshes = CollectAggregatedChildMeshes(ctx, childIds);
+                if (worldMeshes.Count == 0)
+                    return;
+
+                var mesh = MeshHelpers.Merge(worldMeshes);
+                var worldPrisms = new List<TriangleMesh3D>();
+                foreach (var openingId in openingIds)
+                {
+                    if (!openingSolidCache.TryGetValue(openingId, out var solids))
+                        openingSolidCache[openingId] = solids = OpeningCarver.BuildOpeningWorldSolids(ctx, openingId);
+                    worldPrisms.AddRange(solids);
+                }
+                mesh = OpeningCarver.CarveConvex(mesh, worldPrisms);
+                if (mesh.FaceIndices.Count == 0)
+                    return;
+
+                // The child meshes are baked into world coordinates, so the instance transform is
+                // identity (matching how the oracle stores these attributed-up meshes).
+                var meshIdx = GetOrAddMesh(builder, meshIndexByFingerprint, mesh);
+                builder.AddInstance(meshIdx, Matrix4x4.Identity, Material.Default, parentId);
+                ctx.Diagnostics.RecordApproximate("IFCRELAGGREGATES",
+                    $"Aggregated void-host geometry attributed to #{parentId}");
+            }, parent.GetEntityName(), $"aggregated void host #{parentId}");
+        }
+    }
+
+    /// <summary>Builds the world-space meshes of an aggregate's children (each placed by its own placement).</summary>
+    static List<TriangleMesh3D> CollectAggregatedChildMeshes(MeshingContext ctx, IReadOnlyList<int> childIds)
+    {
+        var worldMeshes = new List<TriangleMesh3D>();
+        foreach (var childId in childIds)
+        {
+            var child = ctx.GetEntityOrDefault(childId);
+            var childRep = child is null ? null : MeshHelpers.ResolveOptional(ctx, child, IfcProduct.Instance.Representation);
+            if (childRep is null)
+                continue;
+
+            var childParts = new List<CollectedPart>();
+            GeometryPartCollector.CollectParts(ctx, childRep, Matrix4x4.Identity, childId, childParts);
+            if (childParts.Count == 0)
+                continue;
+
+            var placement = MeshHelpers.ResolveOptional(ctx, child!, IfcProduct.Instance.ObjectPlacement);
+            var childWorld = placement is null
+                ? Matrix4x4.Identity
+                : Placements.ReadLocalPlacement(ctx, placement).Matrix;
+
+            foreach (var part in childParts)
+                worldMeshes.Add(MeshHelpers.Transform(part.Mesh, childWorld * part.Transform));
+        }
+        return worldMeshes;
+    }
+
+    /// <summary>relating (parent) express id -&gt; aggregated child express ids (IFCRELAGGREGATES).</summary>
+    static Dictionary<int, List<int>> CollectAggregateChildren(MeshingContext ctx)
+    {
+        var map = new Dictionary<int, List<int>>();
+        foreach (var e in ctx.Resolver.GetEntities())
+        {
+            if (e.GetEntityName() != "IFCRELAGGREGATES")
+                continue;
+            var parentId = MeshHelpers.ReadOptionalId(e, IfcRelAggregates.Instance.RelatingObject);
+            if (parentId is null)
+                continue;
+            var kids = MeshHelpers.ReadIds(e, IfcRelAggregates.Instance.RelatedObjects);
+            if (kids.Count == 0)
+                continue;
+            if (!map.TryGetValue(parentId.Value, out var list))
+                map[parentId.Value] = list = new List<int>();
+            list.AddRange(kids);
+        }
+        return map;
     }
 
     static List<CollectedPart> CarveOpenings(
@@ -82,11 +183,8 @@ public static class ModelAssembler
             var mesh = part.Mesh;
             ctx.Try(() =>
             {
-                foreach (var world in worldSolids)
-                {
-                    var localPrism = MeshHelpers.Transform(world, toLocal);
-                    mesh = OpeningCarver.CarveConvex(mesh, localPrism);
-                }
+                var localPrisms = worldSolids.Select(w => MeshHelpers.Transform(w, toLocal)).ToList();
+                mesh = OpeningCarver.CarveConvex(mesh, localPrisms);
             }, "IFCRELVOIDSELEMENT", $"carve product #{part.EntityIndex}");
             result.Add(new CollectedPart(mesh, part.Transform, part.EntityIndex));
         }

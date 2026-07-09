@@ -149,6 +149,15 @@ public sealed class ScorecardTests
         var result = ModelComparer.Compare(model, ModelComparer.LoadOracle(ifcPath), ifcPath.GetFileName());
         TestContext.WriteLine(ModelComparer.FormatResult(result));
 
+        TestContext.WriteLine("Worst entity-shape agreement (Tier 0 diagnostic):");
+        foreach (var gap in result.EntityShape.WorstEntities)
+        {
+            var entity = stepFile.EntityResolver.GetEntityOrDefault(gap.EntityId);
+            TestContext.WriteLine(
+                $"  #{gap.EntityId} {entity?.GetEntityName() ?? "?"}: shape={gap.Score:F3} " +
+                $"vol={gap.VolumeRatio:F2} area={gap.AreaRatio:F2} bndry={gap.BoundaryRatio:F2}");
+        }
+
         var candidateEntities = model.Instances
             .Where(i => i.EntityIndex >= 0)
             .Select(i => i.EntityIndex)

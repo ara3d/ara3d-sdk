@@ -7,9 +7,10 @@ namespace Ara3D.Ifc.Mesher.Approach1;
 /// <summary>
 /// Subtracts IFCOPENINGELEMENT solids from their host products, following IFCRELVOIDSELEMENT
 /// relations. Uses a self-contained convex-solid carve (opening prisms are convex extrusions):
-/// host triangles fully inside the prism are dropped, straddling triangles are split so the
-/// portion outside the prism is retained (producing the reveal "frame"). Does not perform
-/// general CSG and leaves non-convex openings untouched.
+/// host triangles fully inside the prism are dropped and straddling triangles are split so the
+/// portion outside the prism is retained; then the reveal (hole-wall) caps — the part of each
+/// prism's lateral surface lying within the convex host — are added, matching the surface web-ifc's
+/// boolean subtraction exposes. Does not perform general CSG and leaves non-convex openings untouched.
 /// </summary>
 public static class OpeningCarver
 {
@@ -66,17 +67,54 @@ public static class OpeningCarver
     readonly record struct Plane(Vector3 Point, Vector3 Normal);
 
     /// <summary>
-    /// Returns the host mesh with the (convex) prism volume carved out, or the original mesh
-    /// unchanged when the prism is degenerate / non-convex / disjoint.
+    /// Returns the host mesh with the (convex) prism volume carved out and the hole-wall reveal caps
+    /// added, or the original mesh unchanged when the prism is degenerate / non-convex / disjoint.
     /// </summary>
     public static TriangleMesh3D CarveConvex(TriangleMesh3D host, TriangleMesh3D prism)
+        => CarveConvex(host, new[] { prism });
+
+    /// <summary>
+    /// Carves each (convex) prism from the host and adds the reveal (hole-wall) caps: the portion of
+    /// every prism's lateral surface that lies within the host. Reveals are clipped against the
+    /// <em>original</em> host so every opening on a multi-opening host still contributes its caps
+    /// (after the first carve the working mesh is no longer convex). Non-convex hosts get no reveals.
+    /// </summary>
+    public static TriangleMesh3D CarveConvex(TriangleMesh3D host, IReadOnlyList<TriangleMesh3D> prisms)
     {
-        if (host.FaceIndices.Count == 0 || prism.FaceIndices.Count == 0)
+        if (host.FaceIndices.Count == 0 || prisms.Count == 0)
             return host;
 
-        var planes = DerivePlanes(prism);
-        if (planes is null || planes.Count < 4)
-            return host;
+        var hostPlanes = DeriveConvexPlanes(host); // for reveals; null when the host is not convex
+        var mesh = host;
+        var reveals = new List<TriangleMesh3D>();
+
+        foreach (var prism in prisms)
+        {
+            if (prism.FaceIndices.Count == 0)
+                continue;
+            var planes = DeriveConvexPlanes(prism);
+            if (planes is null || planes.Count < 4)
+                continue;
+
+            mesh = CarveSingle(mesh, prism, planes, out var carved);
+            if (carved && hostPlanes is not null && hostPlanes.Count >= 4)
+            {
+                var reveal = BuildReveal(prism, hostPlanes);
+                if (reveal.FaceIndices.Count > 0)
+                    reveals.Add(reveal);
+            }
+        }
+
+        if (reveals.Count == 0)
+            return mesh;
+        reveals.Insert(0, mesh);
+        return MeshHelpers.Merge(reveals);
+    }
+
+    /// <summary>Carves one convex prism from <paramref name="host"/>; <paramref name="carved"/> reports whether any material was removed.</summary>
+    static TriangleMesh3D CarveSingle(TriangleMesh3D host, TriangleMesh3D prism, List<Plane> planes, out bool carved)
+    {
+        carved = false;
 
         // Prism AABB (with margin) for cheap rejection of far triangles.
         var min = prism.Points[0].Vector3;
@@ -120,7 +158,6 @@ public static class OpeningCarver
                 EmitTriangle(poly[0], poly[i], poly[i + 1]);
         }
 
-        var anyCarved = false;
         foreach (var face in host.FaceIndices)
         {
             var a = host.Points[face.A].Vector3;
@@ -170,15 +207,60 @@ public static class OpeningCarver
             }
             // 'current' (if any) is fully inside the prism -> removed (the hole).
             if (producedFragment || current.Count < 3)
-                anyCarved = true;
+                carved = true;
             else
                 EmitTriangle(a, b, c); // never actually inside; retain
         }
 
-        return anyCarved ? new TriangleMesh3D(outPoints, outFaces) : host;
+        return carved ? new TriangleMesh3D(outPoints, outFaces) : host;
     }
 
-    static List<Plane>? DerivePlanes(TriangleMesh3D prism)
+    /// <summary>
+    /// Builds the reveal caps for one prism: each prism face clipped to the interior of the convex
+    /// host, wound to face the carved-out void (opposite the prism's outward normal). For a through
+    /// opening the prism end caps fall outside the host and clip away, leaving only the lateral hole
+    /// walls — the surface web-ifc's boolean subtraction exposes.
+    /// </summary>
+    static TriangleMesh3D BuildReveal(TriangleMesh3D prism, List<Plane> hostPlanes)
+    {
+        const float eps = 1e-5f;
+        var points = new List<Point3D>();
+        var faces = new List<Integer3>();
+
+        void Emit(Vector3 a, Vector3 b, Vector3 c)
+        {
+            if (Vector3.Cross(b - a, c - a).LengthSquared() < 1e-16f)
+                return;
+            var i = points.Count;
+            points.Add(new Point3D(a.X, a.Y, a.Z));
+            points.Add(new Point3D(b.X, b.Y, b.Z));
+            points.Add(new Point3D(c.X, c.Y, c.Z));
+            faces.Add(new Integer3(i, i + 1, i + 2));
+        }
+
+        foreach (var face in prism.FaceIndices)
+        {
+            var poly = new List<Vector3>
+            {
+                prism.Points[face.A].Vector3,
+                prism.Points[face.B].Vector3,
+                prism.Points[face.C].Vector3,
+            };
+            foreach (var pl in hostPlanes)
+            {
+                if (poly.Count < 3)
+                    break;
+                poly = SplitPolygon(poly, pl, eps).Inside;
+            }
+            // Reversed fan so the cap faces the void rather than the removed material.
+            for (var i = 1; i + 1 < poly.Count; i++)
+                Emit(poly[0], poly[i + 1], poly[i]);
+        }
+
+        return new TriangleMesh3D(points, faces);
+    }
+
+    static List<Plane>? DeriveConvexPlanes(TriangleMesh3D prism)
     {
         var centroid = Vector3.Zero;
         foreach (var p in prism.Points)
