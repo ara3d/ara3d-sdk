@@ -23,7 +23,43 @@ public sealed class PolygonWithHoles
     {
         if (Holes.Count == 1 && TryTriangulateOffsetRing(Outer, Holes[0], out var ringTris))
             return ringTris;
+        if (Holes.Count == 0 && TryTriangulateConvexFan(Outer, out var fanTris))
+            return fanTris;
         return PolygonTriangulator.GetTriangles(Outer, Holes);
+    }
+
+    /// <summary>Fan triangulation for convex rings; ear-clip uses absolute eps and fails on small circles.</summary>
+    static bool TryTriangulateConvexFan(IReadOnlyList<Vector2> ring, out IReadOnlyList<Triangle2D> triangles)
+    {
+        triangles = [];
+        var n = ring.Count;
+        if (n < 3)
+            return false;
+        if (PolygonTriangulator.HasSelfIntersection(ring))
+            return false;
+
+        var bounds = ring.GetBounds();
+        var size = bounds.Size;
+        var scale = Math.Max(MathF.Abs((float)size.X.Value), MathF.Abs((float)size.Y.Value));
+        var crossEps = Math.Max(PolygonTriangulator.Eps * PolygonTriangulator.Eps, scale * scale * 1e-10f);
+
+        var sign = 0;
+        for (var i = 0; i < n; i++)
+        {
+            var cross = PolygonTriangulator.Cross(ring[(i - 1 + n) % n], ring[i], ring[(i + 1) % n]);
+            if (MathF.Abs(cross) <= crossEps)
+                return false;
+            var vertexSign = cross > 0 ? 1 : -1;
+            sign = sign == 0 ? vertexSign : sign;
+            if (sign != vertexSign)
+                return false;
+        }
+
+        var tris = new List<Triangle2D>(n - 2);
+        for (var i = 1; i < n - 1; i++)
+            tris.Add(new Triangle2D(ring[0], ring[i], ring[i + 1]));
+        triangles = tris;
+        return true;
     }
 
     static bool TryTriangulateOffsetRing(

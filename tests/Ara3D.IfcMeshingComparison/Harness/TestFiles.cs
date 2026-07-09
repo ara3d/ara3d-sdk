@@ -16,6 +16,13 @@ public static class TestFiles
     public static readonly DirectoryPath WebIfcBfastDir = ProjectRoot.RelativeFolder("data", "bfast", "webifc");
     public static readonly DirectoryPath ReportsDir = ProjectRoot.RelativeFolder("data", "reports");
 
+    /// <summary>IFC corpus at the monorepo root (<c>studio/data/</c>).</summary>
+    public static readonly DirectoryPath StudioDataDir = ProjectRoot
+        .GetParent()
+        .GetParent()
+        .GetParent()
+        .RelativeFolder("data");
+
     public static readonly DirectoryPath WebIfcPublic = new(@"C:\Users\cdigg\git\ifc-sharp\engine_web-ifc\tests\ifcfiles\public");
     public static readonly DirectoryPath SpeckleIfcs = new(@"C:\Users\cdigg\git\3d-format-shootout\data\git-repo-copies\speckle\ifcs");
 
@@ -35,6 +42,15 @@ public static class TestFiles
 
     public static IEnumerable<FilePath> QuickComparisonFiles()
         => new[] { IfcOpenHouse, Example, SteelPlates };
+
+    public static IEnumerable<FilePath> StudioDataFiles()
+    {
+        if (!StudioDataDir.Exists())
+            yield break;
+
+        foreach (var file in Directory.EnumerateFiles(StudioDataDir, "*.ifc", SearchOption.TopDirectoryOnly))
+            yield return new FilePath(file);
+    }
 
     static FilePath ResolveIfc(DirectoryPath externalFolder, string fileName)
     {

@@ -55,6 +55,55 @@ public sealed class SweptSolidTests
 
     [Test]
     [Category("Slow")]
+    public void DentalClinic_AllSurfaceOfLinearExtrusions_BuildRibbons()
+    {
+        TestFiles.RequireExists(TestFiles.DentalClinic);
+        using var file = TestFiles.LoadStep(TestFiles.DentalClinic);
+        var ctx = new MeshingContext(file);
+
+        var total = 0;
+        var built = 0;
+        var failures = new List<string>();
+        foreach (var entity in ctx.Resolver.GetEntities())
+        {
+            if (entity.GetEntityName() != "IFCSURFACEOFLINEAREXTRUSION")
+                continue;
+            total++;
+            try
+            {
+                var mesh = GeometryDispatcher.TryBuild(ctx, entity);
+                if (mesh is { FaceIndices.Count: > 0 })
+                    built++;
+                else
+                    failures.Add($"#{entity.Id}: empty mesh");
+            }
+            catch (Exception ex)
+            {
+                failures.Add($"#{entity.Id}: {ex.Message}");
+            }
+        }
+
+        TestContext.WriteLine($"Dental clinic surface extrusions: {built}/{total} built");
+        foreach (var f in failures.Take(10))
+            TestContext.WriteLine($"  {f}");
+        Assert.That(built, Is.EqualTo(total), $"Failed: {string.Join("; ", failures.Take(5))}");
+    }
+
+    [Test]
+    [Category("Slow")]
+    public void DentalClinic_TrimmedArcOpenProfileRibbon_Builds()
+    {
+        TestFiles.RequireExists(TestFiles.DentalClinic);
+        using var file = TestFiles.LoadStep(TestFiles.DentalClinic);
+        var ctx = new MeshingContext(file);
+        var mesh = GeometryDispatcher.TryBuild(ctx, ctx.GetEntity(161277));
+        Assert.That(mesh, Is.Not.Null, "Trimmed-arc open profile ribbon should mesh");
+        Assert.That(mesh!.Value.FaceIndices.Count, Is.GreaterThan(2));
+        TestContext.WriteLine($"Triangles: {mesh.Value.FaceIndices.Count}, Points: {mesh.Value.Points.Count}");
+    }
+
+    [Test]
+    [Category("Slow")]
     public void DentalClinic_SurfaceOfLinearExtrusion_EntityBuildsRibbon()
     {
         TestFiles.RequireExists(TestFiles.DentalClinic);
@@ -65,6 +114,102 @@ public sealed class SweptSolidTests
         Assert.That(mesh!.Value.FaceIndices.Count, Is.GreaterThan(0));
         Assert.That(mesh.Value.Points.Count, Is.GreaterThanOrEqualTo(4));
         TestContext.WriteLine($"Triangles: {mesh.Value.FaceIndices.Count}, Points: {mesh.Value.Points.Count}");
+    }
+
+    [Test]
+    [Category("Slow")]
+    public void OfficeA_AllSurfaceOfLinearExtrusions_BuildRibbons()
+    {
+        TestFiles.RequireExists(TestFiles.OfficeA);
+        using var file = TestFiles.LoadStep(TestFiles.OfficeA);
+        var ctx = new MeshingContext(file);
+
+        var total = 0;
+        var built = 0;
+        foreach (var entity in ctx.Resolver.GetEntities())
+        {
+            if (entity.GetEntityName() != "IFCSURFACEOFLINEAREXTRUSION")
+                continue;
+            total++;
+            var mesh = GeometryDispatcher.TryBuild(ctx, entity);
+            if (mesh is { FaceIndices.Count: > 0 })
+                built++;
+        }
+
+        TestContext.WriteLine($"Office_A surface extrusions: {built}/{total} built");
+        Assert.That(built, Is.EqualTo(total), "All Office_A open-profile ribbon extrusions should mesh");
+    }
+
+    [Test]
+    [Category("Slow")]
+    public void Duplex_AllSurfaceOfLinearExtrusions_BuildRibbons()
+    {
+        TestFiles.RequireExists(TestFiles.Duplex);
+        using var file = TestFiles.LoadStep(TestFiles.Duplex);
+        var ctx = new MeshingContext(file);
+
+        var total = 0;
+        var built = 0;
+        foreach (var entity in ctx.Resolver.GetEntities())
+        {
+            if (entity.GetEntityName() != "IFCSURFACEOFLINEAREXTRUSION")
+                continue;
+            total++;
+            var mesh = GeometryDispatcher.TryBuild(ctx, entity);
+            if (mesh is { FaceIndices.Count: > 0 })
+                built++;
+        }
+
+        TestContext.WriteLine($"Duplex surface extrusions: {built}/{total} built");
+        Assert.That(built, Is.EqualTo(total), "All duplex open-profile ribbon extrusions should mesh");
+    }
+
+    [Test]
+    public void Duplex_OpenProfileRibbon_WithAxisPlacement()
+    {
+        using var model = MicroIfc.Parse("""
+            #1=IFCCARTESIANPOINT((0.2084999999999992,-17.59149999999997));
+            #2=IFCCARTESIANPOINT((6.261999999999995,-17.59149999999999));
+            #3=IFCPOLYLINE((#1,#2));
+            #4=IFCARBITRARYOPENPROFILEDEF(.CURVE.,$,#3);
+            #5=IFCCARTESIANPOINT((0.,0.,0.));
+            #6=IFCAXIS2PLACEMENT3D(#5,$,$);
+            #7=IFCDIRECTION((0.,0.,1.));
+            #8=IFCSURFACEOFLINEAREXTRUSION(#4,#6,#7,2.6);
+            """);
+
+        var mesh = GeometryDispatcher.TryBuild(model.Context, model.Entity(8));
+        Assert.That(mesh, Is.Not.Null);
+        var bounds = MeshHelpers.GetBounds(mesh!.Value);
+        Assert.That((float)bounds.Min.Y.Value, Is.EqualTo(-17.5915f).Within(1e-3f));
+        Assert.That((float)bounds.Max.Z.Value, Is.EqualTo(2.6f).Within(1e-3f));
+        Assert.That((float)(bounds.Max.X.Value - bounds.Min.X.Value), Is.EqualTo(6.0535f).Within(1e-3f));
+    }
+
+    [Test]
+    public void OpenProfile_CompositeCurveRibbon_Builds()
+    {
+        using var model = MicroIfc.Parse("""
+            #1=IFCCARTESIANPOINT((0.,0.));
+            #2=IFCCARTESIANPOINT((2.,0.));
+            #3=IFCCARTESIANPOINT((3.,1.));
+            #4=IFCPOLYLINE((#1,#2));
+            #5=IFCPOLYLINE((#2,#3));
+            #6=IFCCOMPOSITECURVESEGMENT(.CONTINUOUS.,.T.,#4);
+            #7=IFCCOMPOSITECURVESEGMENT(.CONTINUOUS.,.T.,#5);
+            #8=IFCCOMPOSITECURVE((#6,#7),.F.);
+            #9=IFCARBITRARYOPENPROFILEDEF(.CURVE.,$,#8);
+            #10=IFCDIRECTION((0.,0.,1.));
+            #11=IFCSURFACEOFLINEAREXTRUSION(#9,$,#10,1.);
+            """);
+
+        var mesh = GeometryDispatcher.TryBuild(model.Context, model.Entity(11));
+        Assert.That(mesh, Is.Not.Null);
+        Assert.That(mesh!.Value.FaceIndices.Count, Is.GreaterThan(0));
+        var bounds = MeshHelpers.GetBounds(mesh.Value);
+        Assert.That((float)bounds.Max.X.Value, Is.EqualTo(3f).Within(1e-3f));
+        Assert.That((float)bounds.Max.Y.Value, Is.EqualTo(1f).Within(1e-3f));
+        Assert.That((float)bounds.Max.Z.Value, Is.EqualTo(1f).Within(1e-3f));
     }
 
     [Test]
@@ -143,6 +288,18 @@ public sealed class SweptSolidTests
                 built++;
         }
         Assert.That(built, Is.EqualTo(5), "All steel section extrusions from example.ifc should mesh");
+    }
+
+    [Test]
+    public void SmallInchBoltShankCircleProfile_Triangulates()
+    {
+        using var model = MicroIfc.Parse("""
+            #1=IFCCIRCLEPROFILEDEF(.AREA.,'Bolt shank',$,0.375);
+            """, lengthScaleOverride: 0.0254, circleSegments: 32);
+
+        var profile = ProfileBuilder.Build(model.Context, model.Entity(1));
+        Assert.That(profile.Outer, Has.Count.EqualTo(32));
+        Assert.That(profile.Triangulate(), Has.Count.EqualTo(30));
     }
 
     [Test]

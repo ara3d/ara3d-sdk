@@ -8,7 +8,7 @@ Measurement-driven parity work against web-ifc `ToModel3D()` oracle. Triangle bo
 
 ---
 
-## Scorecard (last run: 2026-07-08, generatedUtc 23:37:08Z)
+## Scorecard (last run: 2026-07-08, WP-V duplex surface-model instancing)
 
 | File | Score | Inst | Mesh | EntityInst | EntityBBox | MeshBBox | Shape | Merged |
 |------|------:|-----:|-----:|-----------:|-----------:|---------:|------:|-------:|
@@ -16,8 +16,21 @@ Measurement-driven parity work against web-ifc `ToModel3D()` oracle. Triangle bo
 | example.ifc | 0.910 | 1.000 | 0.889 | 1.000 | 0.994 | 0.969 | 0.819 | 0.683 |
 | steelplates.ifc | 0.862 | 1.000 | 0.857 | 1.000 | 1.000 | 0.971 | 0.696 | 0.496 |
 | AC20-FZK-Haus.ifc | 0.898 | 1.000 | 0.968 | 1.000 | 0.938 | 0.732 | 0.940 | 0.664 |
+| 171210AISC_Sculpture_brep.ifc | 0.920 | 1.000 | 0.828 | 1.000 | 1.000 | 0.966 | 0.934 | 0.673 |
+| FM_ARC_DigitalHub.ifc | 0.760 | 0.909 | 0.735 | 0.960 | 0.948 | 0.349 | 0.837 | 0.378 |
+| duplex.ifc | 0.843 | 0.957 | 0.929 | 0.984 | 0.866 | 0.591 | 0.828 | 0.681 |
 
-_Metric columns are per-metric scores in [0,1]. Quick-file counts in `scorecard.json`; AC20 from `ScoreAc20FzkHausStretch` (not in scorecard.json). Duplex stretch baseline: **436/682 inst**, parity **0.730** (`ScoreDuplexStretch`)._
+_Metric columns are per-metric scores in [0,1]. Quick-file counts from `Category=IfcMesherScore`; **AC20**, **sculpture**, **DigitalHub** from stretch tests; **duplex** from `ScoreDuplexStretch` (**713/682 inst**, parity **0.843**)._
+
+**WP-V-duplex-assembly (round 1):** Diagnosis: duplex **246 missing inst** were count deltas on shared entities — **IFCRAILING** 126 (2 products, 64 oracle vs 1 cand each), **IFCFURNISHINGELEMENT** 115 (37 products, 3–5 vs 1), **IFCWINDOW** 4 (2 products, 3 vs 1). Oracle-only product count 0. Root cause: `GeometryPartCollector` called `TryBuild` on `IFCFACEBASEDSURFACEMODEL`, which merged all `FbsmFaces` (`IFCCONNECTEDFACESET` children) into one mesh → one instance per product; web-ifc emits one instance per connected face set (e.g. railing #12181 has 64 face sets). Fix: `CollectFaceBasedSurfaceModel` iterates `FbsmFaces` and emits one `CollectedPart` per element via `Brep.BuildFaceBasedSurfaceElement`; golden `FaceBasedSurfaceModel_EmitsInstancePerConnectedFaceSet`. Harness: `ScoreDuplexStretch` oracle-map diagnosis; `OracleEntityMap` skips invalid oracle `MeshIndex`. **Duplex 713/682 inst**, **404/435 meshes**, parity **0.843** (was 436/682 inst, 240/435 meshes, 0.730); entity inst Jaccard **0.996**, entity bbox **191/235**. Remaining gap: **#22475 IFCROOF** (1 inst, `IFCPOLYGONALBOUNDEDHALFSPACE` boolean); **33 extra** candidate instances (likely duplicate face-set emission on non-duplex FBSM layouts). Quick files unchanged.
+
+**WP-P-advanced-brep (round 1):** Diagnosis: DigitalHub **2309 missing inst** concentrated in `IFCADVANCEDBREP` type maps on `IFCBUILDINGELEMENTPROXY` (e.g. bicycle #135409 → rep #135372 with 33 `IFCADVANCEDBREP` solids). Root cause: `Brep.ReadLoop` only accepted `IFCPOLYLOOP` — DigitalHub advanced faces use `IFCEDGELOOP` + `IFCORIENTEDEDGE` + `IFCEDGECURVE` (BSpline/polyline geometry) on `IFCPLANE` / `IFCCURVEBOUNDEDPLANE` surfaces → bound read threw → face skipped → 0 tris per brep. Fix in `Brep.cs`: tessellate `IFCEDGELOOP` via oriented-edge curve evaluation (`CurveEvaluator.Evaluate3D`); `IFCCURVEBOUNDEDPLANE` basis-plane projection + outer/inner boundary fallback; Newell plane retained for `IFCPLANE` faces (shared-plane box test). Golden: `MeshesAdvancedBrepWithEdgeLoopBounds`, `MeshesCurveBoundedPlaneAdvancedFace`, `DigitalHub_BicycleProxyAdvancedBrep_Builds` (#135371 → 144 tris). Stretch: `ScoreDigitalHubStretch` **3272/3599 inst**, **50801/311811 merged tris**, parity **0.760** (was 1290/3599 inst, 9726/90010 tris, 0.616); entity inst Jaccard **0.958**, entity bbox **695/737**. Remaining gap: non-planar advanced-face surfaces (`IFCSURFACEOFREVOLUTION`, `IFCCYLINDRICALSURFACE`, NURBS) still bounds-only/ignored; merged tri ratio 0.378.
+
+**WP-S-bolt-shank-circle (round 1):** Diagnosis: sculpture **196 missing inst** were all `IFCMECHANICALFASTENER` bolt maps — shank `IFCCIRCLEPROFILEDEF` (r=0.375 in) triangulation failed with `Ear clipping failed: n=32, remaining=32`; hex head extruded OK, collector emitted 1 part. Root cause: `PolygonTriangulator.EarClipTriangulate` uses absolute convex threshold `Eps=1e-6` while inch-scaled shank vertex cross products are ~1e-7 (r≈0.0095 m, 32 segments) → no ear found on any vertex. Fix: `PolygonWithHoles.TryTriangulateConvexFan` — scale-relative convexity test + fan triangulation for hole-free convex rings before ear-clip fallback. Golden: `SmallInchBoltShankCircleProfile_Triangulates`, `MeshesSmallInchBoltShankCircleExtrusion`. **Sculpture 546/546 inst, 120/145 meshes, 5360/5012 part tris, parity 0.920** (was 350/546 inst, 111/145 meshes, 4244 tris, 0.751); entity inst Jaccard **1.0**, entity bbox **350/350**. Remaining gap: mesh dedup (120 vs 145 oracle meshes), merged tri ratio (coarser bolt caps).
+
+**WP-R-mapped-multibrep (round 1):** Diagnosis: sculpture **146 oracle-only** was **not** mapped-item instancing — `CollectMappedItem` + per-item `CollectParts` already emitted parts correctly. Root cause: `Units.ResolveLengthScaleToMeters` returned **0** on `IFCCONVERSIONBASEDUNIT` inch factors (`IFCMEASUREWITHUNIT(IFCLENGTHMEASURE(25.4),…)`); `ReadNumber` ignored typed measures → all inch brep coords scaled to 0 → `IFCFACETEDBREP` built **0 tris** for every mapped brep type map. Fix: `Units.ReadMeasureWithUnitScale` unwraps `IFCLENGTHMEASURE` via `AsSimpleEntity` and applies component-unit scale (mm→m). Golden: `InchConversionUnit_ResolvesLengthScaleToMeters`, `MappedFacetedBrep_InchUnits_EmitsInstance`, `AiscSculpture_MappedBrepCoverage`. **Sculpture 350/546 inst, 111/145 meshes, 4244/5012 tris, parity 0.751** (was 3 meshes / 26 tris); **oracle-only products 0** (was 146). Remaining **196 inst**: `IFCMECHANICALFASTENER` bolt maps (shank `IFCCIRCLEPROFILEDEF` ear-clip failure, hex head OK) — not collector merge. **AC20 stretch unchanged: 0.898, 252/252 inst.**
+
+**WP-Q-open-profile (round 1):** Entity-level ribbon extrusion verified at scale: **duplex 184/184**, **Office_A 1243/1243**, **dental_clinic 3156/3156** `IFCSURFACEOFLINEAREXTRUSION` build via `GeometryDispatcher.TryBuild`. Duplex/Office_A open profiles are all `IFCPOLYLINE`; trimmed-arc open profiles mesh in dental_clinic (#161277, 14 tris). Fixes: `CurveEvaluator.SanitizeOpenPathPoints` (no false closure on open paths); composite open curves use open-path sanitize; `BuildSurfaceOfLinearExtrusion` prefers 2D swept-curve evaluation before 3D. Backlog: `IFCARBITRARYOPENPROFILEDEF` + `IFCSURFACEOFLINEAREXTRUSION` → **Supported**. Golden: `MeshesDuplexStyleOpenProfileRibbon`, `Duplex_OpenProfileRibbon_WithAxisPlacement`, `OpenProfile_CompositeCurveRibbon_Builds`, scale tests `Duplex_AllSurfaceOfLinearExtrusions_BuildRibbons` / `OfficeA_AllSurfaceOfLinearExtrusions_BuildRibbons`. **duplex parity 0.730 unchanged** (436/682 inst): ribbons live in `IFCCONNECTIONSURFACEGEOMETRY` only — not in any `Body` `ShapeRepresentation`; instance gap is mapped-item / brep / surface-model assembly, not ribbon builder failure.
 
 **WP-O-parity-gaps (round 1):** Four remaining parity gaps closed. **OpenHouse #268/#281:** oblique nested gable half-spaces used planar keep-side (`!agreement`) → kept roof wedge only; fix uses agreement directly when `|normal.x| >= |normal.z|`. **steelplates #633/#1193/#1385:** half-space plane coords encode extrusion-end trim distance (778 ≈ depth−1500) but plane normal was profile-axis — ineffective clip; fix resolves extrusion-aligned clip plane when normal ⊥ extrusion axis. **AC20 +33 inst:** 17 `IFCOPENINGELEMENT` products (2 inst each) emitted geometry oracle ignores; excluded from `IsProduct`. **duplex compare crash:** oracle BFAST had sparse mesh indices — `CompareMergedMesh` now skips invalid `MeshIndex` via `ToMergedMesh`. Golden: `MeshesExtrusionEndBooleanClipAlongDepth`, `MeshesNestedObliqueGableBooleanClips`. **OpenHouse entity bbox 35/35**, **steelplates 14/14**, **AC20 252/252 inst**, parity **0.906/0.862/0.898**.
 
@@ -53,7 +66,7 @@ _Metric columns are per-metric scores in [0,1]. Quick-file counts in `scorecard.
 | M2 Structure | instance + entity histogram within 2× on quick files | **done** — inst ratio within 2× on all 3 quick files; example **120/120 inst**, entity Jaccard **1.0** |
 | M3 Coverage | merged tri count within 5× on IfcOpenHouse + steelplates | **done** — OpenHouse 1060/1098 (1.0×); steelplates 356/1428 (4.0×) |
 | M4 Shape | per-entity bbox match > 70% shared ids on quick files | **done** — OpenHouse 33/35 (94%), example 97/98 (99%), steelplates 11/14 (79%) |
-| M5 Stretch | progress on one large file (AC20-FZK-Haus or duplex) | **in progress** — AC20 **252/252 inst**, parity **0.898**; duplex compare unblocked (**0.730** baseline, 436/682 inst) |
+| M5 Stretch | progress on one large file (AC20-FZK-Haus or duplex) | **in progress** — AC20 **252/252 inst**, parity **0.898**; duplex **713/682 inst**, parity **0.843** (was 436/682, 0.730) |
 
 ---
 
@@ -81,6 +94,11 @@ _Metric columns are per-metric scores in [0,1]. Quick-file counts in `scorecard.
 | WP-K-example-push | done | — | WP-G | high | Round 2: mapped multi-solid instancing; 102/120 inst with WP-I |
 | WP-L-mesh-shape | done | — | WP-C | med | Entity-guided mesh pairing + world-space mesh metrics; OpenHouse meshBBox 0.907, shape 0.926 |
 | WP-M-milestones | done | — | — | high | Round 3: scorecard refresh, milestone assessment, duplex probe, `ScoreDuplexStretch` |
+| WP-Q-open-profile | done | — | — | high | Round 1: entity ribbon 184/184 duplex, 1243/1243 Office_A; open-path sanitize; duplex parity unchanged (connection-geometry only) |
+| WP-R-mapped-multibrep | done | — | WP-Q | high | Round 1: inch `IFCLENGTHMEASURE` unit scale; sculpture 350/546 inst, parity 0.751 (was 3/26 tris) |
+| WP-S-bolt-shank-circle | done | — | WP-R | high | Round 1: scale-relative convex fan for small `IFCCIRCLEPROFILEDEF`; sculpture 546/546 inst, parity 0.920 |
+| WP-P-advanced-brep | done | — | WP-S | high | Round 1: IFCEDGELOOP curve bounds + IFCCURVEBOUNDEDPLANE; DigitalHub 3272/3599 inst, parity 0.760 (was 0.616) |
+| WP-V-duplex-assembly | done | — | WP-Q | high | Round 1: FBSM per connected-face-set instancing; duplex 713/682 inst, parity 0.843 (was 436/682, 0.730) |
 
 ---
 

@@ -34,7 +34,7 @@ public static class Brep
         return MeshHelpers.Merge(meshes);
     }
 
-    static TriangleMesh3D BuildFaceBasedSurfaceElement(MeshingContext ctx, IfcEntity element)
+    public static TriangleMesh3D BuildFaceBasedSurfaceElement(MeshingContext ctx, IfcEntity element)
         => element.GetEntityName() switch
         {
             "IFCCONNECTEDFACESET" => BuildConnectedFaceSet(ctx, element),
@@ -90,7 +90,9 @@ public static class Brep
             if (outer.Count < 3)
                 continue;
 
-            var plane = ComputeNewellPlane(outer);
+            var plane = IsFaceSurfaceEntity(face) && TryGetFacePlane(ctx, face, out var facePlane)
+                ? facePlane
+                : ComputeNewellPlane(outer);
             var outer2 = DedupeConsecutive(outer.Select(p => ProjectToPlane2D(p, plane)).ToList());
             var holes2 = holes
                 .Select(h => DedupeConsecutive(h.Select(p => ProjectToPlane2D(p, plane)).ToList()))
@@ -149,10 +151,14 @@ public static class Brep
         var name = face.GetEntityName();
         if (name is "IFCADVANCEDFACE" or "IFCFACESURFACE")
         {
-            ctx.Diagnostics.RecordApproximate(name, "Bounds only; curved advanced-face surfaces ignored");
             var surface = MeshHelpers.ResolveOptional(ctx, face, IfcFaceSurface.Instance.FaceSurface);
-            if (surface?.GetEntityName() == "IFCPLANE")
-                ctx.Diagnostics.RecordSupported("IFCPLANE");
+            if (surface?.GetEntityName() is "IFCPLANE" or "IFCCURVEBOUNDEDPLANE")
+            {
+                ctx.Diagnostics.RecordSupported(surface.GetEntityName());
+                ctx.Diagnostics.RecordApproximate(name, "Planar advanced face via edge-loop bounds");
+            }
+            else
+                ctx.Diagnostics.RecordApproximate(name, "Bounds only; curved advanced-face surfaces ignored");
         }
     }
 
@@ -176,19 +182,148 @@ public static class Brep
             if (bound.GetEntityName() == "IFCFACEBOUND" && bound.GetString(1).Contains(".F."))
                 sameSense = false;
         }
+
+        if (outer.Count < 3 && IsFaceSurfaceEntity(face))
+            TryAppendCurveBoundedPlaneBounds(ctx, face, ref outer, holes);
+
         return (outer, holes, sameSense);
     }
 
-    static List<Vector3> ReadLoop(MeshingContext ctx, IfcEntity loop)
-    {
-        if (loop.GetEntityName() != "IFCPOLYLOOP")
-            throw new NotSupportedException($"Unsupported loop {loop.GetEntityName()}");
+    static bool IsFaceSurfaceEntity(IfcEntity face)
+        => face.GetEntityName() is "IFCADVANCEDFACE" or "IFCFACESURFACE";
 
+    static void TryAppendCurveBoundedPlaneBounds(
+        MeshingContext ctx,
+        IfcEntity face,
+        ref List<Vector3> outer,
+        List<List<Vector3>> holes)
+    {
+        var surface = MeshHelpers.ResolveOptional(ctx, face, IfcFaceSurface.Instance.FaceSurface);
+        if (surface?.GetEntityName() != "IFCCURVEBOUNDEDPLANE")
+            return;
+
+        ctx.Diagnostics.RecordSupported("IFCCURVEBOUNDEDPLANE");
+        var outerCurve = MeshHelpers.ResolveOptional(ctx, surface, IfcCurveBoundedPlane.Instance.OuterBoundary);
+        if (outerCurve != null && outer.Count < 3)
+            outer = EvaluateBoundaryCurve3D(ctx, outerCurve);
+
+        foreach (var innerId in MeshHelpers.ReadIds(surface, IfcCurveBoundedPlane.Instance.InnerBoundaries))
+            holes.Add(EvaluateBoundaryCurve3D(ctx, ctx.GetEntity(innerId)));
+    }
+
+    static List<Vector3> ReadLoop(MeshingContext ctx, IfcEntity loop)
+        => loop.GetEntityName() switch
+        {
+            "IFCPOLYLOOP" => ReadPolyLoop(ctx, loop),
+            "IFCEDGELOOP" => ReadEdgeLoop(ctx, loop),
+            _ => throw new NotSupportedException($"Unsupported loop {loop.GetEntityName()}"),
+        };
+
+    static List<Vector3> ReadPolyLoop(MeshingContext ctx, IfcEntity loop)
+    {
         var points = MeshHelpers.ReadIds(loop, IfcPolyLoop.Instance.Polygon)
             .Select(id => Placements.ReadPoint3D(ctx, ctx.GetEntity(id)))
             .ToList();
         return DedupeConsecutive3D(points);
     }
+
+    static List<Vector3> ReadEdgeLoop(MeshingContext ctx, IfcEntity loop)
+    {
+        ctx.Diagnostics.RecordSupported("IFCEDGELOOP");
+        var joinTolSq = CurveEvaluator.JoinToleranceSquaredFor(ctx);
+        var result = new List<Vector3>();
+        foreach (var edgeId in MeshHelpers.ReadIds(loop, IfcEdgeLoop.Instance.EdgeList))
+        {
+            var pts = EvaluateOrientedEdgePoints(ctx, ctx.GetEntity(edgeId));
+            if (result.Count > 0 && pts.Count > 0)
+            {
+                if ((result[^1] - pts[0]).LengthSquared() <= joinTolSq)
+                    pts = pts.Skip(1).ToList();
+            }
+            result.AddRange(pts);
+        }
+        return DedupeConsecutive3D(result);
+    }
+
+    static List<Vector3> EvaluateOrientedEdgePoints(MeshingContext ctx, IfcEntity orientedEdge)
+    {
+        var edgeEntity = MeshHelpers.ResolveRequired(ctx, orientedEdge, IfcOrientedEdge.Instance.EdgeElement);
+        var orientation = MeshHelpers.ReadOptionalBool(orientedEdge, IfcOrientedEdge.Instance.Orientation, true);
+        var pts = edgeEntity.GetEntityName() switch
+        {
+            "IFCEDGECURVE" => EvaluateEdgeCurvePoints(ctx, edgeEntity),
+            "IFCORIENTEDEDGE" => EvaluateOrientedEdgePoints(ctx, edgeEntity),
+            "IFCEDGE" => EvaluatePlainEdgePoints(ctx, edgeEntity),
+            _ => throw new NotSupportedException($"Unsupported edge {edgeEntity.GetEntityName()}"),
+        };
+        if (!orientation)
+            pts.Reverse();
+        return pts;
+    }
+
+    static List<Vector3> EvaluateEdgeCurvePoints(MeshingContext ctx, IfcEntity edgeCurve)
+    {
+        ctx.Diagnostics.RecordSupported("IFCEDGECURVE");
+        var curve = MeshHelpers.ResolveRequired(ctx, edgeCurve, IfcEdgeCurve.Instance.EdgeGeometry);
+        var sameSense = MeshHelpers.ReadOptionalBool(edgeCurve, IfcEdgeCurve.Instance.SameSense, true);
+        var pts = CurveEvaluator.Evaluate3D(ctx, curve).ToList();
+        if (!sameSense)
+            pts.Reverse();
+        return pts;
+    }
+
+    static List<Vector3> EvaluatePlainEdgePoints(MeshingContext ctx, IfcEntity edge)
+    {
+        var pts = new List<Vector3>(2);
+        var start = MeshHelpers.ResolveOptional(ctx, edge, IfcEdge.Instance.EdgeStart);
+        var end = MeshHelpers.ResolveOptional(ctx, edge, IfcEdge.Instance.EdgeEnd);
+        if (start != null)
+            pts.Add(ReadVertexPoint(ctx, start));
+        if (end != null)
+            pts.Add(ReadVertexPoint(ctx, end));
+        return pts;
+    }
+
+    static Vector3 ReadVertexPoint(MeshingContext ctx, IfcEntity vertex)
+    {
+        if (vertex.GetEntityName() != "IFCVERTEXPOINT")
+            throw new NotSupportedException($"Expected IFCVERTEXPOINT, got {vertex.GetEntityName()}");
+        var point = MeshHelpers.ResolveRequired(ctx, vertex, IfcVertexPoint.Instance.VertexGeometry);
+        return Placements.ReadPoint3D(ctx, point);
+    }
+
+    static List<Vector3> EvaluateBoundaryCurve3D(MeshingContext ctx, IfcEntity curve)
+        => DedupeConsecutive3D(CurveEvaluator.Evaluate3D(ctx, curve).ToList());
+
+    static bool TryGetFacePlane(MeshingContext ctx, IfcEntity face, out FacePlane plane)
+    {
+        plane = default;
+        var surface = MeshHelpers.ResolveOptional(ctx, face, IfcFaceSurface.Instance.FaceSurface);
+        if (surface == null)
+            return false;
+
+        return surface.GetEntityName() switch
+        {
+            "IFCCURVEBOUNDEDPLANE" => TryGetCurveBoundedPlaneSurface(ctx, surface, out plane),
+            _ => false,
+        };
+    }
+
+    static bool TryGetPlaneSurface(MeshingContext ctx, IfcEntity planeEntity, out FacePlane plane)
+    {
+        var frame = Placements.ReadOptionalAxis2Placement3D(ctx, planeEntity, IfcElementarySurface.Instance.Position);
+        plane = FrameToFacePlane(frame);
+        return true;
+    }
+
+    static bool TryGetCurveBoundedPlaneSurface(MeshingContext ctx, IfcEntity bounded, out FacePlane plane)
+    {
+        var basis = MeshHelpers.ResolveRequired(ctx, bounded, IfcCurveBoundedPlane.Instance.BasisSurface);
+        return TryGetPlaneSurface(ctx, basis, out plane);
+    }
+
+    static FacePlane FrameToFacePlane(Frame3D frame)
+        => new(frame.Origin.Vector3, frame.Z, frame.X, frame.Y);
 
     static List<Vector3> DedupeConsecutive3D(IReadOnlyList<Vector3> points)
     {

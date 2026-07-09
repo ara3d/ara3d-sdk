@@ -41,6 +41,7 @@ public static class OracleEntityMap
         oracle ??= LoadOracleModel(ifcPath);
 
         var instances = oracle.Instances
+            .Where(inst => inst.MeshIndex >= 0 && inst.MeshIndex < oracle.Meshes.Count)
             .Select(inst => ToRecord(oracle, inst))
             .ToList();
 

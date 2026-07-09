@@ -35,6 +35,14 @@ public static class SweptSolids
 
         if (IsCurveEntity(sweptCurve.GetEntityName()))
         {
+            var path2D = CurveEvaluator.Evaluate2D(ctx, sweptCurve, dropClosure: false);
+            if (path2D.Count >= 2)
+            {
+                ctx.Diagnostics.RecordApproximate("IFCSURFACEOFLINEAREXTRUSION",
+                    "2D swept curve extruded as ribbon surface; arcs uniformly sampled");
+                return BuildExtrudedOpenPath(path2D, frame, extrusion);
+            }
+
             var path3D = CurveEvaluator.Evaluate3D(ctx, sweptCurve);
             if (path3D.Count >= 2)
             {

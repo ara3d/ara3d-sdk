@@ -41,6 +41,10 @@ public static class GeometryPartCollector
                 CollectMappedItem(ctx, entity, parentTransform, productEntityId, parts);
                 return;
 
+            case "IFCFACEBASEDSURFACEMODEL":
+                CollectFaceBasedSurfaceModel(ctx, entity, parentTransform, productEntityId, parts);
+                return;
+
             case "IFCSTYLEDITEM":
                 var styledItem = MeshHelpers.ResolveOptional(ctx, entity, IfcStyledItem.Instance.Item);
                 if (styledItem is not null)
@@ -52,6 +56,22 @@ public static class GeometryPartCollector
                 if (mesh is not null && mesh.Value.FaceIndices.Count > 0)
                     parts.Add(new CollectedPart(mesh.Value, parentTransform, productEntityId));
                 return;
+        }
+    }
+
+    static void CollectFaceBasedSurfaceModel(
+        MeshingContext ctx,
+        IfcEntity model,
+        Matrix4x4 parentTransform,
+        int productEntityId,
+        List<CollectedPart> parts)
+    {
+        ctx.Diagnostics.RecordSupported("IFCFACEBASEDSURFACEMODEL");
+        foreach (var faceId in MeshHelpers.ReadIds(model, IfcFaceBasedSurfaceModel.Instance.FbsmFaces))
+        {
+            var mesh = Brep.BuildFaceBasedSurfaceElement(ctx, ctx.GetEntity(faceId));
+            if (mesh.FaceIndices.Count > 0)
+                parts.Add(new CollectedPart(mesh, parentTransform, productEntityId));
         }
     }
 

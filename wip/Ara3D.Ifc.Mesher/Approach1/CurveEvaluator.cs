@@ -39,7 +39,7 @@ public static class CurveEvaluator
         };
 
         ctx.Diagnostics.RecordSupported(curve.GetEntityName());
-        var list = SanitizeRingPoints(points);
+        var list = dropClosure ? SanitizeRingPoints(points) : SanitizeOpenPathPoints(points);
         if (dropClosure)
             RemoveDuplicateClosure(list);
         return list;
@@ -99,6 +99,17 @@ public static class CurveEvaluator
 
     internal static List<Vector2> SanitizeRingPoints(IReadOnlyList<Vector2> points, float joinToleranceSquared = 0)
     {
+        var result = SanitizeOpenPathPoints(points, joinToleranceSquared);
+        if (joinToleranceSquared <= 0)
+            joinToleranceSquared = DefaultJoinToleranceSquared;
+        if (result.Count >= 2 && result[0].DistanceSquared(result[^1]) <= joinToleranceSquared)
+            result.RemoveAt(result.Count - 1);
+        return result;
+    }
+
+    /// <summary>Deduplicates consecutive points without treating near-coincident endpoints as closure.</summary>
+    internal static List<Vector2> SanitizeOpenPathPoints(IReadOnlyList<Vector2> points, float joinToleranceSquared = 0)
+    {
         if (joinToleranceSquared <= 0)
             joinToleranceSquared = DefaultJoinToleranceSquared;
         var result = new List<Vector2>(points.Count);
@@ -107,8 +118,6 @@ public static class CurveEvaluator
             if (result.Count == 0 || result[^1].DistanceSquared(p) > joinToleranceSquared)
                 result.Add(p);
         }
-        if (result.Count >= 2 && result[0].DistanceSquared(result[^1]) <= joinToleranceSquared)
-            result.RemoveAt(result.Count - 1);
         return result;
     }
 
@@ -652,7 +661,7 @@ public static class CurveEvaluator
             }
             result.AddRange(pts);
         }
-        return SanitizeRingPoints(result, joinTolSq);
+        return SanitizeOpenPathPoints(result, joinTolSq);
     }
 
     static bool TryGetTrimmedCircleCenter(MeshingContext ctx, IfcEntity trimmed, out Vector2 center)

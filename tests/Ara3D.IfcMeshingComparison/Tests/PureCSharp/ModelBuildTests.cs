@@ -3,6 +3,7 @@ using Ara3D.Ifc.Mesher.Approach1;
 using Ara3D.IfcLoader;
 using Ara3D.IfcMeshingComparison.Harness;
 using Ara3D.IfcMeshingComparison.Tests.Support;
+using Ara3D.IfcTypes;
 using Ara3D.Models;
 using Ara3D.Utils;
 
@@ -288,5 +289,104 @@ public sealed class ModelBuildTests
         TestContext.WriteLine(OracleComparison.FormatComparison("IfcOpenHouse", mine, oracle));
         Assert.That(mine.TriangleCount, Is.GreaterThan(0));
         Assert.That(OracleComparison.BoundsOverlap(mine.Bounds, oracle.Bounds));
+    }
+
+    [Test]
+    public void InchConversionUnit_ResolvesLengthScaleToMeters()
+    {
+        using var model = MicroIfc.Parse("""
+            #1=IFCSIUNIT(*,.LENGTHUNIT.,.MILLI.,.METRE.);
+            #2=IFCMEASUREWITHUNIT(IFCLENGTHMEASURE(25.4),#1);
+            #3=IFCDIMENSIONALEXPONENTS(1,0,0,0,0,0,0);
+            #4=IFCCONVERSIONBASEDUNIT(#3,.LENGTHUNIT.,'INCH',#2);
+            #5=IFCUNITASSIGNMENT((#4));
+            #6=IFCPROJECT('p',$,'P',$,$,$,$,(#5));
+            """);
+
+        Assert.That(model.Context.LengthScale, Is.EqualTo(0.0254).Within(1e-9));
+    }
+
+    [Test]
+    public void MappedFacetedBrep_InchUnits_EmitsInstance()
+    {
+        using var model = MicroIfc.WriteTemp("""
+            #1=IFCSIUNIT(*,.LENGTHUNIT.,.MILLI.,.METRE.);
+            #2=IFCMEASUREWITHUNIT(IFCLENGTHMEASURE(25.4),#1);
+            #3=IFCDIMENSIONALEXPONENTS(1,0,0,0,0,0,0);
+            #4=IFCCONVERSIONBASEDUNIT(#3,.LENGTHUNIT.,'INCH',#2);
+            #5=IFCUNITASSIGNMENT((#4));
+            #6=IFCCARTESIANPOINT((0.,0.,0.));
+            #7=IFCDIRECTION((0.,0.,1.));
+            #8=IFCDIRECTION((1.,0.,0.));
+            #9=IFCAXIS2PLACEMENT3D(#6,#7,#8);
+            #10=IFCCARTESIANPOINT((0.,0.,0.));
+            #11=IFCCARTESIANPOINT((1.,0.,0.));
+            #12=IFCCARTESIANPOINT((1.,1.,0.));
+            #13=IFCCARTESIANPOINT((0.,1.,0.));
+            #14=IFCCARTESIANPOINT((0.,0.,1.));
+            #15=IFCCARTESIANPOINT((1.,0.,1.));
+            #16=IFCCARTESIANPOINT((1.,1.,1.));
+            #17=IFCCARTESIANPOINT((0.,1.,1.));
+            #18=IFCPOLYLOOP((#10,#11,#12,#13));
+            #19=IFCFACEOUTERBOUND(#18,.T.);
+            #20=IFCFACE((#19));
+            #21=IFCPOLYLOOP((#15,#16,#17,#14));
+            #22=IFCFACEOUTERBOUND(#21,.T.);
+            #23=IFCFACE((#22));
+            #24=IFCPOLYLOOP((#14,#17,#12,#13));
+            #25=IFCFACEOUTERBOUND(#24,.T.);
+            #26=IFCFACE((#25));
+            #27=IFCPOLYLOOP((#16,#15,#11,#12));
+            #28=IFCFACEOUTERBOUND(#27,.T.);
+            #29=IFCFACE((#28));
+            #30=IFCPOLYLOOP((#15,#14,#10,#11));
+            #31=IFCFACEOUTERBOUND(#30,.T.);
+            #32=IFCFACE((#31));
+            #33=IFCPOLYLOOP((#17,#16,#12,#13));
+            #34=IFCFACEOUTERBOUND(#33,.T.);
+            #35=IFCFACE((#34));
+            #36=IFCCLOSEDSHELL((#20,#23,#26,#29,#32,#35));
+            #37=IFCFACETEDBREP(#36);
+            #38=IFCSHAPEREPRESENTATION($,'Body','Brep',(#37));
+            #39=IFCREPRESENTATIONMAP(#9,#38);
+            #40=IFCCARTESIANTRANSFORMATIONOPERATOR3D($,$,#6,1.,$);
+            #41=IFCMAPPEDITEM(#39,#40);
+            #42=IFCSHAPEREPRESENTATION($,'Body','MappedRepresentation',(#41));
+            #43=IFCPRODUCTDEFINITIONSHAPE($,$,(#42));
+            #44=IFCLOCALPLACEMENT($,#9);
+            #45=IFCMEMBER('g',$,'M',$,$,#44,#43,$);
+            #46=IFCPROJECT('p',$,'P',$,$,$,$,(#5));
+            """);
+
+        Assert.That(model.Context.File, Is.Not.Null);
+        var (built, _) = ModelAssembler.BuildModel(model.Context.File!);
+        Assert.That(built.Instances, Has.Count.EqualTo(1));
+        Assert.That(built.Meshes.Sum(m => m.FaceIndices.Count), Is.GreaterThan(0));
+    }
+
+    [Test]
+    [Category("Slow")]
+    public void AiscSculpture_MappedBrepCoverage()
+    {
+        var ifcPath = new FilePath(@"c:\Users\cdigg\git\studio\data\171210AISC_Sculpture_brep.ifc");
+        TestFiles.RequireExists(ifcPath);
+
+        using var file = new IfcFile(ifcPath, includeGeometry: false);
+        var (model, _) = ModelAssembler.BuildModel(file);
+        var oracle = ModelComparer.LoadOracle(ifcPath);
+
+        var candIds = model.Instances.Select(i => i.EntityIndex).ToHashSet();
+        var oracleIds = oracle.Instances.Select(i => i.EntityIndex).ToHashSet();
+        var oracleOnly = oracleIds.Except(candIds).Count();
+
+        TestContext.WriteLine(
+            $"inst {model.Instances.Count}/{oracle.Instances.Count}, " +
+            $"meshes {model.Meshes.Count}/{oracle.Meshes.Count}, " +
+            $"tris {model.Meshes.Sum(m => m.FaceIndices.Count)}/{oracle.Meshes.Sum(m => m.FaceIndices.Count)}, " +
+            $"oracleOnly={oracleOnly}");
+
+        Assert.That(oracleOnly, Is.EqualTo(0), "Every oracle product id should emit at least one instance");
+        Assert.That(model.Meshes.Count, Is.GreaterThanOrEqualTo(100));
+        Assert.That(model.Meshes.Sum(m => m.FaceIndices.Count), Is.GreaterThan(4000));
     }
 }

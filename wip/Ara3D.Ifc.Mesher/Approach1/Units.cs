@@ -1,4 +1,5 @@
 using Ara3D.IfcTypes;
+using Ara3D.IO.StepParser;
 
 namespace Ara3D.Ifc.Mesher.Approach1;
 
@@ -98,7 +99,47 @@ public static class Units
         if (factorEntity.GetEntityName() != "IFCMEASUREWITHUNIT")
             return null;
 
-        var value = MeshHelpers.ReadNumber(factorEntity, IfcMeasureWithUnit.Instance.ValueComponent);
-        return value;
+        return ReadMeasureWithUnitScale(ctx, factorEntity);
+    }
+
+    static double ReadMeasureWithUnitScale(MeshingContext ctx, IfcEntity measureWithUnit)
+    {
+        var value = ReadNumericToken(
+            measureWithUnit.GetValue(IfcMeasureWithUnit.Instance.ValueComponent.Index),
+            measureWithUnit.Document);
+
+        var unitId = measureWithUnit.GetId(IfcMeasureWithUnit.Instance.UnitComponent.Index);
+        if (unitId <= 0)
+            return value;
+
+        var unitScale = ParseUnit(ctx, ctx.GetEntity(unitId));
+        return unitScale.HasValue ? value * unitScale.Value : value;
+    }
+
+    static double ReadNumericToken(StepToken token, StepDocument doc)
+    {
+        if (token.IsNumber)
+            return token.AsNumber();
+        if (token.IsEntity)
+        {
+            var (_, inner) = token.AsSimpleEntity(doc);
+            if (inner.IsNumber)
+                return inner.AsNumber();
+        }
+        if (token.IsList)
+        {
+            foreach (var item in token.AsList(doc))
+            {
+                if (item.IsNumber)
+                    return item.AsNumber();
+                if (item.IsEntity)
+                {
+                    var (_, inner) = item.AsSimpleEntity(doc);
+                    if (inner.IsNumber)
+                        return inner.AsNumber();
+                }
+            }
+        }
+        return 0.0;
     }
 }

@@ -2,6 +2,7 @@ using Ara3D.Geometry;
 using Ara3D.IfcTypes;
 using Ara3D.IfcTypes.Ifc4;
 using Ara3D.Ifc.Mesher.Approach1;
+using Ara3D.IfcLoader;
 using Ara3D.IfcMeshingComparison.Tests.Support;
 using Ara3D.Utils;
 
@@ -168,6 +169,22 @@ public sealed class GoldenMeshTests
 
         AssertMeshCounts(mesh, expectedPoints: 48, expectedFaces: 96);
         AssertBounds(mesh, (-2f, -2f, 0f), (2f, 2f, 3f), tolerance: 1e-5f);
+    }
+
+    [Test]
+    public void MeshesSmallInchBoltShankCircleExtrusion()
+    {
+        using var model = MicroIfc.Parse("""
+            #1=IFCCIRCLEPROFILEDEF(.AREA.,'Bolt shank',$,0.375);
+            #2=IFCDIRECTION((0.,0.,1.));
+            #3=IFCEXTRUDEDAREASOLID(#1,$,#2,2.);
+            """, lengthScaleOverride: 0.0254, circleSegments: 32);
+
+        var mesh = MeshRequired(model, 3);
+
+        Assert.That(mesh.FaceIndices, Has.Count.EqualTo(124));
+        var r = (float)(0.375 * 0.0254);
+        AssertBounds(mesh, (-r, -r, 0f), (r, r, 2f * 0.0254f), tolerance: 1e-6f);
     }
 
     [Test]
@@ -676,6 +693,40 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    public void FaceBasedSurfaceModel_EmitsInstancePerConnectedFaceSet()
+    {
+        using var model = MicroIfc.WriteTemp("""
+            #1=IFCCARTESIANPOINT((0.,0.,0.));
+            #2=IFCCARTESIANPOINT((1.,0.,0.));
+            #3=IFCCARTESIANPOINT((1.,1.,0.));
+            #4=IFCCARTESIANPOINT((0.,1.,0.));
+            #5=IFCPOLYLOOP((#1,#2,#3,#4));
+            #6=IFCFACEOUTERBOUND(#5,.T.);
+            #7=IFCFACE((#6));
+            #8=IFCCONNECTEDFACESET((#7));
+            #9=IFCCARTESIANPOINT((2.,0.,0.));
+            #10=IFCCARTESIANPOINT((3.,0.,0.));
+            #11=IFCCARTESIANPOINT((3.,1.,0.));
+            #12=IFCCARTESIANPOINT((2.,1.,0.));
+            #13=IFCPOLYLOOP((#9,#10,#11,#12));
+            #14=IFCFACEOUTERBOUND(#13,.T.);
+            #15=IFCFACE((#14));
+            #16=IFCCONNECTEDFACESET((#15));
+            #17=IFCFACEBASEDSURFACEMODEL((#8,#16));
+            #18=IFCSHAPEREPRESENTATION($,'Body','SurfaceModel',(#17));
+            #19=IFCPRODUCTDEFINITIONSHAPE($,$,(#18));
+            #20=IFCCARTESIANPOINT((0.,0.,0.));
+            #21=IFCAXIS2PLACEMENT3D(#20,$,$);
+            #22=IFCLOCALPLACEMENT($,#21);
+            #23=IFCMEMBER('g',$,'M',$,$,#22,#19,$);
+            """);
+
+        var (built, _) = ModelAssembler.BuildModel(model.Context.File!);
+        Assert.That(built.Instances, Has.Count.EqualTo(2));
+        Assert.That(built.Instances.Select(i => i.EntityIndex).Distinct(), Is.EqualTo(new[] { 23 }));
+    }
+
+    [Test]
     public void MeshesProductThroughNestedLocalPlacementChain()
     {
         using var model = MicroIfc.Parse("""
@@ -809,6 +860,107 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    public void MeshesAdvancedBrepWithEdgeLoopBounds()
+    {
+        using var model = MicroIfc.Parse("""
+            #1=IFCCARTESIANPOINT((0.,0.,0.));
+            #2=IFCCARTESIANPOINT((1.,0.,0.));
+            #3=IFCCARTESIANPOINT((1.,1.,0.));
+            #4=IFCCARTESIANPOINT((0.,1.,0.));
+            #10=IFCAXIS2PLACEMENT3D(#1,$,$);
+            #11=IFCPLANE(#10);
+            #12=IFCVERTEXPOINT(#1);
+            #13=IFCVERTEXPOINT(#2);
+            #14=IFCVERTEXPOINT(#3);
+            #15=IFCVERTEXPOINT(#4);
+            #20=IFCPOLYLINE((#1,#2));
+            #21=IFCPOLYLINE((#2,#3));
+            #22=IFCPOLYLINE((#3,#4));
+            #23=IFCPOLYLINE((#4,#1));
+            #30=IFCEDGECURVE(#12,#13,#20,.T.);
+            #31=IFCEDGECURVE(#13,#14,#21,.T.);
+            #32=IFCEDGECURVE(#14,#15,#22,.T.);
+            #33=IFCEDGECURVE(#15,#12,#23,.T.);
+            #40=IFCORIENTEDEDGE(*,*,#30,.T.);
+            #41=IFCORIENTEDEDGE(*,*,#31,.T.);
+            #42=IFCORIENTEDEDGE(*,*,#32,.T.);
+            #43=IFCORIENTEDEDGE(*,*,#33,.T.);
+            #50=IFCEDGELOOP((#40,#41,#42,#43));
+            #51=IFCFACEOUTERBOUND(#50,.T.);
+            #52=IFCADVANCEDFACE((#51),#11,.T.);
+            #53=IFCCLOSEDSHELL((#52));
+            #54=IFCADVANCEDBREP(#53);
+            """);
+
+        var mesh = MeshRequired(model, 54);
+
+        AssertMeshCounts(mesh, expectedPoints: 4, expectedFaces: 2);
+        AssertBounds(mesh, (0f, 0f, 0f), (1f, 1f, 0f));
+        Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCEDGELOOP"));
+        Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCEDGECURVE"));
+    }
+
+    [Test]
+    public void MeshesCurveBoundedPlaneAdvancedFace()
+    {
+        using var model = MicroIfc.Parse("""
+            #1=IFCCARTESIANPOINT((0.,0.,0.));
+            #2=IFCCARTESIANPOINT((2.,0.,0.));
+            #3=IFCCARTESIANPOINT((2.,1.,0.));
+            #4=IFCCARTESIANPOINT((0.,1.,0.));
+            #10=IFCAXIS2PLACEMENT3D(#1,$,$);
+            #11=IFCPLANE(#10);
+            #12=IFCPOLYLINE((#1,#2,#3,#4,#1));
+            #13=IFCCURVEBOUNDEDPLANE(#11,#12,$);
+            #20=IFCVERTEXPOINT(#1);
+            #21=IFCVERTEXPOINT(#2);
+            #22=IFCVERTEXPOINT(#3);
+            #23=IFCVERTEXPOINT(#4);
+            #30=IFCPOLYLINE((#1,#2));
+            #31=IFCPOLYLINE((#2,#3));
+            #32=IFCPOLYLINE((#3,#4));
+            #33=IFCPOLYLINE((#4,#1));
+            #40=IFCEDGECURVE(#20,#21,#30,.T.);
+            #41=IFCEDGECURVE(#21,#22,#31,.T.);
+            #42=IFCEDGECURVE(#22,#23,#32,.T.);
+            #43=IFCEDGECURVE(#23,#20,#33,.T.);
+            #50=IFCORIENTEDEDGE(*,*,#40,.T.);
+            #51=IFCORIENTEDEDGE(*,*,#41,.T.);
+            #52=IFCORIENTEDEDGE(*,*,#42,.T.);
+            #53=IFCORIENTEDEDGE(*,*,#43,.T.);
+            #60=IFCEDGELOOP((#50,#51,#52,#53));
+            #61=IFCFACEOUTERBOUND(#60,.T.);
+            #62=IFCADVANCEDFACE((#61),#13,.T.);
+            #63=IFCCLOSEDSHELL((#62));
+            #64=IFCADVANCEDBREP(#63);
+            """);
+
+        var mesh = MeshRequired(model, 64);
+
+        Assert.That(mesh.FaceIndices, Has.Count.GreaterThan(0));
+        AssertBounds(mesh, (0f, 0f, 0f), (2f, 1f, 0f));
+        Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCCURVEBOUNDEDPLANE"));
+    }
+
+    [Test]
+    [Category("Slow")]
+    public void DigitalHub_BicycleProxyAdvancedBrep_Builds()
+    {
+        var ifcPath = new FilePath(@"c:\Users\cdigg\git\studio\data\FM_ARC_DigitalHub.ifc");
+        if (!ifcPath.Exists())
+            Assert.Ignore($"Missing IFC test file: {ifcPath}");
+
+        using var file = new IfcFile(ifcPath, includeGeometry: false);
+        var ctx = new MeshingContext(file);
+        var brep = ctx.GetEntity(135371);
+        var mesh = Brep.BuildAdvancedBrep(ctx, brep);
+
+        TestContext.WriteLine($"Bicycle brep #135371: {mesh.Points.Count} pts, {mesh.FaceIndices.Count} tris");
+        Assert.That(mesh.FaceIndices, Has.Count.GreaterThan(100));
+        Assert.That(ctx.Diagnostics.EntityStatus.Keys, Does.Contain("IFCEDGELOOP"));
+    }
+
+    [Test]
     public void MeshesFaceBasedSurfaceModel()
     {
         using var model = MicroIfc.Parse("""
@@ -918,6 +1070,26 @@ public sealed class GoldenMeshTests
         AssertMeshCounts(mesh, expectedPoints: 8, expectedFaces: 8);
         AssertBounds(mesh, (0f, 0f, 0f), (4f, 4f, 0f));
         Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCINDEXEDPOLYGONALFACEWITHVOIDS"));
+    }
+
+    [Test]
+    public void MeshesDuplexStyleOpenProfileRibbon()
+    {
+        using var model = MicroIfc.Parse("""
+            #1=IFCCARTESIANPOINT((0.2084999999999992,-17.59149999999997));
+            #2=IFCCARTESIANPOINT((6.261999999999995,-17.59149999999999));
+            #3=IFCPOLYLINE((#1,#2));
+            #4=IFCARBITRARYOPENPROFILEDEF(.CURVE.,$,#3);
+            #5=IFCCARTESIANPOINT((0.,0.,0.));
+            #6=IFCAXIS2PLACEMENT3D(#5,$,$);
+            #7=IFCDIRECTION((0.,0.,1.));
+            #8=IFCSURFACEOFLINEAREXTRUSION(#4,#6,#7,2.6);
+            """);
+
+        var mesh = MeshRequired(model, 8);
+
+        AssertMeshCounts(mesh, expectedPoints: 4, expectedFaces: 2);
+        AssertBounds(mesh, (0.2085f, -17.5915f, 0f), (6.262f, -17.5915f, 2.6f), tolerance: 1e-3f);
     }
 
     [Test]
