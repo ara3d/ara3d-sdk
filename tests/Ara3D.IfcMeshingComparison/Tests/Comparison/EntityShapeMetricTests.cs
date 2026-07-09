@@ -7,6 +7,7 @@ namespace Ara3D.IfcMeshingComparison.Tests.Comparison;
 [TestFixture]
 public sealed class EntityShapeMetricTests
 {
+
     // The Tier 0 entity-shape metric is built from rotation/translation-invariant descriptors
     // (volume, area, sorted OBB extents, PCA spectrum, sphere radius, boundary length). It must stay
     // high when the same geometry is re-oriented (where the AABB metric collapses) yet fall when the

@@ -75,12 +75,18 @@ public sealed record EntityShapeMetricScore(
     IReadOnlyList<EntityShapeGap> WorstEntities);
 
 /// <summary>One shared entity's shape agreement, for diagnostics (lowest-scoring first).</summary>
+/// <param name="MisTagSuspectId">
+/// If this entity's candidate shape matches a <em>different</em> oracle entity's shape better than its
+/// own oracle mesh, the express id of that other entity (else -1). A strong signal that the low score is
+/// an oracle-side per-entity mesh mis-tag — not a candidate defect — as seen on the duplex slab cluster.
+/// </param>
 public sealed record EntityShapeGap(
     int EntityId,
     double Score,
     double VolumeRatio,
     double AreaRatio,
-    double BoundaryRatio);
+    double BoundaryRatio,
+    int MisTagSuspectId = -1);
 
 public sealed record ModelComparisonResult(
     string FileName,
@@ -275,6 +281,8 @@ public static class ModelComparer
         }
 
         var gaps = new List<EntityShapeGap>(shared.Count);
+        var candDesc = new Dictionary<int, ShapeDescriptor>();
+        var oracleDesc = new Dictionary<int, ShapeDescriptor>();
         foreach (var id in shared)
         {
             var b = DescribeShape(theirs[id]);
@@ -283,6 +291,7 @@ public static class ModelComparer
             // candidate 0; the rest of the harness applies the same guard.
             if (!IsComparable(b))
                 continue;
+            oracleDesc[id] = b!;
 
             var a = DescribeShape(mine[id]);
             if (!IsComparable(a))
@@ -290,6 +299,7 @@ public static class ModelComparer
                 gaps.Add(new EntityShapeGap(id, 0.0, 0.0, 0.0, 0.0)); // real candidate gap
                 continue;
             }
+            candDesc[id] = a!;
             gaps.Add(new EntityShapeGap(
                 id,
                 ShapeSimilarity(a!, b!),
@@ -303,8 +313,41 @@ public static class ModelComparer
 
         var score = gaps.Select(g => g.Score).Average();
         var matched = gaps.Count(g => g.Score >= 1.0 - options.ShapeExtentTolerance);
-        var worst = gaps.OrderBy(g => g.Score).Take(10).ToList();
+        var worst = gaps
+            .OrderBy(g => g.Score)
+            .Take(10)
+            .Select(g => FlagMisTagSuspect(g, candDesc, oracleDesc))
+            .ToList();
         return new EntityShapeMetricScore(score, gaps.Count, matched, worst);
+    }
+
+    /// <summary>
+    /// For a poorly-matching entity, check whether its candidate shape matches a <em>different</em>
+    /// oracle entity's shape more closely than its own — the fingerprint of an oracle-side per-entity
+    /// mesh mis-tag (the candidate built the right geometry; the oracle attributed it to another id).
+    /// </summary>
+    static EntityShapeGap FlagMisTagSuspect(
+        EntityShapeGap gap,
+        Dictionary<int, ShapeDescriptor> candDesc,
+        Dictionary<int, ShapeDescriptor> oracleDesc)
+    {
+        if (gap.Score >= 0.5 || !candDesc.TryGetValue(gap.EntityId, out var mine))
+            return gap;
+
+        var bestId = -1;
+        var best = 0.90; // must be a clearly better match elsewhere to call it a mis-tag
+        foreach (var (oracleId, desc) in oracleDesc)
+        {
+            if (oracleId == gap.EntityId)
+                continue;
+            var s = ShapeSimilarity(mine, desc);
+            if (s > best)
+            {
+                best = s;
+                bestId = oracleId;
+            }
+        }
+        return gap with { MisTagSuspectId = bestId };
     }
 
     /// <summary>Per-entity world-space merged mesh (one mesh per entity, all instances baked in).</summary>

@@ -153,9 +153,12 @@ public sealed class ScorecardTests
         foreach (var gap in result.EntityShape.WorstEntities)
         {
             var entity = stepFile.EntityResolver.GetEntityOrDefault(gap.EntityId);
+            var misTag = gap.MisTagSuspectId >= 0
+                ? $"  <-- candidate shape matches oracle #{gap.MisTagSuspectId} (likely ORACLE mis-tag, not a candidate defect)"
+                : "";
             TestContext.WriteLine(
                 $"  #{gap.EntityId} {entity?.GetEntityName() ?? "?"}: shape={gap.Score:F3} " +
-                $"vol={gap.VolumeRatio:F2} area={gap.AreaRatio:F2} bndry={gap.BoundaryRatio:F2}");
+                $"vol={gap.VolumeRatio:F2} area={gap.AreaRatio:F2} bndry={gap.BoundaryRatio:F2}{misTag}");
         }
 
         var candidateEntities = model.Instances
