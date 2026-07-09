@@ -727,6 +727,52 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    public void OpeningElementCarvesHoleIntoHostWall()
+    {
+        // Solid wall box (thickness 0.3, length 4, height 3) with a window opening punched
+        // clear through its thickness (x spans +-0.25 > wall +-0.15), y in [-0.5,0.5], z in [1,2].
+        using var model = MicroIfc.WriteTemp("""
+            #1=IFCRECTANGLEPROFILEDEF(.AREA.,'W',$,0.3,4.);
+            #2=IFCDIRECTION((0.,0.,1.));
+            #3=IFCEXTRUDEDAREASOLID(#1,$,#2,3.);
+            #4=IFCSHAPEREPRESENTATION($,'Body','SweptSolid',(#3));
+            #5=IFCPRODUCTDEFINITIONSHAPE($,$,(#4));
+            #6=IFCCARTESIANPOINT((0.,0.,0.));
+            #7=IFCAXIS2PLACEMENT3D(#6,$,$);
+            #8=IFCLOCALPLACEMENT($,#7);
+            #9=IFCWALL('wall-guid',$,'Wall',$,$,#8,#5,$);
+            #10=IFCRECTANGLEPROFILEDEF(.AREA.,'O',$,0.5,1.);
+            #11=IFCCARTESIANPOINT((0.,0.,1.));
+            #12=IFCAXIS2PLACEMENT3D(#11,$,$);
+            #13=IFCEXTRUDEDAREASOLID(#10,#12,#2,1.);
+            #14=IFCSHAPEREPRESENTATION($,'Body','SweptSolid',(#13));
+            #15=IFCPRODUCTDEFINITIONSHAPE($,$,(#14));
+            #16=IFCOPENINGELEMENT('open-guid',$,'Opening',$,$,#8,#15,$);
+            #17=IFCRELVOIDSELEMENT('void-guid',$,$,$,#9,#16);
+            """);
+
+        var (built, diagnostics) = ModelAssembler.BuildModel(model.Context.File!);
+
+        Assert.That(built.Instances, Has.Count.EqualTo(1), "Host wall stays a single instance");
+        var wall = built.Meshes[built.Instances[0].MeshIndex];
+
+        // A solid extruded box is 8 points / 12 triangles; carving the window frame adds geometry.
+        Assert.That(wall.FaceIndices.Count, Is.GreaterThan(12), "Opening subdivides the host faces");
+        Assert.That(wall.Points.Count, Is.GreaterThan(8), "Opening adds boundary vertices");
+
+        // Outer wall envelope is preserved (the hole is interior to the broad faces).
+        AssertBounds(wall, (-0.15f, -2f, 0f), (0.15f, 2f, 3f), tolerance: 1e-4f);
+
+        // Material was removed: the two broad faces lose the window area (no reveal added),
+        // so the carved surface area is strictly below the solid wall's surface area.
+        var solidArea = SurfaceArea(MeshRequired(model, 3));
+        var carvedArea = SurfaceArea(wall);
+        Assert.That(carvedArea, Is.LessThan(solidArea - 0.5f), "Opening removes host surface area");
+
+        Assert.That(diagnostics.EntityStatus.Keys, Does.Contain("IFCRELVOIDSELEMENT"));
+    }
+
+    [Test]
     public void MeshesProductThroughNestedLocalPlacementChain()
     {
         using var model = MicroIfc.Parse("""
@@ -1482,6 +1528,19 @@ public sealed class GoldenMeshTests
             Assert.That(max.Y, Is.EqualTo(expectedMax.Y).Within(tolerance));
             Assert.That(max.Z, Is.EqualTo(expectedMax.Z).Within(tolerance));
         });
+    }
+
+    static float SurfaceArea(TriangleMesh3D mesh)
+    {
+        var area = 0f;
+        foreach (var f in mesh.FaceIndices)
+        {
+            var a = mesh.Points[f.A].Vector3;
+            var b = mesh.Points[f.B].Vector3;
+            var c = mesh.Points[f.C].Vector3;
+            area += 0.5f * MathF.Sqrt(Vector3.Cross(b - a, c - a).LengthSquared());
+        }
+        return area;
     }
 
     static TriangleMesh3D MeshRequired(MicroIfcModel model, int entityId)

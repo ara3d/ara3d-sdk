@@ -14,6 +14,9 @@ public static class ModelAssembler
         var builder = new Model3DBuilder();
         var meshIndexByFingerprint = new Dictionary<int, int>();
 
+        var voidRelations = OpeningCarver.CollectVoidRelations(ctx);
+        var openingSolidCache = new Dictionary<int, List<TriangleMesh3D>>();
+
         foreach (var entity in ctx.Resolver.GetEntities())
         {
             if (!IsProduct(entity))
@@ -35,6 +38,9 @@ public static class ModelAssembler
                 if (parts.Count == 0)
                     return;
 
+                if (voidRelations.TryGetValue(entity.Id, out var openingIds))
+                    parts = CarveOpenings(ctx, parts, openingIds, productMatrix, openingSolidCache);
+
                 foreach (var part in parts)
                 {
                     var meshIdx = GetOrAddMesh(builder, meshIndexByFingerprint, part.Mesh);
@@ -46,6 +52,45 @@ public static class ModelAssembler
 
         RecordOpeningRelations(ctx);
         return (builder.Build(), ctx.Diagnostics);
+    }
+
+    static List<CollectedPart> CarveOpenings(
+        MeshingContext ctx,
+        List<CollectedPart> parts,
+        List<int> openingIds,
+        Matrix4x4 productMatrix,
+        Dictionary<int, List<TriangleMesh3D>> openingSolidCache)
+    {
+        // Resolve each opening's solid once, in world coordinates.
+        var worldSolids = new List<TriangleMesh3D>();
+        foreach (var openingId in openingIds)
+        {
+            if (!openingSolidCache.TryGetValue(openingId, out var solids))
+            {
+                solids = OpeningCarver.BuildOpeningWorldSolids(ctx, openingId);
+                openingSolidCache[openingId] = solids;
+            }
+            worldSolids.AddRange(solids);
+        }
+        if (worldSolids.Count == 0)
+            return parts;
+
+        var result = new List<CollectedPart>(parts.Count);
+        foreach (var part in parts)
+        {
+            var toLocal = (productMatrix * part.Transform).Invert;
+            var mesh = part.Mesh;
+            ctx.Try(() =>
+            {
+                foreach (var world in worldSolids)
+                {
+                    var localPrism = MeshHelpers.Transform(world, toLocal);
+                    mesh = OpeningCarver.CarveConvex(mesh, localPrism);
+                }
+            }, "IFCRELVOIDSELEMENT", $"carve product #{part.EntityIndex}");
+            result.Add(new CollectedPart(mesh, part.Transform, part.EntityIndex));
+        }
+        return result;
     }
 
     static int GetOrAddMesh(
@@ -110,7 +155,7 @@ public static class ModelAssembler
         foreach (var entity in ctx.Resolver.GetEntities())
         {
             if (entity.GetEntityName() == "IFCRELVOIDSELEMENT")
-                Booleans.RecordOpeningDiagnostic(ctx);
+                ctx.Diagnostics.RecordApproximate("IFCRELVOIDSELEMENT", "Opening subtracted via convex carve");
         }
     }
 

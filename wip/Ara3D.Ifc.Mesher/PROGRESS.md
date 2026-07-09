@@ -12,15 +12,17 @@ Measurement-driven parity work against web-ifc `ToModel3D()` oracle. Triangle bo
 
 | File | Score | Inst | Mesh | EntityInst | EntityBBox | MeshBBox | Shape | Merged |
 |------|------:|-----:|-----:|-----------:|-----------:|---------:|------:|-------:|
-| IfcOpenHouse_IFC4.ifc | 0.906 | 1.000 | 0.684 | 1.000 | 1.000 | 0.937 | 0.916 | 0.713 |
+| IfcOpenHouse_IFC4.ifc | 0.918 | 1.000 | 0.789 | 1.000 | 1.000 | 0.958 | 0.892 | 0.731 |
 | example.ifc | 0.910 | 1.000 | 0.889 | 1.000 | 0.994 | 0.969 | 0.819 | 0.683 |
-| steelplates.ifc | 0.862 | 1.000 | 0.857 | 1.000 | 1.000 | 0.971 | 0.696 | 0.496 |
+| steelplates.ifc | 0.870 | 1.000 | 0.857 | 1.000 | 1.000 | 0.971 | 0.698 | 0.553 |
 | AC20-FZK-Haus.ifc | 0.898 | 1.000 | 0.968 | 1.000 | 0.938 | 0.732 | 0.940 | 0.664 |
 | 171210AISC_Sculpture_brep.ifc | 0.920 | 1.000 | 0.828 | 1.000 | 1.000 | 0.966 | 0.934 | 0.673 |
 | FM_ARC_DigitalHub.ifc | 0.840 | 0.998 | 0.756 | 0.980 | 0.999 | 0.371 | 0.860 | 0.663 |
-| duplex.ifc | 0.843 | 0.957 | 0.929 | 0.984 | 0.866 | 0.591 | 0.828 | 0.681 |
+| duplex.ifc | 0.848 | 0.957 | 0.947 | 0.984 | 0.866 | 0.602 | 0.830 | 0.697 |
 
 _Metric columns are per-metric scores in [0,1]. Quick-file counts from `Category=IfcMesherScore`; **AC20**, **sculpture**, **DigitalHub** from stretch tests; **duplex** from `ScoreDuplexStretch` (**713/682 inst**, parity **0.843**)._
+
+**WP-W7-opening-carve (round 1):** `IFCRELVOIDSELEMENT` (50 in duplex, 30 hosts) was unsupported → window/door openings never cut into hosts. New `OpeningCarver.cs` wired into `ModelAssembler.BuildModel`: `CollectVoidRelations` maps host→openings; opening solids built by reusing `GeometryPartCollector` on the `IFCOPENINGELEMENT` `Body/SweptSolid` (extruded prism) + world placement; `CarveConvex` is a self-contained **convex-prism carve** — ≤6 outward bounding planes derived from the prism mesh (centroid-oriented, with a convexity guard that no-ops on non-convex openings), then per host triangle: AABB/separating-plane reject, drop fully-inside, Sutherland-Hodgman split straddlers keeping only outside fragments. No `Booleans.cs` edits; reveal (hole-wall) caps intentionally omitted. Golden `OpeningElementCarvesHoleIntoHostWall`. **Duplex 0.843→0.848** (merged-tri 0.681→0.697, mesh bbox 0.591→0.602, mesh count 404→412, +~1020 carved-frame tris); no metric regressed. **Bonus: OpenHouse 0.906→0.918, steelplates 0.862→0.870** (their openings carve too); example/DigitalHub unchanged. Remaining: reveal caps (candidate 23864 vs oracle 27686 merged tris).
 
 **WP-W3-digitalhub-cylindrical (round 1):** Diagnosis: of ~10070 `IFCADVANCEDFACE`, curved surfaces are dominated by **`IFCCYLINDRICALSURFACE` (615)** (vs `IFCSURFACEOFREVOLUTION` 52, BSpline 8). Two root causes kept cylinder faces at ~0 tris: (1) their rim arcs are `IFCTRIMMEDCURVE` on `IFCCIRCLE` with **`.CARTESIAN`** trim (endpoints as points), but `CurveEvaluator.TrimCircle3D` only read angle *parameters* → both 0 → arc collapsed to a point → boundary degenerate → face skipped; (2) even with a boundary, curved faces were flat-projected onto a Newell plane (`Brep.BuildFaceSet`) — wrapping patches self-overlap or flatten, losing geometry. Fix in `CurveEvaluator.cs`: `TrimCircle3D` derives arc angles from `.CARTESIAN` trim points (`PrefersCartesianTrim`/`CircleAngleAtPoint`); gated on master rep so `PARAMETER`-based arcs (example/steel fillets) are untouched. Fix in `Brep.cs`: `SurfaceMap` abstraction — cylindrical faces project boundary rings into (arc-length·angle, height) surface parameter space (`CylinderMap`, with per-ring angle unwrapping + hole alignment), triangulate there, and unproject via the cylinder equation back onto the true surface; planar/Newell path unchanged (`PlanarMap`). Golden: `MeshesCylindricalAdvancedFace`. Stretch `ScoreDigitalHubStretch`: **3592/3599 inst** (was 3318), **234963/311811 merged tris** (was 53399), entity bbox **766/766** (was 724), parity **0.840** (was 0.775). Quick files unchanged (OpenHouse 0.906 / example 0.910 / steelplates 0.862). Remaining gap: `IFCSURFACEOFREVOLUTION` (52) + NURBS (8) still flat-projected; mesh bbox 0.371 (per-mesh dedup/pairing).
 
@@ -107,6 +109,7 @@ _Metric columns are per-metric scores in [0,1]. Quick-file counts from `Category
 | WP-V-duplex-assembly | done | — | WP-Q | high | Round 1: FBSM per connected-face-set instancing; duplex 713/682 inst, parity 0.843 (was 436/682, 0.730) |
 | WP-W1-duplex-fbsm-overshoot | investigated | — | — | low | Round 1: overshoot = web-ifc holed-FBSM cabinet-merge quirk (8 cabinets, +32); no clean predictor; per-face-set retained; symmetric extra-by-product diagnostic added to `ScoreDuplexStretch` |
 | WP-W3-digitalhub-cylindrical | done | — | WP-P | high | Round 1: cylindrical advanced-face tessellation (surface-param map) + `.CARTESIAN` circle trims; DigitalHub 0.775→0.840, 3592/3599 inst, merged-tri 0.17→0.75 |
+| WP-W7-opening-carve | done | — | — | high | Round 1: IFCRELVOIDSELEMENT opening subtraction (convex-prism carve, new `OpeningCarver.cs`); duplex 0.843→0.848, OpenHouse 0.906→0.918, steelplates 0.862→0.870 |
 | WP-W2-polygonal-halfspace | done | — | — | med | Round 1: boundary-gated `IFCPOLYGONALBOUNDEDHALFSPACE` clip; duplex 0.843 held, 7 cases now clip correctly (no over-clip) |
 
 ---
