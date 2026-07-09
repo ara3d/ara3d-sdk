@@ -951,6 +951,9 @@ Rotation3D
     - IRigidTransform3D
       - ITransform3D
 
+ScalarField3D
+  - IValue
+
 Scale2D
   - ITransform2D
 
