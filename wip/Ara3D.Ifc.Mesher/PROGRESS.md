@@ -8,16 +8,18 @@ Measurement-driven parity work against web-ifc `ToModel3D()` oracle. Triangle bo
 
 ---
 
-## Scorecard (last run: 2026-07-08, generatedUtc 22:42:55Z)
+## Scorecard (last run: 2026-07-08, generatedUtc 23:37:08Z)
 
 | File | Score | Inst | Mesh | EntityInst | EntityBBox | MeshBBox | Shape | Merged |
 |------|------:|-----:|-----:|-----------:|-----------:|---------:|------:|-------:|
-| IfcOpenHouse_IFC4.ifc | 0.884 | 0.905 | 0.842 | 0.949 | 0.929 | 0.907 | 0.915 | 0.723 |
+| IfcOpenHouse_IFC4.ifc | 0.906 | 1.000 | 0.684 | 1.000 | 1.000 | 0.937 | 0.916 | 0.713 |
 | example.ifc | 0.910 | 1.000 | 0.889 | 1.000 | 0.994 | 0.969 | 0.819 | 0.683 |
-| steelplates.ifc | 0.787 | 0.875 | 1.000 | 0.938 | 0.813 | 0.800 | 0.698 | 0.452 |
-| AC20-FZK-Haus.ifc | 0.864 | 0.884 | 0.952 | 0.921 | 0.890 | 0.729 | 0.937 | 0.711 |
+| steelplates.ifc | 0.862 | 1.000 | 0.857 | 1.000 | 1.000 | 0.971 | 0.696 | 0.496 |
+| AC20-FZK-Haus.ifc | 0.898 | 1.000 | 0.968 | 1.000 | 0.938 | 0.732 | 0.940 | 0.664 |
 
-_Metric columns are per-metric scores in [0,1]. Quick-file counts in `scorecard.json`; AC20 from `ScoreAc20FzkHausStretch` (not in scorecard.json)._
+_Metric columns are per-metric scores in [0,1]. Quick-file counts in `scorecard.json`; AC20 from `ScoreAc20FzkHausStretch` (not in scorecard.json). Duplex stretch baseline: **436/682 inst**, parity **0.730** (`ScoreDuplexStretch`)._
+
+**WP-O-parity-gaps (round 1):** Four remaining parity gaps closed. **OpenHouse #268/#281:** oblique nested gable half-spaces used planar keep-side (`!agreement`) → kept roof wedge only; fix uses agreement directly when `|normal.x| >= |normal.z|`. **steelplates #633/#1193/#1385:** half-space plane coords encode extrusion-end trim distance (778 ≈ depth−1500) but plane normal was profile-axis — ineffective clip; fix resolves extrusion-aligned clip plane when normal ⊥ extrusion axis. **AC20 +33 inst:** 17 `IFCOPENINGELEMENT` products (2 inst each) emitted geometry oracle ignores; excluded from `IsProduct`. **duplex compare crash:** oracle BFAST had sparse mesh indices — `CompareMergedMesh` now skips invalid `MeshIndex` via `ToMergedMesh`. Golden: `MeshesExtrusionEndBooleanClipAlongDepth`, `MeshesNestedObliqueGableBooleanClips`. **OpenHouse entity bbox 35/35**, **steelplates 14/14**, **AC20 252/252 inst**, parity **0.906/0.862/0.898**.
 
 **WP-N-example-shs (round 1):** Oracle map: remaining **18 oracle-only** on example.ifc were all **100×6.0 SHS** (`IFCARBITRARYPROFILEDEFWITHVOIDS` with rounded composite outer/inner curves). Root cause: outer **40** vs inner **36** vertices → congruent-ring triangulation skipped, hole-stitch ear-clip failed (`n=77, remaining=43`). Fix: `TryTriangulateOffsetRing` resamples inner ring to outer count + arc-length correspondence; `CleanRing` on void inner curves in `BuildArbitraryWithVoids`. Golden: `ExampleIfc_ShsProfileWithVoids_Builds` (#7649/#7935). **example.ifc 120/120 inst**, **116/116 entity Jaccard**, parity **0.910** (was 0.839), merged tris **12392/15046** (was 6846).
 
@@ -51,7 +53,7 @@ _Metric columns are per-metric scores in [0,1]. Quick-file counts in `scorecard.
 | M2 Structure | instance + entity histogram within 2× on quick files | **done** — inst ratio within 2× on all 3 quick files; example **120/120 inst**, entity Jaccard **1.0** |
 | M3 Coverage | merged tri count within 5× on IfcOpenHouse + steelplates | **done** — OpenHouse 1060/1098 (1.0×); steelplates 356/1428 (4.0×) |
 | M4 Shape | per-entity bbox match > 70% shared ids on quick files | **done** — OpenHouse 33/35 (94%), example 97/98 (99%), steelplates 11/14 (79%) |
-| M5 Stretch | progress on one large file (AC20-FZK-Haus or duplex) | **in progress** — AC20 **285/252 inst** (over-instancing +33), parity **0.864**; duplex compare blocked on mesh-index bug |
+| M5 Stretch | progress on one large file (AC20-FZK-Haus or duplex) | **in progress** — AC20 **252/252 inst**, parity **0.898**; duplex compare unblocked (**0.730** baseline, 436/682 inst) |
 
 ---
 
@@ -72,7 +74,8 @@ _Metric columns are per-metric scores in [0,1]. Quick-file counts in `scorecard.
 | WP-J-boolean-openhouse | done | — | WP-D-boolean | high | Half-space DIFFERENCE keep-side + orphan-vertex bbox fix; OpenHouse 33/35, steelplates 11/14 entity bbox |
 | WP-E-placement | done | — | WP-C | high | Round 1: L-profile centering; steelplates entity bbox 10/11 |
 | WP-F-openhouse | done | — | WP-C | high | Round 1: polyline rings, Facetation rep, FBSM open shells; OpenHouse 42/38 inst |
-| WP-H-stretch | in progress | — | — | high | Round 2: AC20 parity 0.864; over-instancing +33; IFCMEMBER 42/42 |
+| WP-H-stretch | in progress | — | — | high | Round 2: AC20 parity 0.898; 252/252 inst; IFCMEMBER 42/42 |
+| WP-O-parity-gaps | done | — | WP-D-boolean, WP-C | high | Oblique gable + extrusion-end clips; opening filter; comparer mesh-index guard |
 | WP-N-example-shs | done | — | WP-I | high | Round 1: SHS void offset-ring triangulation; example 120/120 inst |
 | WP-I-example-steel | done | — | WP-G | high | Round 1: SameSense.F fillet arc reversal; example 102/120 inst, 97/98 entity bbox |
 | WP-K-example-push | done | — | WP-G | high | Round 2: mapped multi-solid instancing; 102/120 inst with WP-I |
