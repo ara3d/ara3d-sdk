@@ -1,10 +1,7 @@
 using Ara3D.Geometry;
-
 using Ara3D.IfcLoader;
-
 using Ara3D.IO.StepParser;
-
-
+using Ara3D.Models;
 
 namespace Ara3D.Ifc.Mesher.Approach1;
 
@@ -34,7 +31,7 @@ public sealed class MeshingContext : IDisposable
 
     readonly Dictionary<int, IReadOnlyList<Point3D>> _curve3DCache = new();
 
-
+    Dictionary<int, Material>? _itemMaterials;
 
     StepDocument? _ownedDocument;
 
@@ -107,6 +104,13 @@ public sealed class MeshingContext : IDisposable
     public IfcEntity GetEntity(int id) => Resolver.GetEntity(id);
 
     public IfcEntity? GetEntityOrDefault(int id) => Resolver.GetEntityOrDefault(id);
+
+    /// <summary>Material from an <c>IfcStyledItem</c> that references this geometry item, if any.</summary>
+    public Material? TryGetItemMaterial(int geometryItemId)
+    {
+        _itemMaterials ??= StyleResolver.BuildItemMaterialMap(this);
+        return _itemMaterials.TryGetValue(geometryItemId, out var material) ? material : null;
+    }
 
 
 

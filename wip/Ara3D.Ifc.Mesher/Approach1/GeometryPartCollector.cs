@@ -1,11 +1,16 @@
 using Ara3D.Geometry;
 using Ara3D.IfcLoader;
 using Ara3D.IfcTypes;
+using Ara3D.Models;
 
 namespace Ara3D.Ifc.Mesher.Approach1;
 
-/// <summary>One tessellated mesh part with local transform and owning IFC product express id.</summary>
-public readonly record struct CollectedPart(TriangleMesh3D Mesh, Matrix4x4 Transform, int EntityIndex);
+/// <summary>One tessellated mesh part with local transform, owning IFC product express id, and material.</summary>
+public readonly record struct CollectedPart(TriangleMesh3D Mesh, Matrix4x4 Transform, int EntityIndex, Material Material)
+{
+    public CollectedPart(TriangleMesh3D mesh, Matrix4x4 transform, int entityIndex)
+        : this(mesh, transform, entityIndex, Material.Default) { }
+}
 
 /// <summary>Walks IFC representation trees and emits per-part meshes (no product-level merging).</summary>
 public static class GeometryPartCollector
@@ -15,13 +20,14 @@ public static class GeometryPartCollector
         IfcEntity entity,
         Matrix4x4 parentTransform,
         int productEntityId,
-        List<CollectedPart> parts)
+        List<CollectedPart> parts,
+        Material? material = null)
     {
         switch (entity.GetEntityName())
         {
             case "IFCPRODUCTDEFINITIONSHAPE":
                 foreach (var repId in MeshHelpers.ReadIds(entity, IfcProductRepresentation.Instance.Representations))
-                    CollectParts(ctx, ctx.GetEntity(repId), parentTransform, productEntityId, parts);
+                    CollectParts(ctx, ctx.GetEntity(repId), parentTransform, productEntityId, parts, material);
                 return;
 
             case "IFCSHAPEREPRESENTATION" or "IFCREPRESENTATION":
@@ -34,27 +40,31 @@ public static class GeometryPartCollector
                 }
 
                 foreach (var itemId in MeshHelpers.ReadIds(entity, IfcRepresentation.Instance.Items))
-                    CollectParts(ctx, ctx.GetEntity(itemId), parentTransform, productEntityId, parts);
+                    CollectParts(ctx, ctx.GetEntity(itemId), parentTransform, productEntityId, parts, material);
                 return;
 
             case "IFCMAPPEDITEM":
-                CollectMappedItem(ctx, entity, parentTransform, productEntityId, parts);
+                CollectMappedItem(ctx, entity, parentTransform, productEntityId, parts, material);
                 return;
 
             case "IFCFACEBASEDSURFACEMODEL":
-                CollectFaceBasedSurfaceModel(ctx, entity, parentTransform, productEntityId, parts);
+                CollectFaceBasedSurfaceModel(ctx, entity, parentTransform, productEntityId, parts, material);
                 return;
 
             case "IFCSTYLEDITEM":
+                var resolved = StyleResolver.TryResolveMaterial(ctx, entity) ?? material;
                 var styledItem = MeshHelpers.ResolveOptional(ctx, entity, IfcStyledItem.Instance.Item);
                 if (styledItem is not null)
-                    CollectParts(ctx, styledItem, parentTransform, productEntityId, parts);
+                    CollectParts(ctx, styledItem, parentTransform, productEntityId, parts, resolved);
                 return;
 
             default:
                 var mesh = GeometryDispatcher.TryBuild(ctx, entity);
                 if (mesh is not null && mesh.Value.FaceIndices.Count > 0)
-                    parts.Add(new CollectedPart(mesh.Value, parentTransform, productEntityId));
+                {
+                    var mat = material ?? ctx.TryGetItemMaterial(entity.Id) ?? Material.Default;
+                    parts.Add(new CollectedPart(mesh.Value, parentTransform, productEntityId, mat));
+                }
                 return;
         }
     }
@@ -64,14 +74,16 @@ public static class GeometryPartCollector
         IfcEntity model,
         Matrix4x4 parentTransform,
         int productEntityId,
-        List<CollectedPart> parts)
+        List<CollectedPart> parts,
+        Material? material)
     {
         ctx.Diagnostics.RecordSupported("IFCFACEBASEDSURFACEMODEL");
+        var mat = material ?? ctx.TryGetItemMaterial(model.Id) ?? Material.Default;
         foreach (var faceId in MeshHelpers.ReadIds(model, IfcFaceBasedSurfaceModel.Instance.FbsmFaces))
         {
             var mesh = Brep.BuildFaceBasedSurfaceElement(ctx, ctx.GetEntity(faceId));
             if (mesh.FaceIndices.Count > 0)
-                parts.Add(new CollectedPart(mesh, parentTransform, productEntityId));
+                parts.Add(new CollectedPart(mesh, parentTransform, productEntityId, mat));
         }
     }
 
@@ -80,7 +92,8 @@ public static class GeometryPartCollector
         IfcEntity mapped,
         Matrix4x4 parentTransform,
         int productEntityId,
-        List<CollectedPart> parts)
+        List<CollectedPart> parts,
+        Material? material)
     {
         ctx.Diagnostics.RecordSupported("IFCMAPPEDITEM");
 
@@ -89,7 +102,7 @@ public static class GeometryPartCollector
         if (!GeometryDispatcher.TryGetMappedItemTransform(ctx, mapped, out var mappingTransform))
             return;
 
-        CollectParts(ctx, rep, parentTransform * mappingTransform, productEntityId, parts);
+        CollectParts(ctx, rep, parentTransform * mappingTransform, productEntityId, parts, material);
     }
 
     static bool IsBodyRepresentation(IfcEntity representation)

@@ -46,7 +46,7 @@ public static class ModelAssembler
                     var meshIdx = GetOrAddMesh(builder, meshBuckets, part.DedupScope, part.Part.Mesh);
                     // Row-vector convention (System.Numerics): world = local * part * product.
                     var matrix = part.Part.Transform * productMatrix;
-                    builder.AddInstance(meshIdx, matrix, Material.Default, part.Part.EntityIndex);
+                    builder.AddInstance(meshIdx, matrix, part.Part.Material, part.Part.EntityIndex);
                 }
             }, entity.GetEntityName(), $"product #{entity.Id}");
         }
@@ -186,7 +186,7 @@ public static class ModelAssembler
                 var localPrisms = worldSolids.Select(w => MeshHelpers.Transform(w, toLocal)).ToList();
                 mesh = OpeningCarver.CarveConvex(mesh, localPrisms);
             }, "IFCRELVOIDSELEMENT", $"carve product #{part.Part.EntityIndex}");
-            result.Add(part with { Part = new CollectedPart(mesh, part.Part.Transform, part.Part.EntityIndex) });
+            result.Add(part with { Part = new CollectedPart(mesh, part.Part.Transform, part.Part.EntityIndex, part.Part.Material) });
         }
         return result;
     }
@@ -234,13 +234,14 @@ public static class ModelAssembler
         Matrix4x4 parentTransform,
         int productEntityId,
         List<ScopedPart> parts,
-        int dedupScope = 0)
+        int dedupScope = 0,
+        Material? material = null)
     {
         switch (entity.GetEntityName())
         {
             case "IFCPRODUCTDEFINITIONSHAPE":
                 foreach (var repId in MeshHelpers.ReadIds(entity, IfcProductRepresentation.Instance.Representations))
-                    CollectScopedParts(ctx, ctx.GetEntity(repId), parentTransform, productEntityId, parts, dedupScope);
+                    CollectScopedParts(ctx, ctx.GetEntity(repId), parentTransform, productEntityId, parts, dedupScope, material);
                 return;
 
             case "IFCSHAPEREPRESENTATION" or "IFCREPRESENTATION":
@@ -248,7 +249,7 @@ public static class ModelAssembler
                     return;
 
                 foreach (var itemId in MeshHelpers.ReadIds(entity, IfcRepresentation.Instance.Items))
-                    CollectScopedParts(ctx, ctx.GetEntity(itemId), parentTransform, productEntityId, parts, entity.Id);
+                    CollectScopedParts(ctx, ctx.GetEntity(itemId), parentTransform, productEntityId, parts, entity.Id, material);
                 return;
 
             case "IFCMAPPEDITEM":
@@ -256,29 +257,34 @@ public static class ModelAssembler
                 var rep = MeshHelpers.ResolveRequired(ctx, map, IfcRepresentationMap.Instance.MappedRepresentation);
                 if (!GeometryDispatcher.TryGetMappedItemTransform(ctx, entity, out var mappingTransform))
                     return;
-                CollectScopedParts(ctx, rep, parentTransform * mappingTransform, productEntityId, parts, map.Id);
+                CollectScopedParts(ctx, rep, parentTransform * mappingTransform, productEntityId, parts, map.Id, material);
                 return;
 
             case "IFCFACEBASEDSURFACEMODEL":
                 ctx.Diagnostics.RecordSupported("IFCFACEBASEDSURFACEMODEL");
+                var faceMat = material ?? ctx.TryGetItemMaterial(entity.Id) ?? Material.Default;
                 foreach (var faceId in MeshHelpers.ReadIds(entity, IfcFaceBasedSurfaceModel.Instance.FbsmFaces))
                 {
                     var mesh = Brep.BuildFaceBasedSurfaceElement(ctx, ctx.GetEntity(faceId));
                     if (mesh.FaceIndices.Count > 0)
-                        parts.Add(new ScopedPart(new CollectedPart(mesh, parentTransform, productEntityId), dedupScope));
+                        parts.Add(new ScopedPart(new CollectedPart(mesh, parentTransform, productEntityId, faceMat), dedupScope));
                 }
                 return;
 
             case "IFCSTYLEDITEM":
+                var resolved = StyleResolver.TryResolveMaterial(ctx, entity) ?? material;
                 var styledItem = MeshHelpers.ResolveOptional(ctx, entity, IfcStyledItem.Instance.Item);
                 if (styledItem is not null)
-                    CollectScopedParts(ctx, styledItem, parentTransform, productEntityId, parts, dedupScope);
+                    CollectScopedParts(ctx, styledItem, parentTransform, productEntityId, parts, dedupScope, resolved);
                 return;
 
             default:
                 var built = GeometryDispatcher.TryBuild(ctx, entity);
                 if (built is not null && built.Value.FaceIndices.Count > 0)
-                    parts.Add(new ScopedPart(new CollectedPart(built.Value, parentTransform, productEntityId), dedupScope));
+                {
+                    var mat = material ?? ctx.TryGetItemMaterial(entity.Id) ?? Material.Default;
+                    parts.Add(new ScopedPart(new CollectedPart(built.Value, parentTransform, productEntityId, mat), dedupScope));
+                }
                 return;
         }
     }

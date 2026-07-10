@@ -61,7 +61,8 @@ public static class GeometryDispatcher
 
     static TriangleMesh3D? BuildStyledItem(MeshingContext ctx, IfcEntity styled)
     {
-        ctx.Diagnostics.RecordApproximate("IFCSTYLEDITEM", "Style ignored; geometry from item only");
+        // Appearance is applied on the instance path (ModelAssembler / GeometryPartCollector).
+        ctx.Diagnostics.RecordSupported("IFCSTYLEDITEM");
         var item = MeshHelpers.ResolveOptional(ctx, styled, IfcStyledItem.Instance.Item);
         return item is null ? null : TryBuild(ctx, item);
     }
