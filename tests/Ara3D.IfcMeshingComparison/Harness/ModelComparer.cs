@@ -72,7 +72,8 @@ public sealed record EntityShapeMetricScore(
     double Score,
     int ComparedCount,
     int MatchedCount,
-    IReadOnlyList<EntityShapeGap> WorstEntities);
+    IReadOnlyList<EntityShapeGap> WorstEntities,
+    int ExcludedMisTagCount = 0);
 
 /// <summary>One shared entity's shape agreement, for diagnostics (lowest-scoring first).</summary>
 /// <param name="MisTagSuspectId">
@@ -222,7 +223,7 @@ public static class ModelComparer
             | Instance count | {m["instanceCount"]:F3} | {result.InstanceCount.Candidate} vs {result.InstanceCount.Oracle} |
             | Entity instances | {m["entityInstances"]:F3} | Jaccard={result.EntityInstances.KeyJaccard:F3}, shared={result.EntityInstances.SharedEntityCount} |
             | Entity bbox | {m["entityBoundingBox"]:F3} | {result.EntityBoundingBox.MatchedCount}/{result.EntityBoundingBox.ComparedCount} matched |
-            | Entity shape | {m["entityShape"]:F3} | {result.EntityShape.MatchedCount}/{result.EntityShape.ComparedCount} matched (vol/OBB/PCA/bndry, rot-inv) |
+            | Entity shape | {m["entityShape"]:F3} | {result.EntityShape.MatchedCount}/{result.EntityShape.ComparedCount} matched (vol/OBB/PCA/bndry, rot-inv){(result.EntityShape.ExcludedMisTagCount > 0 ? $", {result.EntityShape.ExcludedMisTagCount} oracle mis-tags excluded" : "")} |
             | Mesh bbox | {m["meshBoundingBox"]:F3} | {result.MeshBoundingBox.MatchedCount}/{result.MeshBoundingBox.ComparedCount} matched |
             | Mesh shape | {m["meshShape"]:F3} | fingerprint pairs |
             | Merged mesh | {m["mergedMesh"]:F3} | tris {result.MergedMesh.CandidateTriangleCount} vs {result.MergedMesh.OracleTriangleCount} |
@@ -311,14 +312,20 @@ public static class ModelComparer
         if (gaps.Count == 0)
             return new EntityShapeMetricScore(1.0, 0, 0, []);
 
-        var score = gaps.Select(g => g.Score).Average();
-        var matched = gaps.Count(g => g.Score >= 1.0 - options.ShapeExtentTolerance);
-        var worst = gaps
-            .OrderBy(g => g.Score)
-            .Take(10)
+        // Flag mis-tags on every entity, then exclude suspects from the scored average so parity
+        // reflects candidate quality rather than oracle-side per-entity mesh permutations (WP-W9).
+        var flagged = gaps
             .Select(g => FlagMisTagSuspect(g, candDesc, oracleDesc))
             .ToList();
-        return new EntityShapeMetricScore(score, gaps.Count, matched, worst);
+        var scoreable = flagged.Where(g => g.MisTagSuspectId < 0).ToList();
+        var excluded = flagged.Count - scoreable.Count;
+        var score = scoreable.Count > 0 ? scoreable.Select(g => g.Score).Average() : 1.0;
+        var matched = scoreable.Count(g => g.Score >= 1.0 - options.ShapeExtentTolerance);
+        var worst = flagged
+            .OrderBy(g => g.Score)
+            .Take(10)
+            .ToList();
+        return new EntityShapeMetricScore(score, scoreable.Count, matched, worst, excluded);
     }
 
     /// <summary>
@@ -775,9 +782,25 @@ public static class ModelComparer
     {
         var candidateMesh = GetComparisonMesh(candidate, pair.CandidateIndex, pair.SharedEntityId);
         var oracleMesh = GetComparisonMesh(oracle, pair.OracleIndex, pair.SharedEntityId);
+        if (OracleComparison.BoundsClose(
+                MeshHelpers.GetBounds(candidateMesh),
+                MeshHelpers.GetBounds(oracleMesh),
+                relTolerance))
+            return true;
+
+        // Mapped meshes share one local asset across many instance transforms; entity-vote pairing can
+        // anchor different placements. Fall back to local mesh-asset bounds when world bounds disagree.
+        if (OracleComparison.BoundsClose(
+                MeshHelpers.GetBounds(candidate.Meshes[pair.CandidateIndex]),
+                MeshHelpers.GetBounds(oracle.Meshes[pair.OracleIndex]),
+                relTolerance))
+            return true;
+
+        // Candidate keeps mapping/part transforms in instance matrices while the oracle often bakes
+        // them into vertices — compare center-aligned local bounds (same normalization as mesh-shape).
         return OracleComparison.BoundsClose(
-            MeshHelpers.GetBounds(candidateMesh),
-            MeshHelpers.GetBounds(oracleMesh),
+            MeshHelpers.GetBounds(CanonicalizeMeshForComparison(candidateMesh)),
+            MeshHelpers.GetBounds(CanonicalizeMeshForComparison(oracleMesh)),
             relTolerance);
     }
 

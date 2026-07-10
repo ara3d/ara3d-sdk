@@ -347,7 +347,7 @@ public static class CurveEvaluator
         var u2 = ReadTrimParameter(ctx, trimmed, circle, IfcTrimmedCurve.Instance.Trim2);
         var radius = (float)ctx.ScaleLength(MeshHelpers.ReadNumber(circle, IfcCircle.Instance.Radius));
         var placement = Placements.ReadOptionalAxis2Placement3D(ctx, circle, IfcConic.Instance.Position);
-        return SampleConicArc2D(placement, radius, radius, u1, u2, sense, ctx.CircleSegments);
+        return SampleTrimmedConicArc2D(placement, radius, radius, u1, u2, sense, ctx.CircleSegments);
     }
 
     static List<Vector3> TrimCircle3D(MeshingContext ctx, IfcEntity circle, IfcEntity trimmed, bool sense)
@@ -364,7 +364,7 @@ public static class CurveEvaluator
         }
         var u1 = ReadTrimParameter(ctx, trimmed, circle, IfcTrimmedCurve.Instance.Trim1);
         var u2 = ReadTrimParameter(ctx, trimmed, circle, IfcTrimmedCurve.Instance.Trim2);
-        return SampleConicArc3D(placement, radius, radius, u1, u2, sense, ctx.CircleSegments);
+        return SampleTrimmedConicArc3D(placement, radius, radius, u1, u2, sense, ctx.CircleSegments);
     }
 
     static bool PrefersCartesianTrim(IfcEntity trimmed)
@@ -384,7 +384,7 @@ public static class CurveEvaluator
         var a = (float)ctx.ScaleLength(MeshHelpers.ReadNumber(ellipse, IfcEllipse.Instance.SemiAxis1));
         var b = (float)ctx.ScaleLength(MeshHelpers.ReadNumber(ellipse, IfcEllipse.Instance.SemiAxis2));
         var placement = Placements.ReadOptionalAxis2Placement3D(ctx, ellipse, IfcConic.Instance.Position);
-        return SampleConicArc2D(placement, a, b, u1, u2, sense, ctx.CircleSegments);
+        return SampleTrimmedConicArc2D(placement, a, b, u1, u2, sense, ctx.CircleSegments);
     }
 
     static List<Vector3> TrimEllipse3D(MeshingContext ctx, IfcEntity ellipse, IfcEntity trimmed, bool sense)
@@ -394,7 +394,7 @@ public static class CurveEvaluator
         var a = (float)ctx.ScaleLength(MeshHelpers.ReadNumber(ellipse, IfcEllipse.Instance.SemiAxis1));
         var b = (float)ctx.ScaleLength(MeshHelpers.ReadNumber(ellipse, IfcEllipse.Instance.SemiAxis2));
         var placement = Placements.ReadOptionalAxis2Placement3D(ctx, ellipse, IfcConic.Instance.Position);
-        return SampleConicArc3D(placement, a, b, u1, u2, sense, ctx.CircleSegments);
+        return SampleTrimmedConicArc3D(placement, a, b, u1, u2, sense, ctx.CircleSegments);
     }
 
     static List<Vector2> TrimLine2D(MeshingContext ctx, IfcEntity line, IfcEntity trimmed, bool sense)
@@ -490,32 +490,53 @@ public static class CurveEvaluator
     }
 
     static List<Vector2> SampleConicArc2D(Frame3D placement, float a, float b, float u1, float u2, bool sense, int segments)
+        => SampleTrimmedConicArc2D(placement, a, b, u1, u2, sense, segments);
+
+    static List<Vector3> SampleConicArc3D(Frame3D placement, float a, float b, float u1, float u2, bool sense, int segments)
+        => SampleTrimmedConicArc3D(placement, a, b, u1, u2, sense, segments);
+
+    /// <summary>
+    /// PRIMARK-style fillets use SenseAgreement=.F. with long PARAMETER trims (e.g. 0→3π/2).
+    /// Shortest-path normalization collapses those to 90°; long arcs must sweep from u2 by the raw span.
+    /// </summary>
+    static List<Vector2> SampleTrimmedConicArc2D(
+        Frame3D placement, float a, float b, float u1, float u2, bool sense, int segments)
     {
-        var span = NormalizeAngleSpan(u2 - u1, sense);
-        var steps = ConicArcSampleCount(span, segments, Math.Max(a, b));
-        var result = new List<Vector2>(steps + 1);
-        for (var i = 0; i <= steps; i++)
-        {
-            var u = u1 + span * i / steps;
-            var local = new Vector3(a * MathF.Cos(u), b * MathF.Sin(u), 0);
-            var w = placement.ToWorld(local);
-            result.Add(new Vector2(w.X.Value, w.Y.Value));
-        }
+        var (start, sweep, reverse) = ResolveConicTrimSweep(u1, u2, sense);
+        var result = SampleConicArcWithSweep2D(placement, a, b, start, sweep, segments);
+        if (reverse)
+            result.Reverse();
         return result;
     }
 
-    static List<Vector3> SampleConicArc3D(Frame3D placement, float a, float b, float u1, float u2, bool sense, int segments)
+    static List<Vector3> SampleTrimmedConicArc3D(
+        Frame3D placement, float a, float b, float u1, float u2, bool sense, int segments)
     {
-        var span = NormalizeAngleSpan(u2 - u1, sense);
-        var steps = ConicArcSampleCount(span, segments, Math.Max(a, b));
+        var (start, sweep, reverse) = ResolveConicTrimSweep(u1, u2, sense);
+        var steps = ConicArcSampleCount(sweep, segments, Math.Max(a, b));
         var result = new List<Vector3>(steps + 1);
         for (var i = 0; i <= steps; i++)
         {
-            var u = u1 + span * i / steps;
+            var u = start + sweep * i / steps;
             var local = new Vector3(a * MathF.Cos(u), b * MathF.Sin(u), 0);
             result.Add(placement.ToWorld(local));
         }
+        if (reverse)
+            result.Reverse();
         return result;
+    }
+
+    static (float Start, float Sweep, bool Reverse) ResolveConicTrimSweep(float u1, float u2, bool sense)
+    {
+        var raw = u2 - u1;
+        if (!sense)
+        {
+            if (MathF.Abs(raw) > MathF.PI + 1e-3f)
+                return (u2, raw, false);
+            return (u1, -raw, true);
+        }
+
+        return (u1, NormalizeAngleSpan(raw, true), false);
     }
 
     static int ConicArcSampleCount(float span, int segments, float radius)
@@ -590,7 +611,13 @@ public static class CurveEvaluator
             return value;
 
         if (basisCurve?.GetEntityName() is "IFCCIRCLE" or "IFCELLIPSE")
-            return value * MathF.PI / 180f;
+        {
+            // Exporters disagree: some emit degrees (90, 270), others radians (π/2). Values above π
+            // cannot be radians on a single trim, so treat them as degrees (PRIMARK fillet arcs).
+            if (MathF.Abs(value) > MathF.PI + 1e-3f)
+                return value * MathF.PI / 180f;
+            return value;
+        }
 
         return value;
     }
@@ -674,8 +701,18 @@ public static class CurveEvaluator
                 }
 
                 var continuous = !transition.Contains("DISCONTINUOUS", StringComparison.Ordinal);
-                if (continuous && result[^1].DistanceSquared(pts[0]) <= joinTolSq)
+                if (continuous)
+                {
+                    if (segEntity.GetEntityName() == "IFCTRIMMEDCURVE")
+                        pts = OrientTrimmedArcForContinuousJoin(ctx, segEntity, result[^1], pts, joinTolSq);
+                    if (result[^1].DistanceSquared(pts[0]) <= joinTolSq)
+                        pts = pts.Skip(1).ToList();
+                }
+                else if (pts.Count > 1 && PointsContainNear(result, pts[0], joinTolSq))
+                {
+                    // DISCONTINUOUS closing chords often restart at an earlier vertex; omit the duplicate.
                     pts = pts.Skip(1).ToList();
+                }
             }
             result.AddRange(pts);
         }
@@ -694,6 +731,98 @@ public static class CurveEvaluator
         return true;
     }
 
+    static bool PointsContainNear(IReadOnlyList<Vector2> points, Vector2 target, float tolSq)
+    {
+        for (var i = 0; i < points.Count; i++)
+        {
+            if (points[i].DistanceSquared(target) <= tolSq)
+                return true;
+        }
+        return false;
+    }
+
+    static List<Vector2> OrientTrimmedArcForContinuousJoin(
+        MeshingContext ctx,
+        IfcEntity trimmed,
+        Vector2 join,
+        List<Vector2> pts,
+        float joinTolSq)
+    {
+        if (pts.Count < 2)
+            return pts;
+
+        static bool Near(Vector2 a, Vector2 b, float tolSq) => a.DistanceSquared(b) <= tolSq;
+
+        if (Near(join, pts[0], joinTolSq))
+            return pts;
+        if (Near(join, pts[^1], joinTolSq))
+        {
+            pts.Reverse();
+            return pts;
+        }
+
+        if (TrySampleAlternateLongTrimmedArc2D(ctx, trimmed, out var alt) && alt.Count >= 2)
+        {
+            if (Near(join, alt[0], joinTolSq))
+                return alt;
+            if (Near(join, alt[^1], joinTolSq))
+            {
+                alt.Reverse();
+                return alt;
+            }
+        }
+
+        if (join.DistanceSquared(pts[^1]) < join.DistanceSquared(pts[0]))
+            pts.Reverse();
+        return pts;
+    }
+
+    static bool TrySampleAlternateLongTrimmedArc2D(MeshingContext ctx, IfcEntity trimmed, out List<Vector2> arc)
+    {
+        arc = [];
+        var sense = MeshHelpers.ReadOptionalBool(trimmed, IfcTrimmedCurve.Instance.SenseAgreement, true);
+        if (sense)
+            return false;
+
+        var basis = MeshHelpers.ResolveRequired(ctx, trimmed, IfcTrimmedCurve.Instance.BasisCurve);
+        var u1 = ReadTrimParameter(ctx, trimmed, basis, IfcTrimmedCurve.Instance.Trim1);
+        var u2 = ReadTrimParameter(ctx, trimmed, basis, IfcTrimmedCurve.Instance.Trim2);
+        var raw = u2 - u1;
+        if (MathF.Abs(raw) <= MathF.PI + 1e-3f)
+            return false;
+
+        arc = basis.GetEntityName() switch
+        {
+            "IFCCIRCLE" => SampleConicArcWithSweep2D(
+                Placements.ReadOptionalAxis2Placement3D(ctx, basis, IfcConic.Instance.Position),
+                (float)ctx.ScaleLength(MeshHelpers.ReadNumber(basis, IfcCircle.Instance.Radius)),
+                (float)ctx.ScaleLength(MeshHelpers.ReadNumber(basis, IfcCircle.Instance.Radius)),
+                u1, raw, ctx.CircleSegments),
+            "IFCELLIPSE" => SampleConicArcWithSweep2D(
+                Placements.ReadOptionalAxis2Placement3D(ctx, basis, IfcConic.Instance.Position),
+                (float)ctx.ScaleLength(MeshHelpers.ReadNumber(basis, IfcEllipse.Instance.SemiAxis1)),
+                (float)ctx.ScaleLength(MeshHelpers.ReadNumber(basis, IfcEllipse.Instance.SemiAxis2)),
+                u1, raw, ctx.CircleSegments),
+            _ => [],
+        };
+        return arc.Count >= 2;
+    }
+
+    static List<Vector2> SampleConicArcWithSweep2D(
+        Frame3D placement, float a, float b, float start, float sweep, int segments)
+    {
+        var steps = ConicArcSampleCount(sweep, segments, Math.Max(a, b));
+        var result = new List<Vector2>(steps + 1);
+        for (var i = 0; i <= steps; i++)
+        {
+            var u = start + sweep * i / steps;
+            var local = new Vector3(a * MathF.Cos(u), b * MathF.Sin(u), 0);
+            var w = placement.ToWorld(local);
+            result.Add(new Vector2(w.X.Value, w.Y.Value));
+        }
+        return result;
+    }
+
     static List<Vector2> EvaluateCompositeSegment2D(MeshingContext ctx, IfcEntity segEntity, bool sameSense)
     {
         var pts = segEntity.GetEntityName() == "IFCTRIMMEDCURVE"
@@ -706,6 +835,7 @@ public static class CurveEvaluator
 
     static List<Vector3> EvaluateCompositeCurve3D(MeshingContext ctx, IfcEntity composite)
     {
+        var joinTolSq = CompositeJoinToleranceSquared(ctx);
         var result = new List<Vector3>();
         foreach (var segId in MeshHelpers.ReadIds(composite, IfcCompositeCurve.Instance.Segments))
         {
@@ -713,16 +843,37 @@ public static class CurveEvaluator
             var segEntity = MeshHelpers.ResolveRequired(ctx, seg, IfcCompositeCurveSegment.Instance.ParentCurve);
             var sameSense = MeshHelpers.ReadOptionalBool(seg, IfcCompositeCurveSegment.Instance.SameSense, true);
             var transition = seg.GetString(IfcCompositeCurveSegment.Instance.Transition.Index);
-            var pts = Evaluate3D(ctx, segEntity).ToList();
-            if (!sameSense)
-                pts.Reverse();
+            var pts = EvaluateCompositeSegment3D(ctx, segEntity, sameSense);
             if (result.Count > 0 && pts.Count > 0)
             {
                 var continuous = !transition.Contains("DISCONTINUOUS", StringComparison.Ordinal);
-                if (continuous && result[^1].DistanceSquared(pts[0]) < 1e-8f)
+                if (continuous && result[^1].DistanceSquared(pts[0]) <= joinTolSq)
                     pts = pts.Skip(1).ToList();
             }
             result.AddRange(pts);
+        }
+        return SanitizeOpenPathPoints3D(result, joinTolSq);
+    }
+
+    static List<Vector3> EvaluateCompositeSegment3D(MeshingContext ctx, IfcEntity segEntity, bool sameSense)
+    {
+        var pts = segEntity.GetEntityName() == "IFCTRIMMEDCURVE"
+            ? EvaluateTrimmedCurve3D(ctx, segEntity)
+            : Evaluate3D(ctx, segEntity).ToList();
+        if (!sameSense)
+            pts.Reverse();
+        return pts;
+    }
+
+    static List<Vector3> SanitizeOpenPathPoints3D(IReadOnlyList<Vector3> points, float joinToleranceSquared)
+    {
+        if (points.Count == 0)
+            return [];
+        var result = new List<Vector3>(points.Count) { points[0] };
+        for (var i = 1; i < points.Count; i++)
+        {
+            if (result[^1].DistanceSquared(points[i]) > joinToleranceSquared)
+                result.Add(points[i]);
         }
         return result;
     }

@@ -97,20 +97,19 @@ public static class Brep
                 .Select(h => DedupeConsecutive(map.ProjectRing(h)))
                 .Where(h => h.Count >= 3)
                 .ToList();
+            if (map is CylinderMap cylinderMap)
+            {
+                outer2 = DensifyCylindricalUvRing(outer2, cylinderMap.Radius);
+                holes2 = holes2
+                    .Select(h => DensifyCylindricalUvRing(h, cylinderMap.Radius))
+                    .Where(h => h.Count >= 3)
+                    .ToList();
+            }
             if (outer2.Count < 3)
                 continue;
 
-            IReadOnlyList<Triangle2D> tris;
-            try
-            {
-                tris = holes2.Count == 1 && PolygonWithHoles.TryTriangulateCongruentRing(outer2, holes2[0], out var ringTris)
-                    ? ringTris
-                    : PolygonTriangulator.GetTriangles(outer2, holes2);
-            }
-            catch
-            {
+            if (!TryTriangulateFaceRing(outer2, holes2, out var tris))
                 continue;
-            }
 
             var indexMap = new Dictionary<(int, int, int), int>();
             int GetIndex(Vector3 p3)
@@ -309,19 +308,117 @@ public static class Brep
     static List<Vector3> EvaluateBoundaryCurve3D(MeshingContext ctx, IfcEntity curve)
         => DedupeConsecutive3D(CurveEvaluator.Evaluate3D(ctx, curve).ToList());
 
-    static bool TryGetFacePlane(MeshingContext ctx, IfcEntity face, out FacePlane plane)
+    /// <summary>
+    /// Triangulates a projected face boundary. Thin 3- and 4-vertex rings bypass ear clipping,
+    /// which rejects near-degenerate convex corners (common on Institute helix shell facets).
+    /// </summary>
+    static bool TryTriangulateFaceRing(
+        IReadOnlyList<Vector2> outer2,
+        IReadOnlyList<List<Vector2>> holes2,
+        out IReadOnlyList<Triangle2D> tris)
+    {
+        tris = [];
+        if (outer2.Count < 3)
+            return false;
+
+        if (holes2.Count == 0)
+        {
+            var ringArea = MathF.Abs(SignedArea2(outer2[0], outer2[1], outer2[2]));
+            if (outer2.Count >= 4)
+                ringArea += MathF.Abs(SignedArea2(outer2[0], outer2[2], outer2[3]));
+
+            // Fast path only for near-degenerate Institute-style facets; normal quads use ear-clip.
+            const float thinAreaThreshold = 1e-4f;
+            if (ringArea < thinAreaThreshold)
+            {
+                if (outer2.Count == 3)
+                {
+                    if (ringArea <= PolygonTriangulator.Eps)
+                        return false;
+                    tris = [new Triangle2D(outer2[0], outer2[1], outer2[2])];
+                    return true;
+                }
+
+                if (outer2.Count == 4 && TryTriangulateConvexQuad(outer2, out var quadTris))
+                {
+                    tris = quadTris;
+                    return true;
+                }
+            }
+        }
+
+        try
+        {
+            tris = holes2.Count == 1 && PolygonWithHoles.TryTriangulateCongruentRing(outer2, holes2[0], out var ringTris)
+                ? ringTris
+                : PolygonTriangulator.GetTriangles(outer2, holes2);
+            return tris.Count > 0;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    static bool TryTriangulateConvexQuad(IReadOnlyList<Vector2> quad, out IReadOnlyList<Triangle2D> tris)
+    {
+        tris = [];
+        if (quad.Count != 4)
+            return false;
+
+        var area = MathF.Abs(
+            SignedArea2(quad[0], quad[1], quad[2]) + SignedArea2(quad[0], quad[2], quad[3]));
+        if (area <= PolygonTriangulator.Eps)
+            return false;
+
+        var diag02 = quad[0].DistanceSquared(quad[2]);
+        var diag13 = quad[1].DistanceSquared(quad[3]);
+        if (diag02 <= diag13)
+        {
+            if (SignedArea2(quad[0], quad[1], quad[2]) <= PolygonTriangulator.Eps
+                || SignedArea2(quad[0], quad[2], quad[3]) <= PolygonTriangulator.Eps)
+                return false;
+            tris = [new Triangle2D(quad[0], quad[1], quad[2]), new Triangle2D(quad[0], quad[2], quad[3])];
+        }
+        else
+        {
+            if (SignedArea2(quad[0], quad[1], quad[3]) <= PolygonTriangulator.Eps
+                || SignedArea2(quad[1], quad[2], quad[3]) <= PolygonTriangulator.Eps)
+                return false;
+            tris = [new Triangle2D(quad[0], quad[1], quad[3]), new Triangle2D(quad[1], quad[2], quad[3])];
+        }
+
+        return true;
+    }
+
+    static float SignedArea2(Vector2 a, Vector2 b, Vector2 c)
+        => (b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X);
+
+    static bool TryGetFacePlane(MeshingContext ctx, IfcEntity face, IReadOnlyList<Vector3> outer, out FacePlane plane)
     {
         plane = default;
         var surface = MeshHelpers.ResolveOptional(ctx, face, IfcFaceSurface.Instance.FaceSurface);
         if (surface == null)
             return false;
 
-        return surface.GetEntityName() switch
+        var ok = surface.GetEntityName() switch
         {
+            "IFCPLANE" => TryGetPlaneSurface(ctx, surface, out plane),
             "IFCCURVEBOUNDEDPLANE" => TryGetCurveBoundedPlaneSurface(ctx, surface, out plane),
             _ => false,
         };
+        if (!ok || outer.Count < 3)
+            return ok;
+
+        // Shared IFCPLANE refs (e.g. golden box) may not contain every face's boundary — fall back to Newell.
+        var maxDist = 0f;
+        foreach (var p in outer)
+            maxDist = MathF.Max(maxDist, MathF.Abs(Vector3.Dot(p - plane.Origin, plane.Normal)));
+        return maxDist <= PlaneContainmentTolerance(ctx);
     }
+
+    static float PlaneContainmentTolerance(MeshingContext ctx)
+        => MathF.Max(PolygonTriangulator.Eps, MathF.Abs((float)ctx.LengthScale) * 1e-4f);
 
     static bool TryGetPlaneSurface(MeshingContext ctx, IfcEntity planeEntity, out FacePlane plane)
     {
@@ -400,10 +497,20 @@ public static class Brep
     /// Angles are unwrapped along each ring so a partial or full wrap forms a simple 2D polygon;
     /// holes align to the outer ring's angular band.
     /// </summary>
-    sealed class CylinderMap(Frame3D frame, float radius) : SurfaceMap
+    sealed class CylinderMap : SurfaceMap
     {
+        readonly Frame3D _frame;
+        readonly float _radius;
         float _refU;
         bool _hasRef;
+
+        public CylinderMap(Frame3D frame, float radius)
+        {
+            _frame = frame;
+            _radius = radius;
+        }
+
+        public float Radius => _radius;
 
         public override List<Vector2> ProjectRing(IReadOnlyList<Vector3> ring)
         {
@@ -412,7 +519,7 @@ public static class Brep
             var first = true;
             foreach (var p in ring)
             {
-                var local = frame.ToLocal(p);
+                var local = _frame.ToLocal(p);
                 var u = MathF.Atan2(local.Y.Value, local.X.Value);
                 if (!first)
                     u += MathF.Round((prevU - u) / MathF.Tau) * MathF.Tau;
@@ -420,11 +527,11 @@ public static class Brep
                     u += MathF.Round((_refU - u) / MathF.Tau) * MathF.Tau;
                 prevU = u;
                 first = false;
-                result.Add(new Vector2(radius * u, local.Z.Value));
+                result.Add(new Vector2(_radius * u, local.Z.Value));
             }
             if (!_hasRef && result.Count > 0)
             {
-                _refU = result[0].X / radius;
+                _refU = result[0].X / _radius;
                 _hasRef = true;
             }
             return result;
@@ -432,9 +539,46 @@ public static class Brep
 
         public override Vector3 Unproject(Vector2 uv)
         {
-            var u = uv.X / radius;
-            return frame.ToWorld(new Vector3(radius * MathF.Cos(u), radius * MathF.Sin(u), uv.Y));
+            var u = uv.X / _radius;
+            return _frame.ToWorld(new Vector3(_radius * MathF.Cos(u), _radius * MathF.Sin(u), uv.Y));
         }
+    }
+
+    /// <summary>
+    /// Subdivides cylindrical face rings in surface (u,v) space so long arc chords do not flatten
+    /// curved panels. Density is local to the face radius — does not change global curve sampling.
+    /// </summary>
+    static List<Vector2> DensifyCylindricalUvRing(IReadOnlyList<Vector2> uv, float radius)
+    {
+        if (uv.Count < 2)
+            return uv.ToList();
+
+        var maxArcStep = radius * MathF.Tau / 48f;
+        var refined = new List<Vector2>(uv.Count * 2);
+        for (var i = 0; i < uv.Count; i++)
+        {
+            var a = uv[i];
+            var b = uv[(i + 1) % uv.Count];
+            refined.Add(a);
+            var du = MathF.Abs(b.X - a.X);
+            var dv = MathF.Abs(b.Y - a.Y);
+            if (du <= maxArcStep && dv <= maxArcStep)
+                continue;
+
+            var steps = Math.Max(
+                du > maxArcStep ? (int)MathF.Ceiling(du / maxArcStep) : 1,
+                dv > maxArcStep ? (int)MathF.Ceiling(dv / maxArcStep) : 1);
+            steps = Math.Min(steps, 24);
+            for (var s = 1; s < steps; s++)
+            {
+                var t = s / (float)steps;
+                refined.Add(new Vector2(
+                    a.X + (b.X - a.X) * t,
+                    a.Y + (b.Y - a.Y) * t));
+            }
+        }
+
+        return refined;
     }
 
     static SurfaceMap ResolveSurfaceMap(MeshingContext ctx, IfcEntity face, IReadOnlyList<Vector3> outer)
@@ -452,10 +596,12 @@ public static class Brep
             if (surfaceName is "IFCBSPLINESURFACEWITHKNOTS" or "IFCRATIONALBSPLINESURFACEWITHKNOTS" or "IFCBSPLINESURFACE"
                 && TryBuildBSplineSurfaceMap(ctx, surface!, out var bsp))
                 return bsp;
-            if (TryGetFacePlane(ctx, face, out var facePlane))
+            if (TryGetFacePlane(ctx, face, outer, out var facePlane))
                 return new PlanarMap(facePlane);
         }
-        return new PlanarMap(ComputeNewellPlane(outer));
+        return new PlanarMap(outer.Count == 3
+            ? ComputeTrianglePlane(outer[0], outer[1], outer[2])
+            : ComputeNewellPlane(outer));
     }
 
     static bool TryBuildCylinderMap(MeshingContext ctx, IfcEntity surface, out CylinderMap map)
@@ -905,6 +1051,19 @@ public static class Brep
     }
 
     readonly record struct FacePlane(Vector3 Origin, Vector3 Normal, Vector3 U, Vector3 V);
+
+    static FacePlane ComputeTrianglePlane(Vector3 a, Vector3 b, Vector3 c)
+    {
+        var normal = Vector3.Cross(b - a, c - a);
+        if (normal.LengthSquared() < 1e-12f)
+            return ComputeNewellPlane([a, b, c]);
+        normal = normal.Normalize;
+        var u = MathF.Abs(normal.Y) < 0.9f
+            ? Vector3.Cross(Vector3.UnitY, normal).Normalize
+            : Vector3.Cross(Vector3.UnitX, normal).Normalize;
+        var v = Vector3.Cross(normal, u);
+        return new FacePlane(a, normal, u, v);
+    }
 
     static FacePlane ComputeNewellPlane(IReadOnlyList<Vector3> points)
     {

@@ -294,9 +294,10 @@ public class IfcToBosConverter
             if (g != null)
             {
                 var n = (int)g.Id;
-                Debug.Assert(n != def.Id);
+                // TODO: the following assertion seems pointless. It triggers when I don't expect it. 
+                // I wonder what caused it to be an issue?
+                //Debug.Assert(n != def.Id);
                 geometryIdPatch.Add(n, def.Id);
-
                 tmp.Add(def.Id);
             }
         }

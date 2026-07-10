@@ -12,7 +12,7 @@ public static class ModelAssembler
     {
         var ctx = new MeshingContext(file);
         var builder = new Model3DBuilder();
-        var meshIndexByFingerprint = new Dictionary<int, int>();
+        var meshBuckets = new Dictionary<long, List<int>>();
 
         var voidRelations = OpeningCarver.CollectVoidRelations(ctx);
         var openingSolidCache = new Dictionary<int, List<TriangleMesh3D>>();
@@ -33,8 +33,8 @@ public static class ModelAssembler
                     ? Matrix4x4.Identity
                     : Placements.ReadLocalPlacement(ctx, placement).Matrix;
 
-                var parts = new List<CollectedPart>();
-                GeometryPartCollector.CollectParts(ctx, representation, Matrix4x4.Identity, entity.Id, parts);
+                var parts = new List<ScopedPart>();
+                CollectScopedParts(ctx, representation, Matrix4x4.Identity, entity.Id, parts);
                 if (parts.Count == 0)
                     return;
 
@@ -43,14 +43,15 @@ public static class ModelAssembler
 
                 foreach (var part in parts)
                 {
-                    var meshIdx = GetOrAddMesh(builder, meshIndexByFingerprint, part.Mesh);
-                    var matrix = productMatrix * part.Transform;
-                    builder.AddInstance(meshIdx, matrix, Material.Default, part.EntityIndex);
+                    var meshIdx = GetOrAddMesh(builder, meshBuckets, part.DedupScope, part.Part.Mesh);
+                    // Row-vector convention (System.Numerics): world = local * part * product.
+                    var matrix = part.Part.Transform * productMatrix;
+                    builder.AddInstance(meshIdx, matrix, Material.Default, part.Part.EntityIndex);
                 }
             }, entity.GetEntityName(), $"product #{entity.Id}");
         }
 
-        EmitAggregatedVoidHosts(ctx, builder, meshIndexByFingerprint, voidRelations, openingSolidCache);
+        EmitAggregatedVoidHosts(ctx, builder, meshBuckets, voidRelations, openingSolidCache);
         RecordOpeningRelations(ctx);
         return (builder.Build(), ctx.Diagnostics);
     }
@@ -67,7 +68,7 @@ public static class ModelAssembler
     static void EmitAggregatedVoidHosts(
         MeshingContext ctx,
         Model3DBuilder builder,
-        Dictionary<int, int> meshIndexByFingerprint,
+        Dictionary<long, List<int>> meshBuckets,
         Dictionary<int, List<int>> voidRelations,
         Dictionary<int, List<TriangleMesh3D>> openingSolidCache)
     {
@@ -99,7 +100,7 @@ public static class ModelAssembler
 
                 // The child meshes are baked into world coordinates, so the instance transform is
                 // identity (matching how the oracle stores these attributed-up meshes).
-                var meshIdx = GetOrAddMesh(builder, meshIndexByFingerprint, mesh);
+                var meshIdx = GetOrAddMesh(builder, meshBuckets, parentId, mesh);
                 builder.AddInstance(meshIdx, Matrix4x4.Identity, Material.Default, parentId);
                 ctx.Diagnostics.RecordApproximate("IFCRELAGGREGATES",
                     $"Aggregated void-host geometry attributed to #{parentId}");
@@ -129,7 +130,7 @@ public static class ModelAssembler
                 : Placements.ReadLocalPlacement(ctx, placement).Matrix;
 
             foreach (var part in childParts)
-                worldMeshes.Add(MeshHelpers.Transform(part.Mesh, childWorld * part.Transform));
+                worldMeshes.Add(MeshHelpers.Transform(part.Mesh, part.Transform * childWorld));
         }
         return worldMeshes;
     }
@@ -155,14 +156,13 @@ public static class ModelAssembler
         return map;
     }
 
-    static List<CollectedPart> CarveOpenings(
+    static List<ScopedPart> CarveOpenings(
         MeshingContext ctx,
-        List<CollectedPart> parts,
+        List<ScopedPart> parts,
         List<int> openingIds,
         Matrix4x4 productMatrix,
         Dictionary<int, List<TriangleMesh3D>> openingSolidCache)
     {
-        // Resolve each opening's solid once, in world coordinates.
         var worldSolids = new List<TriangleMesh3D>();
         foreach (var openingId in openingIds)
         {
@@ -176,36 +176,139 @@ public static class ModelAssembler
         if (worldSolids.Count == 0)
             return parts;
 
-        var result = new List<CollectedPart>(parts.Count);
+        var result = new List<ScopedPart>(parts.Count);
         foreach (var part in parts)
         {
-            var toLocal = (productMatrix * part.Transform).Invert;
-            var mesh = part.Mesh;
+            var toLocal = (part.Part.Transform * productMatrix).Invert;
+            var mesh = part.Part.Mesh;
             ctx.Try(() =>
             {
                 var localPrisms = worldSolids.Select(w => MeshHelpers.Transform(w, toLocal)).ToList();
                 mesh = OpeningCarver.CarveConvex(mesh, localPrisms);
-            }, "IFCRELVOIDSELEMENT", $"carve product #{part.EntityIndex}");
-            result.Add(new CollectedPart(mesh, part.Transform, part.EntityIndex));
+            }, "IFCRELVOIDSELEMENT", $"carve product #{part.Part.EntityIndex}");
+            result.Add(part with { Part = new CollectedPart(mesh, part.Part.Transform, part.Part.EntityIndex) });
         }
         return result;
     }
 
     static int GetOrAddMesh(
         Model3DBuilder builder,
-        Dictionary<int, int> meshIndexByFingerprint,
+        Dictionary<long, List<int>> meshBuckets,
+        int dedupScope,
         TriangleMesh3D mesh)
     {
-        var fingerprint = ComputeMeshFingerprint(mesh);
-        if (!meshIndexByFingerprint.TryGetValue(fingerprint, out var meshIdx))
+        var bucketKey = CombineBucketKey(dedupScope, ComputeMeshFingerprint(mesh));
+        if (meshBuckets.TryGetValue(bucketKey, out var bucket))
         {
-            meshIdx = builder.Meshes.Count;
-            builder.Meshes.Add(mesh);
-            meshIndexByFingerprint[fingerprint] = meshIdx;
+            foreach (var idx in bucket)
+            {
+                if (MeshesTopologyEqual(builder.Meshes[idx], mesh))
+                    return idx;
+            }
         }
+        else
+        {
+            bucket = new List<int>();
+            meshBuckets[bucketKey] = bucket;
+        }
+
+        var meshIdx = builder.Meshes.Count;
+        builder.Meshes.Add(mesh);
+        bucket.Add(meshIdx);
         return meshIdx;
     }
 
+    static long CombineBucketKey(int dedupScope, int fingerprint)
+        => ((long)dedupScope << 32) | (uint)fingerprint;
+
+    readonly record struct ScopedPart(CollectedPart Part, int DedupScope);
+
+    /// <summary>
+    /// Like <see cref="GeometryPartCollector.CollectParts"/> but tags each part with a dedup scope
+    /// (representation-map or shape-representation express id) so identical bolt caps from different
+    /// type maps stay separate, matching web-ifc mesh granularity.
+    /// </summary>
+    static void CollectScopedParts(
+        MeshingContext ctx,
+        IfcEntity entity,
+        Matrix4x4 parentTransform,
+        int productEntityId,
+        List<ScopedPart> parts,
+        int dedupScope = 0)
+    {
+        switch (entity.GetEntityName())
+        {
+            case "IFCPRODUCTDEFINITIONSHAPE":
+                foreach (var repId in MeshHelpers.ReadIds(entity, IfcProductRepresentation.Instance.Representations))
+                    CollectScopedParts(ctx, ctx.GetEntity(repId), parentTransform, productEntityId, parts, dedupScope);
+                return;
+
+            case "IFCSHAPEREPRESENTATION" or "IFCREPRESENTATION":
+                if (!IsBodyRepresentation(entity))
+                    return;
+
+                foreach (var itemId in MeshHelpers.ReadIds(entity, IfcRepresentation.Instance.Items))
+                    CollectScopedParts(ctx, ctx.GetEntity(itemId), parentTransform, productEntityId, parts, entity.Id);
+                return;
+
+            case "IFCMAPPEDITEM":
+                var map = MeshHelpers.ResolveRequired(ctx, entity, IfcMappedItem.Instance.MappingSource);
+                var rep = MeshHelpers.ResolveRequired(ctx, map, IfcRepresentationMap.Instance.MappedRepresentation);
+                if (!GeometryDispatcher.TryGetMappedItemTransform(ctx, entity, out var mappingTransform))
+                    return;
+                CollectScopedParts(ctx, rep, parentTransform * mappingTransform, productEntityId, parts, map.Id);
+                return;
+
+            case "IFCFACEBASEDSURFACEMODEL":
+                ctx.Diagnostics.RecordSupported("IFCFACEBASEDSURFACEMODEL");
+                foreach (var faceId in MeshHelpers.ReadIds(entity, IfcFaceBasedSurfaceModel.Instance.FbsmFaces))
+                {
+                    var mesh = Brep.BuildFaceBasedSurfaceElement(ctx, ctx.GetEntity(faceId));
+                    if (mesh.FaceIndices.Count > 0)
+                        parts.Add(new ScopedPart(new CollectedPart(mesh, parentTransform, productEntityId), dedupScope));
+                }
+                return;
+
+            case "IFCSTYLEDITEM":
+                var styledItem = MeshHelpers.ResolveOptional(ctx, entity, IfcStyledItem.Instance.Item);
+                if (styledItem is not null)
+                    CollectScopedParts(ctx, styledItem, parentTransform, productEntityId, parts, dedupScope);
+                return;
+
+            default:
+                var built = GeometryDispatcher.TryBuild(ctx, entity);
+                if (built is not null && built.Value.FaceIndices.Count > 0)
+                    parts.Add(new ScopedPart(new CollectedPart(built.Value, parentTransform, productEntityId), dedupScope));
+                return;
+        }
+    }
+
+    static bool IsBodyRepresentation(IfcEntity representation)
+    {
+        static bool Matches(string? value) =>
+            !string.IsNullOrEmpty(value) &&
+            (value.Contains("Body", StringComparison.OrdinalIgnoreCase) ||
+             value.Contains("SweptSolid", StringComparison.OrdinalIgnoreCase) ||
+             value.Contains("Tessellation", StringComparison.OrdinalIgnoreCase) ||
+             value.Contains("Brep", StringComparison.OrdinalIgnoreCase) ||
+             value.Contains("Facetation", StringComparison.OrdinalIgnoreCase) ||
+             value.Contains("Clipping", StringComparison.OrdinalIgnoreCase) ||
+             value.Contains("SurfaceModel", StringComparison.OrdinalIgnoreCase) ||
+             value.Contains("MappedRepresentation", StringComparison.OrdinalIgnoreCase));
+
+        var identifier = representation.GetString(IfcRepresentation.Instance.RepresentationIdentifier.Index);
+        if (Matches(identifier))
+            return true;
+
+        var repType = representation.GetString(IfcRepresentation.Instance.RepresentationType.Index);
+        return Matches(repType);
+    }
+
+    /// <summary>
+    /// Fast pre-filter for mesh dedup. Samples vertices across the mesh (not only the first ring —
+    /// bolt caps share identical coarse hex heads while shanks differ) plus spread triangle indices.
+    /// Collisions are resolved by <see cref="MeshesTopologyEqual"/> in <see cref="GetOrAddMesh"/>.
+    /// </summary>
     static int ComputeMeshFingerprint(TriangleMesh3D mesh)
     {
         unchecked
@@ -220,17 +323,52 @@ public static class ModelAssembler
             h = h * 397 ^ bounds.Max.Y.GetHashCode();
             h = h * 397 ^ bounds.Max.Z.GetHashCode();
 
-            var sampleCount = Math.Min(mesh.Points.Count, 16);
-            for (var i = 0; i < sampleCount; i++)
+            var pointCount = mesh.Points.Count;
+            var sampleCount = Math.Min(pointCount, 16);
+            for (var s = 0; s < sampleCount; s++)
             {
+                var i = sampleCount <= 1 ? 0 : (int)((long)s * (pointCount - 1) / (sampleCount - 1));
                 var p = mesh.Points[i];
-                h = h * 397 ^ p.X.Value.GetHashCode();
-                h = h * 397 ^ p.Y.Value.GetHashCode();
-                h = h * 397 ^ p.Z.Value.GetHashCode();
+                h = h * 397 ^ p.X.GetHashCode();
+                h = h * 397 ^ p.Y.GetHashCode();
+                h = h * 397 ^ p.Z.GetHashCode();
+            }
+
+            var faceCount = mesh.FaceIndices.Count;
+            var triSamples = Math.Min(faceCount, 4);
+            for (var s = 0; s < triSamples; s++)
+            {
+                var ti = triSamples <= 1 ? 0 : (int)((long)s * (faceCount - 1) / (triSamples - 1));
+                var t = mesh.FaceIndices[ti];
+                h = h * 397 ^ t.A;
+                h = h * 397 ^ t.B;
+                h = h * 397 ^ t.C;
             }
 
             return h;
         }
+    }
+
+    static bool MeshesTopologyEqual(TriangleMesh3D a, TriangleMesh3D b)
+    {
+        if (a.Points.Count != b.Points.Count || a.FaceIndices.Count != b.FaceIndices.Count)
+            return false;
+
+        for (var i = 0; i < a.Points.Count; i++)
+        {
+            if (!a.Points[i].Equals(b.Points[i]))
+                return false;
+        }
+
+        for (var i = 0; i < a.FaceIndices.Count; i++)
+        {
+            var fa = a.FaceIndices[i];
+            var fb = b.FaceIndices[i];
+            if (fa.A != fb.A || fa.B != fb.B || fa.C != fb.C)
+                return false;
+        }
+
+        return true;
     }
 
     static bool IsProduct(IfcEntity entity)

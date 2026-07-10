@@ -143,6 +143,17 @@ public static class MeshHelpers
             foreach (var p in hole)
                 AddBottom(p);
 
+        // Cap triangulation can introduce vertices not on the profile rings (ear-clip Steiner
+        // points, resampled inner rings). Register them before duplicating the top ring so
+        // TopIndex(bottom) always has a matching top vertex.
+        var capTris = profile.Triangulate();
+        foreach (var tri in capTris)
+        {
+            AddBottom(tri.A.Vector2);
+            AddBottom(tri.B.Vector2);
+            AddBottom(tri.C.Vector2);
+        }
+
         var bottomCount = points.Count;
         var topOffset = bottomCount;
         for (var i = 0; i < bottomCount; i++)
@@ -151,7 +162,7 @@ public static class MeshHelpers
         int TopIndex(int bottomIdx) => bottomIdx + topOffset;
 
         var faces = new List<Integer3>();
-        foreach (var tri in profile.Triangulate())
+        foreach (var tri in capTris)
         {
             var a = AddBottom(tri.A.Vector2);
             var b = AddBottom(tri.B.Vector2);
