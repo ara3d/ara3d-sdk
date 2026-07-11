@@ -25,7 +25,225 @@ public sealed class PolygonWithHoles
             return ringTris;
         if (Holes.Count == 0 && TryTriangulateConvexFan(Outer, out var fanTris))
             return fanTris;
-        return PolygonTriangulator.GetTriangles(Outer, Holes);
+        try
+        {
+            return PolygonTriangulator.GetTriangles(Outer, Holes);
+        }
+        catch (InvalidOperationException)
+        {
+            // Ear-clip uses an absolute epsilon (PolygonTriangulator.Eps = 1e-6): on sub-meter profiles
+            // (accessory rings, finely sampled arcs / fillets) the adjacent-edge cross products and
+            // triangle areas fall below that band, so near-collinear vertices are misclassified and the
+            // clip stalls. Retry in a normalized ~100-unit box so the epsilon acts relatively, then snap
+            // each result vertex back to the exact profile vertex it came from (ear-clip introduces no
+            // Steiner points) so Quantize keys and extrusion wall seams stay aligned.
+            return TriangulateNormalized(Outer, Holes);
+        }
+    }
+
+    static IReadOnlyList<Triangle2D> TriangulateNormalized(
+        IReadOnlyList<Vector2> outer,
+        IReadOnlyList<IReadOnlyList<Vector2>> holes)
+    {
+        var bounds = outer.GetBounds();
+        var size = bounds.Size;
+        var extent = MathF.Max(MathF.Abs((float)size.X.Value), MathF.Abs((float)size.Y.Value));
+        if (!(extent > PolygonTriangulator.Eps))
+            return PolygonTriangulator.GetTriangles(outer, holes);
+
+        const float target = 100f;
+        var scale = target / extent;
+        var ox = (float)bounds.Min.X.Value;
+        var oy = (float)bounds.Min.Y.Value;
+
+        Vector2 Fwd(Vector2 p) => new(((float)p.X.Value - ox) * scale, ((float)p.Y.Value - oy) * scale);
+
+        var registry = new List<(Vector2 Norm, Vector2 Orig)>();
+        void Register(Vector2 p) => registry.Add((Fwd(p), p));
+        foreach (var p in outer)
+            Register(p);
+        foreach (var hole in holes)
+            foreach (var p in hole)
+                Register(p);
+
+        Vector2 Snap(Vector2 normPt)
+        {
+            var best = normPt;
+            var bestD = float.PositiveInfinity;
+            foreach (var (norm, orig) in registry)
+            {
+                var dx = (float)norm.X.Value - (float)normPt.X.Value;
+                var dy = (float)norm.Y.Value - (float)normPt.Y.Value;
+                var d = dx * dx + dy * dy;
+                if (d < bestD)
+                {
+                    bestD = d;
+                    best = orig;
+                }
+            }
+            // Ear-clip reuses input vertices; a genuine miss (unexpected Steiner point) inverts the map.
+            return bestD <= 1e-2f
+                ? best
+                : new Vector2((float)normPt.X.Value / scale + ox, (float)normPt.Y.Value / scale + oy);
+        }
+
+        var normOuter = outer.Select(Fwd).ToList();
+        var normHoles = holes
+            .Select(h => (IReadOnlyList<Vector2>)h.Select(Fwd).ToList())
+            .ToList();
+
+        // Redundant collinear vertices (polyline segments sampled with extra points) have a
+        // turn-angle of ~0 at every scale, so ear-clip never treats them as convex ears and stalls.
+        // Drop them from the cap ring; the extrusion walls still visit every original vertex, and the
+        // dropped points lie exactly on a cap-triangle edge, so the solid stays closed.
+        if (normHoles.Count == 0)
+            normOuter = RemoveNearCollinear(normOuter);
+
+        IReadOnlyList<Triangle2D> normTris;
+        try
+        {
+            normTris = PolygonTriangulator.GetTriangles(normOuter, normHoles);
+        }
+        catch (InvalidOperationException) when (normHoles.Count == 0
+            && RobustEarClip(normOuter) is { } recovered)
+        {
+            // Composite-curve rings (arc + trimmed + polyline) can leave a small reflex pocket where
+            // the shared ear-clip's fixed epsilon rejects every candidate and stalls. A recovery clip
+            // (clip the most-convex empty ear, breaking ties by area) always terminates on a simple
+            // ring. Only reached after the shared path already failed, so no effect on passing files.
+            normTris = recovered;
+        }
+
+        return normTris
+            .Select(t => new Triangle2D(Snap(t.A.Vector2), Snap(t.B.Vector2), Snap(t.C.Vector2)))
+            .ToList();
+    }
+
+    /// <summary>
+    /// Self-contained ear-clip for a simple ring that the shared triangulator stalled on. Prefers
+    /// strictly-convex empty ears; if none is found (float-noise pocket) it clips the most-convex
+    /// vertex to guarantee forward progress. Returns null if the ring is genuinely degenerate.
+    /// </summary>
+    static IReadOnlyList<Triangle2D>? RobustEarClip(IReadOnlyList<Vector2> ring)
+    {
+        var n = ring.Count;
+        if (n < 3)
+            return null;
+
+        var idx = Enumerable.Range(0, n).ToList();
+        var area = 0.0;
+        for (var i = 0; i < n; i++)
+        {
+            var a = ring[i];
+            var b = ring[(i + 1) % n];
+            area += (double)a.X.Value * b.Y.Value - (double)b.X.Value * a.Y.Value;
+        }
+        if (area < 0)
+            idx.Reverse();
+
+        bool StrictlyInside(Vector2 a, Vector2 b, Vector2 c, Vector2 p)
+        {
+            const float eps = 1e-4f;
+            var d1 = PolygonTriangulator.Cross(a, b, p);
+            var d2 = PolygonTriangulator.Cross(b, c, p);
+            var d3 = PolygonTriangulator.Cross(c, a, p);
+            return d1 > eps && d2 > eps && d3 > eps;
+        }
+
+        var tris = new List<Triangle2D>(n - 2);
+        var guard = 0;
+        while (idx.Count > 3 && guard++ < n * n * 4)
+        {
+            var m = idx.Count;
+            var clipped = false;
+            var bestCross = float.NegativeInfinity;
+            var bestVertex = -1;
+            for (var i = 0; i < m; i++)
+            {
+                var a = ring[idx[(i - 1 + m) % m]];
+                var b = ring[idx[i]];
+                var c = ring[idx[(i + 1) % m]];
+                var cross = PolygonTriangulator.Cross(a, b, c);
+                if (cross > bestCross)
+                {
+                    bestCross = cross;
+                    bestVertex = i;
+                }
+                if (cross <= 0)
+                    continue;
+
+                var empty = true;
+                for (var j = 0; j < m; j++)
+                {
+                    if (j == i || j == (i - 1 + m) % m || j == (i + 1) % m)
+                        continue;
+                    if (StrictlyInside(a, b, c, ring[idx[j]]))
+                    {
+                        empty = false;
+                        break;
+                    }
+                }
+                if (!empty)
+                    continue;
+
+                tris.Add(new Triangle2D(a, b, c));
+                idx.RemoveAt(i);
+                clipped = true;
+                break;
+            }
+
+            if (clipped)
+                continue;
+            if (bestVertex < 0 || bestCross <= 0)
+                return null;
+
+            var pa = ring[idx[(bestVertex - 1 + m) % m]];
+            var pb = ring[idx[bestVertex]];
+            var pc = ring[idx[(bestVertex + 1) % m]];
+            tris.Add(new Triangle2D(pa, pb, pc));
+            idx.RemoveAt(bestVertex);
+        }
+
+        if (idx.Count != 3)
+            return null;
+        tris.Add(new Triangle2D(ring[idx[0]], ring[idx[1]], ring[idx[2]]));
+        return tris;
+    }
+
+    /// <summary>Removes vertices whose turn-angle is negligible (scale-invariant sine test).</summary>
+    static List<Vector2> RemoveNearCollinear(IReadOnlyList<Vector2> ring)
+    {
+        const float sinTol = 1e-3f;
+        var pts = ring.ToList();
+        var changed = true;
+        while (changed && pts.Count > 3)
+        {
+            changed = false;
+            for (var i = 0; i < pts.Count && pts.Count > 3; i++)
+            {
+                var n = pts.Count;
+                var a = pts[(i - 1 + n) % n];
+                var b = pts[i];
+                var c = pts[(i + 1) % n];
+                var e1 = MathF.Sqrt((float)a.DistanceSquared(b));
+                var e2 = MathF.Sqrt((float)b.DistanceSquared(c));
+                if (e1 <= PolygonTriangulator.Eps || e2 <= PolygonTriangulator.Eps)
+                {
+                    pts.RemoveAt(i);
+                    changed = true;
+                    i--;
+                    continue;
+                }
+                var sin = MathF.Abs(PolygonTriangulator.Cross(a, b, c)) / (e1 * e2);
+                if (sin < sinTol)
+                {
+                    pts.RemoveAt(i);
+                    changed = true;
+                    i--;
+                }
+            }
+        }
+        return pts;
     }
 
     /// <summary>Fan triangulation for convex rings; ear-clip uses absolute eps and fails on small circles.</summary>
@@ -84,7 +302,8 @@ public sealed class PolygonWithHoles
         return TryTriangulateCongruentRing(outer, innerRing, out triangles);
     }
 
-    static List<Vector2> ResampleClosedRing(IReadOnlyList<Vector2> ring, int targetCount)
+    /// <summary>Resamples a closed ring to <paramref name="targetCount"/> vertices (arc-length).</summary>
+    public static List<Vector2> ResampleClosedRing(IReadOnlyList<Vector2> ring, int targetCount)
     {
         if (ring.Count == targetCount)
             return ring.ToList();

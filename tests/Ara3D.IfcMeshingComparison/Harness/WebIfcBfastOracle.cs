@@ -39,7 +39,12 @@ public static class WebIfcBfastOracle
         var outPath = OraclePath(ifcPath);
 
         using var file = TestFiles.LoadWithOracleGeometry(ifcPath);
-        var model = file.ToModel3D();
+        // web-ifc emits zero-face meshes (65 on schependomlaan) for degenerate/failed representations.
+        // RenderModelData.Update silently skips empty meshes WITHOUT remapping instance mesh indices,
+        // which shifts every later instance onto the wrong slice and corrupts the serialized oracle's
+        // entity->geometry assignment. Drop the empties (and their instances) up front — WhereMeshes
+        // remaps correctly — so Update sees no empties and the oracle stays faithful to live web-ifc.
+        var model = file.ToModel3D().WhereMeshes(m => m.FaceIndices.Count > 0);
         using var renderData = new RenderModelData(3);
         renderData.Update(model);
         renderData.Write(outPath);
@@ -121,15 +126,12 @@ public static class WebIfcBfastOracle
 
     static Model3D LoadBfastModel(FilePath bfastPath)
     {
-        var data = RenderModelBfastSerializer.Load(bfastPath);
-        try
-        {
-            return new Model3D(data.Meshes.ToList(), data.InstanceData.ToList());
-        }
-        finally
-        {
-            data.Dispose();
-        }
+        // GetMesh returns points/indices as slices aliasing data's unmanaged buffers; they must be
+        // cloned into managed arrays before Dispose frees that memory. Returning the raw slices is a
+        // use-after-free that AV-crashes as soon as a consumer reads points (e.g. EntityBoundsMatch
+        // on schependomlaan, whose I/O mesh reordering forces that bounds path).
+        using var data = RenderModelBfastSerializer.Load(bfastPath);
+        return new Model3D(ModelComparer.CloneMeshes(data.Meshes), data.InstanceData.ToList());
     }
 
     static BfastLiveParityReport CompareEntityAssignments(Model3D live, Model3D cached)

@@ -102,7 +102,8 @@ public static class GeometryPartCollector
         if (!GeometryDispatcher.TryGetMappedItemTransform(ctx, mapped, out var mappingTransform))
             return;
 
-        CollectParts(ctx, rep, parentTransform * mappingTransform, productEntityId, parts, material);
+        // Row-vector: apply mapping first, then parent (nested maps = inner * outer).
+        CollectParts(ctx, rep, mappingTransform * parentTransform, productEntityId, parts, material);
     }
 
     static bool IsBodyRepresentation(IfcEntity representation)

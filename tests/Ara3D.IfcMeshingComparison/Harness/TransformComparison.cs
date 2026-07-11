@@ -20,7 +20,24 @@ public sealed record InstanceTransformDelta(
     int OracleTriCount,
     MatrixDelta MatrixDelta,
     double BoundsCenterDistance,
-    bool Unpaired);
+    bool Unpaired,
+    PlacementDeltaClass Classification = PlacementDeltaClass.Unknown,
+    double PairConfidence = 1.0);
+
+/// <summary>
+/// Separates true instance-matrix / placement disagreement from bounds-center Δ driven by
+/// different mesh extents (shape/instancing) while the transform itself mostly matches.
+/// </summary>
+public enum PlacementDeltaClass
+{
+    Unknown,
+    /// <summary>Matrix translation or rotation disagrees materially with the oracle.</summary>
+    PlacementMatrix,
+    /// <summary>Matrix mostly matches; bounds-center Δ is inflated by shape / mesh extent mismatch.</summary>
+    ShapeInflatedCenter,
+    /// <summary>Both matrix and local mesh extents agree; residual center Δ is small or pairing noise.</summary>
+    Matched,
+}
 
 public sealed record TransformComparisonSummary(
     int SharedEntityCount,
@@ -35,7 +52,14 @@ public sealed record TransformComparisonSummary(
     double MaxRotationAngleDeg,
     double MeanBoundsCenterDistance,
     double MaxBoundsCenterDistance,
-    IReadOnlyList<InstanceTransformDelta> WorstInstances);
+    IReadOnlyList<InstanceTransformDelta> WorstInstances,
+    int PlacementMatrixCount = 0,
+    int ShapeInflatedCenterCount = 0,
+    int MatchedPlacementCount = 0,
+    double MeanCenterDistancePlacementOnly = 0,
+    double MaxCenterDistancePlacementOnly = 0,
+    double MeanCenterDistanceShapeInflated = 0,
+    double MaxCenterDistanceShapeInflated = 0);
 
 public static class TransformComparison
 {
@@ -77,7 +101,7 @@ public static class TransformComparison
         foreach (var entityId in shared)
         {
             var pairs = PairInstances(candidate, oracle, candByEntity[entityId], oracleByEntity[entityId]);
-            foreach (var (candInst, oracleInst, unpaired) in pairs)
+            foreach (var (candInst, oracleInst, unpaired, confidence) in pairs)
             {
                 if (unpaired)
                 {
@@ -94,6 +118,7 @@ public static class TransformComparison
                 var candBounds = MeshHelpers.GetBounds(MeshHelpers.Transform(candMesh, candInst.Matrix4x4));
                 var oracleBounds = MeshHelpers.GetBounds(MeshHelpers.Transform(oracleMesh, oracleInst.Matrix4x4));
                 var centerDist = (candBounds.Center.Vector3 - oracleBounds.Center.Vector3).Length();
+                var classification = ClassifyDelta(matrixDelta, centerDist, candMesh, oracleMesh);
 
                 deltas.Add(new InstanceTransformDelta(
                     entityId,
@@ -103,7 +128,9 @@ public static class TransformComparison
                     oracleMesh.FaceIndices.Count,
                     matrixDelta,
                     centerDist,
-                    false));
+                    false,
+                    classification,
+                    confidence));
             }
         }
 
@@ -129,6 +156,10 @@ public static class TransformComparison
             .Take(20)
             .ToList();
 
+        var placement = deltas.Where(d => d.Classification == PlacementDeltaClass.PlacementMatrix).ToList();
+        var shapeInflated = deltas.Where(d => d.Classification == PlacementDeltaClass.ShapeInflatedCenter).ToList();
+        var matched = deltas.Where(d => d.Classification == PlacementDeltaClass.Matched).ToList();
+
         return new TransformComparisonSummary(
             shared.Count,
             deltas.Count,
@@ -142,7 +173,54 @@ public static class TransformComparison
             deltas.Max(d => d.MatrixDelta.RotationAngleDeg),
             deltas.Average(d => d.BoundsCenterDistance),
             deltas.Max(d => d.BoundsCenterDistance),
-            worst);
+            worst,
+            placement.Count,
+            shapeInflated.Count,
+            matched.Count,
+            placement.Count == 0 ? 0 : placement.Average(d => d.BoundsCenterDistance),
+            placement.Count == 0 ? 0 : placement.Max(d => d.BoundsCenterDistance),
+            shapeInflated.Count == 0 ? 0 : shapeInflated.Average(d => d.BoundsCenterDistance),
+            shapeInflated.Count == 0 ? 0 : shapeInflated.Max(d => d.BoundsCenterDistance));
+    }
+
+    /// <summary>
+    /// Classifies a paired instance: matrix disagreement vs shape-inflated bounds-center Δ.
+    /// Prefers world bounds-center + rotation over raw Frobenius — candidate/oracle often disagree
+    /// on local-frame baking (high Frobenius) while still agreeing on world placement.
+    /// </summary>
+    public static PlacementDeltaClass ClassifyDelta(
+        MatrixDelta matrixDelta,
+        double boundsCenterDistance,
+        TriangleMesh3D candidateMesh,
+        TriangleMesh3D oracleMesh)
+    {
+        const double matrixTransTol = 0.25; // metres
+        const double matrixRotTolDeg = 2.0;
+        const double centerTol = 0.25;
+        const double centerLarge = 1.0;
+
+        var rotationDisagree = matrixDelta.RotationAngleDeg > matrixRotTolDeg;
+        var translationDisagree = matrixDelta.TranslationDistance > matrixTransTol;
+        var centerDisagree = boundsCenterDistance > centerTol;
+        var centerLargeDisagree = boundsCenterDistance > centerLarge;
+
+        // Orientation wrong → true placement bug regardless of center.
+        if (rotationDisagree)
+            return PlacementDeltaClass.PlacementMatrix;
+
+        // World centers agree: treat as matched even when Frobenius is large (baked vs unbaked frames).
+        if (!centerDisagree)
+            return PlacementDeltaClass.Matched;
+
+        // Centers diverge a lot with matching rotation:
+        // - matrix translation also diverges → placement/mapping bug
+        // - matrix translation agrees → shape/extent inflated the bounds center
+        if (centerLargeDisagree && translationDisagree)
+            return PlacementDeltaClass.PlacementMatrix;
+
+        _ = candidateMesh;
+        _ = oracleMesh;
+        return PlacementDeltaClass.ShapeInflatedCenter;
     }
 
     public static Model3D LoadBfastModel(FilePath bfastPath)
@@ -187,15 +265,25 @@ public static class TransformComparison
         sb.AppendLine($"- Mean translation distance: {summary.MeanTranslationDistance:F4} (max {summary.MaxTranslationDistance:F4})");
         sb.AppendLine($"- Mean rotation angle (deg): {summary.MeanRotationAngleDeg:F2} (max {summary.MaxRotationAngleDeg:F2})");
         sb.AppendLine($"- Mean bounds-center distance: {summary.MeanBoundsCenterDistance:F4} (max {summary.MaxBoundsCenterDistance:F4})");
+        sb.AppendLine(
+            $"- Placement split: matrix={summary.PlacementMatrixCount}, " +
+            $"shape-inflated-center={summary.ShapeInflatedCenterCount}, matched={summary.MatchedPlacementCount}");
+        sb.AppendLine(
+            $"- Center Δ (placement-matrix only): mean={summary.MeanCenterDistancePlacementOnly:F4} " +
+            $"(max {summary.MaxCenterDistancePlacementOnly:F4})");
+        sb.AppendLine(
+            $"- Center Δ (shape-inflated only): mean={summary.MeanCenterDistanceShapeInflated:F4} " +
+            $"(max {summary.MaxCenterDistanceShapeInflated:F4})");
         sb.AppendLine();
-        sb.AppendLine("| Entity | CandMesh | OracleMesh | Tri(c/o) | Frobenius | Trans | Rot° | CenterΔ |");
-        sb.AppendLine("|---:|---:|---:|---:|---:|---:|---:|---:|");
+        sb.AppendLine("| Entity | CandMesh | OracleMesh | Tri(c/o) | Frobenius | Trans | Rot° | CenterΔ | Conf | Class |");
+        sb.AppendLine("|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|");
         foreach (var d in summary.WorstInstances)
         {
             sb.AppendLine(
                 $"| {d.EntityId} | {d.CandidateMeshIndex} | {d.OracleMeshIndex} | " +
                 $"{d.CandidateTriCount}/{d.OracleTriCount} | {d.MatrixDelta.Frobenius:F4} | " +
-                $"{d.MatrixDelta.TranslationDistance:F4} | {d.MatrixDelta.RotationAngleDeg:F2} | {d.BoundsCenterDistance:F4} |");
+                $"{d.MatrixDelta.TranslationDistance:F4} | {d.MatrixDelta.RotationAngleDeg:F2} | " +
+                $"{d.BoundsCenterDistance:F4} | {d.PairConfidence:F2} | {d.Classification} |");
         }
         return sb.ToString();
     }
@@ -214,64 +302,96 @@ public static class TransformComparison
         return map;
     }
 
-    static List<(InstanceStruct Cand, InstanceStruct Oracle, bool Unpaired)> PairInstances(
+    readonly record struct PairCandidate(InstanceStruct Inst, Vector3 Centroid, float Diagonal, int Tri);
+
+    /// <summary>
+    /// Pairs candidate and oracle instances of one entity by world-centroid nearest-assignment
+    /// (WP-T1). The previous exact-triangle-count pairing mixed dissimilar 12-tri stubs and put a
+    /// ~0.5 m noise floor under every placement metric. Triangle-count agreement is only a
+    /// tiebreak/confidence signal now, not a hard gate.
+    /// </summary>
+    static List<(InstanceStruct Cand, InstanceStruct Oracle, bool Unpaired, double Confidence)> PairInstances(
         Model3D candidate,
         Model3D oracle,
         List<InstanceStruct> candList,
         List<InstanceStruct> oracleList)
     {
-        var candKeys = candList
-            .Select(i => (Inst: i, Tri: candidate.Meshes[i.MeshIndex].FaceIndices.Count))
-            .OrderBy(x => x.Tri)
-            .ThenBy(x => x.Inst.MeshIndex)
-            .ToList();
-        var oracleKeys = oracleList
-            .Select(i => (Inst: i, Tri: oracle.Meshes[i.MeshIndex].FaceIndices.Count))
-            .OrderBy(x => x.Tri)
-            .ThenBy(x => x.Inst.MeshIndex)
-            .ToList();
+        var pairs = new List<(InstanceStruct, InstanceStruct, bool, double)>();
 
-        var pairs = new List<(InstanceStruct, InstanceStruct, bool)>();
-        var usedOracle = new bool[oracleKeys.Count];
-
-        foreach (var (candInst, candTri) in candKeys)
+        // Empty / degenerate meshes have no finite world centroid; they cannot be placement-compared,
+        // so route them straight to unpaired instead of polluting the mean with NaN/∞ distances.
+        var cands = new List<PairCandidate>();
+        foreach (var i in candList)
         {
-            var best = -1;
-            var bestScore = double.MaxValue;
-            for (var j = 0; j < oracleKeys.Count; j++)
-            {
-                if (usedOracle[j])
-                    continue;
-                var (oracleInst, oracleTri) = oracleKeys[j];
-                if (oracleTri != candTri)
-                    continue;
-
-                var score = CompareMatrices(candInst.Matrix4x4, oracleInst.Matrix4x4).Frobenius;
-                if (score < bestScore)
-                {
-                    bestScore = score;
-                    best = j;
-                }
-            }
-
-            if (best >= 0)
-            {
-                usedOracle[best] = true;
-                pairs.Add((candInst, oracleKeys[best].Inst, false));
-            }
-            else
-            {
-                pairs.Add((candInst, default, true));
-            }
+            var d = Describe(candidate, i);
+            if (IsFinite(d.Centroid)) cands.Add(d);
+            else pairs.Add((i, default, true, 0.0));
+        }
+        var oracles = new List<PairCandidate>();
+        foreach (var i in oracleList)
+        {
+            var d = Describe(oracle, i);
+            if (IsFinite(d.Centroid)) oracles.Add(d);
+            else pairs.Add((default, i, true, 0.0));
         }
 
-        for (var j = 0; j < oracleKeys.Count; j++)
+        // All cross pairs, cheapest world-centroid distance first; triangle-count delta breaks ties.
+        var candidates = new List<(double Dist, int TriDelta, int Ci, int Oj)>(cands.Count * oracles.Count);
+        for (var ci = 0; ci < cands.Count; ci++)
+            for (var oj = 0; oj < oracles.Count; oj++)
+                candidates.Add((
+                    (cands[ci].Centroid - oracles[oj].Centroid).Length(),
+                    Math.Abs(cands[ci].Tri - oracles[oj].Tri),
+                    ci,
+                    oj));
+        candidates.Sort((a, b) => a.Dist != b.Dist
+            ? a.Dist.CompareTo(b.Dist)
+            : a.TriDelta.CompareTo(b.TriDelta));
+
+        var usedCand = new bool[cands.Count];
+        var usedOracle = new bool[oracles.Count];
+        foreach (var (dist, _, ci, oj) in candidates)
         {
-            if (!usedOracle[j])
-                pairs.Add((default, oracleKeys[j].Inst, true));
+            if (usedCand[ci] || usedOracle[oj])
+                continue;
+            usedCand[ci] = true;
+            usedOracle[oj] = true;
+            pairs.Add((cands[ci].Inst, oracles[oj].Inst, false, PairingConfidence(cands[ci], oracles[oj], dist)));
         }
+
+        for (var ci = 0; ci < cands.Count; ci++)
+            if (!usedCand[ci])
+                pairs.Add((cands[ci].Inst, default, true, 0.0));
+        for (var oj = 0; oj < oracles.Count; oj++)
+            if (!usedOracle[oj])
+                pairs.Add((default, oracles[oj].Inst, true, 0.0));
 
         return pairs;
+    }
+
+    static bool IsFinite(Vector3 v)
+        => float.IsFinite(v.X.Value) && float.IsFinite(v.Y.Value) && float.IsFinite(v.Z.Value);
+
+    static PairCandidate Describe(Model3D model, InstanceStruct inst)
+    {
+        var mesh = model.Meshes[inst.MeshIndex];
+        var bounds = MeshHelpers.GetBounds(MeshHelpers.Transform(mesh, inst.Matrix4x4));
+        var diagonal = (bounds.Max - bounds.Min).Length();
+        return new PairCandidate(inst, bounds.Center.Vector3, diagonal, mesh.FaceIndices.Count);
+    }
+
+    /// <summary>
+    /// Confidence that a pairing is real: close world centroids relative to instance size and
+    /// matching triangle counts push toward 1; distant centroids or divergent tessellation push
+    /// toward 0. Lets callers down-weight noisy pairs instead of trusting equal-tri coincidences.
+    /// </summary>
+    static double PairingConfidence(PairCandidate cand, PairCandidate oracle, double centroidDistance)
+    {
+        var refSize = Math.Max(Math.Max(cand.Diagonal, oracle.Diagonal), 1e-3f);
+        var distanceScore = Math.Max(0.0, 1.0 - centroidDistance / refSize);
+        var maxTri = Math.Max(cand.Tri, oracle.Tri);
+        var triScore = maxTri == 0 ? 1.0 : (double)Math.Min(cand.Tri, oracle.Tri) / maxTri;
+        return 0.7 * distanceScore + 0.3 * triScore;
     }
 
     static double FrobeniusNorm(Matrix4x4 m)

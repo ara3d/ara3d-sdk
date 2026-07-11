@@ -99,8 +99,19 @@ public static class MeshHelpers
             var v = p.Vector3.Transform(matrix);
             return new Point3D(v.X, v.Y, v.Z);
         }).ToList();
-        return new TriangleMesh3D(points, mesh.FaceIndices);
+        // A mirror (negative-determinant operator) reverses handedness; flip triangle winding so
+        // world-space normals stay outward.
+        var faces = LinearDeterminant(matrix) < 0
+            ? mesh.FaceIndices.Select(f => new Integer3(f.A, f.C, f.B)).ToList()
+            : mesh.FaceIndices;
+        return new TriangleMesh3D(points, faces);
     }
+
+    /// <summary>Determinant of the upper-left 3×3 (rotation/scale/mirror) block of an affine transform.</summary>
+    public static float LinearDeterminant(Matrix4x4 m)
+        => m.M11 * (m.M22 * m.M33 - m.M23 * m.M32)
+         - m.M12 * (m.M21 * m.M33 - m.M23 * m.M31)
+         + m.M13 * (m.M21 * m.M32 - m.M22 * m.M31);
 
     public static Bounds3D GetBounds(TriangleMesh3D mesh)
         => mesh.Points.Count == 0 ? Bounds3D.Empty : mesh.Points.Bounds();
@@ -123,6 +134,10 @@ public static class MeshHelpers
         Frame3D frame,
         Vector3 extrusion)
     {
+        // Offset-ring triangulation resamples a single hole to match the outer vertex count.
+        // Wall loops must use that same resampled ring or hole seams stay open.
+        profile = AlignHoleRingsForExtrusion(profile);
+
         var bottomByKey = new Dictionary<(int X, int Y), int>();
         var points = new List<Point3D>();
 
@@ -176,6 +191,25 @@ public static class MeshHelpers
             AddWallLoop(faces, hole, AddBottom, TopIndex, reverse: true);
 
         return new TriangleMesh3D(points, faces);
+    }
+
+    /// <summary>
+    /// Mirrors <see cref="PolygonWithHoles"/> offset-ring resampling so extrusion walls share
+    /// the same hole vertices as the annular cap triangulation.
+    /// </summary>
+    static PolygonWithHoles AlignHoleRingsForExtrusion(PolygonWithHoles profile)
+    {
+        if (profile.Holes.Count != 1)
+            return profile;
+        var hole = profile.Holes[0];
+        if (hole.Count == profile.Outer.Count || hole.Count < 3 || profile.Outer.Count < 3)
+            return profile;
+        if (PolygonTriangulator.HasSelfIntersection(profile.Outer) ||
+            PolygonTriangulator.HasSelfIntersection(hole))
+            return profile;
+
+        var resampled = PolygonWithHoles.ResampleClosedRing(hole, profile.Outer.Count);
+        return new PolygonWithHoles(profile.Outer, [resampled]);
     }
 
     static (int X, int Y) Quantize(Vector2 p)

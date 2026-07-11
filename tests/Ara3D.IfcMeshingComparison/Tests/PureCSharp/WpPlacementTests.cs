@@ -181,6 +181,88 @@ public sealed class WpPlacementTests
     }
 
     [Test]
+    public void MirroredMappedItem3D_HonorsNegativeDeterminant_AndFlipsWinding()
+    {
+        // Box centered at local y=+1 m, mapped through an operator whose Axis2 = (0,-1,0):
+        // a reflection across the XZ plane (determinant -1). It must land at y=-1 (mirrored, not
+        // rotated) and keep its outward winding (signed volume sign preserved).
+        using var model = MicroIfc.Parse(
+            """
+            #1=IFCCARTESIANPOINT((0.,1000.,0.));
+            #2=IFCAXIS2PLACEMENT2D(#1,$);
+            #3=IFCRECTANGLEPROFILEDEF(.AREA.,'P',#2,2000.,2000.);
+            #4=IFCDIRECTION((0.,0.,1.));
+            #5=IFCEXTRUDEDAREASOLID(#3,$,#4,4000.);
+            #6=IFCSHAPEREPRESENTATION($,'Body','SweptSolid',(#5));
+            #7=IFCCARTESIANPOINT((0.,0.,0.));
+            #8=IFCDIRECTION((0.,0.,1.));
+            #9=IFCDIRECTION((1.,0.,0.));
+            #10=IFCAXIS2PLACEMENT3D(#7,#8,#9);
+            #11=IFCREPRESENTATIONMAP(#10,#6);
+            #12=IFCDIRECTION((1.,0.,0.));
+            #13=IFCDIRECTION((0.,-1.,0.));
+            #14=IFCCARTESIANPOINT((0.,0.,0.));
+            #15=IFCDIRECTION((0.,0.,1.));
+            #16=IFCCARTESIANTRANSFORMATIONOPERATOR3D(#12,#13,#14,1.,#15);
+            #17=IFCMAPPEDITEM(#11,#16);
+            """,
+            lengthScaleOverride: 0.001);
+
+        var ctx = model.Context;
+        var op = Placements.ReadCartesianTransformationOperator3D(ctx, ctx.GetEntity(16));
+        Assert.That(MeshHelpers.LinearDeterminant(op), Is.LessThan(0),
+            "mirror operator must keep negative determinant, not be forced right-handed");
+
+        var reference = GeometryDispatcher.TryBuild(ctx, ctx.GetEntity(5));
+        Assert.That(reference, Is.Not.Null);
+        var refVol = MeshHelpers.SignedVolume(reference!.Value);
+        var refCenter = MeshHelpers.GetBounds(reference.Value).Center;
+
+        var mapped = GeometryDispatcher.TryBuild(ctx, ctx.GetEntity(17));
+        Assert.That(mapped, Is.Not.Null);
+        var mappedVol = MeshHelpers.SignedVolume(mapped!.Value);
+        var mappedCenter = MeshHelpers.GetBounds(mapped.Value).Center;
+
+        Assert.That((float)mappedCenter.Y, Is.EqualTo(-(float)refCenter.Y).Within(1e-3f),
+            "mirrored box centroid Y should be negated");
+        Assert.That((float)mappedCenter.X, Is.EqualTo((float)refCenter.X).Within(1e-3f));
+        Assert.That(Math.Sign(mappedVol), Is.EqualTo(Math.Sign(refVol)),
+            "winding flip must preserve signed-volume sign under a mirror");
+        Assert.That(Math.Abs(mappedVol), Is.EqualTo(Math.Abs(refVol)).Within(1e-4),
+            "mirror preserves volume magnitude");
+    }
+
+    [Test]
+    public void MirroredProfileOperator2D_ReflectsRing()
+    {
+        // Derived profile via a 2D operator with Axis2 = (0,-1): reflect the parent ring across X.
+        using var model = MicroIfc.Parse(
+            """
+            #1=IFCCARTESIANPOINT((0.,1000.));
+            #2=IFCAXIS2PLACEMENT2D(#1,$);
+            #3=IFCRECTANGLEPROFILEDEF(.AREA.,'P',#2,2000.,2000.);
+            #4=IFCDIRECTION((1.,0.));
+            #5=IFCDIRECTION((0.,-1.));
+            #6=IFCCARTESIANPOINT((0.,0.));
+            #7=IFCCARTESIANTRANSFORMATIONOPERATOR2D(#4,#5,#6,1.);
+            #8=IFCDERIVEDPROFILEDEF(.AREA.,'D',#3,#7,$);
+            """,
+            lengthScaleOverride: 0.001);
+
+        var ctx = model.Context;
+        var op = Placements.ReadCartesianTransformationOperator2D(ctx, ctx.GetEntity(7));
+        Assert.That(MeshHelpers.LinearDeterminant(op), Is.LessThan(0),
+            "2D mirror operator must keep negative determinant");
+
+        var parent = ProfileBuilder.Build(ctx, ctx.GetEntity(3));
+        var derived = ProfileBuilder.Build(ctx, ctx.GetEntity(8));
+        var parentY = parent.Outer.Average(p => (double)p.Y.Value);
+        var derivedY = derived.Outer.Average(p => (double)p.Y.Value);
+        Assert.That(parentY, Is.EqualTo(1.0).Within(1e-3), "parent ring centered at y=+1");
+        Assert.That(derivedY, Is.EqualTo(-parentY).Within(1e-3), "mirrored ring centered at y=-1");
+    }
+
+    [Test]
     [Explicit("Gate: schependomlaan placement should improve after fix")]
     [Category("Slow")]
     public void Schependomlaan_PlacementGate()

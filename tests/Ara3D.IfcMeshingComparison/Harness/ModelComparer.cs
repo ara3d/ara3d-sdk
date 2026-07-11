@@ -191,7 +191,11 @@ public static class ModelComparer
         return file.ToModel3D();
     }
 
-    static IReadOnlyList<TriangleMesh3D> CloneMeshes(IReadOnlyList<TriangleMesh3D> meshes)
+    /// <summary>
+    /// Materialize managed copies of BFAST meshes whose points/indices are slices aliasing a
+    /// <see cref="RenderModelData"/>'s unmanaged buffers, so the result survives disposing that data.
+    /// </summary>
+    internal static IReadOnlyList<TriangleMesh3D> CloneMeshes(IReadOnlyList<TriangleMesh3D> meshes)
         => meshes.Select(m => new TriangleMesh3D(m.Points.ToList(), m.FaceIndices.ToList())).ToList();
 
     public static ModelComparisonResult CompareFile(FilePath ifcPath, ModelComparerOptions? options = null)
@@ -417,7 +421,6 @@ public static class ModelComparer
 
     static double ShapeSimilarity(ShapeDescriptor a, ShapeDescriptor b)
     {
-        var volume = RatioSimilarity(a.Volume, b.Volume);
         var area = RatioSimilarity(a.Area, b.Area);
         var obb = (
             ExtentRatioScore(a.ObbExtents[0], b.ObbExtents[0]) +
@@ -430,8 +433,20 @@ public static class ModelComparer
             Math.Abs(a.Scattering - b.Scattering)) / 3.0, 0.0, 1.0);
         var boundary = RatioSimilarity(a.BoundaryLength, b.BoundaryLength);
 
-        return 0.25 * volume + 0.15 * area + 0.25 * obb + 0.10 * sphere + 0.15 * pca + 0.10 * boundary;
+        // Signed volume is only meaningful when both meshes are closed. When either is an open shell
+        // (WP-G2 / §4.2) the volume term is noise and punishes the better mesh, so drop it and fold
+        // its weight onto the rotation-invariant area/OBB terms.
+        if (IsWatertight(a) && IsWatertight(b))
+        {
+            var volume = RatioSimilarity(a.Volume, b.Volume);
+            return 0.25 * volume + 0.15 * area + 0.25 * obb + 0.10 * sphere + 0.15 * pca + 0.10 * boundary;
+        }
+        return 0.275 * area + 0.375 * obb + 0.10 * sphere + 0.15 * pca + 0.10 * boundary;
     }
+
+    /// <summary>A mesh is treated as closed when its open-boundary length is negligible vs its size.</summary>
+    static bool IsWatertight(ShapeDescriptor d)
+        => d.BoundaryLength <= 0.05 * Math.Max(d.SphereRadius, 1e-6);
 
     static double RatioSimilarity(double a, double b, double maxRatio = 3.0)
     {

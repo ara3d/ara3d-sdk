@@ -145,6 +145,14 @@ public static class Placements
         var origin = MeshHelpers.ResolveOptional(ctx, op, IfcCartesianTransformationOperator.Instance.LocalOrigin) is { } loc
             ? ReadPoint2D(ctx, loc)
             : Vector2.Zero;
+        // Axis1 (X) / Axis2 (Y): honor verbatim so a mirrored profile operator (negative determinant)
+        // survives instead of collapsing to axis-aligned scale. Absent → identity axes.
+        var x2 = MeshHelpers.ResolveOptional(ctx, op, IfcCartesianTransformationOperator.Instance.Axis1) is { } a1
+            ? ReadDirection2D(ctx, a1, Vector2.UnitX)
+            : Vector2.UnitX;
+        var y2 = MeshHelpers.ResolveOptional(ctx, op, IfcCartesianTransformationOperator.Instance.Axis2) is { } a2
+            ? ReadDirection2D(ctx, a2, new Vector2(-x2.Y, x2.X))
+            : new Vector2(-x2.Y, x2.X);
         var scale = MeshHelpers.ReadNumber(op, IfcCartesianTransformationOperator.Instance.Scale);
         if (scale <= 0)
             scale = 1.0;
@@ -158,7 +166,11 @@ public static class Placements
                 sy = sx;
         }
 
-        var matrix = Matrix4x4.CreateTranslation(new Vector3(origin.X, origin.Y, 0f)) * Matrix4x4.CreateScale(sx, sy, 1f);
+        var matrix = BasisMatrix(
+            new Vector3(x2.X, x2.Y, 0f) * sx,
+            new Vector3(y2.X, y2.Y, 0f) * sy,
+            Vector3.UnitZ,
+            new Vector3(origin.X, origin.Y, 0f));
         ctx._mappedTransforms[op.Id] = matrix;
         ctx.Diagnostics.RecordSupported(name);
         return matrix;
@@ -194,6 +206,11 @@ public static class Placements
         var axis3 = MeshHelpers.ResolveOptional(ctx, op, IfcCartesianTransformationOperator3D.Instance.Axis3) is { } a3
             ? ReadDirection3D(ctx, a3, Vector3.UnitZ)
             : Vector3.UnitZ;
+        // Axis2 (Y): honor it verbatim when present so a mirror / negative-determinant operator is
+        // preserved (web-ifc uses the axes as given). Absent → right-handed default from Z × X.
+        var axis2 = MeshHelpers.ResolveOptional(ctx, op, IfcCartesianTransformationOperator.Instance.Axis2) is { } a2
+            ? ReadDirection3D(ctx, a2, Vector3.Cross(axis3, axis1))
+            : Vector3.Cross(axis3, axis1);
         var scale = MeshHelpers.ReadNumber(op, IfcCartesianTransformationOperator.Instance.Scale);
         if (scale <= 0)
             scale = 1.0;
@@ -209,13 +226,19 @@ public static class Placements
             if (sz <= 0) sz = scale;
         }
 
-        var frame = FrameFromOriginXZ(origin, axis1, axis3);
-        var basis = frame.Basis;
-        var matrix = Matrix4x4.CreateScale((float)sx, (float)sy, (float)sz) * frame.Matrix;
+        var matrix = BasisMatrix(axis1 * (float)sx, axis2 * (float)sy, axis3 * (float)sz, origin);
         ctx._mappedTransforms[op.Id] = matrix;
         ctx.Diagnostics.RecordSupported(name);
         return matrix;
     }
+
+    /// <summary>Row-vector transform from explicit basis rows (X/Y/Z) and origin, preserving handedness.</summary>
+    static Matrix4x4 BasisMatrix(Vector3 x, Vector3 y, Vector3 z, Vector3 origin)
+        => new(
+            x.X, x.Y, x.Z, 0f,
+            y.X, y.Y, y.Z, 0f,
+            z.X, z.Y, z.Z, 0f,
+            origin.X, origin.Y, origin.Z, 1f);
 
     public static Frame3D FrameFromOriginXZ(Vector3 origin, Vector3 xAxis, Vector3 zAxis)
     {

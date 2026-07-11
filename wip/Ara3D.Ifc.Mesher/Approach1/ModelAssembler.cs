@@ -257,7 +257,8 @@ public static class ModelAssembler
                 var rep = MeshHelpers.ResolveRequired(ctx, map, IfcRepresentationMap.Instance.MappedRepresentation);
                 if (!GeometryDispatcher.TryGetMappedItemTransform(ctx, entity, out var mappingTransform))
                     return;
-                CollectScopedParts(ctx, rep, parentTransform * mappingTransform, productEntityId, parts, map.Id, material);
+                // Row-vector: apply mapping first, then parent (nested maps = inner * outer).
+                CollectScopedParts(ctx, rep, mappingTransform * parentTransform, productEntityId, parts, map.Id, material);
                 return;
 
             case "IFCFACEBASEDSURFACEMODEL":

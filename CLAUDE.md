@@ -4,6 +4,11 @@ This SDK **consumes** Plato output; it must build standalone without the Plato t
 Plato compiler + stdlib source live in `../submodules/Plato` (see its CLAUDE.md). Roadmap:
 `../docs/plato-roadmap.md`.
 
+**C# style:** before writing/editing handwritten C# (e.g. `src/Ara3D.Geometry/`), follow the
+`csharp-style` skill — full reference `../docs/csharp-style-guide-for-agents.md`, enforceable
+subset in the root `.editorconfig`. Does NOT apply to generated/synced code (`Plato.Generated/`,
+`Plato.Intrinsics/`, `Ara3D.IO.SharpGLTF/`).
+
 ## Plato-related layout
 - `src/Plato.Generated/` — checked-in generated C# (V1, instance-member style). Produced by
   `..\..\tools\regen-plato.ps1 -Apply`; NEVER hand-edit (drift is diff-gated in CI).

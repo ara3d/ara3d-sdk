@@ -277,7 +277,9 @@ public sealed class GoldenMeshTests
         var mesh = MeshRequired(model, 6);
 
         Assert.That(mesh.FaceIndices, Has.Count.GreaterThan(0));
-        AssertBounds(mesh, (0f, -2f, 0f), (4f, 2f, 3f));
+        // Operator scale (2) applies to axis-projected coords only; LocalOrigin (1,0) is an unscaled
+        // translation (IFC / web-ifc semantics), so x maps 2·[-1,1]+1 = [-1,3], not [0,4].
+        AssertBounds(mesh, (-1f, -2f, 0f), (3f, 2f, 3f));
         Assert.That(model.Context.Diagnostics.EntityStatus.Keys, Does.Contain("IFCDERIVEDPROFILEDEF"));
     }
 
