@@ -73,27 +73,12 @@ public static class Booleans
         var faces = new List<Integer3>();
         foreach (var face in mesh.FaceIndices)
         {
-            var clipped = ClipTriangle(
-                mesh.Points[face.A].Vector3,
-                mesh.Points[face.B].Vector3,
-                mesh.Points[face.C].Vector3,
-                planePoint, planeNormal, keepPositiveSide);
-            if (clipped.Count == 3)
-            {
-                var i0 = AddPoint(points, clipped[0]);
-                var i1 = AddPoint(points, clipped[1]);
-                var i2 = AddPoint(points, clipped[2]);
-                faces.Add(new Integer3(i0, i1, i2));
-            }
-            else if (clipped.Count == 4)
-            {
-                var i0 = AddPoint(points, clipped[0]);
-                var i1 = AddPoint(points, clipped[1]);
-                var i2 = AddPoint(points, clipped[2]);
-                var i3 = AddPoint(points, clipped[3]);
-                faces.Add(new Integer3(i0, i1, i2));
-                faces.Add(new Integer3(i0, i2, i3));
-            }
+            var a = mesh.Points[face.A].Vector3;
+            var b = mesh.Points[face.B].Vector3;
+            var c = mesh.Points[face.C].Vector3;
+            var refNormal = Vector3.Cross(b - a, c - a);
+            var clipped = ClipTriangle(a, b, c, planePoint, planeNormal, keepPositiveSide);
+            EmitClippedPolygon(points, faces, clipped, refNormal);
         }
         return new TriangleMesh3D(points, faces);
     }
@@ -149,25 +134,61 @@ public static class Booleans
             }
 
             // Inside the prism: apply the base-plane clip.
+            var refNormal = Vector3.Cross(b - a, c - a);
             var clipped = ClipTriangle(a, b, c, planePoint, planeNormal, keepPositiveSide);
-            if (clipped.Count == 3)
-            {
-                var i0 = AddPoint(points, clipped[0]);
-                var i1 = AddPoint(points, clipped[1]);
-                var i2 = AddPoint(points, clipped[2]);
-                faces.Add(new Integer3(i0, i1, i2));
-            }
-            else if (clipped.Count == 4)
-            {
-                var i0 = AddPoint(points, clipped[0]);
-                var i1 = AddPoint(points, clipped[1]);
-                var i2 = AddPoint(points, clipped[2]);
-                var i3 = AddPoint(points, clipped[3]);
-                faces.Add(new Integer3(i0, i1, i2));
-                faces.Add(new Integer3(i0, i2, i3));
-            }
+            EmitClippedPolygon(points, faces, clipped, refNormal);
         }
         return new TriangleMesh3D(points, faces);
+    }
+
+    /// <summary>
+    /// Emits 1–2 triangles for a clipped polygon, choosing the quad diagonal that best preserves
+    /// the input triangle's normal hemisphere.
+    /// </summary>
+    static void EmitClippedPolygon(
+        List<Point3D> points,
+        List<Integer3> faces,
+        IReadOnlyList<Vector3> clipped,
+        Vector3 referenceNormal)
+    {
+        if (clipped.Count == 3)
+        {
+            faces.Add(new Integer3(
+                AddPoint(points, clipped[0]),
+                AddPoint(points, clipped[1]),
+                AddPoint(points, clipped[2])));
+            return;
+        }
+
+        if (clipped.Count != 4)
+            return;
+
+        var i0 = AddPoint(points, clipped[0]);
+        var i1 = AddPoint(points, clipped[1]);
+        var i2 = AddPoint(points, clipped[2]);
+        var i3 = AddPoint(points, clipped[3]);
+        var scoreA = FaceNormalDot(points, i0, i1, i2, referenceNormal)
+                   + FaceNormalDot(points, i0, i2, i3, referenceNormal);
+        var scoreB = FaceNormalDot(points, i0, i1, i3, referenceNormal)
+                   + FaceNormalDot(points, i1, i2, i3, referenceNormal);
+        if (scoreA >= scoreB)
+        {
+            faces.Add(new Integer3(i0, i1, i2));
+            faces.Add(new Integer3(i0, i2, i3));
+        }
+        else
+        {
+            faces.Add(new Integer3(i0, i1, i3));
+            faces.Add(new Integer3(i1, i2, i3));
+        }
+    }
+
+    static float FaceNormalDot(List<Point3D> points, int a, int b, int c, Vector3 referenceNormal)
+    {
+        var pa = points[a].Vector3;
+        var pb = points[b].Vector3;
+        var pc = points[c].Vector3;
+        return Vector3.Dot(Vector3.Cross(pb - pa, pc - pa), referenceNormal);
     }
 
     /// <summary>Even-odd ray-cast point-in-polygon test on the 2D boundary ring.</summary>

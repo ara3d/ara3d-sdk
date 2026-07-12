@@ -59,7 +59,7 @@ public sealed class WpO1Tests
     }
 
     [Test]
-    [Category("IfcMesherScore")]
+    [Category("IfcMesherParity")]
     public void BfastRoundTrip_PreservesEntityAssignment_QuickFiles()
     {
         foreach (var ifcPath in TestFiles.QuickComparisonFiles())

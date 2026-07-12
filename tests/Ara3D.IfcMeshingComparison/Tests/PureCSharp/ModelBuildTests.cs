@@ -10,6 +10,7 @@ using Ara3D.Utils;
 namespace Ara3D.IfcMeshingComparison.Tests.PureCSharp;
 
 [TestFixture]
+[Category("IfcMesherCorrectness")]
 public sealed class ModelBuildTests
 {
     [Test]
@@ -240,6 +241,7 @@ public sealed class ModelBuildTests
     }
 
     [Test]
+    [Category("Slow")]
     public void Example_SharedEntityBoundingBoxesMatchOracle()
     {
         TestFiles.RequireExists(TestFiles.Example);

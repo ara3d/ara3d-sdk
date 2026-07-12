@@ -27,21 +27,7 @@ public sealed class MeshIndexDiagnosticTests
     static readonly string[] CrashCatalogExportFiles = CrashCatalogFiles;
 
     static FilePath ResolveCatalogIfc(string fileName)
-    {
-        var local = TestFiles.LocalIfcDir.RelativeFile(fileName);
-        if (local.Exists())
-            return local;
-        var studio = TestFiles.StudioDataDir.RelativeFile(fileName);
-        if (studio.Exists())
-            return studio;
-        foreach (var folder in new[] { TestFiles.WebIfcPublic, TestFiles.SpeckleIfcs })
-        {
-            var path = folder.RelativeFile(fileName);
-            if (path.Exists())
-                return path;
-        }
-        return local;
-    }
+        => TestFiles.ResolveIfc(fileName);
 
     static int CountInvalidMeshes(Model3D model, out List<string> samples)
     {

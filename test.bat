@@ -9,7 +9,12 @@ rem   test.bat <area> fast             Run <area>, skip Slow tests
 rem   test.bat <area> <name>           Run tests in <area> whose full name contains <name>
 rem   test.bat <area> fast <name>      Run <area>, skip Slow, and match <name>
 rem
-rem   <area> = all | sdk | geometry | bim | devtools | bowerbird | domo | nuget | knownissues
+rem   test.bat ifcmesher fast          T0 goldens + CoverageGate + Winding + CutOracle (no Slow/Parity)
+rem   test.bat ifcmesher               Correctness suite including Slow corpus scans
+rem   test.bat ifcmesher parity        web-ifc parity scorecard (Category=IfcMesherParity)
+rem   test.bat ifcmesher CutOracle     Name filter for cut-oracle inner loop
+rem
+rem   <area> = all | sdk | geometry | bim | devtools | bowerbird | domo | nuget | knownissues | ifcmesher
 rem   <name> = substring matched against the fully-qualified test name
 rem
 rem Known-issues tests document currently broken behavior and are never run by
@@ -28,6 +33,7 @@ set ARG2=%2
 set ARG3=%3
 set FAST=0
 set NAME=
+set IFCMESHER_MODE=
 
 if "%AREA%"=="" set AREA=all
 
@@ -35,6 +41,19 @@ if /I "%AREA%"=="fast" (
   set FAST=1
   set AREA=all
   set NAME=%ARG2%
+) else if /I "%AREA%"=="ifcmesher" (
+  set PROJ=tests\Ara3D.IfcMeshingComparison\Ara3D.IfcMeshingComparison.csproj
+  if /I "%ARG2%"=="fast" (
+    set IFCMESHER_MODE=fast
+    set NAME=%ARG3%
+  ) else if /I "%ARG2%"=="parity" (
+    set IFCMESHER_MODE=parity
+    set NAME=%ARG3%
+  ) else (
+    set IFCMESHER_MODE=full
+    set NAME=%ARG2%
+  )
+  goto :IfcMesherRun
 ) else if /I "%ARG2%"=="fast" (
   set FAST=1
   set NAME=%ARG3%
@@ -79,17 +98,35 @@ if /I "%AREA%"=="all" (
 )
 
 if "%PROJ%"=="" (
-  echo Unknown area "%AREA%". Valid areas: all, sdk, geometry, bim, devtools, bowerbird, domo, nuget, knownissues
+  echo Unknown area "%AREA%". Valid areas: all, sdk, geometry, bim, devtools, bowerbird, domo, nuget, knownissues, ifcmesher
   exit /b 1
 )
 
 call :RunProject "%PROJ%"
 exit /b %ERRORLEVEL%
 
+:IfcMesherRun
+if /I "%IFCMESHER_MODE%"=="parity" (
+  set "FILTER=Category=IfcMesherParity"
+) else if /I "%IFCMESHER_MODE%"=="fast" (
+  set "FILTER=Category=IfcMesherCorrectness&Category!=Slow"
+) else (
+  set "FILTER=Category!=IfcMesherParity&FullyQualifiedName!~Tests.Native"
+)
+if not "%NAME%"=="" (
+  if defined FILTER (
+    set "FILTER=%FILTER%&FullyQualifiedName~%NAME%"
+  ) else (
+    set "FILTER=FullyQualifiedName~%NAME%"
+  )
+)
+call :RunProject "%PROJ%"
+exit /b %ERRORLEVEL%
+
 :RunProject
 set PROJECT=%~1
 if defined FILTER (
-  echo Running tests: %PROJECT%  [filter: %FILTER%]
+  echo Running tests: %PROJECT%  [filter: "%FILTER%"]
   dotnet test "%ROOT%%PROJECT%" --filter "%FILTER%"
 ) else (
   echo Running tests: %PROJECT%

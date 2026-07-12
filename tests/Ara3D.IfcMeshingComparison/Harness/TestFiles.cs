@@ -1,5 +1,4 @@
 using Ara3D.IfcLoader;
-using Ara3D.IO.StepParser;
 using Ara3D.Utils;
 
 namespace Ara3D.IfcMeshingComparison.Harness;
@@ -12,33 +11,31 @@ public static class TestFiles
         .GetParent()
         .GetParent();
 
+    /// <summary>Monorepo root (<c>studio/</c>), found by walking ancestors for AGENTS.md + ara3d-sdk + data.</summary>
+    public static readonly DirectoryPath StudioRoot = FindStudioRoot();
+
     public static readonly DirectoryPath LocalIfcDir = ProjectRoot.RelativeFolder("data", "ifc");
     public static readonly DirectoryPath WebIfcBfastDir = ProjectRoot.RelativeFolder("data", "bfast", "webifc");
     public static readonly DirectoryPath ReportsDir = ProjectRoot.RelativeFolder("data", "reports");
+    public static readonly DirectoryPath TempReportsDir = StudioRoot.RelativeFolder(".temp", "ifc-mesher");
 
     /// <summary>IFC corpus at the monorepo root (<c>studio/data/</c>).</summary>
-    public static readonly DirectoryPath StudioDataDir = ProjectRoot
-        .GetParent()
-        .GetParent()
-        .GetParent()
-        .RelativeFolder("data");
+    public static readonly DirectoryPath StudioDataDir = StudioRoot.RelativeFolder("data");
 
-    public static readonly DirectoryPath WebIfcPublic = new(@"C:\Users\cdigg\git\ifc-sharp\engine_web-ifc\tests\ifcfiles\public");
-    public static readonly DirectoryPath SpeckleIfcs = new(@"C:\Users\cdigg\git\3d-format-shootout\data\git-repo-copies\speckle\ifcs");
-
-    public static FilePath Example => ResolveIfc(WebIfcPublic, "example.ifc");
-    public static FilePath IfcOpenHouse => ResolveIfc(WebIfcPublic, "IfcOpenHouse_IFC4.ifc");
-    public static FilePath SampleEntities => ResolveIfc(WebIfcPublic, "Sample_entities.ifc");
-    public static FilePath Issue044CompositeProfile => ResolveIfc(WebIfcPublic, "ISSUE_044_test_IFCCOMPOSITEPROFILEDEF.ifc");
-    public static FilePath Issue171SurfaceCurveSwept => ResolveIfc(WebIfcPublic, "ISSUE_171_IfcSurfaceCurveSweptAreaSolid.ifc");
-    public static FilePath Ac20FzkHaus => ResolveIfc(WebIfcPublic, "AC20-FZK-Haus.ifc");
-    public static FilePath SteelPlates => ResolveIfc(SpeckleIfcs, "steelplates.ifc");
-    public static FilePath Railing => ResolveIfc(SpeckleIfcs, "railing.ifc");
-    public static FilePath AiscSculptureBrep => ResolveIfc(SpeckleIfcs, "171210AISC_Sculpture_brep.ifc");
-    public static FilePath Small => ResolveIfc(SpeckleIfcs, "small.ifc");
-    public static FilePath DentalClinic => ResolveIfc(WebIfcPublic, "dental_clinic.ifc");
-    public static FilePath Duplex => ResolveIfc(WebIfcPublic, "duplex.ifc");
-    public static FilePath OfficeA => ResolveIfc(WebIfcPublic, "Office_A_20110811.ifc");
+    public static FilePath Example => ResolveIfc("example.ifc");
+    public static FilePath IfcOpenHouse => ResolveIfc("IfcOpenHouse_IFC4.ifc");
+    public static FilePath SampleEntities => ResolveIfc("Sample_entities.ifc");
+    public static FilePath Issue044CompositeProfile => ResolveIfc("ISSUE_044_test_IFCCOMPOSITEPROFILEDEF.ifc");
+    public static FilePath Issue171SurfaceCurveSwept => ResolveIfc("ISSUE_171_IfcSurfaceCurveSweptAreaSolid.ifc");
+    public static FilePath Ac20FzkHaus => ResolveIfc("AC20-FZK-Haus.ifc");
+    public static FilePath SteelPlates => ResolveIfc("steelplates.ifc");
+    public static FilePath Railing => ResolveIfc("railing.ifc");
+    public static FilePath AiscSculptureBrep => ResolveIfc("171210AISC_Sculpture_brep.ifc");
+    public static FilePath Small => ResolveIfc("small.ifc");
+    public static FilePath DentalClinic => ResolveIfc("dental_clinic.ifc");
+    public static FilePath Duplex => ResolveIfc("duplex.ifc");
+    public static FilePath OfficeA => ResolveIfc("Office_A_20110811.ifc");
+    public static FilePath Schependomlaan => ResolveIfc("schependomlaan.ifc");
 
     public static IEnumerable<FilePath> QuickComparisonFiles()
         => new[] { IfcOpenHouse, Example, SteelPlates };
@@ -52,32 +49,44 @@ public static class TestFiles
             yield return new FilePath(file);
     }
 
-    static FilePath ResolveIfc(DirectoryPath externalFolder, string fileName)
+    /// <summary>Resolves an IFC by file name, or Ignores the test if missing.</summary>
+    public static FilePath ResolveOrIgnore(string fileName)
     {
-        var local = LocalIfcDir.RelativeFile(fileName);
-        return local.Exists() ? local : externalFolder.RelativeFile(fileName);
+        var path = ResolveIfc(fileName);
+        if (!path.Exists())
+            Assert.Ignore($"Missing IFC test file: {fileName}");
+        return path;
+    }
+
+    public static FilePath ResolveIfc(string fileName)
+    {
+        foreach (var folder in SearchFolders())
+        {
+            var candidate = folder.RelativeFile(fileName);
+            if (candidate.Exists())
+                return candidate;
+        }
+        return LocalIfcDir.RelativeFile(fileName);
+    }
+
+    static IEnumerable<DirectoryPath> SearchFolders()
+    {
+        yield return LocalIfcDir;
+        yield return StudioDataDir;
+        var extra = Environment.GetEnvironmentVariable("ARA3D_IFC_TEST_DIRS");
+        if (string.IsNullOrWhiteSpace(extra))
+            yield break;
+        foreach (var part in extra.Split([';', Path.PathSeparator], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            if (Directory.Exists(part))
+                yield return new DirectoryPath(part);
+        }
     }
 
     public static IEnumerable<FilePath> AllKnownFiles()
     {
-        if (LocalIfcDir.Exists())
-        {
-            var localFiles = Directory
-                .EnumerateFiles(LocalIfcDir, "*.ifc", SearchOption.TopDirectoryOnly)
-                .Select(f => new FilePath(f))
-                .OrderBy(f => f.GetFileName(), StringComparer.OrdinalIgnoreCase)
-                .ToList();
-
-            if (localFiles.Count > 0)
-            {
-                foreach (var file in localFiles)
-                    yield return file;
-                yield break;
-            }
-        }
-
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var folder in new[] { WebIfcPublic, SpeckleIfcs })
+        foreach (var folder in SearchFolders())
         {
             if (!folder.Exists())
                 continue;
@@ -106,5 +115,18 @@ public static class TestFiles
     {
         RequireExists(path);
         return new IfcFile(path, includeGeometry: true);
+    }
+
+    static DirectoryPath FindStudioRoot()
+    {
+        foreach (var dir in new DirectoryPath(AppContext.BaseDirectory).GetSelfAndAncestors())
+        {
+            var agents = Path.Combine(dir, "AGENTS.md");
+            var sdk = Path.Combine(dir, "ara3d-sdk");
+            var data = Path.Combine(dir, "data");
+            if (File.Exists(agents) && Directory.Exists(sdk) && Directory.Exists(data))
+                return dir;
+        }
+        return ProjectRoot.GetParent().GetParent().GetParent();
     }
 }

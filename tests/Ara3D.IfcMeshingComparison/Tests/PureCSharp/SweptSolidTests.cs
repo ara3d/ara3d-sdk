@@ -8,6 +8,7 @@ using Ara3D.Utils;
 namespace Ara3D.IfcMeshingComparison.Tests.PureCSharp;
 
 [TestFixture]
+[Category("IfcMesherCorrectness")]
 public sealed class SweptSolidTests
 {
     [Test]

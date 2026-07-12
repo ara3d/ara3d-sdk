@@ -25,10 +25,13 @@ public sealed class InventoryTests
     ];
 
     [Test]
+    [Category("Slow")]
+    [Explicit("Writes geometry entity inventory markdown under .temp/ifc-mesher/")]
     public void Inventory_GeneratesMarkdownForCatalog()
     {
         var rows = ScanAllFiles();
-        var output = PathUtil.GetCallerSourceFolder().RelativeFile("GeometryEntityInventory.md");
+        TestFiles.TempReportsDir.Create();
+        var output = TestFiles.TempReportsDir.RelativeFile("GeometryEntityInventory.md");
         WriteInventory(output, rows);
         Assert.That(output.Exists(), Is.True);
         Assert.That(rows, Is.Not.Empty);

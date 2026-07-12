@@ -174,9 +174,12 @@ test.bat <area>          :: run only one area's tests
 test.bat <area> fast     :: run one area, skip Slow tests (good default for inner loop)
 test.bat <area> <name>   :: run only tests in <area> whose full name contains <name>
 test.bat knownissues     :: run known-broken behavior tests (opt-in only)
+test.bat ifcmesher fast  :: IFC mesher T0 goldens + geometry oracles + coverage gate
+test.bat ifcmesher       :: IFC mesher correctness including Slow corpus scans
+test.bat ifcmesher parity:: IFC mesher web-ifc parity scorecard (diagnostic)
 ```
 
-`<area>` is one of `all | sdk | geometry | bim | devtools | nuget | knownissues`. The supported
+`<area>` is one of `all | sdk | geometry | bim | devtools | nuget | knownissues | ifcmesher`. The supported
 default areas map to:
 
 | Area | Test project | Covers (changed `src/` libraries) |
@@ -186,6 +189,19 @@ default areas map to:
 | `bim` | `Ara3D.BimOpenSchema.Tests` | `Ara3D.BimOpenSchema`, `Ara3D.BimOpenSchema.IO`, glTF |
 | `devtools` | `Ara3D.SDK.DevTools` | Roslyn / `Microsoft.CodeAnalysis` helpers |
 | `nuget` | `Ara3D.SDK.NuGet.Tests` | Packed `.nupkg` restore from `artifacts/` (run after `pack.bat`) |
+| `ifcmesher` | `Ara3D.IfcMeshingComparison` | Approach1 IFC mesher + geometry oracles (wip) |
+
+`ifcmesher` is excluded from default `test.bat` / `test.bat fast` (same as nuget/knownissues). Categories:
+
+| Category | Role |
+| --- | --- |
+| `IfcMesherCorrectness` | First-principles oracles (winding, cuts, coverage, correctness scorecard) |
+| `IfcMesherParity` | web-ifc BFAST comparison — diagnostic only (`test.bat ifcmesher parity`) |
+| `IfcMesherCatalog` | Full studio data catalog evaluation |
+| `Slow` | File I/O / large corpus |
+
+One-click gate: `tests\Ara3D.IfcMeshingComparison\RunGeometryGate.bat` (= `test.bat ifcmesher fast`).
+IFC fixtures resolve from `tests/.../data/ifc/`, then `studio/data/`, then `ARA3D_IFC_TEST_DIRS`.
 
 `knownissues` maps to `Ara3D.SDK.KnownIssues.Tests`. It is not part of `test.bat`,
 `test.bat fast`, `release.bat`, or the solution default test run.

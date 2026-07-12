@@ -168,7 +168,7 @@ public sealed class WpW6Tests
     }
 
     [Test]
-    [Category("IfcMesherScore")]
+    [Category("IfcMesherParity")]
     public void QuickFiles_NoInstanceJaccardRegression()
     {
         foreach (var ifcPath in TestFiles.QuickComparisonFiles())

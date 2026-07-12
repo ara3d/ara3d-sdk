@@ -7,6 +7,40 @@ namespace Ara3D.Ifc.Mesher.Approach1;
 /// <summary>Dispatches geometry-bearing IFC entities to mesh builders. Unknown types are diagnostics-only.</summary>
 public static class GeometryDispatcher
 {
+    /// <summary>Every named arm of <see cref="TryBuild"/> (including unsupported stubs).</summary>
+    public static IReadOnlyList<string> DispatchedEntityNames { get; } =
+    [
+        "IFCEXTRUDEDAREASOLID",
+        "IFCATTDRIVENEXTRUDEDSOLID",
+        "IFCATTDRIVENCLIPPEDEXTRUDEDSOLID",
+        "IFCREVOLVEDAREASOLID",
+        "IFCSWEPTDISKSOLID",
+        "IFCSWEPTDISKSOLIDPOLYGONAL",
+        "IFCSURFACECURVESWEPTAREASOLID",
+        "IFCSURFACEOFLINEAREXTRUSION",
+        "IFCFIXEDREFERENCESWEPTAREASOLID",
+        "IFCTRIANGULATEDFACESET",
+        "IFCPOLYGONALFACESET",
+        "IFCFACETEDBREP",
+        "IFCADVANCEDBREP",
+        "IFCFACE",
+        "IFCFACESURFACE",
+        "IFCADVANCEDFACE",
+        "IFCFACEBASEDSURFACEMODEL",
+        "IFCSHELLBASEDSURFACEMODEL",
+        "IFCBOOLEANCLIPPINGRESULT",
+        "IFCBOOLEANRESULT",
+        "IFCHALFSPACESOLID",
+        "IFCSHAPEREPRESENTATION",
+        "IFCREPRESENTATION",
+        "IFCPRODUCTDEFINITIONSHAPE",
+        "IFCMAPPEDITEM",
+        "IFCSTYLEDITEM",
+        "IFCPOLYGONALBOUNDEDHALFSPACE",
+        "IFCBOUNDINGBOX",
+        "IFCSECTIONEDSPINE",
+    ];
+
     public static TriangleMesh3D? TryBuild(MeshingContext ctx, IfcEntity entity)
     {
         try

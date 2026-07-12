@@ -7,6 +7,7 @@ using Ara3D.IfcMeshingComparison.Tests.Support;
 namespace Ara3D.IfcMeshingComparison.Tests.PureCSharp;
 
 [TestFixture]
+[Category("IfcMesherCorrectness")]
 public sealed class CurveTests
 {
     [Test]

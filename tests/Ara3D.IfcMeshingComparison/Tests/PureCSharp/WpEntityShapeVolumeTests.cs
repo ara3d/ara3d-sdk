@@ -2,6 +2,7 @@ using Ara3D.Geometry;
 using Ara3D.Ifc.Mesher.Approach1;
 using Ara3D.IfcLoader;
 using Ara3D.IfcMeshingComparison.Harness;
+using Ara3D.IfcMeshingComparison.Harness.GeometryOracles;
 using Ara3D.IfcMeshingComparison.Tests.Support;
 using Ara3D.Utils;
 
@@ -44,7 +45,7 @@ public sealed class WpEntityShapeVolumeTests
             var c = mesh.Value.Points[f.C].Vector3;
             return Vector3.Cross(b - a, c - a).Length() * 0.5;
         });
-        var openEdges = CountOpenEdges(mesh.Value);
+        var openEdges = TopologyOracle.CountOpenEdges(mesh.Value);
         TestContext.WriteLine($"#12799 vol={vol:F6} area={area:F6} openEdges={openEdges} tris={mesh.Value.FaceIndices.Count}");
 
         var oracle = ModelComparer.LoadOracle(TestFiles.Example);
@@ -52,7 +53,7 @@ public sealed class WpEntityShapeVolumeTests
         Assert.That(oInst, Is.Not.Empty);
         var oMesh = MergeEntity(oracle, 12799);
         var oVol = Math.Abs(MeshHelpers.SignedVolume(oMesh));
-        var oOpen = CountOpenEdges(oMesh);
+        var oOpen = TopologyOracle.CountOpenEdges(oMesh);
         TestContext.WriteLine($"oracle #12799 vol={oVol:F6} openEdges={oOpen} tris={oMesh.FaceIndices.Count}");
 
         // Hollow SHS should be nearly watertight after hole-ring alignment with offset-ring caps.
@@ -70,23 +71,6 @@ public sealed class WpEntityShapeVolumeTests
             .Select(i => MeshHelpers.Transform(model.Meshes[i.MeshIndex], i.Matrix4x4))
             .ToList();
         return meshes.Count == 1 ? meshes[0] : MeshHelpers.Merge(meshes);
-    }
-
-    static int CountOpenEdges(TriangleMesh3D mesh)
-    {
-        var counts = new Dictionary<(int, int), int>();
-        void Add(int a, int b)
-        {
-            var key = a < b ? (a, b) : (b, a);
-            counts[key] = counts.GetValueOrDefault(key) + 1;
-        }
-        foreach (var f in mesh.FaceIndices)
-        {
-            Add(f.A, f.B);
-            Add(f.B, f.C);
-            Add(f.C, f.A);
-        }
-        return counts.Count(kv => kv.Value != 2);
     }
 
     [Test]

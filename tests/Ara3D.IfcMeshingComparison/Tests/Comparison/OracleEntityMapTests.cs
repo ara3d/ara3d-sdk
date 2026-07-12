@@ -8,7 +8,7 @@ namespace Ara3D.IfcMeshingComparison.Tests.Comparison;
 public sealed class OracleEntityMapTests
 {
     [Test]
-    [Category("IfcMesherScore")]
+    [Category("IfcMesherParity")]
     public void WriteOracleMapsForQuickComparisonFiles()
     {
         foreach (var ifcPath in TestFiles.QuickComparisonFiles())

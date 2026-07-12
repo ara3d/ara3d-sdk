@@ -11,7 +11,8 @@ public sealed class ScorecardTests
     static FilePath ScorecardPath => TestFiles.ReportsDir.RelativeFile("scorecard.json");
 
     [Test]
-    [Category("IfcMesherScore")]
+    [Category("IfcMesherParity")]
+    [Explicit("Diagnostic web-ifc parity scorecard — run via test.bat ifcmesher parity")]
     public void ScoreQuickComparisonFiles()
     {
         WebIfcBfastOracle.GenerateAll(TestFiles.QuickComparisonFiles(), TestContext.WriteLine);

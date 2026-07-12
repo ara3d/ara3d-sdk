@@ -10,7 +10,7 @@ public static class TestDataManager
         TestFiles.LocalIfcDir.Create();
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var folder in new[] { TestFiles.WebIfcPublic, TestFiles.SpeckleIfcs })
+        foreach (var folder in ExtraSourceFolders())
         {
             if (!folder.Exists())
             {
@@ -34,6 +34,19 @@ public static class TestDataManager
                     log?.Invoke($"Copied {name}");
                 }
             }
+        }
+    }
+
+    static IEnumerable<DirectoryPath> ExtraSourceFolders()
+    {
+        yield return TestFiles.StudioDataDir;
+        var extra = Environment.GetEnvironmentVariable("ARA3D_IFC_TEST_DIRS");
+        if (string.IsNullOrWhiteSpace(extra))
+            yield break;
+        foreach (var part in extra.Split([';', Path.PathSeparator], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            if (Directory.Exists(part))
+                yield return new DirectoryPath(part);
         }
     }
 }

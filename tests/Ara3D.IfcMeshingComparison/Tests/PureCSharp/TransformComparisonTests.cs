@@ -82,7 +82,7 @@ public sealed class TransformComparisonTests
     }
 
     [Test]
-    [Category("IfcMesherScore")]
+    [Category("IfcMesherParity")]
     public void Duplex_Control_TransformsMostlyMatchOracle()
     {
         var ifcPath = TestFiles.Duplex;

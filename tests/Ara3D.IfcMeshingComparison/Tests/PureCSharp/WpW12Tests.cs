@@ -64,7 +64,7 @@ public sealed class WpW12Tests
     }
 
     [Test]
-    [Category("IfcMesherScore")]
+    [Category("IfcMesherParity")]
     public void QuickFiles_NoRegression_AfterTessellationChange()
     {
         foreach (var ifcPath in TestFiles.QuickComparisonFiles())

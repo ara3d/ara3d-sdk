@@ -9,6 +9,7 @@ using Ara3D.Utils;
 namespace Ara3D.IfcMeshingComparison.Tests.PureCSharp;
 
 [TestFixture]
+[Category("IfcMesherCorrectness")]
 public sealed class GoldenMeshTests
 {
     [Test]
@@ -71,6 +72,8 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    [GeometryCoverage("IFCEXTRUDEDAREASOLID")]
+    [GeometryCoverage("IFCRECTANGLEPROFILEDEF")]
     public void MeshesRectangleExtrudedAreaSolid()
     {
         using var model = MicroIfc.Parse("""
@@ -263,6 +266,7 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    [GeometryCoverage("IFCDERIVEDPROFILEDEF")]
     public void MeshesDerivedProfileExtrusion()
     {
         using var model = MicroIfc.Parse("""
@@ -600,6 +604,10 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    [GeometryCoverage("IFCMAPPEDITEM")]
+    [GeometryCoverage("IFCCARTESIANTRANSFORMATIONOPERATOR3D")]
+    [GeometryCoverage("IFCREPRESENTATIONMAP")]
+    [GeometryCoverage("IFCSHAPEREPRESENTATION")]
     public void MeshesMappedItemWithCartesianTransformationOperator3D()
     {
         using var model = MicroIfc.Parse("""
@@ -623,6 +631,7 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    [GeometryCoverage("IFCCARTESIANTRANSFORMATIONOPERATOR3DNONUNIFORM")]
     public void MeshesMappedItemWithNonUniformCartesianTransformationOperator3D()
     {
         using var model = MicroIfc.Parse("""
@@ -1287,6 +1296,8 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    [GeometryCoverage("IFCTRIANGULATEDFACESET")]
+    [GeometryCoverage("IFCCARTESIANPOINTLIST3D")]
     public void MeshesTriangulatedFaceSet()
     {
         using var model = MicroIfc.Parse("""
@@ -1491,6 +1502,9 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    [GeometryCoverage("IFCBOOLEANCLIPPINGRESULT")]
+    [GeometryCoverage("IFCHALFSPACESOLID")]
+    [GeometryCoverage("IFCPLANE")]
     public void MeshesBooleanClippingResultWithPlanarHalfSpace()
     {
         using var model = MicroIfc.Parse("""
@@ -1586,6 +1600,36 @@ public sealed class GoldenMeshTests
     }
 
     [Test]
+    [GeometryCoverage("IFCPOLYGONALBOUNDEDHALFSPACE")]
+    public void MeshesPolygonalBoundedHalfSpaceClipKeepsOutsidePrism()
+    {
+        // Obsolete: prefer CutOracle_PolygonalBounded_NoOverClip_NoUnderClip for grid sampling.
+        using var model = MicroIfc.Parse("""
+            #1=IFCRECTANGLEPROFILEDEF(.AREA.,'Box',$,4.,4.);
+            #2=IFCDIRECTION((0.,0.,1.));
+            #3=IFCEXTRUDEDAREASOLID(#1,$,#2,4.);
+            #4=IFCCARTESIANPOINT((0.,0.,2.));
+            #5=IFCAXIS2PLACEMENT3D(#4,$,$);
+            #6=IFCPLANE(#5);
+            #7=IFCCARTESIANPOINT((0.,0.,0.));
+            #8=IFCAXIS2PLACEMENT3D(#7,$,$);
+            #9=IFCCARTESIANPOINT((0.5,-5.));
+            #10=IFCCARTESIANPOINT((5.,-5.));
+            #11=IFCCARTESIANPOINT((5.,5.));
+            #12=IFCCARTESIANPOINT((0.5,5.));
+            #13=IFCPOLYLINE((#9,#10,#11,#12,#9));
+            #14=IFCPOLYGONALBOUNDEDHALFSPACE(#6,.T.,#8,#13);
+            #15=IFCBOOLEANCLIPPINGRESULT(.DIFFERENCE.,#3,#14);
+            """);
+
+        var mesh = MeshRequired(model, 15);
+        var bounds = MeshHelpers.GetBounds(mesh);
+        Assert.That(bounds.Max.Z.Value, Is.EqualTo(4f).Within(1e-4f));
+        Assert.That(bounds.Min.Z.Value, Is.EqualTo(0f).Within(1e-4f));
+    }
+
+    [Test]
+    [GeometryCoverage("IFCBOOLEANRESULT")]
     public void MeshesBooleanResultDifferenceWithHalfSpace()
     {
         using var model = MicroIfc.Parse("""
