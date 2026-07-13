@@ -29,7 +29,6 @@ subset in the root `.editorconfig`. Does NOT apply to generated/synced code (`Pl
 2. New test/tool projects are NOT added to the .sln.
 3. `Directory.Build.props` defines package-version variables; projects outside this repo's root
    (e.g. in the Plato repo) must pin versions explicitly.
-4. No git commits unless the mission says so.
 
 ## Mission protocol
 Same as the Plato repo: maintain `PROGRESS.md`, finish with a roadmap DONE note, `COMMIT_MSG.txt`,
