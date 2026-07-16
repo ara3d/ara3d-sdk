@@ -24,6 +24,27 @@ Part of the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package.
 - `StlExporter`, `ObjExporter` — common mesh export formats
 - `IsotropicRemesher`, `VertexWelder`, `MeshModifiers` — mesh processing
 
+## Source layout
+
+Files are grouped into semantic domains (folders are organizational only — all types stay in
+the flat `Ara3D.Geometry` namespace, so folder placement is API-neutral).
+
+| Folder | Purpose |
+|--------|---------|
+| `Primitives/` | Foundational standalone shapes (platonic solids, sphere, cylinder, box, frustum) |
+| `ParametricGeometry/` | Curves & surfaces defined as functions; discretization to mesh |
+| `MeshConstruction/` | Triangle/quad mesh builders and topology-safe modifiers |
+| `MeshAlgorithms/` | Mesh-to-mesh algorithms (Delaunay, ear-clip, weld, marching cubes, remesh) |
+| `Topology/` | Half-edge connectivity data structure and view objects |
+| `MeshAnalysis/` | Attribute/statistics computation, PCA, linear-algebra primitives |
+| `SpatialQueries/` | AABB tree, intersection, clipping, fitting |
+| `ImplicitAndVolumetric/` | SDFs, voxels, and noise fields |
+| `CoordinateFrames/` | Frames, bases, axes, rotations |
+| `Polygons2D/` | 2D polygon generators and operations |
+| `MeshGrouping/` | Face grouping, clustering, feature detection |
+| `Export/` | OBJ/STL writers, colored mesh, palettes |
+| `Utilities/` | Cross-cutting math and helper extensions |
+
 ## Dependencies
 
 - [Ara3D.Collections](../Ara3D.Collections)
