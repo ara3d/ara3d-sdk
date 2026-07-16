@@ -52,6 +52,23 @@ These are ordered roughly by how often they apply.
 - **Minimize the chance of breaking things when adding code.** Add alongside; don't rewrite
   working code unless that is the task.
 
+### Priority order for geometry code
+
+For the geometry utility library (and modifier/geometry samples), evaluate every function
+against these properties, **in this order** — earlier ones win when they conflict:
+
+1. **Correct** — it computes the right answer.
+2. **Composable** — it combines cleanly with other functions.
+3. **Reusable** — it generalizes beyond the one call site.
+4. **Functional** — inputs to outputs; prefer expressions.
+5. **Side-effect free** — no mutation of inputs or shared state.
+6. **Succinct** — as little code as the above allow.
+7. **Easily verifiable** — obvious to read and test for correctness.
+
+A more efficient or mutable variant is a **later** step, and should land as a *separate*
+function that can be compared against the canonical functional implementation — never by
+compromising the canonical one.
+
 ---
 
 ## 4. C# style for this repo
