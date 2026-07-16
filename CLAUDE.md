@@ -16,7 +16,10 @@ subset in the root `.editorconfig`. Does NOT apply to generated/synced code (`Pl
   `submodules/Plato/Plato.Intrinsics`; sync via `regen-plato.ps1 -Apply`. Never edit here.
 - `src/Ara3D.Geometry/` — handwritten geometry algorithms layered on the generated code
   (imports both shared projects). Known name collisions with Plato solids: `Sphere`, `Cylinder`,
-  `Curves` (resolved at V2 adoption).
+  `Curves` (resolved at V2 adoption). Organized into semantic subfolders (Primitives/,
+  MeshConstruction/, SpatialQueries/, etc.; see its README.md folder map). Folders are
+  organizational only — namespace stays flat `Ara3D.Geometry`. Place new files in the matching
+  domain folder, not the root.
 - `tests/Ara3D.SDK.GeometryTests` — expected 15/15. `tests/Ara3D.SDK.Benchmarks` — BenchmarkDotNet
   baseline (`baseline-2026-07-07.md`); don't modify to measure new code — build scratch probes instead.
 - `tools/ApiSnapshot` + `tools/api-snapshot.ps1` — deterministic public-API dump →
