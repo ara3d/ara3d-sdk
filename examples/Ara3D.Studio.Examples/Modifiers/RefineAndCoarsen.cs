@@ -13,6 +13,9 @@ public class Subdivide : IModifier
     [Range(1, 5)] public int Levels = 1;
     [Range(0f, 1f)] public float Smoothness = 1f;
 
+    /// <summary>Keep corner vertices (valence-2 boundary vertices) fixed instead of smoothing them.</summary>
+    public bool PinCorners;
+
     public int InputTriangles { get; private set; }
     public int OutputTriangles { get; private set; }
 
@@ -21,7 +24,7 @@ public class Subdivide : IModifier
         InputTriangles = mesh.FaceIndices.Count;
         var result = mesh;
         for (var i = 0; i < Levels; i++)
-            result = result.LoopSubdivide(Smoothness);
+            result = result.LoopSubdivide(Smoothness, PinCorners);
         OutputTriangles = result.FaceIndices.Count;
         return result;
     }
@@ -146,15 +149,16 @@ public static class RefineAndCoarsenHelpers
     /// becomes four. When smoothness is above zero, new edge vertices use the Loop 3/8-1/8
     /// stencil and original vertices are relaxed toward their neighbor average with the
     /// valence-dependent Loop weight; boundaries use the cubic-spline boundary rules.
+    /// When pinCorners is true, valence-2 boundary vertices (sharp corners) stay fixed.
     /// </summary>
-    public static TriangleMesh3D LoopSubdivide(this TriangleMesh3D mesh, float smoothness)
+    public static TriangleMesh3D LoopSubdivide(this TriangleMesh3D mesh, float smoothness, bool pinCorners = false)
     {
         var topo = new Topology(mesh);
         var points = mesh.Points;
         var newPoints = new List<Point3D>(points.Count + topo.EdgeCount);
 
         for (var i = 0; i < points.Count; i++)
-            newPoints.Add(SmoothEvenVertex(topo, points, (VertexId)i, smoothness));
+            newPoints.Add(SmoothEvenVertex(topo, points, (VertexId)i, smoothness, pinCorners));
 
         var edgeMidpoints = new Dictionary<(int, int), int>(topo.EdgeCount);
         foreach (var edgeId in topo.GetUndirectedEdgeIds())
@@ -184,10 +188,12 @@ public static class RefineAndCoarsenHelpers
     static (int, int) EdgeKey(int a, int b)
         => a < b ? (a, b) : (b, a);
 
-    static Point3D SmoothEvenVertex(Topology topo, IReadOnlyList<Point3D> points, VertexId id, float smoothness)
+    static Point3D SmoothEvenVertex(Topology topo, IReadOnlyList<Point3D> points, VertexId id, float smoothness, bool pinCorners)
     {
         var original = points[(int)id].Vector3;
         if (smoothness <= 0)
+            return original;
+        if (pinCorners && topo.IsBoundary(id) && IsCorner(topo, points, id, original))
             return original;
         var smoothed = topo.IsBoundary(id)
             ? BoundaryEvenPosition(topo, points, id, original)
@@ -208,6 +214,23 @@ public static class RefineAndCoarsenHelpers
             return original;
         var beta = n == 3 ? 3f / 16 : 3f / (8 * n);
         return original * (1 - n * beta) + sum * beta;
+    }
+
+    // A boundary vertex is a corner when its two boundary edges meet at a sharp angle
+    // (more than ~30 degrees away from a straight line).
+    static bool IsCorner(Topology topo, IReadOnlyList<Point3D> points, VertexId id, Vector3 position)
+    {
+        var dirs = new List<Vector3>(2);
+        foreach (var edgeId in topo.GetIncidentUndirectedEdgeIds(id))
+        {
+            if (!topo.IsBoundary(edgeId))
+                continue;
+            var other = topo.GetVertexA(edgeId) == id ? topo.GetVertexB(edgeId) : topo.GetVertexA(edgeId);
+            dirs.Add((points[(int)other].Vector3 - position).Normalize);
+        }
+        if (dirs.Count != 2)
+            return true;
+        return Vector3.Dot(dirs[0], dirs[1]) > -0.866f;
     }
 
     static Vector3 BoundaryEvenPosition(Topology topo, IReadOnlyList<Point3D> points, VertexId id, Vector3 original)
