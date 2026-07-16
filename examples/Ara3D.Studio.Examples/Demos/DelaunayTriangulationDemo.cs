@@ -101,3 +101,26 @@ public class DelaunayTriangulate : IModifier
         return mesh.DelaunayTriangulateVertices(plane);
     }
 }
+
+/// <summary>
+/// Refines a mesh by inserting interior points on oversized faces and re-triangulating
+/// each face in-plane with 2D Delaunay. Shape is preserved exactly; only tessellation density changes.
+/// </summary>
+[Category(nameof(Categories.Meshes))]
+public class DelaunayRefine : IModifier
+{
+    [Range(0.05f, 5f)] public float TargetEdgeLength = 0.25f;
+
+    public TriangleMesh3D Eval(TriangleMesh3D mesh)
+        => mesh.DelaunayRefine(TargetEdgeLength);
+}
+
+/// <summary>
+/// Builds the convex hull of a mesh's vertices via 3D Delaunay tetrahedralization.
+/// </summary>
+[Category(nameof(Categories.Meshes))]
+public class DelaunayConvexHull : IModifier
+{
+    public TriangleMesh3D Eval(TriangleMesh3D mesh)
+        => mesh.Points.DelaunayHull();
+}
