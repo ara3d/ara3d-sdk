@@ -39,6 +39,18 @@ When given a multi-step task, use a todo list and keep it current.
 
 ## 3. Core principles
 
+First, the monorepo-wide **API-first design principles** (canonical list in the root
+[`AGENTS.md`](../AGENTS.md)) apply to everything here:
+
+- **Write code as if writing a public API** — these SDK libraries literally are one.
+- **Eat your own dogfood:** consume existing SDK APIs before adding new ones; awkwardness in an existing API is a reason to improve it, not bypass it.
+- **Design for relocation:** code should move cleanly between projects/layers — few, explicit dependencies.
+- **Write for the next learner:** someone else must be able to learn and use it quickly.
+- **Obvious usage:** correct use discoverable from signatures and names alone.
+- **Types and affordances guide correct use:** illegal states unrepresentable; misuse a compile error where possible.
+- **Path of least resistance = best practice:** the easiest way must be the right way.
+- **Composition and reuse by default:** every new piece is a candidate building block.
+
 These are ordered roughly by how often they apply.
 
 - **Keep it simple at first.** Start with the most direct solution that could work.
