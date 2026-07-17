@@ -47,16 +47,13 @@ public sealed class BrepBuilder
     }
 
     public int AddFace(ParametricSurface surface, params BrepLoop[] loops)
-        => AddFace(surface, false, loops);
-
-    public int AddFace(ParametricSurface surface, bool isBilinear, params BrepLoop[] loops)
     {
-        _faces.Add(new(surface, loops, isBilinear));
+        _faces.Add(new(surface, loops));
         return _faces.Count - 1;
     }
 
     /// <summary>
-    /// Bilinear face over four vertices in counter-clockwise order viewed
+    /// Face over four vertices in counter-clockwise order viewed
     /// from outside the solid.
     /// </summary>
     public int AddQuadFace(int a, int b, int c, int d)
@@ -64,7 +61,7 @@ public sealed class BrepBuilder
         var (pa, pb, pc, pd) = (_vertices[a], _vertices[b], _vertices[c], _vertices[d]);
         var surface = new ParametricSurface(
             uv => pa.Lerp(pb, uv.X).Lerp(pd.Lerp(pc, uv.X), uv.Y).Vector3, false, false);
-        return AddFace(surface, true, PolygonLoop(a, b, c, d));
+        return AddFace(surface, PolygonLoop(a, b, c, d));
     }
 }
 

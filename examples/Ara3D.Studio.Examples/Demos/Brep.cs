@@ -32,13 +32,10 @@ public sealed record BrepLoop(IReadOnlyList<BrepEdgeUse> Uses);
 /// <summary>
 /// Orientation convention: the surface normal is du x dv and must point out of the solid;
 /// loops traverse the boundary counter-clockwise when viewed from outside.
-/// IsBilinear marks faces whose surface is (at most) bilinear, so a single quad
-/// tessellates them exactly.
 /// </summary>
 public sealed record BrepFace(
     ParametricSurface Surface,
-    IReadOnlyList<BrepLoop> Loops,
-    bool IsBilinear = false);
+    IReadOnlyList<BrepLoop> Loops);
 
 public static class BrepExtensions
 {
@@ -102,7 +99,7 @@ public static class BrepExtensions
             .ToList();
 
     public static TriangleMesh3D Tessellate(this BrepFace face, int resolution)
-        => face.Surface.Triangulate(face.IsBilinear ? 2 : resolution + 1);
+        => face.Surface.Triangulate(resolution + 1);
 
     public static IReadOnlyList<TriangleMesh3D> TessellateFaces(this BrepSolid solid, int resolution)
         => solid.Faces.Map(f => f.Tessellate(resolution));
