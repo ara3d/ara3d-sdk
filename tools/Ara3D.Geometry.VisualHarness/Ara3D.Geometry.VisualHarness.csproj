@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Headless visual test harness for geometry generators/modifiers (tracker: ara3d-036).
+    Runs IModel3D cases, exports GLB + agent-readable orthographic PNGs, emits an index.html gallery.
+    Standalone dev tool: NOT added to Ara3D.SDK.sln (ara3d-sdk hard rule 2). Reports write to the
+    already-gitignored artifacts/ folder. Pure SDK libs only (no WPF / no Studio app layer).
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.IO.GltfExporter\Ara3D.IO.GltfExporter.csproj" />
+  </ItemGroup>
+
+</Project>
