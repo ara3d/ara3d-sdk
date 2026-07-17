@@ -8,6 +8,7 @@ public class EvalContext
     public IHostApplication Application { get; }
     public double AnimationTime { get; }
     public FlowObject Input { get; }
+    public IDerivedDataCache DerivedData => Application.DerivedDataCache;
 
     public EvalContext(FlowObject input, IHostApplication application, double animationTime)
     {

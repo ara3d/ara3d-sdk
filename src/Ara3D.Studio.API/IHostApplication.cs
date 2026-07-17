@@ -6,6 +6,7 @@ namespace Ara3D.Studio.API;
 public interface IHostApplication
 {
     ILogger Logger { get; }
+    IDerivedDataCache DerivedDataCache { get; }
     void Invalidate(object obj);
     void RefreshUI(object obj);
     void AnimateCameraTo(CameraState cameraState, float duration);

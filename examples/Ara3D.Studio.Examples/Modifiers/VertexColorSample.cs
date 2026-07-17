@@ -31,8 +31,7 @@
         public ColoredTriangleMesh3D Eval(IModel3D model)
         {
             var mesh = model.ToColoredMesh();
-            var topology = new Topology(mesh.Mesh);
-            var mac = new MeshAttributes(mesh.Mesh, topology);
+            var mac = mesh.Mesh.DerivedAttributes();
             var values = mac.Vertices.GetAttribute(Feature);
             var colors = Palette.GetColors();
             _stats = values.Statistics();

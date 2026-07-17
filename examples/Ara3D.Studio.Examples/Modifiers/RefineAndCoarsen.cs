@@ -132,8 +132,8 @@ public static class RefineAndCoarsenHelpers
 {
     public static double AverageEdgeLength(this TriangleMesh3D mesh)
     {
-        var topo = new Topology(mesh);
-        var attrs = new MeshAttributes(mesh, topo);
+        var topo = mesh.DerivedTopology();
+        var attrs = mesh.DerivedAttributes();
         var sum = 0.0;
         var count = 0;
         foreach (var edgeId in topo.GetUndirectedEdgeIds())
@@ -153,7 +153,7 @@ public static class RefineAndCoarsenHelpers
     /// </summary>
     public static TriangleMesh3D LoopSubdivide(this TriangleMesh3D mesh, float smoothness, bool pinCorners = false)
     {
-        var topo = new Topology(mesh);
+        var topo = mesh.DerivedTopology();
         var points = mesh.Points;
         var newPoints = new List<Point3D>(points.Count + topo.EdgeCount);
 

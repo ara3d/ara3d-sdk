@@ -33,7 +33,7 @@ public class SqueezeDeformer : IModifier
 
     public TriangleMesh3D Eval(TriangleMesh3D mesh)
     {
-        var bounds = mesh.Bounds;
+        var bounds = mesh.DerivedBounds();
         return mesh.Deform(p => Deform(p, bounds));
     }
 }

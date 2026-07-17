@@ -57,7 +57,7 @@ public class VertexNormalColor : IModifier
 
     public ColoredTriangleMesh3D Eval(TriangleMesh3D mesh, EvalContext context)
     {
-        var normals = mesh.VertexNormals();
+        var normals = mesh.DerivedVertexNormals();
         var colors = normals.Select(GetColor);
         return mesh.ToColored(colors);
     }

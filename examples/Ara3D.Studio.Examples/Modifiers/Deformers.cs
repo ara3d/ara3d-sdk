@@ -18,7 +18,7 @@ public class TwistDeformer : IModifier
 
     public TriangleMesh3D Eval(TriangleMesh3D mesh)
     {
-        var bounds = mesh.Bounds;
+        var bounds = mesh.DerivedBounds();
         return mesh.Deform(p => Deform(p, bounds));
     }
 }
@@ -46,7 +46,7 @@ public class SkewDeformer : IModifier
 
     public TriangleMesh3D Eval(TriangleMesh3D mesh)
     {
-        var bounds = mesh.Bounds;
+        var bounds = mesh.DerivedBounds();
         return mesh.Deform(p => Deform(p, bounds));
     }
 }
@@ -68,7 +68,7 @@ public class Spherify : IModifier
 
     public TriangleMesh3D Eval(TriangleMesh3D mesh)
     {
-        var bounds = mesh.Bounds;
+        var bounds = mesh.DerivedBounds();
         return mesh.Deform(p => Deform(p, bounds));
     }
 }
@@ -90,7 +90,7 @@ public class Cubify: IModifier
 
     public TriangleMesh3D Eval(TriangleMesh3D mesh)
     {
-        var bounds = mesh.Bounds;
+        var bounds = mesh.DerivedBounds();
         var min = bounds.Center - new Vector3(Radius, Radius, Radius);
         var max = bounds.Center + new Vector3(Radius, Radius, Radius);
         return mesh.Deform(p => Deform(p, (min, max)));
@@ -103,9 +103,7 @@ public class Push : IModifier
 
     public TriangleMesh3D Eval(TriangleMesh3D mesh)
     {
-        var topo = new Topology(mesh);
-        var attr = new MeshAttributes(mesh, topo);
-        var normals = attr.Vertices.AngleWeightedNormals;        
+        var normals = mesh.DerivedAttributes().Vertices.AngleWeightedNormals;
         return mesh.WithPoints(mesh.Points.Zip(normals, (p, n) => p + n * Distance));
     }
 }
