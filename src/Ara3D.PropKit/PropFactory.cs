@@ -67,9 +67,10 @@ public static class PropFactory
             }
             else
             {
-                return CreatePropAccessor(
-                    new PropDescriptorStringList(names, name, displayName, description, units, isReadOnly),
-                    targetType, type, getter, setter);
+                var listDesc = new PropDescriptorStringList(names, name, displayName, description, units, isReadOnly);
+                var innerDesc = new GenericPropDescriptor(null, type, name, displayName, description, units, isReadOnly);
+                var inner = CreatePropAccessor(innerDesc, targetType, type, getter, setter);
+                return new EnumPropAccessor(listDesc, type, inner);
             }
         }
 
