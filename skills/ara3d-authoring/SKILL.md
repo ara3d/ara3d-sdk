@@ -74,6 +74,7 @@ style of the surrounding file. Attributes refine how they render:
 | `[Category(nameof(Categories.X))]` | the class | groups the tool under a named category in the UI | `System.ComponentModel` (+ your `Categories` enum) |
 | `[OnDemand]` | the class | do **not** re-evaluate on every parameter change; run only when explicitly requested | `Ara3D.Studio.API` |
 | `[Animated]` | the class | tick every frame; read `ctx.AnimationTime` (or implement `IAnimated`) | `Ara3D.Studio.API` |
+| `[PointerTracking]` | the class | re-evaluate while the pointer or camera moves; read `ctx.Services.ViewportInput` (null on headless hosts) | `Ara3D.Studio.API` |
 
 Notes:
 - Default (no `[OnDemand]`) = **live**: changing any parameter re-runs `Eval` immediately.
@@ -113,6 +114,11 @@ This is the whole `WeldVertices` example (`examples/Ara3D.Studio.Examples/Modifi
 - `AnimationTime` — seconds, for `[Animated]` tools.
 - `Input` — the raw upstream `FlowObject` (attachments, presentation) if you need more than the
   converted geometry — e.g. BIM metadata via `Input.GetAttachment<T>()`.
+- `Services.ViewportInput` — pointer state for in-canvas widgets (`IViewportInput`: normalized
+  `CursorUV`, world-space `CursorRay`, `HoverObjectId`, `PrimaryDown`, `ConsumePrimaryClick()`).
+  Null on hosts without a viewport, so always keep a fallback. Pair with `[PointerTracking]` so
+  the host re-evaluates the node as the pointer moves. A "click" is press+release without
+  dragging — drags orbit the camera. Worked example: `examples/.../Demos/GridSnapPickDemo.cs`.
 
 Add it only when you need it. Signatures the host accepts:
 
