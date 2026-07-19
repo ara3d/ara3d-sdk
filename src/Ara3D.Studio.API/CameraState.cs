@@ -23,6 +23,8 @@ public readonly record struct CameraState
         return true;
     }
 
+    /// <summary>World up axis. Ara 3D is a right-handed, Z-up coordinate system
+    /// (X = right/east, Y = forward/north, Z = up); yaw spins about Z, pitch tilts toward it.</summary>
     public static Vector3 Up = new(0, 0, 1);
 
     public Matrix4x4 ViewMatrix
