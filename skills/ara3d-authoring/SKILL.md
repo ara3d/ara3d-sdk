@@ -97,7 +97,7 @@ public TriangleMesh3D Eval(TriangleMesh3D mesh, EvalContext ctx)
     var r = mesh.WeldVertices();
     VertexCountBefore = mesh.Points.Count;
     VertexCountAfter  = r.Points.Count;
-    ctx.Application.RefreshUI(this);   // repaint the panel with the new read-outs
+    ctx.Services.RefreshUI(this);   // repaint the panel with the new read-outs
     return r;
 }
 ```
@@ -110,7 +110,8 @@ This is the whole `WeldVertices` example (`examples/Ara3D.Studio.Examples/Modifi
 
 `EvalContext` (`src/Ara3D.Studio.API/EvalContext.cs`) carries:
 
-- `Application` — the `IHostApplication` (logging, `RefreshUI(this)`, scene/camera access).
+- `Services` — the `IEvalServices` host surface (`RefreshUI(this)`, `ViewportInput`,
+  `DerivedDataCache`).
 - `AnimationTime` — seconds, for `[Animated]` tools.
 - `Input` — the raw upstream `FlowObject` (attachments, presentation) if you need more than the
   converted geometry — e.g. BIM metadata via `Input.GetAttachment<T>()`.
