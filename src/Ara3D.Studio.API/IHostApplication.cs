@@ -6,7 +6,7 @@ namespace Ara3D.Studio.API;
 /// are nullable properties (null = the host does not have them — check, don't catch).
 /// Generators and modifiers see only the narrow <see cref="IEvalServices"/> slice.
 /// </summary>
-public interface IHostApplication : IEvalServices, IAssetHost, IExportHost
+public interface IHostApplication : IEvalServices, IAssetHost, IExportHost, ISceneHost
 {
     /// <summary>Null on hosts without a viewport (e.g. CPU-only headless runners).</summary>
     IViewportHost? Viewport { get; }
