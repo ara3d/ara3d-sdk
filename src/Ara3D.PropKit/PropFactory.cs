@@ -189,7 +189,9 @@ public static class PropFactory
             var getter = prop.GetFastGetter();
             var setter = !isReadOnly ? prop.GetFastSetter() : null;
 
-            yield return CreatePropAccessor(prop.PropertyType, hostObj, type, prop, getter, setter);
+            // The fast getter/setter delegates are typed to the declaring type,
+            // so inherited members must use it as the accessor target type.
+            yield return CreatePropAccessor(prop.PropertyType, hostObj, prop.DeclaringType, prop, getter, setter);
         }
 
         var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
@@ -200,7 +202,7 @@ public static class PropFactory
             var getter = field.GetFastGetter();
             var setter = !isReadOnly ? field.GetFastSetter() : null;
 
-            yield return CreatePropAccessor(field.FieldType, hostObj, type, field, getter, setter);
+            yield return CreatePropAccessor(field.FieldType, hostObj, field.DeclaringType, field, getter, setter);
 
         }
     }
