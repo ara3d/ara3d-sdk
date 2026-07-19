@@ -10,4 +10,8 @@ public interface IHostApplication : IEvalServices, IAssetHost, IExportHost, ISce
 {
     /// <summary>Null on hosts without a viewport (e.g. CPU-only headless runners).</summary>
     IViewportHost? Viewport { get; }
+
+    /// <summary>Null on hosts that own their own lifecycle and cannot be stopped through the API
+    /// (interactive windows quit via their UI; in-process sandboxes have no teardown).</summary>
+    ILifecycleHost? Lifecycle { get; }
 }
