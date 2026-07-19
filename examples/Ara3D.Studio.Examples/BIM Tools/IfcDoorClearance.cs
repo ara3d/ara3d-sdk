@@ -19,7 +19,7 @@ public class IfcDoorClearance : IModifier
     private List<StringIndex> _categoryIndices;
     private BimData _data;
     private BimObjectModel _model;
-    private IHostApplication _app;
+    private IEvalServices _app;
 
     public void RecomputeCategoryNames(BimData bimData, EvalContext context)
     {
@@ -41,7 +41,7 @@ public class IfcDoorClearance : IModifier
             .OrderBy(x => x)
             .ToList();
 
-        context.Application.RefreshUI(this);
+        context.Services.RefreshUI(this);
     }
 
     public static HashSet<string> Transparent = ["IFCFLOOR", "IFCSLAB", "IFCROOF", "IFCWALL"];
@@ -112,7 +112,7 @@ public class IfcDoorClearance : IModifier
 
     public IModel3D Eval(IModel3D model, EvalContext context)
     {
-        _app = context.Application;
+        _app = context.Services;
         var bimData = context.Input.GetAttachment<BimData>();
         RecomputeCategoryNames(bimData, context);
         var mb = new Model3DBuilder();

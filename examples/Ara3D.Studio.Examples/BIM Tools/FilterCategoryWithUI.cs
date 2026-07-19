@@ -27,18 +27,18 @@ public class FilterCategoryWithUI : IModifier
     private readonly HashSet<string> _selectedNames = new();
     private BimData? _data;
     private BimObjectModel? _model;
-    private IHostApplication _app;
+    private IEvalServices _app;
 
     public void RecomputeCategoryNames(BimData bimData, EvalContext context)
     {
-        _app = context.Application;
+        _app = context.Services;
 
         if (bimData == _data)
             return;
 
         _data = bimData;
 
-        context.Application.Invalidate(this);
+        context.Services.Invalidate(this);
 
         if (_data == null)
         {

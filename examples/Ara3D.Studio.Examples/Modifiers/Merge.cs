@@ -16,7 +16,7 @@ public class MergeModelAsMesh : IModifier
             // TODO: we will eventually need a system that can recolor vertices after being welded. 
             r = new ColoredTriangleMesh3D(r.Mesh.WeldVertices(), null);
         VertexCount = r.Mesh.Points.Count;
-        ctx.Application.RefreshUI(this);
+        ctx.Services.RefreshUI(this);
         if (!KeepColors)
             return new(r.Mesh, null);
         return r;

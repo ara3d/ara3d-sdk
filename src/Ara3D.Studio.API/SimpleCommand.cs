@@ -1,10 +1,16 @@
-﻿namespace Ara3D.Studio.API;
+namespace Ara3D.Studio.API;
 
-public abstract class SimpleCommand : IScriptedCommand
+public abstract class SimpleCommand : ITool
 {
     public abstract string Name { get; }
     public abstract void Execute();
-    public void Execute(IHostApplication hostApplication) => Execute();
-    public bool CanExecute(IHostApplication hostApplication) => true;
-}
 
+    public bool CanRun(IHostApplication app)
+        => true;
+
+    public Task<ToolResult> RunAsync(IHostApplication app, CancellationToken ct)
+    {
+        Execute();
+        return Task.FromResult(ToolResult.Ok());
+    }
+}

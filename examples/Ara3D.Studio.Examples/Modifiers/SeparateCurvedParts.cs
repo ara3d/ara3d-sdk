@@ -41,7 +41,7 @@ public class SeparateCurvedParts : IModifier
         }
 
         NumGroups = totalGroups;
-        ctx.Application.RefreshUI(this);
+        ctx.Services.RefreshUI(this);
         return result;
     }
 

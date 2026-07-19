@@ -107,7 +107,7 @@ public class CvtRemesh : IModifier
             points.Add(Unproject(relaxed[i], w[i], Plane));
 
         VertexCount = points.Count;
-        ctx.Application.RefreshUI(this);
+        ctx.Services.RefreshUI(this);
         return new TriangleMesh3D(points, faces);
     }
 }

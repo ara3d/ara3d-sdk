@@ -67,30 +67,23 @@ public interface IModifier : IScriptedComponent
 }
 
 /// <summary>
-/// An executable command 
+/// A script that drives the host: a menu command, an interactive tool, a CLI workflow,
+/// or a test. Runs to completion (a modeless tool may return once its UI is open);
+/// the result feeds exit codes and reports in automation hosts.
 /// </summary>
-public interface IScriptedCommand : IScriptedComponent
+public interface ITool : IScriptedComponent
 {
     string Name { get; }
-    void Execute(IHostApplication app);
-    bool CanExecute(IHostApplication app);
+    bool CanRun(IHostApplication app);
+    Task<ToolResult> RunAsync(IHostApplication app, CancellationToken ct);
 }
 
 /// <summary>
-/// An executable command, designed for specific models.    
+/// An executable command, designed for specific models.
 /// </summary>
-public interface IModelCommand : IScriptedCommand
+public interface IModelCommand : IScriptedComponent
 {
     string Name { get; }
     void Execute(FlowObject fo);
     bool CanExecute(FlowObject fo);
-}
-
-/// <summary>
-/// A modeless tool, usually with a UI.
-/// </summary>
-public interface ITool : IScriptedComponent
-{
-    bool CanExecute(EvalContext context);
-    void Execute(EvalContext context);
 }

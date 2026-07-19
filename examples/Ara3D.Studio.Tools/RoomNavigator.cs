@@ -108,7 +108,7 @@ namespace Ara3D.Studio.Tools
 
         private void TimerOnTick(object? sender, EventArgs e)
         {
-            var state = App.GetCameraState();
+            var state = App.Viewport!.GetCameraState();
             var yaw = state.Yaw.Degrees.Value;
             var pitch = state.Pitch.Degrees.Value;
             var x = state.Position.X;
@@ -130,8 +130,8 @@ namespace Ara3D.Studio.Tools
 
         private void OnRoomClicked(RoomData room)
         {
-            var state = App.GetCameraState();
-            App.AnimateCameraTo(state.WithPosition(room.Center), 1.5f);
+            var state = App.Viewport!.GetCameraState();
+            App.Viewport!.AnimateCameraTo(state.WithPosition(room.Center), 1.5f);
         }
     }
 }

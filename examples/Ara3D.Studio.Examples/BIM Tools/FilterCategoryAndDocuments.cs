@@ -35,7 +35,7 @@ public class FilterCategoryAndDocuments : IModifier
             Groups.Add(GetCategory(i), i);
         CategoryNames = Groups.Keys.OrderBy(x => x).ToList();
 
-        context.Application.RefreshUI(this);
+        context.Services.RefreshUI(this);
     }
 
     public static int GetDocument(BimData bim, InstanceStruct inst)

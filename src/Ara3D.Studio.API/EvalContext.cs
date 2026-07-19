@@ -1,22 +1,21 @@
-﻿namespace Ara3D.Studio.API;
+namespace Ara3D.Studio.API;
 
-/// <summary>
-/// Eventually may provide a "CancelToken"
-/// </summary>
 public class EvalContext
 {
-    public IHostApplication Application { get; }
+    public IEvalServices Services { get; }
     public double AnimationTime { get; }
     public FlowObject Input { get; }
-    public IDerivedDataCache DerivedData => Application.DerivedDataCache;
+    public CancellationToken Cancellation { get; }
+    public IDerivedDataCache DerivedData => Services.DerivedDataCache;
 
-    public EvalContext(FlowObject input, IHostApplication application, double animationTime)
+    public EvalContext(FlowObject input, IEvalServices services, double animationTime, CancellationToken cancellation = default)
     {
         Input = input;
-        Application = application;
+        Services = services;
         AnimationTime = animationTime;
+        Cancellation = cancellation;
     }
 
     public EvalContext WithInput(FlowObject newInput)
-        => new(newInput, Application, AnimationTime);
+        => new(newInput, Services, AnimationTime, Cancellation);
 }

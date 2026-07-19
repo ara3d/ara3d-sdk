@@ -25,14 +25,14 @@ public class FilterLevels : IModifier
 
     private BimData? _data;
     private BimObjectModel _bom; 
-    private IHostApplication _app;
+    private IEvalServices _app;
 
     public void RecomputeLevels(BimData data, EvalContext context)
     {
         if (_data == data) return;
         _data = data;
         _bom = new BimObjectModel(data, true);
-        _app = context.Application;
+        _app = context.Services;
         _levelData = _bom.GetDistinctLevels().ToList();
         LevelNames = _levelData.Select(x => $"{x.Name} {x.Elevation:F2}").ToList();
         _app.RefreshUI(this);

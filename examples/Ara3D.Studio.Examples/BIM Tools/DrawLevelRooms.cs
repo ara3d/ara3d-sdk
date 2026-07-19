@@ -43,7 +43,7 @@ public class DrawLevelRooms : IModifier
             .ToList();
 
         LevelNames = _levelEntities.Select(e => e.Name).ToList();
-        context.Application.RefreshUI(this);
+        context.Services.RefreshUI(this);
     }
 
     static float LevelSortKey(EntityModel level)

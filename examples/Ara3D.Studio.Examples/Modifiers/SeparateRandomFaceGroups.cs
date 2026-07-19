@@ -12,7 +12,7 @@ public class SeparateRandomFaceGroups : IModifier
         var mesh = model.ToMesh().WeldVertices();
         var faceGroups = FaceGroups.Create(mesh, g => g.Count >= GroupSize);
         NumGroups = faceGroups.Groups.Count;
-        ctx.Application.RefreshUI(this); 
+        ctx.Services.RefreshUI(this); 
         var mb = new Model3DBuilder();
         mb.AddInstances(faceGroups.Split(mesh));
         return mb.Build();

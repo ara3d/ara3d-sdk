@@ -38,7 +38,7 @@ public class FilterCategory : IModifier
             Groups.Add(GetCategory(i), i.WithVisibility(true));
         CategoryNames = Groups.Keys.OrderBy(x => x).ToList();
 
-        context.Application.RefreshUI(this);
+        context.Services.RefreshUI(this);
     }
 
     public static string GetCategory(BimObjectModel bim, InstanceStruct inst)

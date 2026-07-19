@@ -61,11 +61,11 @@ public class FilterParameters : IModifier
     private readonly HashSet<EntityIndex> _geometricEntities = new();
 
     private BimData? _data;
-    private IHostApplication _app;
+    private IEvalServices _app;
 
     public void RecomputeParameterNamesIfNeeded(BimData bimData, EvalContext context)
     {
-        _app = context.Application;
+        _app = context.Services;
 
         if (bimData == _data)
             return;
