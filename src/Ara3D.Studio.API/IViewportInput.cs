@@ -17,7 +17,11 @@ public interface IViewportInput
     /// <summary>World-space ray from the camera through the cursor.</summary>
     Ray3D CursorRay { get; }
 
-    /// <summary>Object id under the cursor from the GPU pick pass, or -1 over the background.</summary>
+    /// <summary>
+    /// Index of the instance under the cursor (into the rendered model's instance list),
+    /// from the GPU pick pass; -1 over the background. Look up EntityIndex or other
+    /// per-instance data through the model's Instances.
+    /// </summary>
     int HoverObjectId { get; }
 
     /// <summary>True while the primary (left) button is held.</summary>
