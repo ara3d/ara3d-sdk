@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Ara3D.Studio.API;
 
 /// <summary>
@@ -14,5 +16,6 @@ public interface ILifecycleHost
     /// to the process or runner. Safe to call from any thread. Idempotent — a second call after
     /// shutdown has begun is a no-op.
     /// </summary>
+    [Description("Requests the host tear down and stop, reporting the given exit code.")]
     void Shutdown(int exitCode = 0);
 }

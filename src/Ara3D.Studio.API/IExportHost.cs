@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Ara3D.Utils;
 
 namespace Ara3D.Studio.API;
@@ -8,5 +9,6 @@ namespace Ara3D.Studio.API;
 /// </summary>
 public interface IExportHost
 {
+    [Description("Exports the current scene geometry to the given path (.glb, .bfast, or .bos).")]
     Task SaveGeometry(FilePath filePath);
 }

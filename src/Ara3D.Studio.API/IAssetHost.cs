@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Ara3D.Utils;
 
 namespace Ara3D.Studio.API;
@@ -12,5 +13,6 @@ public interface IAssetHost
     /// added to the host's scene (with progress reporting and error handling); otherwise it is
     /// loaded standalone and the caller owns it.
     /// </summary>
+    [Description("Loads a file into an asset; when inApplication is true it is added to the scene, otherwise loaded standalone.")]
     Task<IAsset> LoadAssetAsync(FilePath filePath, bool inApplication);
 }
