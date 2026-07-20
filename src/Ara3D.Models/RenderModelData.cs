@@ -236,10 +236,18 @@ public class RenderModelData : IDisposable, IModel3D
         MeshSliceData.Clear();
         InstanceData.Clear();
 
-        foreach (var mesh in model.Meshes)
+        // Empty meshes are dropped, so instance mesh indices must be remapped to the
+        // compacted slice list; instances of a dropped mesh get -1 (not drawn).
+        var meshIndexRemap = new int[model.Meshes.Count];
+        for (var meshIndex = 0; meshIndex < model.Meshes.Count; meshIndex++)
         {
+            var mesh = model.Meshes[meshIndex];
             if (mesh.NumFaces() == 0)
+            {
+                meshIndexRemap[meshIndex] = -1;
                 continue;
+            }
+            meshIndexRemap[meshIndex] = MeshSliceData.Count;
 
             var faceIndices = mesh.FaceIndices;
             var points = mesh.Points;
@@ -271,7 +279,12 @@ public class RenderModelData : IDisposable, IModel3D
             }
         }
 
-        InstanceData.AddRange(model.Instances);
+        foreach (var instance in model.Instances)
+        {
+            var meshIndex = instance.MeshIndex;
+            var remapped = meshIndex >= 0 && meshIndex < meshIndexRemap.Length ? meshIndexRemap[meshIndex] : -1;
+            InstanceData.Add(instance.WithMeshIndex(remapped));
+        }
         ValidateMeshSlices();
         ComputeBounds();
     }
@@ -295,7 +308,7 @@ public class RenderModelData : IDisposable, IModel3D
             var meshOffset = MeshSliceData.Count;
             MeshSliceData.AddRange(model.MeshSliceData);
             foreach (var i in model.InstanceData)
-                InstanceData.Add(i.WithMeshIndex(i.MeshIndex + meshOffset));
+                InstanceData.Add(i.MeshIndex < 0 ? i : i.WithMeshIndex(i.MeshIndex + meshOffset));
         }
 
         ComputeBounds();
