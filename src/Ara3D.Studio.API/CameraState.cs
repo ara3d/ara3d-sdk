@@ -55,7 +55,11 @@ public readonly record struct CameraState
     {
         var dir = (target - Position).Normalize;
         var pitch = MathF.Asin(Math.Clamp(dir.Z, -1f, 1f));
-        var yaw = MathF.Atan2(dir.Y, dir.X);
+        // Forward's Y component is Pitch.Cos * (-Yaw).Sin, i.e. the negation of the "natural"
+        // atan2(dir.Y, dir.X) convention - negate dir.Y here so the resulting yaw reconstructs
+        // Forward == dir. Without this, the returned CameraState's Forward has its Y component
+        // sign-flipped relative to `target`, so the camera doesn't actually look at it.
+        var yaw = MathF.Atan2(-dir.Y, dir.X);
         if (yaw < 0) yaw += 1.Turns();
         return WithYawPitch(yaw, pitch);
     }
