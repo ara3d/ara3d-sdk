@@ -20,4 +20,10 @@ public interface IViewportHost
 
     [Description("Saves a screenshot of the viewport to the given image file path.")]
     void SaveScreenshot(FilePath filePath);
+
+    [Description("Opens the OSPRay path-tracer preview window (creates it on first use).")]
+    void OpenPathTracer();
+
+    [Description("Opens the path-tracer window if needed and turns its progressive Render on or off.")]
+    void SetPathTracerRendering(bool enabled);
 }
