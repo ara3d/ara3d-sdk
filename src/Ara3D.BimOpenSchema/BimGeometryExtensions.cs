@@ -175,7 +175,10 @@ public static class BimGeometryExtensions
         return data;
     }
 
-    public static DataTableBuilder AddColumn<T>(this DataTableBuilder self, BimGeometry model, T[] data, string name)
+    // Fluent wrapper: the instance AddColumn returns IDataColumn (breaks chaining), so this
+    // returns the builder. No BimGeometry parameter — the old dead `model` arg invited the
+    // TransformSX/SY/SZ copy-paste bug (see ara3d-110).
+    public static DataTableBuilder WithColumn<T>(this DataTableBuilder self, T[] data, string name)
     {
         self.AddColumn(data, name);
         return self;
@@ -185,43 +188,43 @@ public static class BimGeometryExtensions
     {
         var r = new DataSetBuilder();
         r.AddTable(BimGeometry.MaterialTableName)
-            .AddColumn(self, self.MaterialRed, nameof(self.MaterialRed))
-            .AddColumn(self, self.MaterialGreen, nameof(self.MaterialGreen))
-            .AddColumn(self, self.MaterialBlue, nameof(self.MaterialBlue))
-            .AddColumn(self, self.MaterialAlpha, nameof(self.MaterialAlpha))
-            .AddColumn(self, self.MaterialMetallic, nameof(self.MaterialMetallic))
-            .AddColumn(self, self.MaterialRoughness, nameof(self.MaterialRoughness));
+            .WithColumn(self.MaterialRed, nameof(self.MaterialRed))
+            .WithColumn(self.MaterialGreen, nameof(self.MaterialGreen))
+            .WithColumn(self.MaterialBlue, nameof(self.MaterialBlue))
+            .WithColumn(self.MaterialAlpha, nameof(self.MaterialAlpha))
+            .WithColumn(self.MaterialMetallic, nameof(self.MaterialMetallic))
+            .WithColumn(self.MaterialRoughness, nameof(self.MaterialRoughness));
 
         r.AddTable(BimGeometry.TransformTableName)
-            .AddColumn(self, self.TransformTX, nameof(self.TransformTX))
-            .AddColumn(self, self.TransformTY, nameof(self.TransformTY))
-            .AddColumn(self, self.TransformTZ, nameof(self.TransformTZ))
-            .AddColumn(self, self.TransformQX, nameof(self.TransformQX))
-            .AddColumn(self, self.TransformQY, nameof(self.TransformQY))
-            .AddColumn(self, self.TransformQZ, nameof(self.TransformQZ))
-            .AddColumn(self, self.TransformQW, nameof(self.TransformQW))
-            .AddColumn(self, self.TransformSX, nameof(self.TransformSX))
-            .AddColumn(self, self.TransformSX, nameof(self.TransformSY))
-            .AddColumn(self, self.TransformSX, nameof(self.TransformSZ));
+            .WithColumn(self.TransformTX, nameof(self.TransformTX))
+            .WithColumn(self.TransformTY, nameof(self.TransformTY))
+            .WithColumn(self.TransformTZ, nameof(self.TransformTZ))
+            .WithColumn(self.TransformQX, nameof(self.TransformQX))
+            .WithColumn(self.TransformQY, nameof(self.TransformQY))
+            .WithColumn(self.TransformQZ, nameof(self.TransformQZ))
+            .WithColumn(self.TransformQW, nameof(self.TransformQW))
+            .WithColumn(self.TransformSX, nameof(self.TransformSX))
+            .WithColumn(self.TransformSY, nameof(self.TransformSY))
+            .WithColumn(self.TransformSZ, nameof(self.TransformSZ));
 
         r.AddTable(BimGeometry.VertexTableName)
-            .AddColumn(self, self.VertexX, nameof(self.VertexX))
-            .AddColumn(self, self.VertexY, nameof(self.VertexY))
-            .AddColumn(self, self.VertexZ, nameof(self.VertexZ));
+            .WithColumn(self.VertexX, nameof(self.VertexX))
+            .WithColumn(self.VertexY, nameof(self.VertexY))
+            .WithColumn(self.VertexZ, nameof(self.VertexZ));
 
         r.AddTable(BimGeometry.IndexTableName)
-            .AddColumn(self, self.IndexBuffer, nameof(self.IndexBuffer));
+            .WithColumn(self.IndexBuffer, nameof(self.IndexBuffer));
 
         r.AddTable(BimGeometry.InstanceTableName)
-            .AddColumn(self, self.InstanceEntityIndex, nameof(self.InstanceEntityIndex))
-            .AddColumn(self, self.InstanceMaterialIndex, nameof(self.InstanceMaterialIndex))
-            .AddColumn(self, self.InstanceMeshIndex, nameof(self.InstanceMeshIndex))
-            .AddColumn(self, self.InstanceTransformIndex, nameof(self.InstanceTransformIndex))
-            .AddColumn(self, self.InstanceFlags, nameof(self.InstanceFlags));
+            .WithColumn(self.InstanceEntityIndex, nameof(self.InstanceEntityIndex))
+            .WithColumn(self.InstanceMaterialIndex, nameof(self.InstanceMaterialIndex))
+            .WithColumn(self.InstanceMeshIndex, nameof(self.InstanceMeshIndex))
+            .WithColumn(self.InstanceTransformIndex, nameof(self.InstanceTransformIndex))
+            .WithColumn(self.InstanceFlags, nameof(self.InstanceFlags));
 
         r.AddTable(BimGeometry.MeshTableName)
-            .AddColumn(self, self.MeshIndexOffset, nameof(self.MeshIndexOffset))
-            .AddColumn(self, self.MeshVertexOffset, nameof(self.MeshVertexOffset));
+            .WithColumn(self.MeshIndexOffset, nameof(self.MeshIndexOffset))
+            .WithColumn(self.MeshVertexOffset, nameof(self.MeshVertexOffset));
 
         return r;
     }
