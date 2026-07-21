@@ -69,7 +69,7 @@ public static class FlowObjectConverters
             }
             else if (input is IModel3D m)
             {
-                return m.ToColoredMesh();
+                return m.ToMesh();
             }
         }
 
