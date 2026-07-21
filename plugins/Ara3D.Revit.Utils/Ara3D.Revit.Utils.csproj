@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Core tier. References RevitAPI.dll only (DB context) so the assembly
+       works under Design Automation and headless hosts. No RevitAPIUI.dll here. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <RootNamespace>Ara3D.Revit.Utils</RootNamespace>
+    <AssemblyName>Ara3D.Revit.Utils</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="RevitAPI">
+      <HintPath>..\..\vendor\Revit\2025\RevitAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- D6: sdk's Material record lives in Ara3D.Models (not Ara3D.Geometry, despite the
+       api-surface.md draft) — confirmed against sdk source. See D6 work log. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Models\Ara3D.Models.csproj" />
+  </ItemGroup>
+
+</Project>
