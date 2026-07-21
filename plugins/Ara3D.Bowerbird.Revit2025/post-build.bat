@@ -5,7 +5,7 @@ set AddinName=Ara3D.Bowerbird.Revit2025.addin
 
 :: -------- 1) No argument?  Leave quietly --------------------
 if "%~1"=="" (
-    echo No argument supplied – nothing to do.
+    echo No argument supplied ï¿½ nothing to do.
     goto :eof
 )
 
@@ -13,6 +13,12 @@ if "%~1"=="" (
 if /I "%~1"=="-clean" goto :clean
 
 :: -------- 3)  Normal install --------------------------------
+
+:: Skip install (don't fail the build) when Revit 2025 isn't installed on this machine.
+if not exist "%AddinsDir%\2025" (
+    echo Revit 2025 Addins dir not found - skipping Bowerbird install.
+    goto :eof
+)
 
 :: Run ilrepack tool (must have been previously installed using dotnet ) 
 REM pushd %1
@@ -28,10 +34,12 @@ del /Q "%BowerbirdDir%\*"
 xcopy %1 "%BowerbirdDir%" /h /i /c /k /e /r /y
 
 echo Done.
-goto :eof
+:: Install is a build-time convenience; a transient file lock (e.g. Revit running,
+:: or a parallel solution build) must not fail the compile. Always report success.
+exit /b 0
 
 :clean
-echo Removing Bowerbird for Revit 2025 …
+echo Removing Bowerbird for Revit 2025 ï¿½
 
 REM Delete manifest(s) we previously copied
 if exist "%AddinsDir\%2025" (

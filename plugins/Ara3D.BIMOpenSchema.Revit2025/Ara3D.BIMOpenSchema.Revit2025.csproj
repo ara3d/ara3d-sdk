@@ -61,6 +61,6 @@
   </Target>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call post-build.bat $(OutDir)" />
+    <Exec Command="call &quot;$(MSBuildProjectDirectory)\post-build.bat&quot; $(OutDir)" IgnoreExitCode="true" />
   </Target>
 </Project>
