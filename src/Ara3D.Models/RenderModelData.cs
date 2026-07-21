@@ -367,8 +367,15 @@ public class RenderModelData : IDisposable, IModel3D
         InstanceBoundsData.Clear();
         foreach (var inst in InstanceData)
         {
-            if (inst.MeshIndex < 0 && inst.IsVisible)
+            // Instances of dropped/empty meshes have MeshIndex == -1; indexing the
+            // unchecked unmanaged lists with -1 reads memory before the allocation.
+            // Emit an empty bounds so InstanceBoundsData stays parallel to InstanceData
+            // (consumers index it by instance).
+            if (inst.MeshIndex < 0)
+            {
+                InstanceBoundsData.Add(Bounds3D.Empty);
                 continue;
+            }
 
             var mesh = MeshSliceData[inst.MeshIndex];
             var meshBounds = MeshBoundsData[inst.MeshIndex];
