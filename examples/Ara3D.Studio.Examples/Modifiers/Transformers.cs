@@ -42,11 +42,14 @@ public class AxisRotation : IModifier
 }
 
 [Category(nameof(Categories.Transformers))]
-public class Translate : IModifier
+public class Translate : IModifier, IGizmoProvider
 {
     public Vector3 Offset;
 
     public IModel3D Eval(IModel3D model)
         => model.Translate(Offset);
+
+    public IReadOnlyList<GizmoHandle> GetHandles()
+        => GizmoHandles.Translation(nameof(Offset));
 }
 
