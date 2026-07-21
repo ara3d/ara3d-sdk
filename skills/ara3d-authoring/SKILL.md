@@ -236,6 +236,14 @@ the `IModel3D` (instance-level) counterpart — read it to learn the `Model3DBui
   (see `ColorByTriangleQuality`).
 - The SDK ships list-preserving LINQ (`Select`, `Map`, `Slice`, `Zip`, …) that returns
   `IReadOnlyList` with O(1) count/indexing — prefer it over `IEnumerable` where it exists.
+- **Selection sets** (`Ara3D.Studio.API.SelectionSet`, examples `Selection/` folder):
+  a selection-*creator* must return `FlowObject` (e.g. via the examples'
+  `ctx.SelectFaces(mesh, combine, predicate)` helper) — returning a bare mesh loses the
+  selection attribute at the pipeline boundary. A selection-*consumer* reads
+  `ctx.GetFaceSelection(mesh)`; treat `null` as "whole mesh" so the tool still works
+  without a selection. Topology-changing modifiers drop selections automatically
+  (`WithNewContent` default); pass an `AttributeDomainMask` if indexing was preserved.
+  Pure index-list ops: `mesh.ExtractFaces/DeleteFaces/SplitByFaces` (`MeshSelectionOps`).
 
 ---
 
