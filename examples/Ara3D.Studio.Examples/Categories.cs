@@ -17,4 +17,5 @@ public enum Categories
     Converters,
     Tests,
     Lakehouse,
+    Selection,
 }
