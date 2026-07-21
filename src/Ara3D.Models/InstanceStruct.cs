@@ -19,6 +19,12 @@ public unsafe struct InstanceStruct : ITransformable3D<InstanceStruct>
     // Constant flags
     public const byte HiddenFlag = 0x1;
 
+    /// <summary>Sentinel: instance is not associated with any entity.</summary>
+    public const int NoEntityIndex = -1;
+
+    /// <summary>Sentinel: instance references no mesh (e.g. its mesh was empty and dropped) and is never drawn.</summary>
+    public const int NoMeshIndex = -1;
+
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
     // Static properties 
     public static readonly uint Size = (uint)sizeof(InstanceStruct);
@@ -105,13 +111,13 @@ public unsafe struct InstanceStruct : ITransformable3D<InstanceStruct>
         get => MetallicByte.ToNormalizedFloat();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => RoughnessByte = value.ToByteFromNormalized();
+        set => MetallicByte = value.ToByteFromNormalized();
     }
 
     public float Roughness
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => MetallicByte.ToNormalizedFloat();
+        get => RoughnessByte.ToNormalizedFloat();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => RoughnessByte = value.ToByteFromNormalized();

@@ -215,7 +215,7 @@ public static class Model3DExtensions
             var mesh = model.Meshes[i];
             if (!filter(mesh))
             {
-                meshMap.Add(-1);
+                meshMap.Add(InstanceStruct.NoMeshIndex);
             }
             else
             {

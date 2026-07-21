@@ -22,7 +22,7 @@ public class Model3DBuilder
         return Instances.Count - 1;
     }
 
-    public int AddInstance(int meshIndex, Matrix4x4 matrix, Material material, int entityIndex = -1, byte flags = 0)
+    public int AddInstance(int meshIndex, Matrix4x4 matrix, Material material, int entityIndex = InstanceStruct.NoEntityIndex, byte flags = 0)
         => AddInstance(new InstanceStruct(entityIndex, matrix, meshIndex, material, flags));
 
     public void AddModel(IModel3D model)

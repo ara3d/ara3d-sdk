@@ -218,7 +218,7 @@ public class RenderModelData : IDisposable, IModel3D
 
         IndexData.AddRange(indices);
 
-        var inst = new InstanceStruct(-1, matrix, 0, material, 0);
+        var inst = new InstanceStruct(InstanceStruct.NoEntityIndex, matrix, meshIndex: 0, material);
         InstanceData.Add(inst);
 
         Meta.TotalBounds = ((minX, minY, minZ), (maxX, maxY, maxZ));
@@ -237,14 +237,14 @@ public class RenderModelData : IDisposable, IModel3D
         InstanceData.Clear();
 
         // Empty meshes are dropped, so instance mesh indices must be remapped to the
-        // compacted slice list; instances of a dropped mesh get -1 (not drawn).
+        // compacted slice list; instances of a dropped mesh get NoMeshIndex (not drawn).
         var meshIndexRemap = new int[model.Meshes.Count];
         for (var meshIndex = 0; meshIndex < model.Meshes.Count; meshIndex++)
         {
             var mesh = model.Meshes[meshIndex];
             if (mesh.NumFaces() == 0)
             {
-                meshIndexRemap[meshIndex] = -1;
+                meshIndexRemap[meshIndex] = InstanceStruct.NoMeshIndex;
                 continue;
             }
             meshIndexRemap[meshIndex] = MeshSliceData.Count;
@@ -282,7 +282,7 @@ public class RenderModelData : IDisposable, IModel3D
         foreach (var instance in model.Instances)
         {
             var meshIndex = instance.MeshIndex;
-            var remapped = meshIndex >= 0 && meshIndex < meshIndexRemap.Length ? meshIndexRemap[meshIndex] : -1;
+            var remapped = meshIndex >= 0 && meshIndex < meshIndexRemap.Length ? meshIndexRemap[meshIndex] : InstanceStruct.NoMeshIndex;
             InstanceData.Add(instance.WithMeshIndex(remapped));
         }
         ValidateMeshSlices();

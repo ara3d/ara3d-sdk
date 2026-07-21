@@ -25,10 +25,10 @@ public class Model3D
     public IReadOnlyList<InstanceStruct> Instances { get; }
 
     public static Model3D Create(TriangleMesh3D mesh, Material material, Matrix4x4 matrix, byte flags)
-        => new([mesh], [new(-1, matrix, 0, material, flags)]);
+        => new([mesh], [new(InstanceStruct.NoEntityIndex, matrix, meshIndex: 0, material, flags)]);
 
     public static Model3D Create(TriangleMesh3D mesh, Material material, IReadOnlyList<Matrix4x4> matrices)
-        => new([mesh], matrices.Select(m => new InstanceStruct(-1, m, 0, material, 0)));
+        => new([mesh], matrices.Select(m => new InstanceStruct(InstanceStruct.NoEntityIndex, m, meshIndex: 0, material)));
 
     public static Model3D Create(TriangleMesh3D mesh, Material material)
         => Create(mesh, material, Matrix4x4.Identity, 0);
