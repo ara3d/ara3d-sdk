@@ -25,9 +25,28 @@ public sealed class FlowObject : ITransformable3D<FlowObject>
         Attachments = attachments ?? [];
     }
 
-    // TODO: maybe this is where the attributes might get discarded if no longer valid. 
-    public FlowObject WithNewContent(object content)
-        => new(content, Presentation, Attributes, Attachments);
+    /// <summary>
+    /// Replaces the content, dropping attributes whose domain indexing the new content
+    /// may have invalidated. By default all indexing-dependent attributes (vertex, face,
+    /// edge, corner, instance domains) are dropped; a modifier that knows it preserved
+    /// indexing (e.g. a transform or color change) passes the domains it kept.
+    /// </summary>
+    public FlowObject WithNewContent(object content, FlowAttribute.AttributeDomainMask preserved = FlowAttribute.AttributeDomainMask.None)
+        => new(content, Presentation, FilterAttributes(Attributes, preserved), Attachments);
+
+    private static IReadOnlyList<FlowAttribute> FilterAttributes(IReadOnlyList<FlowAttribute> attributes, FlowAttribute.AttributeDomainMask preserved)
+    {
+        if (attributes.Count == 0 || preserved == FlowAttribute.AttributeDomainMask.All)
+            return attributes;
+        var result = new List<FlowAttribute>(attributes.Count);
+        for (var i = 0; i < attributes.Count; i++)
+        {
+            var dependence = attributes[i].DomainDependence;
+            if (dependence == FlowAttribute.AttributeDomainMask.None || (dependence & preserved) == dependence)
+                result.Add(attributes[i]);
+        }
+        return result;
+    }
 
     public FlowObject WithNewPresentation(FlowPresentation presentation)
         => new(Content, Presentation, Attributes, Attachments);
