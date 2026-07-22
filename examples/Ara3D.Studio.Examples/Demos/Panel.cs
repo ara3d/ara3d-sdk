@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A single raised-center panel surface, such as a door or cabinet panel.")]
 public class Panel : IGenerator
 {
     [Range(0f, 5f)] public float Height  = 3f;

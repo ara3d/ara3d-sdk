@@ -28,6 +28,7 @@ public enum CircumcircleDisplay
 ///   circumcircle. LastPoint shows the circles of the freshly created triangles; All shows every one.
 /// </summary>
 [Category(Cat.ExperimentalDemos)]
+[Description("Interactive Delaunay triangulation explainer with step-by-step point insertion and circumcircle visualization.")]
 public class DelaunayTriangulationDemo : IGenerator
 {
     [Range(3, 300)] public int PointCount = 48;
@@ -256,6 +257,7 @@ public class DelaunayTriangulationDemo : IGenerator
 /// Delaunay-triangulates the vertices of an input triangle mesh.
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Delaunay-triangulates the input mesh's vertices in a chosen projection plane.")]
 public class DelaunayTriangulate : IModifier
 {
     [Range(0, 3)] public int ProjectionPlane;
@@ -272,6 +274,7 @@ public class DelaunayTriangulate : IModifier
 /// each face in-plane with 2D Delaunay. Shape is preserved exactly; only tessellation density changes.
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Refines a mesh by inserting points on oversized faces and re-triangulating in-plane, preserving the shape exactly.")]
 public class DelaunayRefine : IModifier
 {
     [Range(0.05f, 5f)] public float TargetEdgeLength = 0.25f;
@@ -284,6 +287,7 @@ public class DelaunayRefine : IModifier
 /// Builds the convex hull of a mesh's vertices via 3D Delaunay tetrahedralization.
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Builds the convex hull of the input mesh's vertices via 3D Delaunay tetrahedralization.")]
 public class DelaunayConvexHull : IModifier
 {
     public TriangleMesh3D Eval(TriangleMesh3D mesh)

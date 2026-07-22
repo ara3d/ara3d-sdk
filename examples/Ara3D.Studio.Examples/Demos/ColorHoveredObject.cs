@@ -10,6 +10,7 @@ namespace Ara3D.Studio.Samples.Demos;
 /// </summary>
 [Category(Cat.ExperimentalDemos)]
 [PointerTracking]
+[Description("Highlights the instance currently under the mouse, using the GPU pick pass and re-evaluating as the pointer moves.")]
 public class ColorHoveredObject : IModifier
 {
     public Vector3 HighlightColor = new(1f, 0.3f, 0.1f);

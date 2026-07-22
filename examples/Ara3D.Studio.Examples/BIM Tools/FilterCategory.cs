@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Shows only the BIM elements belonging to a selected category.")]
 public class FilterCategory : IModifier
 {
     [Options(nameof(CategoryNames))] public int Category;

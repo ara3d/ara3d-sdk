@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.BIM_Tools
 {
     [Category(Cat.ExperimentalBim)]
+    [Description("Detects overlapping elements in a BIM model using an AABB tree and highlights the clashing pairs.")]
     public class ClashDetection : IModifier
     {
         [Range(0.001, 0.1)] public float FrameSize { get; set; } = 0.1f;

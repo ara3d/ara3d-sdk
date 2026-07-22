@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Colors model elements by their distance from an adjustable spherical probe point.")]
 public class ColorFromDistance : IModifier
 {
     [Range(0f, 1f)] public float X { get; set; } = 0.5f;

@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A multi-flight staircase with intermediate landings and configurable risers, treads, and stringers.")]
 public class StairsWithLandings : IGenerator
 {
     [Range(1, 100)] public int Flights { get; set; } = 3;

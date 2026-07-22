@@ -11,6 +11,7 @@ namespace Ara3D.Studio.Samples.Demos;
 [Category(Cat.ExperimentalDemos)]
 [Animated]
 [PointerTracking]
+[Description("Interactive demo of grid-snap picking driven by the mouse ray, snapping to grid intersections or cell centers.")]
 public class GridSnapPick : IGenerator
 {
     [Range(2, 30)] public int Cells = 10;

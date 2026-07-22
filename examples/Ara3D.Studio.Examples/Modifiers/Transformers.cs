@@ -10,6 +10,7 @@ public enum TransformMode
 }
 
 [Category(Cat.Transform)]
+[Description("Applies a combined translate, rotate, and scale to the model through an interactive gizmo.")]
 public class Transform : IModifier, IGizmoProvider
 {
     public TransformMode Mode;
@@ -38,6 +39,7 @@ public class Transform : IModifier, IGizmoProvider
 }
 
 [Category(Cat.Transform)]
+[Description("Rotates the model by a whole number of quarter-turns about the X, Y, or Z axis.")]
 public class AxisRotation : IModifier
 {
     [Range(0, 4)] public int QuarterTurns;
@@ -57,6 +59,7 @@ public class AxisRotation : IModifier
 }
 
 [Category(Cat.Transform)]
+[Description("Moves the model by an offset vector, editable with a translation gizmo.")]
 public class Translate : IModifier, IGizmoProvider
 {
     public Vector3 Offset;
@@ -69,6 +72,7 @@ public class Translate : IModifier, IGizmoProvider
 }
 
 [Category(Cat.Transform)]
+[Description("Rotates the model by Euler angles, editable with a rotation gizmo.")]
 public class Rotate : IModifier, IGizmoProvider
 {
     [Range(-180f, 180f)] public float XDegrees;
@@ -86,6 +90,7 @@ public class Rotate : IModifier, IGizmoProvider
 }
 
 [Category(Cat.Transform)]
+[Description("Scales the model per-axis, editable with a scale gizmo.")]
 public class Scale : IModifier, IGizmoProvider
 {
     public Vector3 Amount = (1f, 1f, 1f);

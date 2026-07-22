@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A parametric straight stair with treads, risers, and stringers, and full material control.")]
 public class Stairs : IGenerator
 {
     public Material TreadMaterial { get; set; } = new(new(0.9f, 0.7f, 0f, 1f), 0f, 0.8f);

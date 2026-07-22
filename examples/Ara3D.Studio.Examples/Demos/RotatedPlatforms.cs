@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A stack of rectangular platforms, each progressively rotated about the vertical axis.")]
 public class RotatedPlatforms : IGenerator
 {
     [Range(1, 200)] public int Count = 8;

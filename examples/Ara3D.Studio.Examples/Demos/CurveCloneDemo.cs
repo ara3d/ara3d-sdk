@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Clones markers along a selectable parametric curve (circle, spiral, helix, or sine wave).")]
 public class CurveCloneDemo : IGenerator
 {
     [Range(1, 100)] public int Count = 20;

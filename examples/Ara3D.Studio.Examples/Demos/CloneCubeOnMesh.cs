@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Clones a small cube onto each vertex or face center of the input mesh.")]
 public class CloneCubeOnMesh : IModifier
 {
     public bool AtFaceCenters;

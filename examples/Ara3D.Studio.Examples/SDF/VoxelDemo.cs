@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.Volumetric)]
+[Description("A signed-distance-field primitive shape with two shape parameters, for use with the volumetric tools.")]
 public class SdfPrimitive : IGenerator
 {
     public SdfPrimitive3D Shape;
@@ -12,6 +13,7 @@ public class SdfPrimitive : IGenerator
 }
 
 [Category(Cat.Convert)]
+[Description("Voxelizes a signed-distance field into a voxel grid at a chosen resolution.")]
 public class SdfVoxelize : IModifier
 {
     [Range(0.1f, 2f)] public float BoundSize = 1.2f;
@@ -27,6 +29,7 @@ public class SdfVoxelize : IModifier
 }
 
 [Category(Cat.Convert)]
+[Description("Converts a voxel grid into a mesh, either by cloning cubes or by marching cubes.")]
 public class VoxelsToModel3D : IModifier
 {
     [Range(0, 1)] public float Threshold = 0.05f;
@@ -49,6 +52,7 @@ public class VoxelsToModel3D : IModifier
 
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Demonstrates SDF modeling: combines primitive fields with boolean operations and meshes the result via voxelization or marching cubes.")]
 public class VoxelDemo : IGenerator
 {
     [Range(1, 128)] public int GridSize = 16;

@@ -1,6 +1,7 @@
 ﻿using Ara3D.Studio.Samples;
 
 [Category(Cat.ExperimentalTests)]
+[Description("Splits a model into curved and flat regions along crease edges, optionally coloring the parts.")]
 public class SeparateCurvedParts : IModifier
 {
     [Range(0, 180)] public float CreaseCutOff { get; set; } = 35f;

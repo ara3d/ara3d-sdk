@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples;
 
 [Category(Cat.Display)]
+[Description("Overlays the whole model's bounding box as a wireframe frame.")]
 public class DisplayModelBounds : IModifier
 {
     private Bounds3D _bounds;

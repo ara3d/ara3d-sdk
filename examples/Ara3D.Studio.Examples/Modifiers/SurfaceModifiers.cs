@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Surface)]
+[Description("Samples a parametric surface into a quad mesh at the given resolution.")]
 public class SurfaceToMesh : IModifier
 {
     [Range(2, 256)] public int GridSize = 64;
@@ -10,6 +11,7 @@ public class SurfaceToMesh : IModifier
 }
 
 [Category(Cat.Surface)]
+[Description("Remaps the U/V domain of a parametric surface, cropping or offsetting the sampled region.")]
 public class SurfaceRemap : IModifier
 {
     [Range(-1f, 1f)] public float StartU = 0f;
@@ -22,6 +24,7 @@ public class SurfaceRemap : IModifier
 }
 
 [Category(Cat.Surface)]
+[Description("Tiles a parametric surface by repeating its U/V domain.")]
 public class SurfaceRepeat : IModifier
 {
     [Range(0f, 10f)] public float RepeatU = 3f;

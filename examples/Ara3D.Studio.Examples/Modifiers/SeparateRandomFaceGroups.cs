@@ -1,6 +1,7 @@
 ﻿using Ara3D.Studio.Samples;
 
 [Category(Cat.ExperimentalTests)]
+[Description("Splits the mesh into randomly grouped patches of faces, each as its own part.")]
 public class SeparateRandomFaceGroups : IModifier
 {
     [Range(1, 20)] public int GroupSize { get; set; } = 5;

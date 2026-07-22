@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Spreads a BIM model's instances into a grid, grouped by their source document.")]
 public class ArrangeByDocument : IModifier
 {
     [Range(0, 100)] public float Distance { get; set; } = 50;

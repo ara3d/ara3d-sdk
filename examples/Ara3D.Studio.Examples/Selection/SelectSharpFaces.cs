@@ -5,6 +5,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// by at least the given dihedral angle.
 /// </summary>
 [Category(Cat.Select)]
+[Description("Selects faces touching a sharp edge, where the dihedral angle exceeds a threshold.")]
 public class SelectSharpFaces : IModifier
 {
     [Range(0f, 180f)] public float MinAngle = 45f;

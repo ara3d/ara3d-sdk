@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Generators
 {
     [Category(Cat.Structures)]
+    [Description("A hollow rectangular block whose top, bottom, and sides can each be left open.")]
     public class BlockMesh : IGenerator
     {
         [Range(0f, 10f)] public float SizeX = 1;

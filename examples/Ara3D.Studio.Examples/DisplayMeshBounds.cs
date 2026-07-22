@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples;
 
 [Category(Cat.Display)]
+[Description("Overlays the input mesh's bounding box, drawn as edges, frames, or cylinders, leaving the original visible.")]
 public class DisplayMeshBounds : IModifier
 {
     public bool UseFrames = true;

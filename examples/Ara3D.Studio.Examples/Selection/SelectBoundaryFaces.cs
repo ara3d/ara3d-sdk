@@ -4,6 +4,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// Selects faces that have at least one boundary (open) edge.
 /// </summary>
 [Category(Cat.Select)]
+[Description("Selects faces that have at least one boundary (open) edge.")]
 public class SelectBoundaryFaces : IModifier
 {
     public SelectionCombine Combine = SelectionCombine.Replace;

@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples;
 
 [Category(Cat.Structures)]
+[Description("A parametric roof structure of crossing horizontal and vertical beams carried on columns.")]
 public class RoofBeams : IGenerator
 {
     [Range(0, 100)] public int NumHorizontal = 3;

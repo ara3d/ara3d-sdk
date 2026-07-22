@@ -9,6 +9,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 /// showing the plane's orientation.
 /// </summary>
 [Category(Cat.Cut)]
+[Description("Cuts a model with an arbitrarily oriented plane, driven by a gizmo, keeping the geometry below it.")]
 public class PlaneCut : IModifier, IGizmoProvider
 {
     [Range(-50f, 50f)] public float Offset;
@@ -86,6 +87,7 @@ public class PlaneCut : IModifier, IGizmoProvider
 /// Cuts a triangle mesh with a horizontal plane, keeping geometry at or below the plane.
 /// </summary>
 [Category(Cat.Cut)]
+[Description("Cuts a triangle mesh with a horizontal plane, keeping the geometry at or below a given height.")]
 public class MeshHorizontalSlice : IModifier
 {
     [Range(0f, 1f)] public float Height { get; set; } = 0.5f;
@@ -104,6 +106,7 @@ public class MeshHorizontalSlice : IModifier
 /// Cuts a model with a horizontal plane, keeping geometry at or below the plane.
 /// </summary>
 [Category(Cat.Cut)]
+[Description("Cuts a model with a horizontal plane, keeping the geometry at or below a given height.")]
 public class ModelHorizontalSlice : IModifier
 {
     [Range(0f, 1f)] public float Height { get; set; } = 0.5f;

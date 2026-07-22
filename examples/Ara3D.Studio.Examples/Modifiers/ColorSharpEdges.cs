@@ -14,6 +14,7 @@ public class SeparateAtSharpCorners : IModifier
 */
 
 [Category(Cat.Analyze)]
+[Description("Colors mesh vertices by the sharpness of the edges around them, from flat to creased.")]
 public class ColorSharpEdges : IModifier
 {
     public static Angle HalfTurn = 180.Degrees();

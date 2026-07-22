@@ -8,6 +8,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 /// the two, which makes the effect of the smoothing rules easy to see interactively.
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Uniform 1-to-4 subdivision with adjustable smoothing, from plain midpoint to Loop subdivision.")]
 public class Subdivide : IModifier
 {
     [Range(1, 5)] public int Levels = 1;
@@ -36,6 +37,7 @@ public class Subdivide : IModifier
 /// that are already small are left alone, so detail is added only where the mesh is coarse.
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Adaptively refines only the edges longer than a threshold, adding detail where the mesh is coarse.")]
 public class RefineAdaptive : IModifier
 {
     /// <summary>Edges longer than this fraction of the average edge length are split.</summary>
@@ -59,6 +61,7 @@ public class RefineAdaptive : IModifier
 /// (QEM) decimators; here the priority is simply edge length, which keeps the idea visible.
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Simplifies the mesh by repeatedly collapsing the shortest edge while keeping it manifold.")]
 public class CoarsenEdgeCollapse : IModifier
 {
     /// <summary>Edges shorter than this multiple of the average edge length are collapsed.</summary>
@@ -83,6 +86,7 @@ public class CoarsenEdgeCollapse : IModifier
 /// triangle soup, but unlike edge collapse it does not preserve topology (parts can fuse).
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Simplifies the mesh by merging all vertices within each cell of a uniform grid (fast, but can fuse parts).")]
 public class CoarsenClustering : IModifier
 {
     /// <summary>Number of grid cells across the longest axis of the bounding box.</summary>
@@ -106,6 +110,7 @@ public class CoarsenClustering : IModifier
 /// refinement or coarsening step to see where each technique produces good or bad elements.
 /// </summary>
 [Category(Cat.Analyze)]
+[Description("Colors vertices by the quality of their worst incident triangle (1 = equilateral, 0 = sliver).")]
 public class ColorByTriangleQuality : IModifier
 {
     public float WorstQuality { get; private set; }

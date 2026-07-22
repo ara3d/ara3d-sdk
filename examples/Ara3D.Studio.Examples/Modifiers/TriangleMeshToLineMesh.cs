@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Convert)]
+[Description("Converts a triangle mesh into a line mesh of its edges (a wireframe).")]
 public class TriangleMeshToLineMesh : IModifier
 {
     public LineMesh3D Eval(TriangleMesh3D mesh)

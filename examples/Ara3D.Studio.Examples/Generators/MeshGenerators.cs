@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Generators;
 
 [Category(Cat.Primitives)]
+[Description("A cylinder surface with configurable radius, height, number of sides, and vertical segments.")]
 public class Cylinder : IGenerator
 {
     [Range(0f, 10f)] public float Height = 3;
@@ -13,6 +14,7 @@ public class Cylinder : IGenerator
 }
 
 [Category(Cat.Primitives)]
+[Description("A unit cube, optionally subdivided into an N x N grid of quads per face.")]
 public class Cube : IGenerator
 {
     [Range(1, 100)] public int Segments = 2;
@@ -22,6 +24,7 @@ public class Cube : IGenerator
 }
 
 [Category(Cat.Primitives)]
+[Description("A rectangular box with independent X/Y/Z dimensions, optionally subdivided.")]
 public class Box : IGenerator
 {
     [Range(1, 100)] public int Segments = 2;
@@ -33,6 +36,7 @@ public class Box : IGenerator
 }
 
 [Category(Cat.Primitives)]
+[Description("A straight prism formed by extruding a regular polygon, with configurable sides, radius, and height.")]
 public class Prism : IGenerator
 {
     [Range(0f, 10f)] public float Height = 1;
@@ -45,6 +49,7 @@ public class Prism : IGenerator
 }
 
 [Category(Cat.Primitives)]
+[Description("A pyramid with a regular polygon base and a single apex.")]
 public class Pyramid: IGenerator
 {
     [Range(0f, 10f)] public float Height = 1;
@@ -85,6 +90,7 @@ public class Pyramid: IGenerator
 }
 
 [Category(Cat.Primitives)]
+[Description("A torus (doughnut) surface defined by major and minor radii and row/column resolution.")]
 public class Torus : IGenerator
 {
     public Vector2 ToUv(int i, int j)
@@ -107,6 +113,7 @@ public class Torus : IGenerator
 }
 
 [Category(Cat.Primitives)]
+[Description("A hollow cylindrical tube (pipe) with inner and outer radii, revolved around the vertical axis.")]
 public class Tube : IGenerator
 {
     [Range(1, 32)] public int Count = 16;
@@ -130,6 +137,7 @@ public class Tube : IGenerator
 }
 
 [Category(Cat.Primitives)]
+[Description("A solid upward-pointing arrow with configurable shaft and tip dimensions.")]
 public class UpArrow : IGenerator
 {
     [Range(1, 32)] public int Count = 16;
@@ -143,6 +151,7 @@ public class UpArrow : IGenerator
 }
 
 [Category(Cat.Primitives)]
+[Description("One of the five Platonic solids (tetrahedron, cube, octahedron, dodecahedron, icosahedron), selectable by name.")]
 public class PlatonicSolid : IGenerator
 {
     public List<string> ShapeNames() =>
@@ -170,6 +179,7 @@ public class Plane
 }
 
 [Category(Cat.Primitives)]
+[Description("A hollow box frame whose faces can be individually opened on the top, bottom, and sides.")]
 public class SolidBoxFrame : IGenerator
 {
     [Range(0f, 10f)] public float SizeX = 1;

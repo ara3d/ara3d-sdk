@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A grid surface displaced by layered sine waves, Perlin noise, and radial ripples.")]
 public class WavyNoiseSurface : IGenerator
 {
     [Range(2, 512)] public int NumRows = 96;    

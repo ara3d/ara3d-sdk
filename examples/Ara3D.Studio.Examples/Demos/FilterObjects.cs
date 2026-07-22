@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Removes model instances whose triangle count falls below a complexity threshold.")]
 public class FilterObjects : IModifier
 {
     [Range(0, 20)] public int ObjectComplexity = 2;

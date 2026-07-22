@@ -4,6 +4,7 @@ using Material = Ara3D.Models.Material;
 namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A parametric building facade of stacked floors with inset windows, mullions, and panels.")]
 public class FacadeGenerator : IGenerator
 {
     [Range(0f, 100f)] public float Width = 3f;

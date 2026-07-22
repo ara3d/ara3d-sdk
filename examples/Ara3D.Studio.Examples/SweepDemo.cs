@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A surface produced by sweeping a profile along a helical path, demonstrating the sweep operation.")]
 public class SweepDemo : IGenerator
 {
     [Range(1, 100)] public int SampleCount = 16;

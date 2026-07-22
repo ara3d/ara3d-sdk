@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers
 {
     [Category(Cat.Color)]
+    [Description("Colors mesh vertices from a palette by a chosen vertex attribute, with optional standard-deviation scaling.")]
     public class VertexColorSample : IModifier
     {
         public Palettes Palette { get; set; }

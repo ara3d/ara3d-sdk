@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Cleanup)]
+[Description("Merges coincident vertices, reporting the before and after vertex counts.")]
 public class WeldVertices : IModifier 
 { 
     public int VertexCountBefore { get; private set; }

@@ -12,6 +12,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 /// A 3D companion to the flat <c>VoronoiDiagramDemo</c> generator (ara3d-040).
 /// </summary>
 [Category(Cat.Cut)]
+[Description("Shatters a mesh into colored Voronoi fragments around scattered seed points, with an explode control.")]
 public class VoronoiShatter : IModifier
 {
     [Range(2, 300)] public int Fragments = 24;

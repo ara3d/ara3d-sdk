@@ -64,6 +64,7 @@ public class LSystem
 }
 
 [Category(Cat.Fields)]
+[Description("A 2D L-system fractal drawn as line geometry, with configurable rewrite iterations, segment length, and scaling ratio.")]
 public class LSystemFractal : IGenerator
 {
     [Range(1, 10)] public int Iterations = 3;

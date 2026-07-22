@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Shows or hides IFC elements by broad discipline groups (walls, doors, MEP, structure, and so on).")]
 public class IfcFilter : IModifier
 {
     public bool BeamAndColumns { get; set; }

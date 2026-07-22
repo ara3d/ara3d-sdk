@@ -5,6 +5,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// e.g. small debris shells (low MaxFaces) or the main body (high MinFaces).
 /// </summary>
 [Category(Cat.Select)]
+[Description("Selects whole connected components, filtered by a face-count band.")]
 public class SelectComponent : IModifier
 {
     [Range(0, 1000000)] public int MinFaces = 0;

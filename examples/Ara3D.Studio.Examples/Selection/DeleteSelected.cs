@@ -5,6 +5,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// Returns a bare mesh, so the now-invalid selection is dropped by the pipeline.
 /// </summary>
 [Category(Cat.Select)]
+[Description("Deletes the selected faces, or with KeepSelected keeps only them.")]
 public class DeleteSelected : IModifier
 {
     public bool KeepSelected;

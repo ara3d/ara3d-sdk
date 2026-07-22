@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A ruled surface formed by connecting corresponding points of two boundary curves.")]
 public class RuledSurface : IGenerator
 {
     [Range(0, 5)] public float Size = 2f;

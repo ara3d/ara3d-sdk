@@ -112,6 +112,7 @@ public static class UniformColors
 }
 
 [Category(Cat.Color)]
+[Description("Gives each instance a random material with controlled lightness, metalness, and roughness.")]
 public class UniformRandomizeColors : IModifier
 {
     [Range(0.0f, 1.0f)] public float MinLightness = 0.62f;

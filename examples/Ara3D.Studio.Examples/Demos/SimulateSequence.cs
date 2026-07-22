@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Demo that interpolates instances between their original transforms and a grouped layout to fake a construction sequence.")]
 public class SimulateSequence : IModifier
 {
     public List<byte> OriginalFlags { get; private set; }

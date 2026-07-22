@@ -16,6 +16,7 @@ public enum VertexNormalColorScheme
 }
 
 [Category(Cat.Color)]
+[Description("Colors mesh vertices from their normals, using RGB, facing-direction, or cyclic-hue schemes.")]
 public class VertexNormalColor : IModifier
 {
     public VertexNormalColorScheme Scheme { get; set; } = VertexNormalColorScheme.RgbSigned;

@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Scratch harness for experimenting with IFC category queries; currently passes the model through unchanged.")]
 public class IfcTests: IModifier
 {
     public static string GetCategory(BimObjectModel bim, InstanceStruct inst)

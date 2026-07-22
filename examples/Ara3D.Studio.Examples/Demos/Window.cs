@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A parametric window with a segmented frame and inset panes.")]
 public class Window : IGenerator
 {
     [Range(0f, 10f)] public float Width = 3f;

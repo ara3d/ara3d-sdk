@@ -26,6 +26,7 @@ public enum VoronoiPointPattern
 /// slider): the last site is gold and its freshly carved cell is highlighted orange.
 /// </summary>
 [Category(Cat.ExperimentalDemos)]
+[Description("Interactive Voronoi diagram explainer with incremental site reveal and an optional Delaunay-dual overlay.")]
 public class VoronoiDiagramDemo : IGenerator
 {
     [Range(2, 300)] public int PointCount = 32;

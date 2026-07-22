@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Animation demo that pulses each instance's scale over time using a per-instance random seed.")]
 public class AnimateSize : IModifier, IAnimated
 {
     [Range(0, 9999)]

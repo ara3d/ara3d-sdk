@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Clones a chosen primitive across a 3D grid of rows, columns, and layers with adjustable spacing and color.")]
 public class CloningDemo : IGenerator
 {
     [Range(0, 4)]

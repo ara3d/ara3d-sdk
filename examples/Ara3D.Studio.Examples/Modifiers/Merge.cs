@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Combine)]
+[Description("Merges all instances of a model into a single mesh, optionally welding vertices and keeping colors.")]
 public class MergeModelAsMesh : IModifier
 {
     public int MergedInstanceCount { get; private set; }

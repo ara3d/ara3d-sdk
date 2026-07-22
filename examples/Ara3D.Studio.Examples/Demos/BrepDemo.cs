@@ -23,6 +23,7 @@ public enum BrepShape
 ///   expected number of faces.
 /// </summary>
 [Category(Cat.ExperimentalDemos)]
+[Description("Demonstrates the experimental BREP kernel: per-face tessellation, exploded faces, analytic edge tubes, and visualized structural self-tests.")]
 public class BrepDemo : IGenerator
 {
     public BrepShape Shape = BrepShape.TwistedBox;

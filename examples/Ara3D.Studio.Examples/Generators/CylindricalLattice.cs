@@ -2,6 +2,7 @@
 namespace Ara3D.Studio.Samples.Generators
 {
     [Category(Cat.Structures)]
+    [Description("A cylindrical lattice of radial and vertical bars, with configurable cell resolution and bar thickness.")]
     public class CylindricalLattice : IGenerator
     {
         [Range(3, 100)] public int RadialSides = 16;

@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples;
 
 [Category(Cat.Color)]
+[Description("Assigns a single material (color, metalness, roughness) to the whole object.")]
 public class SetMaterial : IModifier
 {
     [Range(0f, 1f)] public float Red = 0.2f;
@@ -18,6 +19,7 @@ public class SetMaterial : IModifier
 }
 
 [Category(Cat.Display)]
+[Description("Overrides render state such as wireframe, shading, vertex colors, and visibility.")]
 public class SetRenderSettings : IModifier
 {
     public bool Wireframe { get; set; }

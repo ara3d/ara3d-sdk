@@ -7,6 +7,7 @@ namespace Ara3D.Studio.Samples.Demos;
 /// the white patch breaks out in a rash, the blue patch stays clean. That is the whole lesson.
 /// </summary>
 [Category(Cat.ExperimentalDemos)]
+[Description("Teaching demo contrasting blue (Poisson-disk) noise with white noise at equal point counts, optionally flagging points that violate the minimum spacing.")]
 public class BlueNoiseField : IGenerator
 {
     [Range(1f, 40f)] public float Width = 12f;
@@ -85,6 +86,7 @@ public class BlueNoiseField : IGenerator
 /// payoff — distributing rocks, rivets, trees, foliage without overlaps and with controllable density.
 /// </summary>
 [Category(Cat.ExperimentalDemos)]
+[Description("Scatters instances across an input surface at a guaranteed minimum spacing using blue-noise thinning.")]
 public class PoissonScatterOnSurface : IModifier
 {
     [Range(0.05f, 5f)] public float Radius = 0.5f;

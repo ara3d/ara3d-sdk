@@ -1,6 +1,7 @@
 namespace Ara3D.Studio.Samples.Selection;
 
 [Category(Cat.Select)]
+[Description("Selects a random fraction of the faces, using a fixed seed.")]
 public class SelectRandom : IModifier
 {
     [Range(0f, 1f)] public float Fraction = 0.5f;

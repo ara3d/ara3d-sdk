@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Generators;
 
 [Category(Cat.Surfaces)]
+[Description("A parametric surface chosen from a built-in library, sampled over an adjustable U/V range.")]
 public class SurfaceGenerators : IGenerator
 {
     [Options(nameof(SurfaceNames))] public int Surface;

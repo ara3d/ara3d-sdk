@@ -14,6 +14,7 @@ public class ClashList
 }
 
 [Category(Cat.ExperimentalBim)]
+[Description("Loads a sample multi-model 'Lakehouse' dataset and highlights elements that clash between disciplines.")]
 public class LakehouseClashes : IGenerator
 {
     [Options(nameof(FileNames))] public int File;

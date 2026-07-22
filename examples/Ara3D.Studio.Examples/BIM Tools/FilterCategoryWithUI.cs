@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Filters BIM elements by category through a pop-up multi-select window.")]
 public class FilterCategoryWithUI : IModifier
 {
     public Action ShowWindow => ShowWindowImpl;

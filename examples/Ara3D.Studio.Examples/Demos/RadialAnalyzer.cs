@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Detects and highlights instances whose geometry is approximately radially symmetric.")]
 public class RadialAnalyzer : IModifier
 { 
     private List<RadialObjectAnalysis> _analysis;

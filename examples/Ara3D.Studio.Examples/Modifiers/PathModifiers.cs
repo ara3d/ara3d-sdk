@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Convert)]
+[Description("Extrudes a line path upward into a vertical wall surface.")]
 public class ExtrudePath : IModifier
 {
     [Range(0f, 10f)] public float Height { get; set; } = 1;
@@ -11,6 +12,7 @@ public class ExtrudePath : IModifier
 }
 
 [Category(Cat.Convert)]
+[Description("Replaces each input line segment with a box-section beam.")]
 public class LinesToBoxes : IModifier
 {
     [Range(0f, 2f)] public float Thickness = 0.1f;

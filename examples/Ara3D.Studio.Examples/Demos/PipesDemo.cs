@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("An animated '3D pipes' screensaver that grows random pipe runs through a grid over time.")]
 public class PipesDemo : IGenerator, IAnimated
 {
     [Range(10, 500)] public int GridCount = 40;

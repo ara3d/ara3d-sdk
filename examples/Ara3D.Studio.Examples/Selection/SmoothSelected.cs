@@ -6,6 +6,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// tool degrades to a normal tool.
 /// </summary>
 [Category(Cat.Select)]
+[Description("Laplacian-smooths the vertices of the selected faces, or the whole mesh when nothing is selected.")]
 public class SmoothSelected : IModifier
 {
     [Range(0, 50)] public int Iterations = 5;

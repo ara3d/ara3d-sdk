@@ -4,6 +4,7 @@ namespace Ara3D.Studio.Samples.BIM_Tools;
 
 
 [Category(Cat.ExperimentalBim)]
+[Description("Shows only the BIM elements on a selected building level (storey).")]
 public class FilterLevels : IModifier
 {
     //[Options(nameof(LevelNames))] 

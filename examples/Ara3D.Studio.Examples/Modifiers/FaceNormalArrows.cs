@@ -1,6 +1,7 @@
 namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Analyze)]
+[Description("Draws an arrow on each face pointing along its normal, for inspecting orientation.")]
 public class FaceNormalArrows : IModifier
 {
     [Range(0.01f, 10f)] public float Scale = 0.1f;

@@ -4,6 +4,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// Selects faces whose centroid falls inside a box given as fractions of the mesh bounds.
 /// </summary>
 [Category(Cat.Select)]
+[Description("Selects faces whose centroid falls inside a box given as fractions of the mesh bounds.")]
 public class SelectByBox : IModifier
 {
     [Range(0f, 1f)] public float MinX = 0f;

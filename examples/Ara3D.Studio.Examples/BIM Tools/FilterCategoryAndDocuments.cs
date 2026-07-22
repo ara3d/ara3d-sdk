@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Shows only the BIM elements matching a selected category and, optionally, a selected source document.")]
 public class FilterCategoryAndDocuments : IModifier
 {
     public bool FilterDocument { get; set; } = true;

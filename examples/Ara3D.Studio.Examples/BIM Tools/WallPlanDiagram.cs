@@ -7,6 +7,7 @@ namespace Ara3D.Studio.Samples.BIM_Tools;
 /// Includes basic walls, curtain walls, curtain panels, and mullions.
 /// </summary>
 [Category(Cat.ExperimentalBim)]
+[Description("Derives a 2D wall plan from a BIM model as line segments on the ground plane, with gaps at doors.")]
 public class WallPlanDiagram : IModifier
 {
     [Range(0.01f, 0.5f)] public float MinWallLength = 0.1f;

@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Clones a pyramid onto each face of the input mesh, aligned to the face.")]
 public class ClonePyramidOnFace : IModifier
 {
     public static IReadOnlyList<Quad3D> ToQuads(IReadOnlyList<Triangle3D> triangles)

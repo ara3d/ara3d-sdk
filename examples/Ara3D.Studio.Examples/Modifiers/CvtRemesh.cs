@@ -19,6 +19,7 @@ public enum VoronoiPlane
 /// True curved-surface CVT (geodesic cells) is the deferred follow-on.
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Centroidal-Voronoi (Lloyd) remesh of a planar or height-field mesh, evening out vertex spacing and removing sliver triangles.")]
 public class CvtRemesh : IModifier
 {
     [Range(0, 40)] public int Iterations = 10;

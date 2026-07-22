@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Transform)]
+[Description("Clones the input mesh across a 3D grid of rows, columns, and layers at a fixed offset.")]
 public class GridClone : IModifier
 {
     [Range(1, 100)] public int Rows = 3;

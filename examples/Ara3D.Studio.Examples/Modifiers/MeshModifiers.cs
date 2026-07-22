@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Cleanup)]
+[Description("Removes a contiguous range of faces from the mesh (or model), by start index and count.")]
 public class DeleteFaces : IModifier
 {
     [Range(0, 1000)] public int Index;

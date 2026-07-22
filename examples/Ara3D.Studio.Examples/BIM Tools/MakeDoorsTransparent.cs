@@ -4,6 +4,7 @@ using Ara3D.BimOpenSchema;
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Makes all door elements in a BIM model semi-transparent.")]
 public class MakeDoorsTransparent : IModifier
 {
     private BimData _data;

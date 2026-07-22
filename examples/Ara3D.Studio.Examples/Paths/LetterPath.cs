@@ -485,6 +485,7 @@ public static class PathBuilderLetters
 }
 
 [Category(Cat.Curves)]
+[Description("The outline of a selectable letter, produced as line geometry.")]
 public class LetterPath : IGenerator
 {
     public static List<MethodInfo> LetterFuncs =>

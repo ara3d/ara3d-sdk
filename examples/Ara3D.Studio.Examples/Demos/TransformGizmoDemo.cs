@@ -8,6 +8,7 @@ namespace Ara3D.Studio.Samples.Demos;
 /// rotation, the way Blender/Maya/Unity draw it in "local" orientation mode.
 /// </summary>
 [Category(Cat.ExperimentalDemos)]
+[Description("A translate/rotate/scale gizmo rendered as parameter-driven geometry, with sliders standing in for dragging.")]
 public class TransformGizmo : IModifier
 {
     [Range(-20f, 20f)] public float PositionX = 0f;

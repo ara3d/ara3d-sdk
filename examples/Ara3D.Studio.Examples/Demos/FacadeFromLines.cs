@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Builds a windowed facade wall by extruding each input line into a floor-segmented panel.")]
 public class FacadeFromLines : IModifier
 {
     [Range(0f, 10f)] public float Width = 3f;

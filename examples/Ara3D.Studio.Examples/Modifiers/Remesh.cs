@@ -5,6 +5,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 /// Suitable as a lightweight preprocessing step before FEM meshing.
 /// </summary>
 [Category(Cat.Remesh)]
+[Description("Remeshes toward a target edge length using edge split, collapse, and tangential smoothing.")]
 public class Remesh : IModifier
 {
     /// <summary>Target edge length in model units. Zero uses the input mesh average edge length.</summary>

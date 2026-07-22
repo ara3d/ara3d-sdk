@@ -5,6 +5,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// face selection across shared edges.
 /// </summary>
 [Category(Cat.Select)]
+[Description("Grows (positive steps) or shrinks (negative steps) the current face selection across shared edges.")]
 public class SelectGrowShrink : IModifier
 {
     [Range(-10, 10)] public int Steps = 1;

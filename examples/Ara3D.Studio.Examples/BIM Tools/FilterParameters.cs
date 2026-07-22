@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Filters BIM elements by their parameter values through a pop-up selection window.")]
 public class FilterParameters : IModifier
 {
     public Action ShowWindow => ShowWindowImpl;

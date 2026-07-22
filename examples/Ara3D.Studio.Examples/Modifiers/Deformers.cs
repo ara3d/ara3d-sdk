@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Deform)]
+[Description("Twists the mesh progressively about an axis by a number of revolutions across its extent.")]
 public class TwistDeformer : IModifier
 {
     [Range(-10f, 10f)] public float Revolutions { get; set; }
@@ -24,6 +25,7 @@ public class TwistDeformer : IModifier
 }
 
 [Category(Cat.Deform)]
+[Description("Shears the mesh, translating points increasingly along an axis from one side to the other.")]
 public class SkewDeformer : IModifier
 {
     [Range(-5f, 5f)] public float X { get; set; }
@@ -52,6 +54,7 @@ public class SkewDeformer : IModifier
 }
 
 [Category(Cat.Deform)]
+[Description("Pushes mesh points toward a sphere, blending between the original shape and a spherical one.")]
 public class Spherify : IModifier
 {
     [Range(0f, 10f)] public float Radius { get; set; }
@@ -74,6 +77,7 @@ public class Spherify : IModifier
 }
 
 [Category(Cat.Deform)]
+[Description("Pushes mesh points toward the faces of a bounding box, blending toward a cube-like shape.")]
 public class Cubify: IModifier
 {
     [Range(0f, 10f)] public float Radius { get; set; }
@@ -98,6 +102,7 @@ public class Cubify: IModifier
 }
 
 [Category(Cat.Deform)]
+[Description("Moves every vertex along its normal by a fixed distance, inflating or shrinking the mesh.")]
 public class Push : IModifier
 {
     [Range(0f, 10f)] public float Distance { get; set; }
@@ -110,6 +115,7 @@ public class Push : IModifier
 }
 
 [Category(Cat.Deform)]
+[Description("Displaces mesh points along Z by Perlin noise, with adjustable amplitude, frequency, and offset.")]
 public class NoiseDeformer : IModifier
 {
     [Range(0f, 1f)] public float Amplitude { get; set; } = 1f;

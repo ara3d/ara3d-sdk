@@ -3,6 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 [Category(Cat.ExperimentalBim)]
+[Description("Visualizes swing/clearance zones in front of IFC doors, with adjustable wall transparency.")]
 public class IfcDoorClearance : IModifier
 {
     public List<string> CategoryNames { get; set; } = [];

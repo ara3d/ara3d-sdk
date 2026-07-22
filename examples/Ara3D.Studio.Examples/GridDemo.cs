@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A flat rectangular grid surface with adjustable row and column counts.")]
 public class GridDemo : IGenerator
 {
     [Range(1, 256)] public int NumRows = 16;

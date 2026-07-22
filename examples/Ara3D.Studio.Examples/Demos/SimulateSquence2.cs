@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("Construction-sequence demo that animates instances into place over time, ordered by height.")]
 public class SimulateSequence2 : IModifier
 {
     public List<byte> OriginalFlags { get; private set; }

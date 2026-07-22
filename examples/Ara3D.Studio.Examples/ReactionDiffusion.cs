@@ -172,6 +172,7 @@ public static class ReactionDiffusion2D
 
 [OnDemand]
 [Category(Cat.Fields)]
+[Description("A Gray-Scott reaction-diffusion pattern simulated on a grid and output as a height field.")]
 public class ReactionDiffusion : IGenerator
 {
     // Example parameters known to yield nice patterns:

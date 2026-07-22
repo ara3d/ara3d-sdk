@@ -6,6 +6,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// Passes geometry through unchanged when no selection is present.
 /// </summary>
 [Category(Cat.Select)]
+[Description("Visualizes the current face selection, highlighting selected faces and dimming the rest.")]
 public class ShowSelection : IModifier
 {
     public Vector3 SelectedColor = new(1f, 0.55f, 0.05f);

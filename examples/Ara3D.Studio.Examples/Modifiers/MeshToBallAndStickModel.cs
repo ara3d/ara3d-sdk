@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Convert)]
+[Description("Converts a mesh into a ball-and-stick model, with spheres at vertices and tubes along edges.")]
 public class MeshToBallAndStickModel : IModifier
 {
     [Range(3, 64)] public int Sides = 16;

@@ -6,6 +6,7 @@ namespace Ara3D.Studio.Samples.BIM_Tools;
 /// Shows IFCSPACE room geometry for a selected building level (IFCBUILDINGSTOREY).
 /// </summary>
 [Category(Cat.ExperimentalBim)]
+[Description("Shows the IfcSpace room geometry for a selected building level (storey).")]
 public class DrawLevelRooms : IModifier
 {
     public List<string> LevelNames { get; private set; } = [];

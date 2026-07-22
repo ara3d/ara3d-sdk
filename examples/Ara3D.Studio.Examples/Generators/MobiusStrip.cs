@@ -1,6 +1,7 @@
 namespace Ara3D.Studio.Samples;
 
 [Category(Cat.Surfaces)]
+[Description("A Mobius strip surface with adjustable radius, width, and mesh resolution.")]
 public class MobiusStrip : IGenerator
 {
     [Range(0.01f, 10f)] public float Radius = 2f;

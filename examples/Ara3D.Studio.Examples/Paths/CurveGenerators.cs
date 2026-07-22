@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Paths;
 
 [Category(Cat.Curves)]
+[Description("A helical curve with configurable height and number of revolutions.")]
 public class Helix : IGenerator
 {
     [Range(0f, 20f)] public float Height { get; set; }
@@ -11,6 +12,7 @@ public class Helix : IGenerator
 }
 
 [Category(Cat.Curves)]
+[Description("A planar spiral curve sweeping from an inner to an outer radius over a number of revolutions.")]
 public class Spiral : IGenerator
 {
     [Range(1, 32)] public int Revolutions { get; set; }
@@ -22,6 +24,7 @@ public class Spiral : IGenerator
 }
 
 [Category(Cat.Curves)]
+[Description("A sine-wave curve with configurable width, height, phase, and cycle count.")]
 public class SineWave : IGenerator
 {
     [Range(0f, 20f)] public float WaveWidth { get; set; }

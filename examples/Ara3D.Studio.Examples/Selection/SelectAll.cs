@@ -8,6 +8,7 @@ public enum SelectAllMode
 }
 
 [Category(Cat.Select)]
+[Description("Selects every face of the mesh according to the chosen mode.")]
 public class SelectAll : IModifier
 {
     public SelectAllMode Mode = SelectAllMode.All;

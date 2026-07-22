@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.ExperimentalDemos)]
+[Description("A parametric door handle and back-plate built as a revolved surface.")]
 public class DoorHandle : IGenerator
 {
     [Range(3, 64)] public int RadialSegments { get; set; } = 17;

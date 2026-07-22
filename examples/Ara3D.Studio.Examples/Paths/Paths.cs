@@ -1,6 +1,7 @@
 ﻿namespace Ara3D.Studio.Samples.Paths;
 
 [Category(Cat.Curves)]
+[Description("A closed regular polygon outline as line geometry, with configurable sides and radius.")]
 public class Polygon : IGenerator
 {
     [Range(3, 64)] public int Sides = 3;
@@ -15,6 +16,7 @@ public class Polygon : IGenerator
 
 
 [Category(Cat.Curves)]
+[Description("A single straight line segment from the origin to the given point.")]
 public class Line : IGenerator
 {
     [Range(0f, 10f)] public float X = 5f;
