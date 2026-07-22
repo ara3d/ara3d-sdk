@@ -215,7 +215,7 @@ public static class GizmoElements
         var v = AxisDirection((normalAxis + 2) % 3);
         var (idle, hover, active) = States(AxisColor(normalAxis));
         return new(key,
-            [new GizmoQuad(default, u * 0.45f, v * 0.45f, v * 0.45f)],
+            [new GizmoQuad(default, u * 0.55f, v * 0.55f, v * 0.55f)],
             new PlaneDrag(AxisDirection(normalAxis)), binding, idle, hover, active);
     }
 
