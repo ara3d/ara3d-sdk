@@ -17,7 +17,7 @@ public class SetMaterial : IModifier
         => input.WithNewMaterial(Material);
 }
 
-[Category(Cat.Color)]
+[Category(Cat.Display)]
 public class SetRenderSettings : IModifier
 {
     public bool Wireframe { get; set; }

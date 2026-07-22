@@ -32,6 +32,7 @@ public static class Cat
     public const string Convert = "Convert";
     public const string Analyze = "Analyze";
     public const string Color = "Color";
+    public const string Display = "Display";
     public const string Select = "Select";
 
     // Maturity escape hatch, one per kind. Deep nesting under it is expected.
