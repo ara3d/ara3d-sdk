@@ -49,7 +49,36 @@ public class Translate : IModifier, IGizmoProvider
     public IModel3D Eval(IModel3D model)
         => model.Translate(Offset);
 
-    public IReadOnlyList<GizmoHandle> GetHandles()
-        => GizmoHandles.Translation(nameof(Offset));
+    public IReadOnlyList<GizmoElement> GetGizmoElements()
+        => GizmoElements.Translation(nameof(Offset));
+}
+
+[Category(nameof(Categories.Transformers))]
+public class Rotate : IModifier, IGizmoProvider
+{
+    [Range(-180f, 180f)] public float XDegrees;
+    [Range(-180f, 180f)] public float YDegrees;
+    [Range(-180f, 180f)] public float ZDegrees;
+
+    public IModel3D Eval(IModel3D model)
+        => model.Transform(
+            Matrix4x4.CreateFromAxisAngle(Vector3.UnitX, XDegrees.Degrees())
+            * Matrix4x4.CreateFromAxisAngle(Vector3.UnitY, YDegrees.Degrees())
+            * Matrix4x4.CreateFromAxisAngle(Vector3.UnitZ, ZDegrees.Degrees()));
+
+    public IReadOnlyList<GizmoElement> GetGizmoElements()
+        => GizmoElements.RotationRings(nameof(XDegrees), nameof(YDegrees), nameof(ZDegrees));
+}
+
+[Category(nameof(Categories.Transformers))]
+public class Scale : IModifier, IGizmoProvider
+{
+    public Vector3 Amount = (1f, 1f, 1f);
+
+    public IModel3D Eval(IModel3D model)
+        => model.Scale(Amount);
+
+    public IReadOnlyList<GizmoElement> GetGizmoElements()
+        => GizmoElements.ScaleHandles(nameof(Amount));
 }
 
