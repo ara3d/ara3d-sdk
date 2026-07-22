@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class Door : IGenerator
 {
     [Range(0f, 5f)] public float Height = 2.4f;

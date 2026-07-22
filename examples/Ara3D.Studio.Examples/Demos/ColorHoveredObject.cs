@@ -8,7 +8,7 @@ namespace Ara3D.Studio.Samples.Demos;
 /// the hovered instance. [PointerTracking] re-evaluates this node as the pointer moves. On hosts
 /// without a viewport the model passes through unchanged.
 /// </summary>
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 [PointerTracking]
 public class ColorHoveredObject : IModifier
 {

@@ -7,7 +7,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 /// averages, so the limit surface becomes smooth (C2 almost everywhere). Values in between blend
 /// the two, which makes the effect of the smoothing rules easy to see interactively.
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Remesh)]
 public class Subdivide : IModifier
 {
     [Range(1, 5)] public int Levels = 1;
@@ -35,7 +35,7 @@ public class Subdivide : IModifier
 /// the input's average edge length) at their midpoints. Unlike uniform subdivision, triangles
 /// that are already small are left alone, so detail is added only where the mesh is coarse.
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Remesh)]
 public class RefineAdaptive : IModifier
 {
     /// <summary>Edges longer than this fraction of the average edge length are split.</summary>
@@ -58,7 +58,7 @@ public class RefineAdaptive : IModifier
 /// the link condition so the surface stays manifold. This is the core operation inside quadric
 /// (QEM) decimators; here the priority is simply edge length, which keeps the idea visible.
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Remesh)]
 public class CoarsenEdgeCollapse : IModifier
 {
     /// <summary>Edges shorter than this multiple of the average edge length are collapsed.</summary>
@@ -82,7 +82,7 @@ public class CoarsenEdgeCollapse : IModifier
 /// are merged into their average, and degenerate faces are dropped. Very fast and works on any
 /// triangle soup, but unlike edge collapse it does not preserve topology (parts can fuse).
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Remesh)]
 public class CoarsenClustering : IModifier
 {
     /// <summary>Number of grid cells across the longest axis of the bounding box.</summary>
@@ -105,7 +105,7 @@ public class CoarsenClustering : IModifier
 /// of the triangle to an equilateral one (1 = equilateral, 0 = degenerate sliver). Apply after a
 /// refinement or coarsening step to see where each technique produces good or bad elements.
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Analyze)]
 public class ColorByTriangleQuality : IModifier
 {
     public float WorstQuality { get; private set; }

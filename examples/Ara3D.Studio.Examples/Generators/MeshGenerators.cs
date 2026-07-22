@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Generators;
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class Cylinder : IGenerator
 {
     [Range(0f, 10f)] public float Height = 3;
@@ -12,7 +12,7 @@ public class Cylinder : IGenerator
         => Primitives.Cylinder(Sides, Radius, Height, Segments);
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class Cube : IGenerator
 {
     [Range(1, 100)] public int Segments = 2;
@@ -21,17 +21,18 @@ public class Cube : IGenerator
         => PlatonicSolids.Cube.Subdivide(Segments);
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class Box : IGenerator
 {
     [Range(1, 100)] public int Segments = 2;
-    public Vector3 Dimensions = new(1,1,3);
 
+    public Vector3 Dimensions { get; set; } = (1, 1, 1);
+    
     public QuadMesh3D Eval()
         => PlatonicSolids.Cube.Scale(Dimensions).Subdivide(Segments);
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class Prism : IGenerator
 {
     [Range(0f, 10f)] public float Height = 1;
@@ -43,7 +44,7 @@ public class Prism : IGenerator
         => Sides.GetCircularPoints(Radius).Extrude(Height / Segments, Segments);
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class Pyramid: IGenerator
 {
     [Range(0f, 10f)] public float Height = 1;
@@ -83,7 +84,7 @@ public class Pyramid: IGenerator
     }
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class Torus : IGenerator
 {
     public Vector2 ToUv(int i, int j)
@@ -105,7 +106,7 @@ public class Torus : IGenerator
     }
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class Tube : IGenerator
 {
     [Range(1, 32)] public int Count = 16;
@@ -128,7 +129,7 @@ public class Tube : IGenerator
     }
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class UpArrow : IGenerator
 {
     [Range(1, 32)] public int Count = 16;
@@ -141,7 +142,7 @@ public class UpArrow : IGenerator
         => Primitives.UpArrow(Count, ShaftHeight, ShaftWidth, TipHeight, TipWidth);
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class PlatonicSolid : IGenerator
 {
     public List<string> ShapeNames() =>
@@ -153,7 +154,7 @@ public class PlatonicSolid : IGenerator
         => PlatonicSolids.GetMesh(Shape);
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class Plane
 {
     [Range(1, 256)] public int NumRows = 16;
@@ -168,7 +169,7 @@ public class Plane
     }
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Primitives)]
 public class SolidBoxFrame : IGenerator
 {
     [Range(0f, 10f)] public float SizeX = 1;

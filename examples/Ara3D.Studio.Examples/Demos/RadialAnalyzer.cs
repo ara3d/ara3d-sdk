@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category("Piping Labs")]
+[Category(Cat.ExperimentalDemos)]
 public class RadialAnalyzer : IModifier
 { 
     private List<RadialObjectAnalysis> _analysis;

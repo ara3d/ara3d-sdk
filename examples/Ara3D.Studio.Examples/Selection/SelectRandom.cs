@@ -1,6 +1,6 @@
 namespace Ara3D.Studio.Samples.Selection;
 
-[Category(nameof(Categories.Selection))]
+[Category(Cat.Select)]
 public class SelectRandom : IModifier
 {
     [Range(0f, 1f)] public float Fraction = 0.5f;

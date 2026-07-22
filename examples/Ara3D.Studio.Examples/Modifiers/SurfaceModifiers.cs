@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Surfaces))]
+[Category(Cat.Surface)]
 public class SurfaceToMesh : IModifier
 {
     [Range(2, 256)] public int GridSize = 64;
@@ -9,7 +9,7 @@ public class SurfaceToMesh : IModifier
         => surface.ToQuadGrid(GridSize, GridSize);
 }
 
-[Category(nameof(Categories.Surfaces))]
+[Category(Cat.Surface)]
 public class SurfaceRemap : IModifier
 {
     [Range(-1f, 1f)] public float StartU = 0f;
@@ -21,7 +21,7 @@ public class SurfaceRemap : IModifier
         => surface.SetDomain((StartU, StartV), (RangeU, RangeV));
 }
 
-[Category(nameof(Categories.Surfaces))]
+[Category(Cat.Surface)]
 public class SurfaceRepeat : IModifier
 {
     [Range(0f, 10f)] public float RepeatU = 3f;

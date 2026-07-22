@@ -8,7 +8,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 /// ring to yaw the normal about Z, a green ring to pitch it, and a translucent quad
 /// showing the plane's orientation.
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Cut)]
 public class PlaneCut : IModifier, IGizmoProvider
 {
     [Range(-50f, 50f)] public float Offset;
@@ -85,7 +85,7 @@ public class PlaneCut : IModifier, IGizmoProvider
 /// <summary>
 /// Cuts a triangle mesh with a horizontal plane, keeping geometry at or below the plane.
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Cut)]
 public class MeshHorizontalSlice : IModifier
 {
     [Range(0f, 1f)] public float Height { get; set; } = 0.5f;
@@ -103,7 +103,7 @@ public class MeshHorizontalSlice : IModifier
 /// <summary>
 /// Cuts a model with a horizontal plane, keeping geometry at or below the plane.
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Cut)]
 public class ModelHorizontalSlice : IModifier
 {
     [Range(0f, 1f)] public float Height { get; set; } = 0.5f;

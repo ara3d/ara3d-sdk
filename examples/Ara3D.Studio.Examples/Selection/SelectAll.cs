@@ -7,7 +7,7 @@ public enum SelectAllMode
     Invert,
 }
 
-[Category(nameof(Categories.Selection))]
+[Category(Cat.Select)]
 public class SelectAll : IModifier
 {
     public SelectAllMode Mode = SelectAllMode.All;

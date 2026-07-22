@@ -22,7 +22,7 @@ public enum BrepShape
 ///   Euler characteristic is 2 per shell, red otherwise; edges are red unless shared by the
 ///   expected number of faces.
 /// </summary>
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class BrepDemo : IGenerator
 {
     public BrepShape Shape = BrepShape.TwistedBox;

@@ -3,7 +3,7 @@
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
 
-[Category(nameof(Categories.Buildings))]
+[Category(Cat.ExperimentalBim)]
 public class FilterLevels : IModifier
 {
     //[Options(nameof(LevelNames))] 

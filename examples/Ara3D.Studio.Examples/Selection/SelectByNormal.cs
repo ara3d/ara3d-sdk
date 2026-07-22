@@ -4,7 +4,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// Selects faces whose normal is within an angle tolerance of a direction
 /// (e.g. up-facing roofs, down-facing overhangs).
 /// </summary>
-[Category(nameof(Categories.Selection))]
+[Category(Cat.Select)]
 public class SelectByNormal : IModifier
 {
     [Range(-1f, 1f)] public float DirectionX = 0f;

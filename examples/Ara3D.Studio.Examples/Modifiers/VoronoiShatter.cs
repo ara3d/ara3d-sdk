@@ -11,7 +11,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 /// colored fragment; Explode pushes the fragments radially apart so the partition is visible.
 /// A 3D companion to the flat <c>VoronoiDiagramDemo</c> generator (ara3d-040).
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Cut)]
 public class VoronoiShatter : IModifier
 {
     [Range(2, 300)] public int Fragments = 24;

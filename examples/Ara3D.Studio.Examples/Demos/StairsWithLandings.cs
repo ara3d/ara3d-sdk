@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class StairsWithLandings : IGenerator
 {
     [Range(1, 100)] public int Flights { get; set; } = 3;

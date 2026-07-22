@@ -5,7 +5,7 @@ namespace Ara3D.Studio.Samples.BIM_Tools;
 /// <summary>
 /// Derives a 2D wall plan as LineMesh3D segments on the XY plane at each wall's bottom Z, with gaps at doors.
 /// Includes basic walls, curtain walls, curtain panels, and mullions.
-/// </summary>[Category(nameof(Categories.Buildings))]
+/// </summary>[Category(Cat.ExperimentalBim)]
 public class WallPlanDiagram : IModifier
 {
     [Range(0.01f, 0.5f)] public float MinWallLength = 0.1f;

@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.BIM_Tools;
 
-[Category(nameof(Categories.Buildings))]
+[Category(Cat.ExperimentalBim)]
 public class ColorFromDistance : IModifier
 {
     [Range(0f, 1f)] public float X { get; set; } = 0.5f;

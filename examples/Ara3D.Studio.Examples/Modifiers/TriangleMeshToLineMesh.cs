@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Converters))]
+[Category(Cat.Convert)]
 public class TriangleMeshToLineMesh : IModifier
 {
     public LineMesh3D Eval(TriangleMesh3D mesh)

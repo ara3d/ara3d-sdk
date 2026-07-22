@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Topology))]
+[Category(Cat.Cleanup)]
 public class WeldVertices : IModifier 
 { 
     public int VertexCountBefore { get; private set; }

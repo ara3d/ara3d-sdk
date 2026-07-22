@@ -4,7 +4,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// Selects faces that touch a sharp edge: an edge whose two face normals differ
 /// by at least the given dihedral angle.
 /// </summary>
-[Category(nameof(Categories.Selection))]
+[Category(Cat.Select)]
 public class SelectSharpFaces : IModifier
 {
     [Range(0f, 180f)] public float MinAngle = 45f;

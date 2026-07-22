@@ -1,6 +1,6 @@
 namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Analyze)]
 public class FaceNormalArrows : IModifier
 {
     [Range(0.01f, 10f)] public float Scale = 0.1f;

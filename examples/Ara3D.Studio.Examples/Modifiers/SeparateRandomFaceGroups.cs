@@ -1,6 +1,6 @@
 ﻿using Ara3D.Studio.Samples;
 
-[Category(nameof(Categories.Tests))]
+[Category(Cat.ExperimentalTests)]
 public class SeparateRandomFaceGroups : IModifier
 {
     [Range(1, 20)] public int GroupSize { get; set; } = 5;

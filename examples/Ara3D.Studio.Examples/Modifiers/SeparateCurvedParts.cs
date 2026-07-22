@@ -1,6 +1,6 @@
 ﻿using Ara3D.Studio.Samples;
 
-[Category(nameof(Categories.Tests))]
+[Category(Cat.ExperimentalTests)]
 public class SeparateCurvedParts : IModifier
 {
     [Range(0, 180)] public float CreaseCutOff { get; set; } = 35f;

@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class RuledSurface : IGenerator
 {
     [Range(0, 5)] public float Size = 2f;

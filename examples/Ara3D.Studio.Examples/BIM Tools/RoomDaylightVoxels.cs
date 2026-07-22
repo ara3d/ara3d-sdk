@@ -6,7 +6,7 @@ namespace Ara3D.Studio.Samples.BIM_Tools;
 /// Voxelizes all rooms and colors voxels by distance to the nearest glazing
 /// (windows / curtain panels). Naive Euclidean proxy for daylight access — not ray-traced.
 /// </summary>
-[Category(nameof(Categories.Buildings))]
+[Category(Cat.ExperimentalBim)]
 public class RoomDaylightVoxels : IModifier
 {
     [Range(0.1f, 2f)] public float VoxelSize = 0.5f;

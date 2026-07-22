@@ -15,7 +15,7 @@ public enum VertexNormalColorScheme
     CyclicHue,
 }
 
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Color)]
 public class VertexNormalColor : IModifier
 {
     public VertexNormalColorScheme Scheme { get; set; } = VertexNormalColorScheme.RgbSigned;

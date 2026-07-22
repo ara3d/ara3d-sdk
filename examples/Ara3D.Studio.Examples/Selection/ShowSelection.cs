@@ -5,7 +5,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// the rest dimmed. Faces are unwelded so the highlight has crisp boundaries.
 /// Passes geometry through unchanged when no selection is present.
 /// </summary>
-[Category(nameof(Categories.Selection))]
+[Category(Cat.Select)]
 public class ShowSelection : IModifier
 {
     public Vector3 SelectedColor = new(1f, 0.55f, 0.05f);

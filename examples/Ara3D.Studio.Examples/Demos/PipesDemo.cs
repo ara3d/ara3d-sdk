@@ -2,7 +2,7 @@
 
 namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class PipesDemo : IGenerator, IAnimated
 {
     [Range(10, 500)] public int GridCount = 40;

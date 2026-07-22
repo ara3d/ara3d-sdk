@@ -7,7 +7,7 @@ namespace Ara3D.Studio.Samples.Demos;
 /// real viewport manipulator would drive from the other end. The gizmo shows the local frame after
 /// rotation, the way Blender/Maya/Unity draw it in "local" orientation mode.
 /// </summary>
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class TransformGizmo : IModifier
 {
     [Range(-20f, 20f)] public float PositionX = 0f;

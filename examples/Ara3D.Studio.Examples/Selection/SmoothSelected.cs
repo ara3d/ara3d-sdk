@@ -5,7 +5,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// With no selection present the whole mesh is smoothed — every selection-aware
 /// tool degrades to a normal tool.
 /// </summary>
-[Category(nameof(Categories.Selection))]
+[Category(Cat.Select)]
 public class SmoothSelected : IModifier
 {
     [Range(0, 50)] public int Iterations = 5;

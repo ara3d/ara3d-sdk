@@ -484,7 +484,7 @@ public static class PathBuilderLetters
     }
 }
 
-[Category("Path")]
+[Category(Cat.Curves)]
 public class LetterPath : IGenerator
 {
     public static List<MethodInfo> LetterFuncs =>

@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.BIM_Tools
 {
-    [Category(nameof(Categories.Buildings))]
+    [Category(Cat.ExperimentalBim)]
     public class ClashDetection : IModifier
     {
         [Range(0.001, 0.1)] public float FrameSize { get; set; } = 0.1f;

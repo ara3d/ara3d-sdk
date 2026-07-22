@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Converters))]
+[Category(Cat.Convert)]
 public class MeshToBallAndStickModel : IModifier
 {
     [Range(3, 64)] public int Sides = 16;

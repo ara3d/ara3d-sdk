@@ -3,7 +3,7 @@ using Ara3D.BimOpenSchema;
 
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
-[Category(nameof(Categories.Buildings))]
+[Category(Cat.ExperimentalBim)]
 public class MakeDoorsTransparent : IModifier
 {
     private BimData _data;

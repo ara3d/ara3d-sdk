@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class ClonePyramidOnFace : IModifier
 {
     public static IReadOnlyList<Quad3D> ToQuads(IReadOnlyList<Triangle3D> triangles)

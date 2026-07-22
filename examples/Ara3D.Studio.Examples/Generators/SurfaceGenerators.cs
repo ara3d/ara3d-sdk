@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Generators;
 
-[Category(nameof(Categories.Surfaces))]
+[Category(Cat.Surfaces)]
 public class SurfaceGenerators : IGenerator
 {
     [Options(nameof(SurfaceNames))] public int Surface;

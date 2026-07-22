@@ -2,7 +2,7 @@
 
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
-[Category(nameof(Categories.Buildings))]
+[Category(Cat.ExperimentalBim)]
 public class IfcFilter : IModifier
 {
     public bool BeamAndColumns { get; set; }

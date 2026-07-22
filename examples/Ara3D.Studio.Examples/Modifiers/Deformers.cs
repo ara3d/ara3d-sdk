@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Deformers))]
+[Category(Cat.Deform)]
 public class TwistDeformer : IModifier
 {
     [Range(-10f, 10f)] public float Revolutions { get; set; }
@@ -23,7 +23,7 @@ public class TwistDeformer : IModifier
     }
 }
 
-[Category(nameof(Categories.Deformers))]
+[Category(Cat.Deform)]
 public class SkewDeformer : IModifier
 {
     [Range(-5f, 5f)] public float X { get; set; }
@@ -51,7 +51,7 @@ public class SkewDeformer : IModifier
     }
 }
 
-[Category(nameof(Categories.Deformers))]
+[Category(Cat.Deform)]
 public class Spherify : IModifier
 {
     [Range(0f, 10f)] public float Radius { get; set; }
@@ -73,7 +73,7 @@ public class Spherify : IModifier
     }
 }
 
-[Category(nameof(Categories.Deformers))]
+[Category(Cat.Deform)]
 public class Cubify: IModifier
 {
     [Range(0f, 10f)] public float Radius { get; set; }

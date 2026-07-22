@@ -4,7 +4,7 @@ namespace Ara3D.Studio.Samples.Selection;
 /// Topologically dilates (positive steps) or erodes (negative steps) the current
 /// face selection across shared edges.
 /// </summary>
-[Category(nameof(Categories.Selection))]
+[Category(Cat.Select)]
 public class SelectGrowShrink : IModifier
 {
     [Range(-10, 10)] public int Steps = 1;

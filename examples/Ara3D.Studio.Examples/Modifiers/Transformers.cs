@@ -9,7 +9,7 @@ public enum TransformMode
     Scale,
 }
 
-[Category(nameof(Categories.Transformers))]
+[Category(Cat.Transform)]
 public class Transform : IModifier, IGizmoProvider
 {
     public TransformMode Mode;
@@ -37,7 +37,7 @@ public class Transform : IModifier, IGizmoProvider
         };
 }
 
-[Category(nameof(Categories.Transformers))]
+[Category(Cat.Transform)]
 public class AxisRotation : IModifier
 {
     [Range(0, 4)] public int QuarterTurns;
@@ -56,7 +56,7 @@ public class AxisRotation : IModifier
     }
 }
 
-[Category(nameof(Categories.Transformers))]
+[Category(Cat.Transform)]
 public class Translate : IModifier, IGizmoProvider
 {
     public Vector3 Offset;
@@ -68,7 +68,7 @@ public class Translate : IModifier, IGizmoProvider
         => GizmoElements.Translation(nameof(Offset));
 }
 
-[Category(nameof(Categories.Transformers))]
+[Category(Cat.Transform)]
 public class Rotate : IModifier, IGizmoProvider
 {
     [Range(-180f, 180f)] public float XDegrees;
@@ -85,7 +85,7 @@ public class Rotate : IModifier, IGizmoProvider
         => GizmoElements.RotationRings(nameof(XDegrees), nameof(YDegrees), nameof(ZDegrees));
 }
 
-[Category(nameof(Categories.Transformers))]
+[Category(Cat.Transform)]
 public class Scale : IModifier, IGizmoProvider
 {
     public Vector3 Amount = (1f, 1f, 1f);

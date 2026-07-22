@@ -18,7 +18,7 @@ public enum VoronoiPlane
 /// input and approximate for gently curved input. PinBoundary keeps the convex outline fixed.
 /// True curved-surface CVT (geodesic cells) is the deferred follow-on.
 /// </summary>
-[Category(nameof(Categories.Meshes))]
+[Category(Cat.Remesh)]
 public class CvtRemesh : IModifier
 {
     [Range(0, 40)] public int Iterations = 10;

@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class WavyNoiseSurface : IGenerator
 {
     [Range(2, 512)] public int NumRows = 96;    

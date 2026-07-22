@@ -6,7 +6,7 @@ namespace Ara3D.Studio.Samples.Demos;
 /// Turn on HighlightDefects to paint every point that has a neighbour closer than Radius red —
 /// the white patch breaks out in a rash, the blue patch stays clean. That is the whole lesson.
 /// </summary>
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class BlueNoiseField : IGenerator
 {
     [Range(1f, 40f)] public float Width = 12f;
@@ -84,7 +84,7 @@ public class BlueNoiseField : IGenerator
 /// conforms exactly to the surface), then clones a marker at each kept point. This is the production
 /// payoff — distributing rocks, rivets, trees, foliage without overlaps and with controllable density.
 /// </summary>
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class PoissonScatterOnSurface : IModifier
 {
     [Range(0.05f, 5f)] public float Radius = 0.5f;

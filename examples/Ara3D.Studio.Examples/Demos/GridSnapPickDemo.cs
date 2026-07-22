@@ -8,7 +8,7 @@ namespace Ara3D.Studio.Samples.Demos;
 /// Left-click (without dragging — drags orbit the camera) commits a point (yellow). On hosts
 /// without a viewport, or with AnimateCursor on, a slider/animation-driven cursor stands in.
 /// </summary>
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 [Animated]
 [PointerTracking]
 public class GridSnapPick : IGenerator

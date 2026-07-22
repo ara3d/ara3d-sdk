@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Paths;
 
-[Category(nameof(Categories.Curves))]
+[Category(Cat.Curves)]
 public class Helix : IGenerator
 {
     [Range(0f, 20f)] public float Height { get; set; }
@@ -10,7 +10,7 @@ public class Helix : IGenerator
         => Curves.Helix(Height, Revolutions);
 }
 
-[Category(nameof(Categories.Curves))]
+[Category(Cat.Curves)]
 public class Spiral : IGenerator
 {
     [Range(1, 32)] public int Revolutions { get; set; }
@@ -21,7 +21,7 @@ public class Spiral : IGenerator
         => Curves.Spiral(Revolutions, InnerRadius, OuterRadius);
 }
 
-[Category(nameof(Categories.Curves))]
+[Category(Cat.Curves)]
 public class SineWave : IGenerator
 {
     [Range(0f, 20f)] public float WaveWidth { get; set; }

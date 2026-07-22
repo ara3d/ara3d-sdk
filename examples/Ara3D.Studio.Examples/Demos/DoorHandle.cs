@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class DoorHandle : IGenerator
 {
     [Range(3, 64)] public int RadialSegments { get; set; } = 17;

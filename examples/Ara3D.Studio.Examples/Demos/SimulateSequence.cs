@@ -2,7 +2,7 @@
 
 namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class SimulateSequence : IModifier
 {
     public List<byte> OriginalFlags { get; private set; }

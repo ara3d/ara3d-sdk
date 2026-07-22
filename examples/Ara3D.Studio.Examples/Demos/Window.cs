@@ -2,7 +2,7 @@
 
 namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class Window : IGenerator
 {
     [Range(0f, 10f)] public float Width = 3f;

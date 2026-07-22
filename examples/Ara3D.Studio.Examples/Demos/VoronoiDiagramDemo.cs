@@ -25,7 +25,7 @@ public enum VoronoiPointPattern
 /// Drag Reveal from 0 to 1 to add sites one at a time (the Voronoi analogue of the Delaunay Insertion
 /// slider): the last site is gold and its freshly carved cell is highlighted orange.
 /// </summary>
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class VoronoiDiagramDemo : IGenerator
 {
     [Range(2, 300)] public int PointCount = 32;

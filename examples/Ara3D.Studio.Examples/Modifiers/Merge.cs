@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Converters))]
+[Category(Cat.Combine)]
 public class MergeModelAsMesh : IModifier
 {
     public int MergedInstanceCount { get; private set; }

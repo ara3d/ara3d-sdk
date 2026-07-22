@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class SweepDemo : IGenerator
 {
     [Range(1, 100)] public int SampleCount = 16;

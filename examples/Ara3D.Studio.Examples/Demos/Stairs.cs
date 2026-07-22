@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class Stairs : IGenerator
 {
     public Material TreadMaterial { get; set; } = new(new(0.9f, 0.7f, 0f, 1f), 0f, 0.8f);

@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class RotatedPlatforms : IGenerator
 {
     [Range(1, 200)] public int Count = 8;

@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Paths;
 
-[Category(nameof(Categories.Polylines))]
+[Category(Cat.Curves)]
 public class Polygon : IGenerator
 {
     [Range(3, 64)] public int Sides = 3;
@@ -14,7 +14,7 @@ public class Polygon : IGenerator
 }
 
 
-[Category(nameof(Categories.Polylines))]
+[Category(Cat.Curves)]
 public class Line : IGenerator
 {
     [Range(0f, 10f)] public float X = 5f;

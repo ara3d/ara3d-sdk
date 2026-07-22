@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Polylines))]
+[Category(Cat.Convert)]
 public class ExtrudePath : IModifier
 {
     [Range(0f, 10f)] public float Height { get; set; } = 1;
@@ -10,7 +10,7 @@ public class ExtrudePath : IModifier
         => lineMesh.Extrude(Vector3.UnitZ * Height, Count);
 }
 
-[Category(nameof(Categories.Polylines))]
+[Category(Cat.Convert)]
 public class LinesToBoxes : IModifier
 {
     [Range(0f, 2f)] public float Thickness = 0.1f;

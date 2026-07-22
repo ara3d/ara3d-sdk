@@ -6,7 +6,7 @@ namespace Ara3D.Studio.Samples.BIM_Tools;
 /// Draws 3D arrows from each room center to its associated doors.
 /// IFC: doors are not contained in IfcSpace — use spatial overlap (and BoundedBy when exported).
 /// </summary>
-[Category(nameof(Categories.Buildings))]
+[Category(Cat.ExperimentalBim)]
 public class RoomDoorArrows : IModifier
 {
     [Range(0f, 1f)] public float OriginalTransparency = 0.25f;

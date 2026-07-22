@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(nameof(Categories.Sdf))]
+[Category(Cat.Volumetric)]
 public class SdfPrimitive : IGenerator
 {
     public SdfPrimitive3D Shape;
@@ -11,7 +11,7 @@ public class SdfPrimitive : IGenerator
         => SdfPrimitives.Create(Shape, Parameter1, Parameter2);
 }
 
-[Category(nameof(Categories.Sdf))]
+[Category(Cat.Convert)]
 public class SdfVoxelize : IModifier
 {
     [Range(0.1f, 2f)] public float BoundSize = 1.2f;
@@ -47,7 +47,7 @@ public class VoxelsToModel3D : IModifier
 }
 
 
-[Category(nameof(Categories.Demos))]
+[Category(Cat.ExperimentalDemos)]
 public class VoxelDemo : IGenerator
 {
     [Range(1, 128)] public int GridSize = 16;

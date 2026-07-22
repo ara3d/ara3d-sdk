@@ -2,7 +2,7 @@
 
 namespace Ara3D.Studio.Samples.BIM_Tools;
 
-[Category(nameof(Categories.Buildings))]
+[Category(Cat.ExperimentalBim)]
 public class ArrangeByDocument : IModifier
 {
     [Range(0, 100)] public float Distance { get; set; } = 50;

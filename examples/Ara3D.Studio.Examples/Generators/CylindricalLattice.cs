@@ -1,7 +1,7 @@
 ﻿
 namespace Ara3D.Studio.Samples.Generators
 {
-    [Category(nameof(Categories.Lattices))]
+    [Category(Cat.Structures)]
     public class CylindricalLattice : IGenerator
     {
         [Range(3, 100)] public int RadialSides = 16;
