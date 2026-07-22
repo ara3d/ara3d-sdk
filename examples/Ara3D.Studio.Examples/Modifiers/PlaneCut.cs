@@ -48,6 +48,10 @@ public class PlaneCut : IModifier, IGizmoProvider
 
     public GizmoAnchor GetGizmoAnchor() => GizmoAnchor.InputBounds;
 
+    // Ride the plane: the cut plane sits at inputCenter + Normal*Offset, so offset the gizmo
+    // anchor by the same amount and it slides/pivots with the plane instead of staying put.
+    public Vector3 GetGizmoAnchorOffset() => Normal * Offset;
+
     public IReadOnlyList<GizmoElement> GetGizmoElements()
     {
         var n = Normal;

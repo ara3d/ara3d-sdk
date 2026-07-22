@@ -27,6 +27,13 @@ public interface IGizmoProvider
     /// destructive modifiers (e.g. a plane cut) whose output shrinks under the tool.
     /// A method (not a property) so PropKit never shows it in the inspector.</summary>
     GizmoAnchor GetGizmoAnchor() => GizmoAnchor.OutputBounds;
+
+    /// <summary>An extra world-space offset added to the bounds anchor, so the gizmo can
+    /// ride a feature that the edited value moves rather than staying at the bounds center.
+    /// The default (zero) keeps the gizmo on the bounds. Example: a plane cut returns
+    /// <c>Normal * Offset</c> so the handle tracks the plane as you slide it. A method (not
+    /// a property) so PropKit never shows it in the inspector.</summary>
+    Vector3 GetGizmoAnchorOffset() => default;
 }
 
 public enum GizmoAnchor
@@ -198,6 +205,20 @@ public static class GizmoElements
             new AxisDrag(d), binding, idle, hover, active);
     }
 
+    /// <summary>Plane-scale triangle tucked into the origin corner between the plane's two
+    /// axes, dragging in that plane — the triangular counterpart of the translation gizmo's
+    /// <see cref="PlaneQuad"/> square. Rendered as a quad whose last corner repeats, so no
+    /// new primitive is needed.</summary>
+    public static GizmoElement PlaneScaleTriangle(string key, int normalAxis, GizmoBinding binding)
+    {
+        var u = AxisDirection((normalAxis + 1) % 3);
+        var v = AxisDirection((normalAxis + 2) % 3);
+        var (idle, hover, active) = States(AxisColor(normalAxis));
+        return new(key,
+            [new GizmoQuad(default, u * 0.45f, v * 0.45f, v * 0.45f)],
+            new PlaneDrag(AxisDirection(normalAxis)), binding, idle, hover, active);
+    }
+
     /// <summary>The standard translation gizmo: three arrows, three plane quads, center ball.</summary>
     public static IReadOnlyList<GizmoElement> Translation(string binding)
     {
@@ -220,8 +241,9 @@ public static class GizmoElements
             AxisRing("ring-z", 2, GizmoBinding.Degrees(zBinding), 0.92f),
         ];
 
-    /// <summary>The standard scale gizmo: square-ended axis handles plus a uniform center
-    /// square dragging all three components along the (1,1,1) diagonal.</summary>
+    /// <summary>The standard scale gizmo: square-ended axis handles, plane-scale triangles,
+    /// plus a uniform center square dragging all three components along the (1,1,1)
+    /// diagonal.</summary>
     public static IReadOnlyList<GizmoElement> ScaleHandles(string binding)
     {
         var b = new GizmoBinding(binding);
@@ -230,6 +252,7 @@ public static class GizmoElements
         var diagonal = new Vector3(1f, 1f, 1f).Normalize;
         return
         [
+            PlaneScaleTriangle("plane-x", 0, b), PlaneScaleTriangle("plane-y", 1, b), PlaneScaleTriangle("plane-z", 2, b),
             AxisSquareHandle("scale-x", 0, b), AxisSquareHandle("scale-y", 1, b), AxisSquareHandle("scale-z", 2, b),
             new("scale-uniform", [new GizmoMarker(default, 8f, GizmoMarkerKind.Square)],
                 new AxisDrag(diagonal), b, idle, hover, active),
