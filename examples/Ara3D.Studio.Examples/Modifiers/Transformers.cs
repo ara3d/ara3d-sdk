@@ -1,25 +1,40 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-[Category(nameof(Categories.Transformers))]
-public class Transform : IModifier
+/// <summary>Which transform group the viewport gizmo edits. Eval always applies all three
+/// (translate, then rotate, then scale) regardless — Mode only chooses the visible widget.</summary>
+public enum TransformMode
 {
-    [Range(0.01f, 10f)] public float XScale = 1f;
-    [Range(0.01f, 10f)] public float YScale = 1f;
-    [Range(0.01f, 10f)] public float ZScale = 1f;
+    Translate,
+    Rotate,
+    Scale,
+}
 
-    [Range(-100f, 100f)] public float XOffset;
-    [Range(-100f, 100f)] public float YOffset; 
-    [Range(-100f, 100f)] public float ZOffset;
+[Category(nameof(Categories.Transformers))]
+public class Transform : IModifier, IGizmoProvider
+{
+    public TransformMode Mode;
 
-    [Range(-360, 360)] public int Yaw;
-    [Range(-360, 360)] public int Pitch;
-    [Range(-360, 360)] public int Roll;
+    public Vector3 Offset;
+
+    [Range(-360f, 360f)] public float Yaw;
+    [Range(-360f, 360f)] public float Pitch;
+    [Range(-360f, 360f)] public float Roll;
+
+    public Vector3 Scaling = (1f, 1f, 1f);
 
     public IModel3D Eval(IModel3D input)
         => input
-            .Translate((XOffset, YOffset, ZOffset))
+            .Translate(Offset)
             .Rotate(Yaw.Degrees(), Pitch.Degrees(), Roll.Degrees())
-            .Scale((XScale, YScale, ZScale));
+            .Scale(Scaling);
+
+    public IReadOnlyList<GizmoElement> GetGizmoElements()
+        => Mode switch
+        {
+            TransformMode.Rotate => GizmoElements.RotationRings(nameof(Yaw), nameof(Pitch), nameof(Roll)),
+            TransformMode.Scale => GizmoElements.ScaleHandles(nameof(Scaling)),
+            _ => GizmoElements.Translation(nameof(Offset)),
+        };
 }
 
 [Category(nameof(Categories.Transformers))]
