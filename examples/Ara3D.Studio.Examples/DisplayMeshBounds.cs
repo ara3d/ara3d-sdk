@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples;
 
+[Category(Cat.Analyze)]
 public class DisplayMeshBounds : IModifier
 {
     public bool UseFrames = true;

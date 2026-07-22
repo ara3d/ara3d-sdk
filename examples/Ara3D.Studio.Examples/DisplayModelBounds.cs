@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples;
 
+[Category(Cat.Analyze)]
 public class DisplayModelBounds : IModifier
 {
     private Bounds3D _bounds;

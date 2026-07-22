@@ -2,6 +2,7 @@
 
 namespace Ara3D.Studio.Samples.Demos;
 
+[Category(Cat.ExperimentalDemos)]
 public class CloningDemo : IGenerator
 {
     [Range(0, 4)]

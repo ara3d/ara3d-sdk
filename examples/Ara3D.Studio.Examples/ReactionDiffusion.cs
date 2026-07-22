@@ -171,6 +171,7 @@ public static class ReactionDiffusion2D
 }
 
 [OnDemand]
+[Category(Cat.Fields)]
 public class ReactionDiffusion : IGenerator
 {
     // Example parameters known to yield nice patterns:

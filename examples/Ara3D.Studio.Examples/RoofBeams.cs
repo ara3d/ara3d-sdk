@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples;
 
+[Category(Cat.Structures)]
 public class RoofBeams : IGenerator
 {
     [Range(0, 100)] public int NumHorizontal = 3;

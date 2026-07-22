@@ -13,6 +13,7 @@ public class ClashList
     public List<Clash> Clashes { get; set; }
 }
 
+[Category(Cat.ExperimentalBim)]
 public class LakehouseClashes : IGenerator
 {
     [Options(nameof(FileNames))] public int File;

@@ -111,6 +111,7 @@ public static class UniformColors
     }
 }
 
+[Category(Cat.Color)]
 public class UniformRandomizeColors : IModifier
 {
     [Range(0.0f, 1.0f)] public float MinLightness = 0.62f;

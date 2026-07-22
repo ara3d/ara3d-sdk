@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples;
 
+[Category(Cat.Color)]
 public class RandomizeColors : IModifier
 {
     [Range(0, 1000)] public int Seed { get; set; }

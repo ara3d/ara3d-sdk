@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Generators
 {
+    [Category(Cat.Structures)]
     public class BlockMesh : IGenerator
     {
         [Range(0f, 10f)] public float SizeX = 1;

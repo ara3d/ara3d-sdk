@@ -3,6 +3,7 @@
 using Ara3D.IO.GeoJson;
 
 namespace Ara3D.Studio.Samples;
+[Category(Cat.ExperimentalDemos)]
 public class GeoJsonDemo : IGenerator
 {
     [Range(0f, 2f)] public float Thickness = 0.1f;

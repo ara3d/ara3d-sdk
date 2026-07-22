@@ -63,6 +63,7 @@ public class LSystem
     }
 }
 
+[Category(Cat.Fields)]
 public class LSystemFractal : IGenerator
 {
     [Range(1, 10)] public int Iterations = 3;

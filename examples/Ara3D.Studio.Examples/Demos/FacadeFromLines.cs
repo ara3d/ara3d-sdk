@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
+[Category(Cat.ExperimentalDemos)]
 public class FacadeFromLines : IModifier
 {
     [Range(0f, 10f)] public float Width = 3f;

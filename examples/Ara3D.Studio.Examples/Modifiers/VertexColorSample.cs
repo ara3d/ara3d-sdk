@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers
 {
+    [Category(Cat.Color)]
     public class VertexColorSample : IModifier
     {
         public Palettes Palette { get; set; }

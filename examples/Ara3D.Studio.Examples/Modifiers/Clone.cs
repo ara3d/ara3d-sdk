@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
+[Category(Cat.Transform)]
 public class GridClone : IModifier
 {
     [Range(1, 100)] public int Rows = 3;

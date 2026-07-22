@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
+[Category(Cat.ExperimentalDemos)]
 public class CurveCloneDemo : IGenerator
 {
     [Range(1, 100)] public int Count = 20;

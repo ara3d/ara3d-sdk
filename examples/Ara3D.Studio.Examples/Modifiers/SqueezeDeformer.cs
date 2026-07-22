@@ -1,3 +1,6 @@
+namespace Ara3D.Studio.Samples;
+
+[Category(Cat.Deform)]
 public class SqueezeDeformer : IModifier
 {
     [Range(0f, 1f)] public float Strength { get; set; } = 0.5f;

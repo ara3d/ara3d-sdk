@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples;
 
+[Category(Cat.ExperimentalDemos)]
 public class GridDemo : IGenerator
 {
     [Range(1, 256)] public int NumRows = 16;

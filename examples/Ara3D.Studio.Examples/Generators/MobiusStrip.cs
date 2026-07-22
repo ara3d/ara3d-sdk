@@ -1,3 +1,6 @@
+namespace Ara3D.Studio.Samples;
+
+[Category(Cat.Surfaces)]
 public class MobiusStrip : IGenerator
 {
     [Range(0.01f, 10f)] public float Radius = 2f;

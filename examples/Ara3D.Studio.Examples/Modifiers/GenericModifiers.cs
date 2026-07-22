@@ -1,5 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples;
 
+[Category(Cat.Color)]
 public class SetMaterial : IModifier
 {
     [Range(0f, 1f)] public float Red = 0.2f;
@@ -16,6 +17,7 @@ public class SetMaterial : IModifier
         => input.WithNewMaterial(Material);
 }
 
+[Category(Cat.Color)]
 public class SetRenderSettings : IModifier
 {
     public bool Wireframe { get; set; }

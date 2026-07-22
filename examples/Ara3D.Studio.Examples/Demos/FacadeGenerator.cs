@@ -3,6 +3,7 @@ using Material = Ara3D.Models.Material;
 
 namespace Ara3D.Studio.Samples.Demos;
 
+[Category(Cat.ExperimentalDemos)]
 public class FacadeGenerator : IGenerator
 {
     [Range(0f, 100f)] public float Width = 3f;

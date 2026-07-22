@@ -13,6 +13,7 @@ public class SeparateAtSharpCorners : IModifier
 }
 */
 
+[Category(Cat.Analyze)]
 public class ColorSharpEdges : IModifier
 {
     public static Angle HalfTurn = 180.Degrees();
