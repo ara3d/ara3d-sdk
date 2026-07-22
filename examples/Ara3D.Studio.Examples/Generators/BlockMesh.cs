@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Generators
 {
-    [Category(Cat.Structures)]
+    [Category(Cat.Primitives)]
     [Description("A hollow rectangular block whose top, bottom, and sides can each be left open.")]
     public class BlockMesh : IGenerator
     {
@@ -8,9 +8,9 @@
         [Range(0f, 10f)] public float SizeY = 1;
         [Range(0f, 10f)] public float SizeZ = 1;
 
-        public bool EmptyTop;
-        public bool EmptyBottom;
-        public bool EmptySides;
+        public bool EmptyTop = true;
+        public bool EmptyBottom = true;
+        public bool EmptySides = true;
 
         public QuadMesh3D Eval()
         {
