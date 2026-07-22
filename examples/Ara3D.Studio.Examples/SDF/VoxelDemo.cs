@@ -26,6 +26,7 @@ public class SdfVoxelize : IModifier
     }
 }
 
+[Category(Cat.Convert)]
 public class VoxelsToModel3D : IModifier
 {
     [Range(0, 1)] public float Threshold = 0.05f;

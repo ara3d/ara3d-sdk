@@ -97,6 +97,7 @@ public class Cubify: IModifier
     }
 }
 
+[Category(Cat.Deform)]
 public class Push : IModifier
 {
     [Range(0f, 10f)] public float Distance { get; set; }
@@ -108,6 +109,7 @@ public class Push : IModifier
     }
 }
 
+[Category(Cat.Deform)]
 public class NoiseDeformer : IModifier
 {
     [Range(0f, 1f)] public float Amplitude { get; set; } = 1f;
