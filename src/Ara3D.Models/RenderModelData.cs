@@ -302,13 +302,26 @@ public class RenderModelData : IDisposable, IModel3D
 
         foreach (var model in models)
         {
-            if (model.PrimitiveSize != Meta.PrimitiveSize)
+            // A colored model interleaves 6 floats per vertex; this buffer is declared
+            // 3 floats per vertex above, so a verbatim copy would shear every slice.
+            if (model.PrimitiveSize != Meta.PrimitiveSize || model.UseVertexColors != UseVertexColors)
                 continue;
+
+            var vertexOffset = VertexData.Count / (UseVertexColors ? 6 : 3);
+            var indexOffset = (uint)IndexData.Count;
+            var meshOffset = MeshSliceData.Count;
 
             VertexData.AddRange(model.VertexData);
             IndexData.AddRange(model.IndexData);
-            var meshOffset = MeshSliceData.Count;
-            MeshSliceData.AddRange(model.MeshSliceData);
+
+            foreach (var slice in model.MeshSliceData)
+            {
+                var s = slice;
+                s.BaseVertex += vertexOffset;
+                s.FirstIndex += indexOffset;
+                MeshSliceData.Add(s);
+            }
+
             foreach (var i in model.InstanceData)
                 InstanceData.Add(i.MeshIndex < 0 ? i : i.WithMeshIndex(i.MeshIndex + meshOffset));
         }
