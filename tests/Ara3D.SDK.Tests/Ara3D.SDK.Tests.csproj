@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Ara3D.Memory\Ara3D.Memory.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.PropKit\Ara3D.PropKit.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.IO.VIM\Ara3D.IO.VIM.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Logging\Ara3D.Logging.csproj" />

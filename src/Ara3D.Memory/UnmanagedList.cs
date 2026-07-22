@@ -83,7 +83,7 @@ namespace Ara3D.Memory
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Accomodate(int count)
         {
-            if (_capacity > count)
+            if (_capacity >= count)
                 return;
             if (_capacity < 64)
                 _capacity = 64;
@@ -142,7 +142,7 @@ namespace Ara3D.Memory
             var newCnt = usedBytes / sizeof(T1);
             if (usedBytes % sizeof(T1) != 0)
                 throw new Exception($"Old type {typeof(T)} cannot be cast to new type {typeof(T1)}");
-            var r = new UnmanagedList<T1>(Memory, newCnt, (int)newCap);
+            var r = new UnmanagedList<T1>(Memory, (int)newCap, newCnt);
             Memory = null;
             _pointer = null;
             Count = 0;
