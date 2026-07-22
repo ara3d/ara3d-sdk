@@ -225,6 +225,8 @@ public class RenderModelData : IDisposable, IModel3D
 
         MeshBoundsData.Add(Meta.TotalBounds);
         InstanceBoundsData.Add(Meta.TotalBounds);
+
+        ValidateMeshSlices();
     }
 
     public void Update(IModel3D model)
@@ -311,20 +313,36 @@ public class RenderModelData : IDisposable, IModel3D
                 InstanceData.Add(i.MeshIndex < 0 ? i : i.WithMeshIndex(i.MeshIndex + meshOffset));
         }
 
+        ValidateMeshSlices();
         ComputeBounds();
     }
 
     public void ValidateMeshSlices()
     {
 #if DEBUG
+        // NOTE: slice extents are in VERTICES; VertexData.Count is in FLOATS. The old
+        // asserts compared the two directly and could never fire (studio-148 R5).
+        var floatsPerVertex = UseVertexColors ? 6 : 3;
+        var numVertices = VertexData.Count / floatsPerVertex;
+
         for (var i = 0; i < MeshSliceData.Count; i++)
         {
             var meshSlice = MeshSliceData[i];
             Debug.Assert(meshSlice.BaseVertex >= 0);
-            Debug.Assert(meshSlice.BaseVertex <= VertexData.Count);
-            Debug.Assert(meshSlice.VertexCount + meshSlice.BaseVertex <= VertexData.Count);
+            Debug.Assert(meshSlice.BaseVertex <= numVertices);
+            Debug.Assert(meshSlice.BaseVertex + meshSlice.VertexCount <= numVertices);
             Debug.Assert(meshSlice.FirstIndex <= IndexData.Count);
             Debug.Assert(meshSlice.FirstIndex + meshSlice.IndexCount <= IndexData.Count);
+
+            // The invariant whose violation renders as shredded geometry (studio-148):
+            // indices are 0-based within their slice (BaseVertex offsets them at draw),
+            // so every index must address a vertex inside the slice.
+            for (var j = 0u; j < meshSlice.IndexCount; j++)
+            {
+                var index = IndexData[(int)(meshSlice.FirstIndex + j)];
+                Debug.Assert(index < meshSlice.VertexCount,
+                    $"Mesh slice {i}: index {index} (at {meshSlice.FirstIndex + j}) exceeds slice vertex count {meshSlice.VertexCount}");
+            }
         }
 #endif
     }
