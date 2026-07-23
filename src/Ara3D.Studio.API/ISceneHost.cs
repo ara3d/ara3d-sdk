@@ -37,4 +37,47 @@ public interface ISceneHost
     /// <summary>Counts over <see cref="CurrentModel"/> for asserts.</summary>
     [Description("Element/vertex/face counts over the current model.")]
     SceneStats GetStats();
+
+    // --- Id-keyed scene-node operations (studio-175 / studio-169) ---
+    // These address nodes by their durable string id (EvalNode.PersistentId) and take only
+    // JSON-coercible arguments, so MCP's call_host reaches them without a hand-written tool per
+    // op. Default implementations let hosts that do not manage an addressable graph opt out; the
+    // live SceneService (and the headless host) override them.
+
+    /// <summary>Every node across all pipelines, as stable id-bearing read views.</summary>
+    [Description("Lists every scene node as an id-bearing read view (id, name, kind, enabled).")]
+    IReadOnlyList<ISceneNode> ListNodes()
+        => [];
+
+    /// <summary>The node with the given durable id, or null if none matches.</summary>
+    [Description("Returns the scene node with the given durable id, or nothing if none matches.")]
+    ISceneNode? GetNode(string id)
+        => null;
+
+    /// <summary>
+    /// Sets a public property on the node with the given id from a string value converted to the
+    /// property type, then marks the scene for re-evaluation. String-typed (not object) so it stays
+    /// call_host-coercible, mirroring set_selected_node_property.
+    /// </summary>
+    [Description("Sets a property (from a string value) on the node with the given durable id.")]
+    void SetParameter(string nodeId, string propertyName, string value)
+        => throw new NotSupportedException("This host does not support id-keyed scene editing.");
+
+    /// <summary>
+    /// Instantiates a generator/modifier/source script by name and adds it — as a new pipeline
+    /// source, or after <paramref name="afterNodeId"/> when given. Returns the new node's id.
+    /// </summary>
+    [Description("Adds a script by name to the scene (after a node id when given); returns the new node id.")]
+    string AddNode(string scriptName, string? afterNodeId = null)
+        => throw new NotSupportedException("This host does not support id-keyed scene editing.");
+
+    /// <summary>Removes the node with the given id.</summary>
+    [Description("Removes the scene node with the given durable id.")]
+    void RemoveNode(string id)
+        => throw new NotSupportedException("This host does not support id-keyed scene editing.");
+
+    /// <summary>Moves the node with the given id to a new index within its pipeline.</summary>
+    [Description("Moves the node with the given durable id to a new index within its pipeline.")]
+    void MoveNode(string id, int index)
+        => throw new NotSupportedException("This host does not support id-keyed scene editing.");
 }

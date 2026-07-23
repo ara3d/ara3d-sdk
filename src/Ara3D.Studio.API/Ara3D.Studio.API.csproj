@@ -12,6 +12,7 @@
     <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" />
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\Ara3D.PropKit\Ara3D.PropKit.csproj" />
   </ItemGroup>
 
 </Project>
