@@ -76,6 +76,15 @@ public interface ISceneHost
     void RemoveNode(string id)
         => throw new NotSupportedException("This host does not support id-keyed scene editing.");
 
+    /// <summary>
+    /// Enables or disables the node with the given id. A disabled node is skipped during
+    /// evaluation (its pipeline stops contributing), which is the non-destructive way to isolate
+    /// or hide part of a scene without deleting it.
+    /// </summary>
+    [Description("Enables or disables the scene node with the given durable id.")]
+    void SetNodeEnabled(string id, bool enabled)
+        => throw new NotSupportedException("This host does not support id-keyed scene editing.");
+
     /// <summary>Moves the node with the given id to a new index within its pipeline.</summary>
     [Description("Moves the node with the given durable id to a new index within its pipeline.")]
     void MoveNode(string id, int index)
