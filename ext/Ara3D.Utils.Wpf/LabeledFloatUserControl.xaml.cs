@@ -76,17 +76,25 @@ namespace Ara3D.Utils.Wpf
             CaptureMouse();
         }
 
+        /// <summary>
+        /// Converts a vertical mouse drag into a value delta.
+        /// WPF's Y axis grows downward, so the sign is inverted here: dragging up must
+        /// increase the value, matching the Up/Down buttons. This is the one place the
+        /// screen-space-to-value-space sign conversion lives.
+        /// </summary>
+        internal static float PixelsToValueDelta(Point start, Point now, float pixelToAmount)
+            => (float)(start.Y - now.Y) * pixelToAmount;
+
         private void HandleMouseMove(object sender, MouseEventArgs e)
         {
             if (Mouse.Captured == this)
             {
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    var pt = e.GetPosition(this);
-                    var delta = (float)(pt.Y - _capturePoint.Y);
+                    var delta = PixelsToValueDelta(_capturePoint, e.GetPosition(this), PixelToAmount);
                     if (System.Math.Abs(delta) > 0.001f)
                     {
-                        Value = _captureValue + (delta * PixelToAmount);
+                        Value = _captureValue + delta;
                     }
                 }
                 if (e.RightButton == MouseButtonState.Released)
