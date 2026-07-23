@@ -16,7 +16,7 @@ public enum FalloffCurve
 /// </summary>
 public static class SoftSelectionHelpers
 {
-    public const string AttributeName = "SoftSelection";
+    public const string AttributeName = FlowAttribute.CommonNames.SoftSelection;
 
     /// <summary>Heat-map endpoints shared by the gizmo and the SoftSelectionColor viewer, so the
     /// two can never drift: cold slate at weight 0, hot orange at weight 1.</summary>

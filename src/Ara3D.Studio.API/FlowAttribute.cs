@@ -64,6 +64,7 @@ public class FlowAttribute
     {
         public const string Selection = nameof(Selection);
         public const string Color = nameof(Color);
+        public const string SoftSelection = nameof(SoftSelection);
         public const string Id = nameof(Id);
     }
 
