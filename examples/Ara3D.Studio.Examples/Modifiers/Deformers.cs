@@ -2,7 +2,7 @@
 
 [Category(Cat.Deform)]
 [Description("Twists the mesh progressively about an axis by a number of revolutions across its extent.")]
-public class TwistDeformer : IModifier
+public class TwistDeformer : IModifier, IGizmoProvider
 {
     [Range(-10f, 10f)] public float Revolutions { get; set; }
     [Range(0, 2)] public int Axis = 2;
@@ -22,11 +22,18 @@ public class TwistDeformer : IModifier
         var bounds = mesh.DerivedBounds();
         return mesh.Deform(p => Deform(p, bounds));
     }
+
+    public GizmoAnchor GetGizmoAnchor() => GizmoAnchor.InputBounds;
+
+    // Ring about the twist axis. The drag delta is radians, Revolutions is turns, so one
+    // full sweep of the ring is exactly one revolution.
+    public IReadOnlyList<GizmoElement> GetGizmoElements()
+        => [GizmoElements.AxisRing("twist", Axis, new GizmoBinding(nameof(Revolutions), 1f / MathF.Tau))];
 }
 
 [Category(Cat.Deform)]
 [Description("Shears the mesh, translating points increasingly along an axis from one side to the other.")]
-public class SkewDeformer : IModifier
+public class SkewDeformer : IModifier, IGizmoProvider
 {
     [Range(-5f, 5f)] public float X { get; set; }
     [Range(-5f, 5f)] public float Y { get; set; }
@@ -51,6 +58,17 @@ public class SkewDeformer : IModifier
         var bounds = mesh.DerivedBounds();
         return mesh.Deform(p => Deform(p, bounds));
     }
+
+    public GizmoAnchor GetGizmoAnchor() => GizmoAnchor.InputBounds;
+
+    // One arrow per component: the drag delta is a world distance and MaxTranslation is in
+    // world units, so a unit gain is already the right conversion.
+    public IReadOnlyList<GizmoElement> GetGizmoElements()
+        => [
+            GizmoElements.AxisArrow("skew-x", 0, new GizmoBinding(nameof(X))),
+            GizmoElements.AxisArrow("skew-y", 1, new GizmoBinding(nameof(Y))),
+            GizmoElements.AxisArrow("skew-z", 2, new GizmoBinding(nameof(Z))),
+        ];
 }
 
 [Category(Cat.Deform)]

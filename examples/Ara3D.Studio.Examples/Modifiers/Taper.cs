@@ -2,7 +2,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Deform)]
 [Description("Tapers the mesh, scaling the cross-section perpendicular to an axis by a factor that grows linearly from base to tip.")]
-public class Taper : IModifier
+public class Taper : IModifier, IGizmoProvider
 {
     [Range(-1f, 3f)] public float Amount { get; set; }
     [Range(0, 2)] public int Axis = 2;
@@ -28,4 +28,14 @@ public class Taper : IModifier
         var bounds = mesh.DerivedBounds();
         return mesh.Deform(p => Deform(p, bounds));
     }
+
+    public GizmoAnchor GetGizmoAnchor() => GizmoAnchor.InputBounds;
+
+    // Scale-style square handles on the two cross-section axes — the ones Amount actually
+    // widens or pinches. Both drive Amount, so either side reads as "open/close the taper".
+    public IReadOnlyList<GizmoElement> GetGizmoElements()
+        => [
+            GizmoElements.AxisSquareHandle("taper-u", (Axis + 1) % 3, new GizmoBinding(nameof(Amount))),
+            GizmoElements.AxisSquareHandle("taper-v", (Axis + 2) % 3, new GizmoBinding(nameof(Amount))),
+        ];
 }

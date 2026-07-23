@@ -2,7 +2,7 @@ namespace Ara3D.Studio.Samples.Modifiers;
 
 [Category(Cat.Deform)]
 [Description("Bends the mesh into an arc, rotating points progressively about an axis based on their position along another axis.")]
-public class Bend : IModifier
+public class Bend : IModifier, IGizmoProvider
 {
     [Range(-360f, 360f)] public float Angle { get; set; }
     [Range(0, 2)] public int AlongAxis = 2;
@@ -24,4 +24,11 @@ public class Bend : IModifier
         var bounds = mesh.DerivedBounds();
         return mesh.Deform(p => Deform(p, bounds));
     }
+
+    // Anchor on the input: the arc swings the output bounds around, which would make an
+    // output-anchored gizmo chase its own effect while dragging.
+    public GizmoAnchor GetGizmoAnchor() => GizmoAnchor.InputBounds;
+
+    public IReadOnlyList<GizmoElement> GetGizmoElements()
+        => [GizmoElements.AxisRing("bend-angle", BendAxis, GizmoBinding.Degrees(nameof(Angle)))];
 }
