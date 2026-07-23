@@ -1,3 +1,4 @@
+using Ara3D.Collections;
 using Ara3D.Geometry;
 using Ara3D.Models;
 
@@ -35,6 +36,77 @@ public static class BuiltinFlowRenderers
 
         // Voxels -> a box instanced at every occupied cell (value <= 0 is inside the surface).
         FlowRenderRegistry.Register<VoxelizedField>((voxels, _) => VoxelsToBoxes(voxels));
+
+        // Closed 2D profile -> a closed polyline lifted onto the XY plane.
+        FlowRenderRegistry.Register<Profile2D>((profile, _) => ProfileToLines(profile));
+
+        // Polyline -> line segments (a closing segment is added when Closed).
+        FlowRenderRegistry.Register<Polyline3D>((polyline, _) => PolylineToLines(polyline));
+
+        // Scalar grid -> a box at every cell at/below the iso value (reuses the voxel box path).
+        FlowRenderRegistry.Register<ScalarGrid3D>((grid, _) => GridToBoxes(grid));
+
+        // Bitmap -> a flat colored quad grid on the XY plane (one colored vertex per pixel).
+        FlowRenderRegistry.Register<Bitmap2D>((bitmap, _) => BitmapToMesh(bitmap));
+    }
+
+    private static LineMesh3D ProfileToLines(Profile2D profile)
+    {
+        var n = profile.Count;
+        if (n < 2)
+            return new LineMesh3D([], System.Array.Empty<Integer2>());
+        var points = new Point3D[n];
+        for (var i = 0; i < n; i++)
+            points[i] = new Point3D(profile.Points[i].X, profile.Points[i].Y, 0f);
+        var segments = new Integer2[n]; // closed loop
+        for (var i = 0; i < n; i++)
+            segments[i] = (i, (i + 1) % n);
+        return new LineMesh3D(points, segments);
+    }
+
+    private static LineMesh3D PolylineToLines(Polyline3D polyline)
+    {
+        var n = polyline.Count;
+        var segCount = polyline.Closed ? n : n - 1;
+        if (segCount < 1)
+            return new LineMesh3D(polyline.Points, System.Array.Empty<Integer2>());
+        var segments = new Integer2[segCount];
+        for (var i = 0; i < segCount; i++)
+            segments[i] = (i, (i + 1) % n);
+        return new LineMesh3D(polyline.Points, segments);
+    }
+
+    private static Model3D GridToBoxes(ScalarGrid3D grid)
+    {
+        // Reuse VoxelizedField purely for its cell-centre / cell-size geometry.
+        var cells = new VoxelizedField(grid.Bounds, grid.Dims, _ => 0f);
+        var s = cells.VoxelSize;
+        var scale = Matrix4x4.CreateScale(s.X, s.Y, s.Z);
+        var matrices = new List<Matrix4x4>();
+        for (var k = 0; k < grid.NumLayers; k++)
+        for (var j = 0; j < grid.NumRows; j++)
+        for (var i = 0; i < grid.NumColumns; i++)
+        {
+            if (grid.Get(i, j, k) > grid.Iso)
+                continue;
+            matrices.Add(scale * Matrix4x4.CreateTranslation(cells.GetVoxelCenter(i, j, k).Vector3));
+        }
+        return Model3D.Create(Marker, Material.Default, matrices);
+    }
+
+    private static ColoredTriangleMesh3D BitmapToMesh(Bitmap2D bitmap)
+    {
+        var w = Math.Max(2, bitmap.Width);
+        var h = Math.Max(2, bitmap.Height);
+        var points = new FunctionalReadOnlyList2D<Point3D>(w, h, (i, j) => new Point3D(i, j, 0f));
+        var mesh = new QuadGrid3D(points, false, false).Triangulate();
+        var colors = new Vector3[mesh.Points.Count];
+        for (var idx = 0; idx < mesh.Points.Count; idx++)
+        {
+            var p = mesh.Points[idx];
+            colors[idx] = bitmap.SampleUV(p.X / (w - 1), p.Y / (h - 1));
+        }
+        return mesh.ToColored(colors);
     }
 
     private static LineMesh3D CurveToLines(Curve3D curve, int resolution)
