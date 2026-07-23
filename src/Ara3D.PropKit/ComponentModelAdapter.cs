@@ -39,11 +39,10 @@ public class ComponentModelAdapter : PropertyDescriptor
     public override void ResetValue(object component)
         => SetValue(component, _desc.Default);
 
+    // Route through the wrapper so binding writes hit its WriteInterceptor (single write
+    // funnel) and gain the equality skip; direct accessor mutation would bypass both.
     public override void SetValue(object obj, object value)
-    {
-        _accessor.SetValue(ref _wrapped, value);
-        _provider.NotifyPropertyChanged(Name);
-    }
+        => _provider.TrySetValue(Name, value);
 
     public override bool ShouldSerializeValue(object component) 
         => false;

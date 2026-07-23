@@ -70,12 +70,27 @@ public class PropProviderWrapper :
         }
     }
 
+    /// <summary>
+    /// Optional single choke-point for writes. When set, every write that goes through this
+    /// wrapper (TrySetValue callers and WPF binding writes via ComponentModelAdapter) is routed
+    /// to it instead of mutating directly; the interceptor decides when and on which thread to
+    /// call <see cref="ApplyValueDirect"/>. PropKit itself stays thread-agnostic.
+    /// </summary>
+    public Func<string, object, bool> WriteInterceptor { get; set; }
+
     public bool TrySetValue(PropDescriptor desc, object value)
         => TrySetValue(desc.Name, value);
 
     public bool TrySetValue(string name, object value)
+        => WriteInterceptor?.Invoke(name, value) ?? ApplyValueDirect(name, value);
+
+    /// <summary>
+    /// Mutates the wrapped object now, bypassing <see cref="WriteInterceptor"/>. Skips (and does
+    /// not notify) when the value is Equals-identical — the loop-breaker for binding echo cycles.
+    /// </summary>
+    public bool ApplyValueDirect(string name, object value)
     {
-        if (value.Equals(GetValue(name)))
+        if (value?.Equals(GetValue(name)) == true)
             return true;
         if (!Props.TrySetValue(ref _wrapped, name, value))
             return false;
