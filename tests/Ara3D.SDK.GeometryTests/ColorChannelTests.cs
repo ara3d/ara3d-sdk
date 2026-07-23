@@ -62,6 +62,28 @@ public class ColorChannelTests
     }
 
     [Test]
+    public static void ApplyColorChannelMaterializesBareMesh()
+    {
+        var mesh = TwoTriangles;
+        var result = EmptyFlowObject.WithColors(FourColors).ApplyColorChannel(mesh);
+        Assert.That(result, Is.TypeOf<ColoredTriangleMesh3D>());
+        var colored = (ColoredTriangleMesh3D)result!;
+        Assert.That(colored.VertexColors, Is.EqualTo(FourColors));
+        Assert.That(colored.Mesh.Points, Is.EqualTo(mesh.Points));
+    }
+
+    [Test]
+    public static void ApplyColorChannelPassesThroughWhenNoChannel()
+        => Assert.That(EmptyFlowObject.ApplyColorChannel(TwoTriangles), Is.TypeOf<TriangleMesh3D>());
+
+    [Test]
+    public static void ApplyColorChannelPassesThroughOnCountMismatch()
+    {
+        var threeVertMesh = TwoTriangles.ExtractFaces([0]).Mesh;
+        Assert.That(EmptyFlowObject.WithColors(FourColors).ApplyColorChannel(threeVertMesh), Is.TypeOf<TriangleMesh3D>());
+    }
+
+    [Test]
     public static void ColorChannelIsVertexDomainAndDropsOnContentChange()
     {
         var fo = EmptyFlowObject.WithColors(FourColors);

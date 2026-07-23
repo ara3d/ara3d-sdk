@@ -59,6 +59,17 @@ public static class FlowColorExtensions
         return colors != null && colors.Count == mesh.Points.Count ? colors : null;
     }
 
+    /// <summary>
+    /// The render-ready form of a FlowObject's content: a bare TriangleMesh3D carrying a
+    /// valid Color channel is materialized into a ColoredTriangleMesh3D so the existing
+    /// colored render path draws it; all other content (including content that is already
+    /// colored) is returned unchanged. This is where the Color channel becomes pixels.
+    /// </summary>
+    public static object? ApplyColorChannel(this FlowObject fo, object? content)
+        => content is TriangleMesh3D mesh && fo.GetColors(mesh) is { } colors
+            ? mesh.ToColored(colors)
+            : content;
+
     /// <summary>The vertex-color channel if present, independent of any mesh; null otherwise.</summary>
     public static IReadOnlyList<Vector3>? GetColors(this EvalContext ctx)
         => ctx.Input.GetColors();
