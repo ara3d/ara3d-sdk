@@ -12,7 +12,7 @@ namespace Ara3D.Studio.Samples.Selection;
 public class SoftSelect : IModifier, IGizmoProvider
 {
     public Vector3 Center;
-    [Range(0f, 200f)] public float Radius = 0f; // 0 = auto: a small fraction of the model size
+    [Range(0f, 10f)] public float Radius = 0f; // 0 = auto: a small fraction of the model size
     public FalloffCurve Falloff = FalloffCurve.Smooth;
 
     public int AffectedVertices { get; private set; }
@@ -41,8 +41,9 @@ public class SoftSelect : IModifier, IGizmoProvider
             .WithSoftSelection(weights);
     }
 
-    public GizmoAnchor GetGizmoAnchor()
-        => GizmoAnchor.InputBounds;
+    // OutputBounds (the default) — this modifier passes geometry through unchanged, so output
+    // bounds equal input bounds. It also avoids studio-161 (InputBounds gives no gizmo when the
+    // modifier is first in the pipeline, because CachedInput is unset for a first modifier).
 
     // Ride the falloff center: the gizmo anchor is the bounds center, so offsetting it by
     // Center puts the handles on the actual center the weights are measured from.
