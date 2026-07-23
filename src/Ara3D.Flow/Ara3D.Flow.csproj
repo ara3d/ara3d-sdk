@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Ara3D.Flow — the host-free core of the evaluation pipeline (tracker studio-166/168).
+    Holds everything that flows through a graph (FlowObject, attributes, converters, the
+    Eval machinery, generator/modifier contracts) with NO dependency on a running Studio
+    host (no viewport, scene, gizmos, or GL). This is the assembly a headless runner or a
+    future WebAssembly node-editor backend references; Ara3D.Studio.API layers the host
+    interfaces on top. Namespace stays Ara3D.Studio.API so existing consumers/scripts are
+    unaffected by the assembly split.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" />
+    <ProjectReference Include="..\Ara3D.Geometry\Ara3D.Geometry.csproj" />
+    <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
+    <ProjectReference Include="..\Ara3D.Memory\Ara3D.Memory.csproj" />
+    <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\Ara3D.Utils\Ara3D.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ara3D.Flow\Ara3D.Flow.csproj" />
     <ProjectReference Include="..\Ara3D.DataTable\Ara3D.DataTable.csproj" />
     <ProjectReference Include="..\Ara3D.Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\Ara3D.Models\Ara3D.Models.csproj" />
