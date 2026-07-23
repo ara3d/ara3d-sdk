@@ -13,16 +13,18 @@ public class SoftSelectionMove : IModifier, IGizmoProvider
 {
     public Vector3 Offset = new(0f, 0f, 10f);
 
-    public TriangleMesh3D Eval(TriangleMesh3D mesh, EvalContext ctx)
+    public FlowObject Eval(TriangleMesh3D mesh, EvalContext ctx)
     {
         var weights = ctx.GetSoftSelection(mesh);
         if (weights == null)
-            return mesh;
+            return ctx.Input;
         var points = mesh.Points;
         var moved = new Point3D[points.Count];
         for (var i = 0; i < points.Count; i++)
             moved[i] = points[i] + Offset * weights[i];
-        return mesh.WithPoints(moved);
+        // The move preserves vertex count and order, so the weights stay valid: keep
+        // vertex-domain attributes and a downstream viewer still sees the soft selection.
+        return ctx.Input.WithNewContent(mesh.WithPoints(moved), FlowAttribute.AttributeDomainMask.Vertex);
     }
 
     public IReadOnlyList<GizmoElement> GetGizmoElements()
