@@ -87,13 +87,14 @@ namespace Ara3D.IO.G3D
                         case 3: return new GeometryAttribute<Vector3>(bytes, desc);
                         case 4: return new GeometryAttribute<Vector4>(bytes, desc);
                         case 16: return new GeometryAttribute<Matrix4x4>(bytes, desc);
-                        default: throw new ArgumentOutOfRangeException();
+                        default: throw new ArgumentOutOfRangeException(nameof(desc.DataArity), desc.DataArity, $"Unsupported float32 arity for attribute '{desc}'");
                     }
                 case DataType.dt_float64: return new GeometryAttribute<double>(bytes, desc);
 
                 case DataType.dt_string:
+                    throw new ArgumentOutOfRangeException(nameof(desc.DataType), desc.DataType, $"Unsupported datatype dt_string for attribute '{desc}'");
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(desc.DataType), desc.DataType, $"Unsupported datatype for attribute '{desc}'");
             }
         }
     }

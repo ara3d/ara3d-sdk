@@ -6,7 +6,7 @@ namespace Ara3D.IO.G3D
     /// Provides information about identifying the role and parsing the data within an attribute data buffer.
     /// This is encoded using a string in a particular URN form. 
     /// </summary>
-    public class AttributeDescriptor
+    public class AttributeDescriptor : IEquatable<AttributeDescriptor>
     {
         public Association Association { get; }
         public string Semantic { get; }
@@ -18,15 +18,28 @@ namespace Ara3D.IO.G3D
         public int DataTypeSize { get; }
         public string Name { get; }
 
+        /// <summary>
+        /// The original association substring seen during Parse. Preserved so that an unknown
+        /// association (which maps to <see cref="Association.assoc_none"/>) round-trips back to its
+        /// original text instead of being silently rewritten to "none". Null for directly-constructed
+        /// descriptors and for known associations.
+        /// </summary>
+        private readonly string _associationOverride;
+
         public AttributeDescriptor(Association association, string semantic, DataType dataType, int dataArity, int index = 0)
+            : this(association, semantic, dataType, dataArity, index, null)
+        { }
+
+        private AttributeDescriptor(Association association, string semantic, DataType dataType, int dataArity, int index, string associationOverride)
         {
             Association = association;
             if (semantic.Contains(":"))
-                throw new Exception("The semantic must not contain a semicolon");
+                throw new Exception("The semantic must not contain a colon");
             Semantic = semantic;
             DataType = dataType;
             DataArity = dataArity;
             Index = index;
+            _associationOverride = associationOverride;
             DataTypeSize = GetDataTypeSize(DataType);
             DataElementSize = DataTypeSize * DataArity;
             Name = $"g3d:{AssociationString}:{Semantic}:{Index}:{DataTypeString}:{DataArity}";
@@ -48,9 +61,9 @@ namespace Ara3D.IO.G3D
             {
                 attributeDescriptor = Parse(urn);
             }
-            catch
+            catch (Exception e)
             {
-                // do nothing.
+                System.Diagnostics.Debug.WriteLine($"Failed to parse attribute descriptor URN '{urn}': {e}");
             }
 
             return attributeDescriptor != null;
@@ -64,12 +77,16 @@ namespace Ara3D.IO.G3D
             var vals = urn.Split(':');
             if (vals.Length != 6) throw new Exception("Expected 6 parts to the attribute descriptor URN");
             if (vals[0] != "g3d") throw new Exception("First part of URN must be g3d");
+            var association = ParseAssociation(vals[1]);
+            // Preserve the original text for an unknown association so it round-trips instead of becoming "none".
+            var associationOverride = association == Association.assoc_none && vals[1] != "none" ? vals[1] : null;
             return new AttributeDescriptor(
-                ParseAssociation(vals[1]),
+                association,
                 vals[2],
                 ParseDataType(vals[4]),
                 int.Parse(vals[5]),
-                int.Parse(vals[3])
+                int.Parse(vals[3]),
+                associationOverride
             );
         }
 
@@ -83,7 +100,13 @@ namespace Ara3D.IO.G3D
         }
 
         public bool Equals(AttributeDescriptor other)
-            => ToString() == other.ToString();
+            => other != null && Name == other.Name;
+
+        public override bool Equals(object obj)
+            => Equals(obj as AttributeDescriptor);
+
+        public override int GetHashCode()
+            => Name.GetHashCode();
 
         public static int GetDataTypeSize(DataType dt)
         {
@@ -111,7 +134,7 @@ namespace Ara3D.IO.G3D
         }
 
         public string AssociationString
-            => Association.ToString().Substring("assoc_".Length);
+            => _associationOverride ?? Association.ToString().Substring("assoc_".Length);
 
         public static Association ParseAssociation(string s)
         {
@@ -153,6 +176,6 @@ namespace Ara3D.IO.G3D
             => (DataType)Enum.Parse(typeof(DataType), "dt_" + s);
 
         public AttributeDescriptor SetIndex(int index)
-            => new AttributeDescriptor(Association, Semantic, DataType, DataArity, index);
+            => new AttributeDescriptor(Association, Semantic, DataType, DataArity, index, _associationOverride);
     }
 }
