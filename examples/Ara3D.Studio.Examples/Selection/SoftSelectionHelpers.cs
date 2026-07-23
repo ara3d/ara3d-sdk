@@ -18,6 +18,19 @@ public static class SoftSelectionHelpers
 {
     public const string AttributeName = "SoftSelection";
 
+    /// <summary>Heat-map endpoints shared by the gizmo and the SoftSelectionColor viewer, so the
+    /// two can never drift: cold slate at weight 0, hot orange at weight 1.</summary>
+    public static readonly Vector3 ColdColor = new(0.15f, 0.18f, 0.28f);
+    public static readonly Vector3 HotColor = new(1f, 0.45f, 0.05f);
+
+    /// <summary>Cool slate-blue for the falloff shell and radius grips — reads against both the
+    /// orange heat map and a dark viewport.</summary>
+    public static readonly Vector4 ShellColor = new(0.62f, 0.68f, 0.85f, 1f);
+
+    /// <summary>Heat-map color at weight w as an opaque Vector4 for gizmo styles.</summary>
+    public static Vector4 HeatColor(float w)
+        => ColdColor.Lerp(HotColor, w).ToVector4(1f);
+
     public static FlowObject WithSoftSelection(this FlowObject fo, IReadOnlyList<float> weights)
     {
         var attributes = new List<FlowAttribute>(fo.Attributes.Count + 1);
@@ -54,5 +67,22 @@ public static class SoftSelectionHelpers
             FalloffCurve.Gaussian => t <= 0f ? 0f : MathF.Exp(-6f * (1f - t) * (1f - t)),
             _ => t,
         };
+    }
+
+    /// <summary>Normalized distance (0 at center, 1 at the radius) where the weight equals w.
+    /// Bisects <see cref="Weight"/> so the gizmo can never disagree with the falloff the modifier
+    /// actually applies — do not re-derive analytic inverses per curve.</summary>
+    public static float InverseWeight(FalloffCurve curve, float w)
+    {
+        float lo = 0f, hi = 1f; // Weight is monotone decreasing in d
+        for (var i = 0; i < 24; i++)
+        {
+            var mid = (lo + hi) * 0.5f;
+            if (Weight(curve, mid, 1f) > w)
+                lo = mid;
+            else
+                hi = mid;
+        }
+        return (lo + hi) * 0.5f;
     }
 }

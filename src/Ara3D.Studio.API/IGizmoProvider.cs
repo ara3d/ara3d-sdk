@@ -42,6 +42,16 @@ public enum GizmoAnchor
     InputBounds,
 }
 
+/// <summary>How a <see cref="GizmoElement"/>'s local primitive units are interpreted.
+/// Local (the default) keeps today's screen-constant sizing (1.0 = one arm length, ~78 px);
+/// World maps 1.0 to one world unit, so a shell drawn at a true radius foreshortens like real
+/// geometry. Pixel widths, marker sizes, and hit tolerance stay screen-space in both.</summary>
+public enum GizmoSpace
+{
+    Local,
+    World,
+}
+
 //==
 // Visual primitives (positions in gizmo-local units; see IGizmoProvider remarks).
 
@@ -131,7 +141,8 @@ public sealed record GizmoElement(
     GizmoStyle Hover = null,
     GizmoStyle Active = null,
     float TransitionSeconds = 0.12f,
-    float HitTolerancePx = 9f)
+    float HitTolerancePx = 9f,
+    GizmoSpace Space = GizmoSpace.Local)
 {
     public bool IsInteractive => Constraint != null && Binding != null;
 }

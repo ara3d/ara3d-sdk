@@ -10,15 +10,12 @@ namespace Ara3D.Studio.Samples.Selection;
 [Description("Heat-map visualization of a soft (weighted) vertex selection, cold at weight 0 and hot at weight 1.")]
 public class SoftSelectionColor : IModifier
 {
-    public Vector3 ColdColor = new(0.15f, 0.18f, 0.28f);
-    public Vector3 HotColor = new(1f, 0.45f, 0.05f);
-
     public ColoredTriangleMesh3D Eval(TriangleMesh3D mesh, EvalContext ctx)
     {
         var weights = ctx.GetSoftSelection(mesh);
         var colors = new Vector3[mesh.Points.Count];
         for (var i = 0; i < colors.Length; i++)
-            colors[i] = ColdColor.Lerp(HotColor, weights?[i] ?? 0f);
+            colors[i] = SoftSelectionHelpers.ColdColor.Lerp(SoftSelectionHelpers.HotColor, weights?[i] ?? 0f);
         return mesh.ToColored(colors);
     }
 }
