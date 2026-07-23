@@ -12,21 +12,24 @@ namespace Ara3D.Studio.Samples.Selection;
 public class SoftSelect : IModifier, IGizmoProvider
 {
     public Vector3 Center;
-    [Range(0f, 200f)] public float Radius = 25f;
+    [Range(0f, 200f)] public float Radius = 0f; // 0 = auto: a small fraction of the model size
     public FalloffCurve Falloff = FalloffCurve.Smooth;
 
     public int AffectedVertices { get; private set; }
 
     public FlowObject Eval(TriangleMesh3D mesh, EvalContext ctx)
     {
-        var center = mesh.DerivedBounds().Center.Vector3 + Center;
+        var bounds = mesh.DerivedBounds();
+        var center = bounds.Center.Vector3 + Center;
+        // Absolute world radius when set; otherwise a tight default that scales with the model.
+        var radius = Radius > 0f ? Radius : (float)bounds.Size.Length * 0.15f;
         var points = mesh.Points;
         var weights = new float[points.Count];
         var affected = 0;
         for (var i = 0; i < points.Count; i++)
         {
             var d = (points[i].Vector3 - center).Length;
-            var w = SoftSelectionHelpers.Weight(Falloff, d, Radius);
+            var w = SoftSelectionHelpers.Weight(Falloff, d, radius);
             weights[i] = w;
             if (w > 0f)
                 affected++;
