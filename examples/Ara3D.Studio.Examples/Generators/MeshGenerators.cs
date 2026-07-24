@@ -50,7 +50,7 @@ public class Prism : IGenerator
 
 [Category(Cat.Primitives)]
 [Description("A pyramid with a regular polygon base and a single apex.")]
-public class Pyramid: IGenerator
+public class Pyramid : IGenerator
 {
     [Range(0f, 10f)] public float Height = 1;
     [Range(3, 32)] public int Sides = 3;
@@ -116,7 +116,7 @@ public class Torus : IGenerator
 [Description("A hollow cylindrical tube (pipe) with inner and outer radii, revolved around the vertical axis.")]
 public class Tube : IGenerator
 {
-    [Range(1, 32)] public int Count = 16;
+    [Range(1, 32)] public int Segments = 16;
     [Range(0f, 10f)] public float InnerRadius = 0.3f;
     [Range(0f, 10f)] public float OuterRadius = 0.5f;
     [Range(0f, 10f)] public float Height = 2;
@@ -132,7 +132,7 @@ public class Tube : IGenerator
             (InnerRadius, 0, 0),
         };
 
-        return box.Revolve(Vector3.UnitZ, Count);
+        return box.Revolve(Vector3.UnitZ, Segments);
     }
 }
 
@@ -140,14 +140,14 @@ public class Tube : IGenerator
 [Description("A solid upward-pointing arrow with configurable shaft and tip dimensions.")]
 public class UpArrow : IGenerator
 {
-    [Range(1, 32)] public int Count = 16;
+    [Range(1, 32)] public int Segments = 16;
     [Range(0f, 1f)] public float ShaftWidth = 0.05f;
     [Range(0f, 5f)] public float ShaftHeight = 0.8f;
     [Range(0f, 5f)] public float TipWidth = 0.2f;
     [Range(0f, 5f)] public float TipHeight = 0.2f;
 
     public QuadGrid3D Eval()
-        => Primitives.UpArrow(Count, ShaftHeight, ShaftWidth, TipHeight, TipWidth);
+        => Primitives.UpArrow(Segments, ShaftHeight, ShaftWidth, TipHeight, TipWidth);
 }
 
 [Category(Cat.Primitives)]
@@ -164,7 +164,8 @@ public class PlatonicSolid : IGenerator
 }
 
 [Category(Cat.Primitives)]
-public class Plane
+[Description("A flat rectangular grid in the XY plane with adjustable row and column resolution.")]
+public class Plane : IGenerator
 {
     [Range(1, 256)] public int NumRows = 16;
     [Range(1, 256)] public int NumColumns = 16;

@@ -1,8 +1,8 @@
 namespace Ara3D.Studio.Samples.Demos;
 
-[Category(Cat.ExperimentalDemos)]
-[Description("Generates a torus as a parametric surface. The ParametricSurface flows through the graph and is sampled into a mesh by the default surface renderer at view time.")]
-public class TorusSurfaceDemo : IGenerator
+[Category(Cat.Surfaces)]
+[Description("A torus as a parametric surface, sampled into a mesh by the default surface renderer.")]
+public class TorusSurface : IGenerator
 {
     [Range(0.5f, 10f)] public float MainRadius = 3f;
     [Range(0.1f, 5f)] public float TubeRadius = 1f;

@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(Cat.ExperimentalDemos)]
+[Category(Cat.Structures)]
 [Description("A parametric paneled door with configurable dimensions, panel layout, and raised-panel profile.")]
 public class Door : IGenerator
 {

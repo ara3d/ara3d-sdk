@@ -5,10 +5,10 @@
 public class ExtrudePath : IModifier
 {
     [Range(0f, 10f)] public float Height { get; set; } = 1;
-    [Range(1, 100)] public int Count { get; set; } = 1;
+    [Range(1, 100)] public int Segments { get; set; } = 1;
     
     public QuadMesh3D Eval(LineMesh3D lineMesh, EvalContext context)
-        => lineMesh.Extrude(Vector3.UnitZ * Height, Count);
+        => lineMesh.Extrude(Vector3.UnitZ * Height, Segments);
 }
 
 [Category(Cat.Convert)]
@@ -17,8 +17,6 @@ public class LinesToBoxes : IModifier
 {
     [Range(0f, 2f)] public float Thickness = 0.1f;
     [Range(0f, 10f)] public float Height = 2;
-    [Range(0f, 10f)] public float Radius = 2;
-    [Range(2, 20)] public int Count = 5;
 
     public IModel3D Eval(LineMesh3D lines)
     {

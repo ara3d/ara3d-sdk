@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(Cat.ExperimentalDemos)]
+[Category(Cat.Structures)]
 [Description("A single raised-center panel surface, such as a door or cabinet panel.")]
 public class Panel : IGenerator
 {

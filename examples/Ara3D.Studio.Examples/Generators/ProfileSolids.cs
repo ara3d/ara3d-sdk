@@ -31,24 +31,6 @@ public class RevolveProfile : IGenerator
 }
 
 /// <summary>
-/// A straight prism formed by extruding a regular-polygon profile up the Z axis. <see cref="Sides"/>
-/// and <see cref="Radius"/> shape the polygon cross-section; <see cref="Height"/> sets the total
-/// rise and <see cref="Segments"/> the number of stacked vertical rows.
-/// </summary>
-[Category(Cat.Structures)]
-[Description("A prism formed by extruding a regular polygon straight up into a solid with a chosen number of vertical segments.")]
-public class ExtrudeProfile : IGenerator
-{
-    [Range(3, 32)] public int Sides = 6;
-    [Range(0f, 5f)] public float Radius = 1;
-    [Range(0f, 10f)] public float Height = 2;
-    [Range(1, 64)] public int Segments = 4;
-
-    public QuadGrid3D Eval()
-        => Sides.GetCircularPoints(Radius).Extrude(Height / Segments, Segments);
-}
-
-/// <summary>
 /// Lofts between two circular rings of differing radius to make a smooth transition surface
 /// (truncated cone, or a hyperboloid when twisted). The bottom ring uses <see cref="BottomRadius"/>,
 /// the top ring <see cref="TopRadius"/>, separated by <see cref="Height"/>. <see cref="TwistDegrees"/>

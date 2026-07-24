@@ -2,7 +2,7 @@
 
 namespace Ara3D.Studio.Samples.Demos;
 
-[Category(Cat.ExperimentalDemos)]
+[Category(Cat.Structures)]
 [Description("A parametric window with a segmented frame and inset panes.")]
 public class Window : IGenerator
 {

@@ -2,7 +2,7 @@ namespace Ara3D.Studio.Samples;
 
 [Category(Cat.Deform)]
 [Description("Pinches the mesh inward within a band along an axis, like squeezing a tube.")]
-public class SqueezeDeformer : IModifier
+public class Squeeze : IModifier
 {
     [Range(0f, 1f)] public float Strength { get; set; } = 0.5f;
     [Range(0f, 10f)] public float Width { get; set; } = 1f;

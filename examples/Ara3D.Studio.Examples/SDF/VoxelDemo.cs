@@ -1,15 +1,15 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
 [Category(Cat.Volumetric)]
-[Description("A signed-distance-field primitive shape with two shape parameters, for use with the volumetric tools.")]
+[Description("A signed-distance-field primitive. Size is the primary radius/half-extent; Secondary is used for boxes (second half-extent) and tori (tube radius).")]
 public class SdfPrimitive : IGenerator
 {
     public SdfPrimitive3D Shape;
-    [Range(0, 5)] public float Parameter1 = 0.2f;
-    [Range(0, 5)] public float Parameter2 = 0.3f;
+    [Range(0, 5)] public float Size = 0.2f;
+    [Range(0, 5)] public float Secondary = 0.3f;
 
     public Sdf3D Eval()
-        => SdfPrimitives.Create(Shape, Parameter1, Parameter2);
+        => SdfPrimitives.Create(Shape, Size, Secondary);
 }
 
 [Category(Cat.Convert)]
@@ -21,7 +21,7 @@ public class SdfVoxelize : IModifier
 
     public static Bounds3D UnitBounds = new(-Vector3.One.Half, Vector3.One.Half);
 
-    public IVoxels Voxelize(Sdf3D sdf)
+    public IVoxels Eval(Sdf3D sdf)
     {
         var bounds = UnitBounds.Scale(BoundSize);
         return sdf.Voxelize(bounds, (GridSize, GridSize, GridSize));
@@ -34,7 +34,7 @@ public class VoxelsToModel3D : IModifier
 {
     [Range(0, 1)] public float Threshold = 0.05f;
     [Range(0, 1.5f)] public float VoxelSize = 0.75f;
-    bool Triangulate = false;
+    public bool Triangulate = false;
 
     public IModel3D Eval(IVoxels voxels)
     {
@@ -64,7 +64,13 @@ public class VoxelDemo : IGenerator
     [Range(0, 1.5f)] public float VoxelSize = 0.75f;
     [Range(0.1f, 5f)] public float BoundSize = 1.5f;
 
-    [Range(0, 9)] public int Shape = 0;
+    public List<string> ShapeNames() =>
+    [
+        "Sphere", "Axes", "Sphere ∪ Axes", "Sphere ∩ Axes", "Sphere − Axes",
+        "Sphere ⊕ Axes", "Axes ∪ Sphere", "Axes − Sphere", "Axes ∩ Sphere", "Axes ⊕ Sphere",
+    ];
+
+    [Options(nameof(ShapeNames))] public int Shape = 0;
 
     public bool Triangulate = false;
 

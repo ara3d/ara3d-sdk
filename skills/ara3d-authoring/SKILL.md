@@ -220,8 +220,8 @@ the `IModel3D` (instance-level) counterpart — read it to learn the `Model3DBui
   `ColorByTriangleQuality` class is the heat-map/analyzer pattern (`ColoredTriangleMesh3D`).
 - `Modifiers/FaceNormalArrows.cs` — building an `IModel3D` overlay with instanced arrow meshes.
 - Studio's built-in coding prompt (*host repo*: `src/Ara3D.Studio/Ara3DStudio/codingprompt.txt`)
-  contains a large gallery of small generators and deformers (Cylinder, Torus, TwistDeformer,
-  NoiseDeformer, GridClone, …) — the canonical "cheat sheet" of idioms.
+  contains a large gallery of small generators and deformers (Cylinder, Torus, Twist,
+  Noise, GridClone, …) — the canonical "cheat sheet" of idioms.
 
 ---
 

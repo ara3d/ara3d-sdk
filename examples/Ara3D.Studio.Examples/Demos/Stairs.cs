@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(Cat.ExperimentalDemos)]
+[Category(Cat.Structures)]
 [Description("A parametric straight stair with treads, risers, and stringers, and full material control.")]
 public class Stairs : IGenerator
 {

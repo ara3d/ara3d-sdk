@@ -1,18 +1,5 @@
 ﻿namespace Ara3D.Studio.Samples.Modifiers;
 
-/*
-public class SeparateAtSharpCorners : IModifier
-{
-    [Range(0, 360)] public int AngleTolerance = 95;
-
-    public IModel3D Eval(TriangleMesh3D mesh, EvalContext context)
-    {
-        var topology = mesh.GetTopology();
-
-    }
-}
-*/
-
 [Category(Cat.Analyze)]
 [Description("Colors mesh vertices by the sharpness of the edges around them, from flat to creased.")]
 public class ColorSharpEdges : IModifier

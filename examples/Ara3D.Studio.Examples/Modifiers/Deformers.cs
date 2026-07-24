@@ -2,7 +2,7 @@
 
 [Category(Cat.Deform)]
 [Description("Twists the mesh progressively about an axis by a number of revolutions across its extent.")]
-public class TwistDeformer : IModifier, IGizmoProvider
+public class Twist : IModifier, IGizmoProvider
 {
     [Range(-10f, 10f)] public float Revolutions { get; set; }
     [Range(0, 2)] public int Axis = 2;
@@ -33,7 +33,7 @@ public class TwistDeformer : IModifier, IGizmoProvider
 
 [Category(Cat.Deform)]
 [Description("Shears the mesh, translating points increasingly along an axis from one side to the other.")]
-public class SkewDeformer : IModifier, IGizmoProvider
+public class Skew : IModifier, IGizmoProvider
 {
     [Range(-5f, 5f)] public float X { get; set; }
     [Range(-5f, 5f)] public float Y { get; set; }
@@ -96,7 +96,7 @@ public class Spherify : IModifier
 
 [Category(Cat.Deform)]
 [Description("Pushes mesh points toward the faces of a bounding box, blending toward a cube-like shape.")]
-public class Cubify: IModifier
+public class Cubify : IModifier
 {
     [Range(0f, 10f)] public float Radius { get; set; }
     [Range(0f, 1f)] public float Strength { get; set; }
@@ -134,10 +134,10 @@ public class Push : IModifier
 
 [Category(Cat.Deform)]
 [Description("Displaces mesh points along Z by Perlin noise, with adjustable amplitude, frequency, and offset.")]
-public class NoiseDeformer : IModifier
+public class Noise : IModifier
 {
     [Range(0f, 1f)] public float Amplitude { get; set; } = 1f;
-    [Range(1, 10)] public int Exp10 { get; set; } = 1;
+    [Range(1, 10)] public int FrequencyDecade { get; set; } = 1;
 
     [Range(-10f, 10f)] public float OffsetX { get; set; }
     [Range(-10f, 10f)] public float OffsetY { get; set; }
@@ -146,25 +146,13 @@ public class NoiseDeformer : IModifier
     public Point3D Deform(Point3D p)
     {
         var offset = (OffsetX, OffsetY, OffsetZ);
-
-        // Frequency: 10, 100, 1000, etc.
-        var frequency = MathF.Pow(10f, Exp10);
-
-        // Sample position in noise space
+        var frequency = MathF.Pow(10f, FrequencyDecade);
         var sample = p.Vector3 * frequency + offset;
-
-        // Expected approximately [-1, +1]
         var n = PerlinNoise.Noise(sample);
-
-        // Displace along a stable direction.
-        // Replace Vector3.UnitZ with p.Normal if you later have normals available.
         var displaced = p.Vector3 + Vector3.UnitZ * (n * Amplitude);
-
         return displaced;
     }
 
     public TriangleMesh3D Eval(TriangleMesh3D mesh)
-    {
-        return mesh.Deform(Deform);
-    }
+        => mesh.Deform(Deform);
 }

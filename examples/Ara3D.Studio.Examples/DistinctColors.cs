@@ -112,8 +112,8 @@ public static class UniformColors
 }
 
 [Category(Cat.Color)]
-[Description("Gives each instance a random material with controlled lightness, metalness, and roughness.")]
-public class UniformRandomizeColors : IModifier
+[Description("Gives each mesh-id a distinct color with controlled lightness, metalness, and roughness.")]
+public class DistinctColors : IModifier
 {
     [Range(0.0f, 1.0f)] public float MinLightness = 0.62f;
     [Range(0.0f, 1.0f)] public float MaxLightness = 0.88f;

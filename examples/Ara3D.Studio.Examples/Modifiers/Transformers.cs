@@ -10,8 +10,8 @@ public enum TransformMode
 }
 
 [Category(Cat.Transform)]
-[Description("Legacy mode-switch transform: applies a combined translate, rotate, and scale, but Mode only selects which single gizmo widget is shown.")]
-public class TransformLegacy : IModifier, IGizmoProvider
+[Description("Applies translate, rotate, and scale together. Mode selects which single gizmo is shown; stack Translate/Rotate/Scale nodes instead if you prefer selecting by node.")]
+public class Transform : IModifier, IGizmoProvider
 {
     public TransformMode Mode;
 
@@ -36,31 +36,6 @@ public class TransformLegacy : IModifier, IGizmoProvider
             TransformMode.Scale => GizmoElements.ScaleHandles(nameof(Scaling)),
             _ => GizmoElements.Translation(nameof(Offset)),
         };
-}
-
-[Category(Cat.Transform)]
-[Description("Applies a combined translate, rotate, and scale to the model through an interactive gizmo.")]
-public class Transform : IModifier, IGizmoProvider
-{
-    public Vector3 Offset;
-
-    [Range(-360f, 360f)] public float Yaw;
-    [Range(-360f, 360f)] public float Pitch;
-    [Range(-360f, 360f)] public float Roll;
-
-    public Vector3 Scaling = (1f, 1f, 1f);
-
-    public IModel3D Eval(IModel3D input)
-        => input
-            .Translate(Offset)
-            .Rotate(Yaw.Degrees(), Pitch.Degrees(), Roll.Degrees())
-            .Scale(Scaling);
-
-    public IReadOnlyList<GizmoElement> GetGizmoElements()
-        => GizmoElements.Translation(nameof(Offset))
-            .Concat(GizmoElements.RotationRings(nameof(Yaw), nameof(Pitch), nameof(Roll)))
-            .Concat(GizmoElements.ScaleHandles(nameof(Scaling)))
-            .ToList();
 }
 
 [Category(Cat.Transform)]
@@ -126,4 +101,3 @@ public class Scale : IModifier, IGizmoProvider
     public IReadOnlyList<GizmoElement> GetGizmoElements()
         => GizmoElements.ScaleHandles(nameof(Amount));
 }
-

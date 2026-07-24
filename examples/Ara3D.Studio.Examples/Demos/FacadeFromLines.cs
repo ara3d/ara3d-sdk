@@ -1,6 +1,6 @@
 ﻿namespace Ara3D.Studio.Samples.Demos;
 
-[Category(Cat.ExperimentalDemos)]
+[Category(Cat.Structures)]
 [Description("Builds a windowed facade wall by extruding each input line into a floor-segmented panel.")]
 public class FacadeFromLines : IModifier
 {
@@ -29,7 +29,7 @@ public class FacadeFromLines : IModifier
     
     public Model3D Eval(LineMesh3D mesh, EvalContext context)
     {
-        var gen = new FacadeGenerator
+        var gen = new Facade
         {
             Width = 1,
             HeightSegments = HeightSegments,

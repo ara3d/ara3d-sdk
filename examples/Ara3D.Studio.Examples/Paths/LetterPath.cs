@@ -496,10 +496,6 @@ public class LetterPath : IGenerator
 
     [Options(nameof(LetterNames))] public int Letter { get; set; }
 
-    [Range(0, 1)] public float Parameter1 { get; }
-    [Range(0, 1)] public float Parameter2 { get; }
-    [Range(0, 1)] public float Parameter3 { get; }
-
     public LineMesh3D Eval()
     {
         var pb = new PathBuilder();
