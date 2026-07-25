@@ -162,28 +162,25 @@ by `model.GetInstanceBounds()` — see the `ModelHorizontalSlice` half of the Pl
 
 ## 5. Two worked examples (read these first)
 
-### Generator — `BlockMesh`
-`examples/Ara3D.Studio.Examples/Generators/BlockMesh.cs`
+### Generator — `BoxFrame`
+`examples/Ara3D.Studio.Examples/Generators/MeshGenerators.cs`
 
 ```csharp
-public class BlockMesh : IGenerator
+public class BoxFrame : IGenerator
 {
     [Range(0f, 10f)] public float SizeX = 1;
     [Range(0f, 10f)] public float SizeY = 1;
     [Range(0f, 10f)] public float SizeZ = 1;
+    [Range(0f, 0.5f)] public float FrameRatio = 0.1f;
 
-    public bool EmptyTop;
-    public bool EmptyBottom;
-    public bool EmptySides;
+    public bool EmptyTop = true;
+    public bool EmptyBottom = true;
+    public bool EmptySides = true;
+    public bool ConnectLegs = true;
 
     public QuadMesh3D Eval()
-    {
-        var shape = new CellGridBuilder3D(3, 3, 3).Remove(1, 1, 1);
-        if (EmptyTop)    shape.Remove(1, 1, 2);
-        if (EmptyBottom) shape.Remove(1, 1, 0);
-        if (EmptySides)  shape.Remove(1,0,1).Remove(1,2,1).Remove(0,1,1).Remove(2,1,1);
-        return shape.ToMesh().Scale((SizeX, SizeY, SizeZ));
-    }
+        => new BoxFrameMeshBuilder(FrameRatio, EmptyTop, EmptyBottom, EmptySides, ConnectLegs)
+            .Mesh.Scale((SizeX, SizeY, SizeZ));
 }
 ```
 

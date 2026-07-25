@@ -180,8 +180,8 @@ public class Plane : IGenerator
 }
 
 [Category(Cat.Primitives)]
-[Description("A hollow box frame whose faces can be individually opened on the top, bottom, and sides.")]
-public class SolidBoxFrame : IGenerator
+[Description("A hollow box frame whose faces can be opened, with optional bottom rails connecting the legs.")]
+public class BoxFrame : IGenerator
 {
     [Range(0f, 10f)] public float SizeX = 1;
     [Range(0f, 10f)] public float SizeY = 1;
@@ -191,7 +191,9 @@ public class SolidBoxFrame : IGenerator
     public bool EmptyTop = true;
     public bool EmptyBottom = true;
     public bool EmptySides = true;
+    public bool ConnectLegs = true;
 
     public QuadMesh3D Eval()
-        => new BoxFrameMeshBuilder(FrameRatio, EmptyTop, EmptyBottom, EmptySides).Mesh.Scale((SizeX, SizeY, SizeZ));
+        => new BoxFrameMeshBuilder(FrameRatio, EmptyTop, EmptyBottom, EmptySides, ConnectLegs)
+            .Mesh.Scale((SizeX, SizeY, SizeZ));
 }

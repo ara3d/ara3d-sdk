@@ -9,7 +9,7 @@ plus BIM tools, commands, and demos. Each `.cs` file is a self-contained tool: i
 types, deployment) with two annotated examples.
 
 Good first files to read:
-- `Generators/BlockMesh.cs` — a minimal generator.
+- `Generators/MeshGenerators.cs` (`BoxFrame`) — a minimal generator with open faces and connect-legs.
 - `Modifiers/PlaneCut.cs` — a minimal modifier (mesh-level and model-level).
 - `Modifiers/WeldVertices.cs` — computing read-out values back to the panel.
 - `Modifiers/RefineAndCoarsen.cs` — analyzer / heat-map pattern (`ColoredTriangleMesh3D`).
