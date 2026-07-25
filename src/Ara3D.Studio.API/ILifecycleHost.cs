@@ -17,5 +17,6 @@ public interface ILifecycleHost
     /// shutdown has begun is a no-op.
     /// </summary>
     [Description("Requests the host tear down and stop, reporting the given exit code.")]
-    void Shutdown(int exitCode = 0);
+    void Shutdown(
+        [Description("Process/runner exit code to report; 0 = success, non-zero = failure. Defaults to 0.")] int exitCode = 0);
 }

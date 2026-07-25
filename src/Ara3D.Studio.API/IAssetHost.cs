@@ -14,5 +14,7 @@ public interface IAssetHost
     /// loaded standalone and the caller owns it.
     /// </summary>
     [Description("Loads a file into an asset; when inApplication is true it is added to the scene, otherwise loaded standalone.")]
-    Task<IAsset> LoadAssetAsync(FilePath filePath, bool inApplication);
+    Task<IAsset> LoadAssetAsync(
+        [Description("Absolute or relative path to the source file (e.g. .glb, .ifc, .bos).")] FilePath filePath,
+        [Description("True adds the loaded asset to the host's scene with progress/error handling; false returns it standalone for the caller to own.")] bool inApplication);
 }

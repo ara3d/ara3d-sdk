@@ -13,7 +13,8 @@ public interface ISceneHost
 {
     /// <summary>Adds a generator, modifier, or asset source as a node in the scene.</summary>
     [Description("Adds a generator, modifier, or asset source as a node in the scene.")]
-    void AddToScene(object evaluator);
+    void AddToScene(
+        [Description("An IGenerator, IModifier, or IAssetSource instance. A modifier attaches after the current selection; a generator or asset source starts a new pipeline.")] object evaluator);
 
     /// <summary>Removes every pipeline and node.</summary>
     [Description("Removes every pipeline and node from the scene.")]
@@ -24,7 +25,10 @@ public interface ISceneHost
     /// re-evaluation (e.g. to simulate a slider change in a regression test).
     /// </summary>
     [Description("Sets a public property on an already-added evaluator and marks the scene for re-evaluation.")]
-    void SetParameter(object evaluator, string propertyName, object value);
+    void SetParameter(
+        [Description("A generator/modifier/asset-source instance already added via AddToScene; must resolve to a node in the current graph.")] object evaluator,
+        [Description("Public, writable property name on the evaluator's type (case-sensitive).")] string propertyName,
+        [Description("New value, assignment-compatible with the property's declared type.")] object value);
 
     /// <summary>Forces a full evaluation and returns the resulting model (null if empty).</summary>
     [Description("Forces a full evaluation and returns the resulting model (null if empty).")]
@@ -51,7 +55,8 @@ public interface ISceneHost
 
     /// <summary>The node with the given durable id, or null if none matches.</summary>
     [Description("Returns the scene node with the given durable id, or nothing if none matches.")]
-    ISceneNode? GetNode(string id)
+    ISceneNode? GetNode(
+        [Description("Durable node id (EvalNode.PersistentId), as returned by AddNode or listed by ListNodes.")] string id)
         => null;
 
     /// <summary>
@@ -60,7 +65,10 @@ public interface ISceneHost
     /// call_host-coercible, mirroring set_selected_node_property.
     /// </summary>
     [Description("Sets a property (from a string value) on the node with the given durable id.")]
-    void SetParameter(string nodeId, string propertyName, string value)
+    void SetParameter(
+        [Description("Durable node id (EvalNode.PersistentId), as returned by AddNode or listed by ListNodes.")] string nodeId,
+        [Description("Public, writable property name on the node's evaluator type (case-sensitive).")] string propertyName,
+        [Description("New value as a string, parsed/converted to the property's declared type.")] string value)
         => throw new NotSupportedException("This host does not support id-keyed scene editing.");
 
     /// <summary>
@@ -68,12 +76,15 @@ public interface ISceneHost
     /// source, or after <paramref name="afterNodeId"/> when given. Returns the new node's id.
     /// </summary>
     [Description("Adds a script by name to the scene (after a node id when given); returns the new node id.")]
-    string AddNode(string scriptName, string? afterNodeId = null)
+    string AddNode(
+        [Description("Display or type name of a loaded generator/modifier/source script, resolved via the host's script resolver.")] string scriptName,
+        [Description("Durable id of the node to attach after (as a modifier); omit or leave null to start a new pipeline source.")] string? afterNodeId = null)
         => throw new NotSupportedException("This host does not support id-keyed scene editing.");
 
     /// <summary>Removes the node with the given id.</summary>
     [Description("Removes the scene node with the given durable id.")]
-    void RemoveNode(string id)
+    void RemoveNode(
+        [Description("Durable node id (EvalNode.PersistentId), as returned by AddNode or listed by ListNodes.")] string id)
         => throw new NotSupportedException("This host does not support id-keyed scene editing.");
 
     /// <summary>
@@ -82,11 +93,15 @@ public interface ISceneHost
     /// or hide part of a scene without deleting it.
     /// </summary>
     [Description("Enables or disables the scene node with the given durable id.")]
-    void SetNodeEnabled(string id, bool enabled)
+    void SetNodeEnabled(
+        [Description("Durable node id (EvalNode.PersistentId), as returned by AddNode or listed by ListNodes.")] string id,
+        [Description("True to include the node in evaluation; false to skip it non-destructively (it stays in the scene).")] bool enabled)
         => throw new NotSupportedException("This host does not support id-keyed scene editing.");
 
     /// <summary>Moves the node with the given id to a new index within its pipeline.</summary>
     [Description("Moves the node with the given durable id to a new index within its pipeline.")]
-    void MoveNode(string id, int index)
+    void MoveNode(
+        [Description("Durable node id (EvalNode.PersistentId), as returned by AddNode or listed by ListNodes.")] string id,
+        [Description("Zero-based target index within the node's pipeline.")] int index)
         => throw new NotSupportedException("This host does not support id-keyed scene editing.");
 }

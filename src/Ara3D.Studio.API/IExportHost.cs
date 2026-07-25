@@ -10,5 +10,6 @@ namespace Ara3D.Studio.API;
 public interface IExportHost
 {
     [Description("Exports the current scene geometry to the given path (.glb, .bfast, or .bos).")]
-    Task SaveGeometry(FilePath filePath);
+    Task SaveGeometry(
+        [Description("Destination file path; extension selects the format (.glb, .bfast, .bos). Throws if the scene has no geometry or the extension is unsupported.")] FilePath filePath);
 }
