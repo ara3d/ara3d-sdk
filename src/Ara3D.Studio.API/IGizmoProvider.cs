@@ -25,6 +25,8 @@ public interface IGizmoProvider
     /// <summary>Where the gizmo sits. OutputBounds (default) follows the edited object —
     /// right for transforms. InputBounds stays on the unmodified input — right for
     /// destructive modifiers (e.g. a plane cut) whose output shrinks under the tool.
+    /// WorldOrigin ignores both — right for scripts that hold world-space positions
+    /// (control points, path vertices) and want handles at those absolute coordinates.
     /// A method (not a property) so PropKit never shows it in the inspector.</summary>
     GizmoAnchor GetGizmoAnchor() => GizmoAnchor.OutputBounds;
 
@@ -40,6 +42,13 @@ public enum GizmoAnchor
 {
     OutputBounds,
     InputBounds,
+
+    /// <summary>The world origin, so gizmo-local positions are world coordinates. Works for
+    /// flow types with no bounds (a ParametricSurface or Curve3D is a function, not points).
+    /// Pair it with <see cref="GizmoSpace.World"/> elements; note that the host scales a
+    /// hovered element about the anchor, so keep <see cref="GizmoStyle.Scale"/> at 1 for
+    /// handles placed far from the origin.</summary>
+    WorldOrigin,
 }
 
 /// <summary>How a <see cref="GizmoElement"/>'s local primitive units are interpreted.
