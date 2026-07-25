@@ -20,7 +20,11 @@ public static class BuiltinFlowRenderers
     public static void RegisterAll()
     {
         // Parametric curve -> polyline (lines).
-        FlowRenderRegistry.Register<Curve3D>((curve, ctx) => CurveToLines(curve, ctx.Resolution));
+        FlowRenderRegistry.Register<Curve3D>((curve, ctx) => CurveToLines(curve.Eval, false, ctx.Resolution));
+
+        // Any Plato analytic curve (Helix, arcs, ...) -> polyline, honoring open/closed. One card
+        // covers every ICurve3D implementation; new curve types render with zero registry edits.
+        FlowRenderRegistry.Register<ICurve3D>((curve, ctx) => CurveToLines(curve.Eval, curve.Closed, ctx.Resolution));
 
         // Parametric surface -> triangle mesh.
         FlowRenderRegistry.Register<ParametricSurface>((surface, ctx) =>
@@ -109,13 +113,18 @@ public static class BuiltinFlowRenderers
         return mesh.ToColored(colors);
     }
 
-    private static LineMesh3D CurveToLines(Curve3D curve, int resolution)
+    private static LineMesh3D CurveToLines(Func<Number, Point3D> eval, bool closed, int resolution)
     {
         var n = Math.Max(2, resolution);
-        var points = curve.Sample(n);
-        var segments = new Integer2[n - 1];
-        for (var i = 0; i < n - 1; i++)
-            segments[i] = (i, i + 1);
+        // A closed curve is sampled without the duplicate end point (t=1 revisits t=0)
+        // and gets a wrapping segment instead.
+        var denominator = closed ? n : n - 1;
+        var points = new Point3D[n];
+        for (var i = 0; i < n; i++)
+            points[i] = eval((Number)(i / (float)denominator));
+        var segments = new Integer2[closed ? n : n - 1];
+        for (var i = 0; i < segments.Length; i++)
+            segments[i] = (i, (i + 1) % n);
         return new LineMesh3D(points, segments);
     }
 

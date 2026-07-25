@@ -8,15 +8,11 @@ public class Helix : IGenerator
     [Range(0f, 20f)] public float Height { get; set; } = 3f;
     [Range(0.5f, 32f)] public float Revolutions { get; set; } = 3f;
 
-    public Curve3D Eval()
-        => new(t =>
-        {
-            var angle = t.Turns.Multiply((Number)Revolutions);
-            var x = angle.Cos * (Number)Radius;
-            var y = angle.Sin * (Number)Radius;
-            var z = t * (Number)Height;
-            return new Point3D(x, y, z);
-        });
+    // Returns the analytic Plato helix (an ICurve3D) rather than a sampled or lambda-wrapped
+    // curve: the value stays inspectable and exact, and the viewport samples it at the current
+    // render resolution (EvalContext.RenderSettings) only when it is drawn.
+    public Ara3D.Geometry.Helix Eval()
+        => new((Number)Radius, (Number)Height, (Number)Revolutions);
 }
 
 [Category(Cat.Curves)]

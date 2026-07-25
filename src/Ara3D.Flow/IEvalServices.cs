@@ -20,4 +20,10 @@ public interface IEvalServices
     /// Default null so headless implementations need no change.
     /// </summary>
     IViewportInput? ViewportInput => null;
+
+    /// <summary>
+    /// The host's view-time sampling settings (resolution for realizing parametric values).
+    /// Defaults to <see cref="RenderSettings.Default"/> so headless implementations need no change.
+    /// </summary>
+    RenderSettings RenderSettings => RenderSettings.Default;
 }

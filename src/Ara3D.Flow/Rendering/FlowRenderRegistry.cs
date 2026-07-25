@@ -10,9 +10,10 @@ namespace Ara3D.Studio.API;
 /// their code.
 ///
 /// Resolution rules, in order:
-///  1. If the value is already directly renderable, return it unchanged.
-///  2. If a card is registered for its type, run the card and repeat (so Sdf3D → VoxelizedField
-///     → Model3D chains automatically).
+///  1. If a card is registered for the value's type, run the card and repeat (so Sdf3D →
+///     VoxelizedField → Model3D chains automatically). Cards win over direct renderability:
+///     Plato curves implement IGeometry yet must be sampled by their card, not passed through.
+///  2. If the value is directly renderable, return it unchanged.
 ///  3. Otherwise draw a labelled placeholder box, so an unhandled type is visible, never a crash
 ///     and never silently missing.
 /// Built-in cards register themselves in <see cref="BuiltinFlowRenderers"/> via the static ctor.
@@ -49,14 +50,17 @@ public static class FlowRenderRegistry
         // Guard against a card cycle (A→B→A); 8 hops is far more than any real chain.
         for (var hop = 0; hop < 8 && value != null; hop++)
         {
+            var card = FindCard(value.GetType());
+            if (card != null)
+            {
+                value = card.ToRenderable(value, context);
+                continue;
+            }
+
             if (IsDirectlyRenderable(value.GetType()))
                 return value;
 
-            var card = FindCard(value.GetType());
-            if (card == null)
-                return PlaceholderBox(value, context);
-
-            value = card.ToRenderable(value, context);
+            return PlaceholderBox(value, context);
         }
         return value ?? PlaceholderBox(value, context);
     }
