@@ -23,7 +23,9 @@ public class Transform : IModifier, IGizmoProvider
 
     public Vector3 Scaling = (1f, 1f, 1f);
 
-    public IModel3D Eval(IModel3D input)
+    // Operates on the flowing object itself (studio-217): FlowObject is ITransformable3D&lt;FlowObject&gt;,
+    // so the same TRS extensions apply and the content type (mesh, curve, surface, ...) is preserved.
+    public FlowObject Eval(FlowObject input)
         => input
             .Translate(Offset)
             .Rotate(Yaw.Degrees(), Pitch.Degrees(), Roll.Degrees())
@@ -50,7 +52,7 @@ public class AxisRotation : IModifier
 
     [Options(nameof(AxisNames))] public int Axis;
 
-    public IModel3D Eval(IModel3D model)
+    public FlowObject Eval(FlowObject model)
     {
         var axis = Axis == 0 ? Vector3.UnitX : Axis == 1 ? Vector3.UnitY : Vector3.UnitZ;
         var mat = Matrix4x4.CreateFromAxisAngle(axis, Degrees.Degrees());
@@ -64,7 +66,7 @@ public class Translate : IModifier, IGizmoProvider
 {
     public Vector3 Offset;
 
-    public IModel3D Eval(IModel3D model)
+    public FlowObject Eval(FlowObject model)
         => model.Translate(Offset);
 
     public IReadOnlyList<GizmoElement> GetGizmoElements()
@@ -79,7 +81,7 @@ public class Rotate : IModifier, IGizmoProvider
     [Range(-180f, 180f)] public float YDegrees;
     [Range(-180f, 180f)] public float ZDegrees;
 
-    public IModel3D Eval(IModel3D model)
+    public FlowObject Eval(FlowObject model)
         => model.Transform(
             Matrix4x4.CreateFromAxisAngle(Vector3.UnitX, XDegrees.Degrees())
             * Matrix4x4.CreateFromAxisAngle(Vector3.UnitY, YDegrees.Degrees())
@@ -95,7 +97,7 @@ public class Scale : IModifier, IGizmoProvider
 {
     public Vector3 Amount = (1f, 1f, 1f);
 
-    public IModel3D Eval(IModel3D model)
+    public FlowObject Eval(FlowObject model)
         => model.Scale(Amount);
 
     public IReadOnlyList<GizmoElement> GetGizmoElements()

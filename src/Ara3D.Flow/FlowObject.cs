@@ -66,13 +66,17 @@ public sealed class FlowObject : ITransformable3D<FlowObject>
     public bool HasObject
         => Content != null;
 
+    /// <summary>
+    /// Applies a rigid transform to the flowed content, dispatched by type through
+    /// <see cref="FlowTransformRegistry"/> (studio-217). The content type is preserved (a curve
+    /// stays a curve, a line mesh stays a line mesh); a rigid transform keeps every domain's
+    /// indexing, so all attributes carry over. A content type with no transform card throws a
+    /// named error, surfaced non-destructively by studio-221.
+    /// </summary>
     public FlowObject Transform(Transform3D t)
-    {
-        // TODO: this needs to be completed. To implement it easily "ITransformable3D" should exist without it requiring an argument
-        // The "challenge" with that is that I can't easily chain implementations together. Maybe? 
-        // Or I have both ... ITransformable3D and ITransformable3D<T>, 
-        throw new NotImplementedException("Work in progress");
-    }
+        => Content == null
+            ? this
+            : WithNewContent(FlowTransformRegistry.Transform(Content, t), FlowAttribute.AttributeDomainMask.All);
 
     public IEnumerable<T> GetAttachments<T>()
         => Attachments.OfType<T>();
