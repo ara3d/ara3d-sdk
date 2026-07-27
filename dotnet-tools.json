@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "greenhouse.cli": {
+      "version": "0.1.1785187828",
+      "commands": [
+        "greenhouse"
+      ],
+      "rollForward": false
+    },
+    "greenhouse.mcp": {
+      "version": "0.1.1785187828",
+      "commands": [
+        "greenhouse-mcp"
+      ],
+      "rollForward": false
+    }
+  }
+}

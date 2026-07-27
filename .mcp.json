@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "greenhouse": {
+      "command": "dotnet",
+      "args": ["tool", "run", "greenhouse-mcp"]
+    }
+  }
+}
