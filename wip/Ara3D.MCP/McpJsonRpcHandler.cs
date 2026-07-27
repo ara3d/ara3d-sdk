@@ -163,7 +163,29 @@ internal sealed class McpJsonRpcHandler
         var name = parameters?["name"]?.GetValue<string>();
         var arguments = parameters?["arguments"] as JsonObject ?? new JsonObject();
         var text = _registry.CallAsync(name, arguments, CancellationToken.None).GetAwaiter().GetResult();
-        return ToolResult(text);
+        return ToolResult(text, ReportsFailure(text));
+    }
+
+    /// <summary>A handler that went through <see cref="ToolRunner"/> reports failure inside its
+    /// payload, via the <see cref="McpToolResult"/> "ok" flag. That has to be lifted onto the
+    /// protocol's isError, or a client sees a failed tool call as a successful one. Handlers that
+    /// return arbitrary text carry no "ok" field and are unaffected.</summary>
+    private static bool ReportsFailure(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+
+        try
+        {
+            return JsonNode.Parse(text) is JsonObject envelope
+                   && envelope["ok"] is JsonValue value
+                   && value.TryGetValue<bool>(out var ok)
+                   && !ok;
+        }
+        catch (JsonException)
+        {
+            return false;
+        }
     }
 
     private static JsonObject ToolResult(string text, bool isError = false)
