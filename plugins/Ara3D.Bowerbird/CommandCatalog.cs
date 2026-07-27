@@ -27,7 +27,10 @@ public class CommandCatalog
         {
             if (!CommandManifestReader.TryRead(folder, out var manifest, out var error))
             {
-                logger?.Log($"Skipping {folder}: {error}");
+                // A folder without a manifest is simply not a command folder (see tracker
+                // issue studio-037); only an invalid manifest is worth reporting.
+                if (CommandManifestReader.GetManifestPath(folder).Exists())
+                    logger?.Log($"Skipping {folder}: {error}");
                 continue;
             }
 
