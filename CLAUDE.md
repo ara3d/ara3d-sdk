@@ -1,8 +1,9 @@
 # ara3d-sdk — agent guide (Plato-related)
 
 This SDK **consumes** Plato output; it must build standalone without the Plato toolchain.
-Plato compiler + stdlib source live in `../submodules/Plato` (see its CLAUDE.md). Roadmap:
-`../docs/plato-roadmap.md`.
+Plato compiler + stdlib source live in `../submodules/Plato` (see its CLAUDE.md). Plan:
+`../docs/plato-execution-plan-2026-07-09.md`; live work in `../tracker/`. (`docs/plato-roadmap.md`
+was superseded and archived 2026-07-16 — now `docs/archive/plato-roadmap.md`, historical only.)
 
 **C# style:** before writing/editing handwritten C# (e.g. `src/Ara3D.Geometry/`), follow the
 `csharp-style` skill — full reference `../docs/csharp-style-guide-for-agents.md`, enforceable
