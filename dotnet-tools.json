@@ -3,14 +3,14 @@
   "isRoot": true,
   "tools": {
     "greenhouse.cli": {
-      "version": "0.1.1785189622",
+      "version": "0.1.1785195532",
       "commands": [
         "greenhouse"
       ],
       "rollForward": false
     },
     "greenhouse.mcp": {
-      "version": "0.1.1785189622",
+      "version": "0.1.1785195532",
       "commands": [
         "greenhouse-mcp"
       ],
