@@ -18,5 +18,5 @@ public class DataSetBuilder : IDataSet
     }
 
     private readonly List<DataTableBuilder> _tableBuilders = new();
-    public IReadOnlyList<IDataTable> Tables => _tableBuilders.Cast<IDataTable>().ToList();
+    public IReadOnlyList<IDataTable> Tables => _tableBuilders.Select(b => b.Build()).ToList();
 }
