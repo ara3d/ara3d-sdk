@@ -102,17 +102,7 @@ entity filter but is only a geometry-instance visibility flag, so site, building
 present in `EntityText`. The converted relations are a flat edge list, though, so `ifc_spatial_tree`
 is still the way to read the hierarchy.
 
-## One upstream defect found and not fixed
-
-**`IfcPropData` decodes property values but not property names.** `GetValueText` runs `DecodeIfc`,
-while `ParseProperty` and `ParseElementQuantity` take names through `StripQuotes` alone. In any
-model that names things outside ASCII, every parameter and property-set name reads back in its STEP
-encoding — FZK-Haus indexes `H\X2\00F6\X0\he`, not `Höhe`, so a search for the real name finds
-nothing. `IfcParameterIndex` decodes names as it builds, which is why the parameter tools show
-`Höhe` while `ifc_properties` still shows the raw form. The fix belongs in `ext/Ara3D.IfcLoader`,
-which this project does not edit; until it lands the two tool groups disagree on names.
-
-## Two upstream defects found (and since fixed) here
+## Three upstream defects found (and since fixed) here
 
 Both were found by driving these tools against the FZK-Haus sample, and both are now fixed
 upstream in `ext/Ara3D.IfcLoader`; the workarounds this project briefly carried are gone.
@@ -130,3 +120,13 @@ upstream in `ext/Ara3D.IfcLoader`; the workarounds this project briefly carried 
    (changing it would shift attribute indices for every positional consumer), so the fix is
    `IfcPropValueExtensions.GetMeasureType/GetValueText`, which unwrap the payload from the token
    stream. Without them, every property reads back as the name of its own measure type.
+
+3. **`IfcPropData` decoded property values but not property names.** `GetValueText` ran `DecodeIfc`,
+   while `ParseProperty`, `ParseElementQuantity`, and the `IFCPROPERTYSET` case took names through
+   `StripQuotes` alone. In any model naming things outside ASCII, every parameter and property-set
+   name read back STEP-encoded — FZK-Haus gave `H\X2\00F6\X0\he`, not `Höhe`, so searching for the
+   real name found nothing. The tell was that `IfcToBosConverter` already worked around it at the
+   call site (`propSet.Name.DecodeIfc()`, `p.Name.DecodeIfc()`) while the property tools did not:
+   two consumers patching the same parse gap, one forgetting. Fixed at the source, so both
+   workarounds became redundant. `IfcToBosConverter` still carries its calls, which are harmless —
+   `DecodeIfc` returns unescaped input unchanged — and could be removed as a follow-up.

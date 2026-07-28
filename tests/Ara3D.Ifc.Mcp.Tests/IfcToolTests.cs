@@ -122,6 +122,27 @@ public sealed class IfcToolTests
         Assert.That(sets, Does.Contain("BaseQuantities"));
     }
 
+    /// <summary>IfcPropData decoded property values but not property names, so this German model
+    /// reported "H\X2\00F6\X0\he" as a property name. These tools do no decoding of their own, so
+    /// the assertion only holds while the loader decodes names at parse time.</summary>
+    [Test]
+    public void PropertyNames_AreIfcDecoded()
+    {
+        var spaceId = FirstIdOfType("IFCSPACE");
+        var data = CallData("ifc_properties", new JsonObject { ["path"] = _path, ["id"] = spaceId, ["take"] = 500 });
+        var items = data["properties"]!["items"]!.AsArray();
+        Assert.That(items, Is.Not.Empty);
+
+        var names = items.Select(item => item!["name"]!.GetValue<string>()).ToList();
+        var sets = items.Select(item => item!["propertySet"]!.GetValue<string>()).ToList();
+        foreach (var text in names.Concat(sets))
+            Assert.That(text, Does.Not.Contain(@"\X2\"));
+
+        Assert.That(
+            names.Any(name => name.Any(c => c > 127)),
+            "Expected at least one decoded non-ASCII property name on an IFCSPACE.");
+    }
+
     [Test]
     public void PropertySets_NameQuantitySetsRatherThanTheirGuid()
     {

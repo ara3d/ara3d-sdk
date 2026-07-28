@@ -1,7 +1,6 @@
 using System.Globalization;
 using Ara3D.IfcLoader;
 using Ara3D.IO.StepParser;
-using Ara3D.Utils;
 
 namespace Ara3D.Ifc.Mcp;
 
@@ -102,27 +101,21 @@ public sealed class IfcParameterIndex
             foreach (var setId in setIds)
                 // A relation can point at a set kind IfcPropData does not parse; skip it rather than throw.
                 if (data.PropSets.TryGetValue(setId, out var set))
-                {
-                    var setName = set.Name.DecodeIfc();
                     foreach (var value in data.GetProperties(set))
-                        Record(buckets, setName, value, entity.Id, document);
-                }
+                        Record(buckets, set, value, entity.Id, document);
         }
 
         return buckets;
     }
 
-    /// <summary>IfcPropData decodes property <em>values</em> but leaves set and property names in
-    /// their STEP encoding, so a German model indexes "H\X2\00F6\X0\he" and no one can search for
-    /// "Höhe". Names are decoded here; the per-element tools still report them raw.</summary>
     private static void Record(
         Dictionary<IfcParamKey, Bucket> buckets,
-        string setName,
+        IfcPropSet set,
         IfcPropValue value,
         int elementId,
         StepDocument document)
     {
-        var key = new IfcParamKey(setName, value.Name.DecodeIfc());
+        var key = new IfcParamKey(set.Name, value.Name);
         if (!buckets.TryGetValue(key, out var bucket))
             buckets[key] = bucket = new Bucket(value.Kind == IfcPropKind.Quantity, MeasureOf(value));
 

@@ -48,7 +48,7 @@ public sealed class IfcPropData
             {
                 case IfcPropertySet.ENTITY_CODE:
                     Debug.Assert(e.Attributes.Count == 5);
-                    PropSets[id] = new IfcPropSet(id, e.GetString(2), e.GetIdList(4));
+                    PropSets[id] = new IfcPropSet(id, e.GetString(2).DecodeIfc(), e.GetIdList(4));
                     break;
 
                 case IfcRelDefinesByProperties.ENTITY_CODE:
@@ -116,7 +116,7 @@ public sealed class IfcPropData
     public void ParseProperty(IfcEntity e, int valIndex, IfcPropKind kind)
     {
         // (Name, Description, NominalValue, Unit)
-        var name = e.GetString(0).StripQuotes();
+        var name = e.GetString(0).StripQuotes().DecodeIfc();
         var value = e.GetValue(valIndex);
 
         PropValues[e.Id] = new (e.Id, name, e.GetEntityName(), kind, value);
@@ -125,7 +125,7 @@ public sealed class IfcPropData
     public void ParseElementQuantity(IfcEntity e)
     {
         // (GlobalId, OwnerHistory, Name, Description, MethodOfMeasurement, Quantities)
-        var name = e.GetString(2).StripQuotes();
+        var name = e.GetString(2).StripQuotes().DecodeIfc();
         var qtyIds = e.GetIdList(5);
 
         // Treat as a property set (very convenient downstream)
