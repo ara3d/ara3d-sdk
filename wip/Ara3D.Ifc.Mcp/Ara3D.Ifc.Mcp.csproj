@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ara3D.MCP\Ara3D.MCP.csproj" />
     <ProjectReference Include="..\..\ext\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
   </ItemGroup>
 
 </Project>

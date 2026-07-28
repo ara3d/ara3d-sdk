@@ -11,6 +11,7 @@ public sealed class IfcSession : IDisposable
 {
     private IfcRelations? _relations;
     private IfcPropData? _properties;
+    private IfcBosArtifacts? _bos;
 
     public IfcSession(FilePath path)
     {
@@ -37,6 +38,25 @@ public sealed class IfcSession : IDisposable
     public IfcPropData Properties
         => _properties ??= new IfcPropData(File);
 
+    /// <summary>The BOS conversion and its DuckDB database, built on first use. Unlike the other
+    /// indexes this one re-reads the file from disk with geometry enabled, so it is by far the most
+    /// expensive thing a session can hold.</summary>
+    public IfcBosArtifacts Bos
+        => _bos ??= new IfcBosArtifacts(Path);
+
+    public bool BosIsBuilt
+        => _bos != null;
+
+    public IfcBosArtifacts RebuildBos()
+    {
+        _bos?.Dispose();
+        _bos = null;
+        return Bos;
+    }
+
     public void Dispose()
-        => File.Dispose();
+    {
+        _bos?.Dispose();
+        File.Dispose();
+    }
 }

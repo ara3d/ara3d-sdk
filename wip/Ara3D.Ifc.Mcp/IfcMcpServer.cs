@@ -18,6 +18,7 @@ public static class IfcMcpServer
         IfcEntityTools.Register(mcp, cache);
         IfcPropertyTools.Register(mcp, cache);
         IfcRelationTools.Register(mcp, cache);
+        IfcAnalyticsTools.Register(mcp, cache);
         return mcp;
     }
 }
