@@ -45,10 +45,19 @@ Client config:
 | `ifc_properties` | Properties grouped by property set. |
 | `ifc_quantities` | Lengths, areas, volumes, counts, weights, times. |
 | `ifc_property_sets` | Set names and sizes, without values. |
+| `ifc_parameters` | Every parameter in the model with element counts, ranges, and sample values. |
+| `ifc_parameter_values` | The distinct values of one parameter and how many elements hold each. |
+| `ifc_find_by_parameter` | Elements whose parameter passes a test (`eq`, `contains`, `gt`, …). |
+| `ifc_parameter_table` | A row per element, a column per parameter. |
 | `ifc_relations` | Relationship edges touching an entity. |
 | `ifc_spatial_tree` | Project → site → building → storey → space. |
 | `ifc_spatial_contents` | Elements directly inside one container. |
 | `ifc_element_containment` | The container chain above an element. |
+| `ifc_mesh` | Mesh statistics for an element or the whole model. |
+| `ifc_bounds` | Bounding boxes, per element and whole-model. |
+| `ifc_volume` | Volume and surface area from geometry. |
+| `ifc_export_glb` | Writes a GLB. |
+| `ifc_meshing_diagnostics` | What failed to mesh, and why. |
 | `ifc_to_bos` | Converts a model to BIM Open Schema, optionally saving the `.bos` file. |
 | `ifc_table` | The tables and views a query can use, with row counts and column types. |
 | `ifc_sql` | A read-only DuckDB query over the converted model, paged. |
@@ -67,6 +76,16 @@ use and kept for the life of the session.
 **Lifetime.** Every `IfcEntity` points into the file's pinned buffer. Nothing derived from a session
 may outlive it, which is why tools serialize their answers before returning.
 
+**Parameters run the other way.** `ifc_properties` and friends answer "what does element N carry"
+and need an id in hand. Every question worth asking first runs the other way — which elements are
+load bearing, what fire ratings exist, `Height` for all the windows — and answering those from the
+per-element tools costs a call per element, each re-unwrapping value tokens. `IfcParameterIndex`
+inverts the property data once per session: value text and its numeric reading are resolved a single
+time and keyed by `(property set, name)`, so a query is a dictionary hit plus a walk of the matches.
+It reads no extra bytes — it is a second pass over `IfcSession.Properties`, which is already in
+memory — and in particular it does not touch the BOS conversion, so parameter questions stay cheap.
+`ifc_sql` remains the tool for arbitrary joins; these four cover the common shapes without SQL.
+
 **Analytics.** `IfcBosArtifacts` converts a model to a `.bos` (a zip of Brotli-compressed Parquet
 tables) and loads it into a DuckDB database. Both are temp files owned by the session, so closing a
 model or evicting it from the cache deletes them. The conversion is a second whole-file parse, so it
@@ -82,6 +101,16 @@ which resolve those indexes by joining on `rowid`.
 entity filter but is only a geometry-instance visibility flag, so site, building, and storey are all
 present in `EntityText`. The converted relations are a flat edge list, though, so `ifc_spatial_tree`
 is still the way to read the hierarchy.
+
+## One upstream defect found and not fixed
+
+**`IfcPropData` decodes property values but not property names.** `GetValueText` runs `DecodeIfc`,
+while `ParseProperty` and `ParseElementQuantity` take names through `StripQuotes` alone. In any
+model that names things outside ASCII, every parameter and property-set name reads back in its STEP
+encoding — FZK-Haus indexes `H\X2\00F6\X0\he`, not `Höhe`, so a search for the real name finds
+nothing. `IfcParameterIndex` decodes names as it builds, which is why the parameter tools show
+`Höhe` while `ifc_properties` still shows the raw form. The fix belongs in `ext/Ara3D.IfcLoader`,
+which this project does not edit; until it lands the two tool groups disagree on names.
 
 ## Two upstream defects found (and since fixed) here
 

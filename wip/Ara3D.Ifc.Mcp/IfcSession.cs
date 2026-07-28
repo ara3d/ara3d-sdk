@@ -13,6 +13,7 @@ public sealed class IfcSession : IDisposable
 {
     private IfcRelations? _relations;
     private IfcPropData? _properties;
+    private IfcParameterIndex? _parameters;
     private IfcBosArtifacts? _bos;
     private IfcMeshingResult? _meshing;
 
@@ -40,6 +41,11 @@ public sealed class IfcSession : IDisposable
 
     public IfcPropData Properties
         => _properties ??= new IfcPropData(File);
+
+    /// <summary>Properties and quantities inverted by parameter, built on first use over
+    /// <see cref="Properties"/>. Costs no extra file read.</summary>
+    public IfcParameterIndex Parameters
+        => _parameters ??= new IfcParameterIndex(this);
 
     /// <summary>The BOS conversion and its DuckDB database, built on first use. Unlike the other
     /// indexes this one re-reads the file from disk with geometry enabled, so it is by far the most
