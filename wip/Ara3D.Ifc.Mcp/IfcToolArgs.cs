@@ -25,4 +25,24 @@ internal static class IfcToolArgs
         => builder
             .Integer("skip", "Number of items to skip. Default 0.")
             .Integer("take", $"Maximum items to return. Default {DefaultTake}.");
+
+    /// <summary>The optional entity-id filter shared by the geometry tools, taken as a comma-separated
+    /// string because the schema builder has no integer-array primitive.</summary>
+    public static McpSchemaBuilder Ids(this McpSchemaBuilder builder)
+        => builder.String("ids", "Optional comma-separated entity ids to restrict to, e.g. '173,180'. Omit for the whole model.");
+
+    public static IReadOnlyList<int>? GetIds(this McpToolArgs args)
+    {
+        var text = args.GetString("ids");
+        if (string.IsNullOrWhiteSpace(text))
+            return null;
+
+        var parts = text.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var ids = new int[parts.Length];
+        for (var i = 0; i < parts.Length; i++)
+            if (!int.TryParse(parts[i], out ids[i]))
+                throw new ArgumentException($"'ids' must be a comma-separated list of integers; '{parts[i]}' is not one.");
+
+        return ids;
+    }
 }

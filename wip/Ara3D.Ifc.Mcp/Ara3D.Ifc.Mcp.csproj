@@ -14,6 +14,9 @@
     <ProjectReference Include="..\Ara3D.MCP\Ara3D.MCP.csproj" />
     <ProjectReference Include="..\..\ext\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
+    <ProjectReference Include="..\Ara3D.Ifc.Mesher\Ara3D.Ifc.Mesher.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.Models\Ara3D.Models.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.IO.GltfExporter\Ara3D.IO.GltfExporter.csproj" />
   </ItemGroup>
 
 </Project>
