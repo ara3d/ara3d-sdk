@@ -60,10 +60,23 @@ class was truncation that greenhouse *did* disclose in a `... N more types (rais
 an agent's grep skipped; and the CLI docs are accurate (the kit table lists MCP tool names, not
 CLI verbs).
 
-**Known greenhouse gap, not yet fixed:** nothing in its test suite exercises the MCP server as
-a live subprocess, which is why a total stdio outage shipped. An end-to-end test that launches
-the server, holds stdin open, and asserts a `tools/call` replies within a few seconds would
-have caught it. Worth adding.
+**Known greenhouse gaps, not yet fixed:**
+
+1. **No live-subprocess MCP test**, which is why a total stdio outage shipped. Now solved *here*
+   first — `tests/Ara3D.Ifc.Mcp.Tests/StdioEndToEndTests.cs` + `StdioServerProcess.cs`, with the
+   port note at `wip/stdio-e2e-test-pattern.md`. Verified against an injected defect. Port it.
+2. **`greenhouse_diagnostics` directory mode is unusable** — sighted by all three Wave 1 agents.
+   It compiles a directory without NuGet, framework, or ProjectReference resolution: 502 phantom
+   errors on `tests/Ara3D.MCP.Tests`, 330 on `tests/Ara3D.Ifc.Mcp.Tests`, 87 on
+   `wip/Ara3D.Ifc.Mcp` (`'TestFixtureAttribute' could not be found`, `The name 'Path' does not
+   exist`). The same target passed as a `.csproj` is clean. One real error was buried in the
+   noise. Fix: directory mode should resolve the enclosing `.csproj`. **Top upstream candidate.**
+3. **`greenhouse_explore` truncates source at a fixed cap** (`... 139 more lines.`) with no
+   parameter to raise it — `top` only affects callers/callees. Forces a raw `Read` on big files.
+4. **`greenhouse_validate_changes` fails open on unmapped dirty files** — the three pre-existing
+   modified files (`FlowObject.cs` et al.) defeat impact selection, so its test section skips to
+   ALL. Honest and disclosed, not a defect, but it means the verb adds nothing while the tree is
+   dirty.
 
 ## SDK map (verified, file:line)
 
@@ -95,9 +108,19 @@ fine; it remains on the never-edit, never-stage list.
   Every `IfcEntity`/`StepToken` is valid only while the document is alive.
 - Conversion is whole-file, in memory. `IfcEntityResolver` allocates an entity for every
   definition (there is an explicit `// TODO: this should be filtered` at `IfcEntityResolver.cs:14`).
-- `IfcToBosConverter` **filters out spatial containers** (site/building/storey/space/zone/grid,
-  `IfcToBosConverter.cs:63-95`). Read spatial hierarchy from `IfcRelations`, not by scanning
-  BOS entities. Relation direction is child → parent.
+- ~~`IfcToBosConverter` filters out spatial containers.~~ **WRONG — corrected 2026-07-28.** It does
+  not. `HiddenIfcNames` (`IfcToBosConverter.cs:359`) is only a geometry-instance visibility flag;
+  site/building/storey are all present in BOS. Pinned by `Bos_KeepsSpatialContainers`.
+  Relation direction is still child → parent.
+- `IfcToBosConverter`'s constructor hardcodes `includeGeometry: true`, so the **analytics tools do
+  carry the native DLL dependency** — the "all data tools use `includeGeometry: false`" rule below
+  does not extend to them.
+- **Upstream leak, reported not fixed:** `IfcToBosConverter.Convert` never disposes its `IfcFile`,
+  leaking a pinned buffer and a native web-ifc model per call. `wip/Ara3D.Ifc.Mcp` sidesteps it by
+  calling the constructor + `SaveToBos` and disposing itself. `ext/` stays no-touch.
+- BOS is **fully interned**: `Entities.Name` indexes `Strings`, `Category` indexes `Entities`,
+  `Parameters.Value` is a tagged index. Raw SQL sees zero text — use the `EntityText` /
+  `ParameterText` / `RelationText` views (`wip/Ara3D.Ifc.Mcp/IfcDuck.cs`).
 - `IfcFile.GetSitePlacement()` is a stub returning `(0,0,0)` (`IfcFile.cs:51`) — `OriginOffset`
   is always zero; do not use it for georeferencing.
 - Geometry needs the native `web-ifc-library.dll` (`ext/Ara3D.IfcLoader/../../vendor/`), forcing
@@ -167,17 +190,38 @@ data question, not a code question — reading the raw `.ifc` line was correct t
 
 Run it: `dotnet run --project wip/Ara3D.Ifc.Mcp` (stdio; `--http [port]` to listen instead).
 
+## Wave 1 — done 2026-07-28 (`f25cf1a`, `393a9a2`, `91f12d6`)
+
+Three parallel agents, disjoint file scopes, no conflicts. Suites verified by the main thread,
+not just self-reported: `tests/Ara3D.MCP.Tests` **49/49** (was 24), `tests/Ara3D.Ifc.Mcp.Tests`
+**30/30** (was 17).
+
+1. **MCP host hardened.** `McpSchema` gained enums, arrays, nested objects, defaults — old fluent
+   calls compile unchanged. `McpJsonRpcHandler` is async end-to-end (`tools/call` no longer blocks
+   the listener), handles `notifications/initialized`, negotiates the protocol version against
+   `2025-06-18 / 2025-03-26 / 2024-11-05`, and returns `-32700` bodies instead of empty HTTP 400.
+   **Behavior change to know:** unparseable stdio input now emits a `-32700` line where it
+   previously wrote nothing; `Stdio_UnparseableAndBlankLines_AreSkipped` was renamed accordingly.
+2. **Analytics group.** `ifc_to_bos`, `ifc_table`, `ifc_sql`, `ifc_sql_export`. See the corrected
+   gotchas above — the two facts this doc previously got wrong were both in this area.
+3. **Live stdio E2E test.** Launches the built `ara3d-ifc-mcp.exe` directly rather than
+   `dotnet run --project`: a build inside the timed window is indistinguishable from a hung
+   server, and did in fact hang >10 min under concurrent MSBuild contention.
+
+**Operational note:** a live `ara3d-ifc-mcp.exe` locks the app's `bin` and hard-fails builds with
+`MSB3027`. Kill stray servers before running the suites; CI running tests beside a live server
+hits the same.
+
 ## Pick up here
 
-1. **Analytics** (`ifc_to_bos`, `ifc_sql`, `ifc_table`, exports), **then geometry**
-   (`ifc_mesh`, `ifc_bounds`, `ifc_volume`, `ifc_export_glb`, `ifc_meshing_diagnostics` —
-   these carry the native DLL dependency), **then write** (`ifc_append_pset`,
-   `ifc_remove_patch`, `ifc_diff`).
-2. **Worth considering:** the schema builder still has no arrays or enums (`McpSchema.cs`), so
-   tools like `ifc_relations` take a `kind` string that a client cannot validate. And
-   `McpJsonRpcHandler` still ignores `notifications/initialized` and never negotiates the protocol
-   version — harmless with current clients, but now that stdio is the default it is the surface
-   real MCP clients exercise hardest.
+1. **Geometry** (`ifc_mesh`, `ifc_bounds`, `ifc_volume`, `ifc_export_glb`,
+   `ifc_meshing_diagnostics`), **then write** (`ifc_append_pset`, `ifc_remove_patch`, `ifc_diff`).
+   Geometry needs sessions opened with `includeGeometry: true` — decide whether that is a second
+   cache or a flag on `IfcSession`, given the 3-model LRU.
+2. **Now that the schema builder has enums**, retrofit the tools that take unvalidatable strings —
+   `ifc_relations`' `kind` is the known one.
+3. **Fix greenhouse `diagnostics` directory mode** (gap 2 above) before the next wave; three of
+   three agents tripped on it.
 
 The write path currently exists **only in tests** — `IfcPatcher.Append/Remove` splice lines
 before `ENDSEC` and have a proven byte-identical round trip
