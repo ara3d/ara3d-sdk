@@ -1,8 +1,10 @@
+using System.Text;
 using System.Text.Json.Nodes;
 
 namespace Ara3D.MCP;
 
-/// <summary>Programmatic MCP server with runtime-mutable tools over localhost HTTP.</summary>
+/// <summary>Programmatic MCP server with runtime-mutable tools, over either localhost HTTP or
+/// line-delimited JSON on stdin/stdout.</summary>
 public sealed class McpServer : IDisposable
 {
     public const int DefaultPort = 8766;
@@ -13,16 +15,20 @@ public sealed class McpServer : IDisposable
     private readonly McpJsonRpcHandler _jsonRpc;
     private readonly int _port;
     private readonly string _host;
+    private readonly McpTransport _transport;
     private McpHttpListener? _http;
+    private McpStdioTransport? _stdio;
 
     public McpServer(
         int port = DefaultPort,
         string serverName = "mcp-server",
         string serverVersion = "1.0.0",
-        string host = "127.0.0.1")
+        string host = "127.0.0.1",
+        McpTransport transport = McpTransport.Http)
     {
         _port = port;
         _host = host;
+        _transport = transport;
         ServerName = serverName;
         ServerVersion = serverVersion;
         _jsonRpc = new McpJsonRpcHandler(_registry, ProtocolVersion, serverName, serverVersion);
@@ -32,9 +38,13 @@ public sealed class McpServer : IDisposable
 
     public string ServerVersion { get; }
 
-    public string Url => $"http://{_host}:{_port}{McpPath}";
+    public McpTransport Transport => _transport;
 
-    public bool Active => _http?.Active ?? false;
+    /// <summary>Null under the stdio transport, which has no address.</summary>
+    public string? Url
+        => _transport == McpTransport.Http ? $"http://{_host}:{_port}{McpPath}" : null;
+
+    public bool Active => _http?.Active ?? _stdio?.Active ?? false;
 
     public McpServer Tool(string name, string description, Func<CancellationToken, Task<string>> handler)
         => Tool(name, description, McpSchema.None(), (_, ct) => handler(ct));
@@ -63,6 +73,12 @@ public sealed class McpServer : IDisposable
 
     public void Start()
     {
+        if (_transport == McpTransport.Stdio)
+        {
+            StartStdio(StandardInput(), StandardOutput());
+            return;
+        }
+
         if (_http is { Active: true })
             return;
 
@@ -71,11 +87,36 @@ public sealed class McpServer : IDisposable
         _http.Start();
     }
 
+    /// <summary>Serves line-delimited JSON-RPC over the given streams. Exposed separately from
+    /// <see cref="Start"/> so a host can drive the transport over pipes it owns.</summary>
+    public void StartStdio(TextReader input, TextWriter output)
+    {
+        if (_stdio is { Active: true })
+            return;
+
+        _stdio?.Dispose();
+        _stdio = new McpStdioTransport(HandlePost, input, output);
+        _stdio.Start();
+    }
+
+    /// <summary>Blocks until the stdio pump ends (its client closed stdin). Returns immediately
+    /// under HTTP, which has no such end-of-stream signal.</summary>
+    public void WaitForShutdown()
+        => _stdio?.WaitForShutdown();
+
     public void Stop()
     {
         _http?.Dispose();
         _http = null;
+        _stdio?.Dispose();
+        _stdio = null;
     }
+
+    private static TextReader StandardInput()
+        => new StreamReader(Console.OpenStandardInput(), new UTF8Encoding(false));
+
+    private static TextWriter StandardOutput()
+        => new StreamWriter(Console.OpenStandardOutput(), new UTF8Encoding(false)) { AutoFlush = false };
 
     public void Dispose()
         => Stop();

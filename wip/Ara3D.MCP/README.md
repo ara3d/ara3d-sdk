@@ -1,8 +1,8 @@
 # Ara3D.MCP
 
-Programmatic MCP server for .NET — runtime-mutable tools over localhost HTTP. Zero NuGet deps (`HttpListener` + `System.Text.Json`).
+Programmatic MCP server for .NET — runtime-mutable tools over localhost HTTP or stdio. Zero NuGet deps (`HttpListener` + `System.Text.Json`).
 
-**Types:** `McpServer`, `McpSchema`, `McpToolArgs`, `ToolRunner`, `McpToolResult`, `McpJson`, `IUiThreadInvoker`
+**Types:** `McpServer`, `McpTransport`, `McpSchema`, `McpToolArgs`, `ToolRunner`, `McpToolResult`, `McpJson`, `IUiThreadInvoker`
 
 ---
 
@@ -28,6 +28,27 @@ Test without HTTP:
 var result = mcp.HandlePost("""{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}""");
 // result.StatusCode == 200, result.JsonBody has tools array
 ```
+
+---
+
+## Stdio transport
+
+For clients that launch the server as a child process:
+
+```csharp
+var mcp = new McpServer(serverName: "my-app", transport: McpTransport.Stdio);
+mcp.Tool("ping_app", "Returns app status.", () => "ok");
+mcp.Start();              // reads stdin, writes stdout
+mcp.WaitForShutdown();    // returns when the client closes stdin
+```
+
+One JSON-RPC message per input line, one response line per message that has a body.
+Notifications and unparseable lines write nothing. `Url` is `null`; `Transport` reports which
+transport was chosen. `StartStdio(TextReader, TextWriter)` drives the pump over streams you own.
+
+**Two rules under stdio.** Stdout is the protocol stream: log to stderr, never `Console.WriteLine`.
+And every child process the host spawns must set `RedirectStandardInput = true` — an inherited
+stdin steals the protocol stream and hangs every call (this exact bug shipped in `dotnet-greenhouse`).
 
 ---
 
