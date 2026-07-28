@@ -65,12 +65,19 @@ CLI verbs).
 1. **No live-subprocess MCP test**, which is why a total stdio outage shipped. Now solved *here*
    first — `tests/Ara3D.Ifc.Mcp.Tests/StdioEndToEndTests.cs` + `StdioServerProcess.cs`, with the
    port note at `wip/stdio-e2e-test-pattern.md`. Verified against an injected defect. Port it.
-2. **`greenhouse_diagnostics` directory mode is unusable** — sighted by all three Wave 1 agents.
-   It compiles a directory without NuGet, framework, or ProjectReference resolution: 502 phantom
-   errors on `tests/Ara3D.MCP.Tests`, 330 on `tests/Ara3D.Ifc.Mcp.Tests`, 87 on
-   `wip/Ara3D.Ifc.Mcp` (`'TestFixtureAttribute' could not be found`, `The name 'Path' does not
-   exist`). The same target passed as a `.csproj` is clean. One real error was buried in the
-   noise. Fix: directory mode should resolve the enclosing `.csproj`. **Top upstream candidate.**
+2. ~~**`greenhouse_diagnostics` directory mode is unusable.**~~ **FIXED 2026-07-28**, greenhouse
+   `9dde612`. Sighted by all three Wave 1 agents: directory targets compiled without NuGet,
+   framework, or ProjectReference resolution — 502 phantom errors on `tests/Ara3D.MCP.Tests`,
+   330 on `tests/Ara3D.Ifc.Mcp.Tests`, 87 on `wip/Ara3D.Ifc.Mcp`. Directory targets now resolve
+   to the owning project(s) in `WorkspaceCache` (so **every** verb benefits, not just
+   `diagnostics`); the staleness stamp names which case answered — `dir: compiled via X.csproj`,
+   `dir: compiled via enclosing X.csproj (scope widened...)`, `dir: aggregated N projects`, or
+   `dir: no .csproj found` for genuine loose files. Verified here: `wip/Ara3D.Ifc.Mcp` now
+   reports `dir: compiled via Ara3D.Ifc.Mcp.csproj`. Greenhouse suite 582/582.
+   **Cost:** directory targets now pay an MSBuild load — greenhouse's own MCP test project went
+   24s → ~3m. Correctness over speed; the cache pays it once per session.
+   **Local pin bumped to `0.1.1785214825`** in `dotnet-tools.json`. A running MCP server stays on
+   the build it launched with, so **restart the session** before the fix reaches the MCP tools.
 3. **`greenhouse_explore` truncates source at a fixed cap** (`... 139 more lines.`) with no
    parameter to raise it — `top` only affects callers/callees. Forces a raw `Read` on big files.
 4. **`greenhouse_validate_changes` fails open on unmapped dirty files** — the three pre-existing
@@ -220,8 +227,8 @@ hits the same.
    cache or a flag on `IfcSession`, given the 3-model LRU.
 2. **Now that the schema builder has enums**, retrofit the tools that take unvalidatable strings —
    `ifc_relations`' `kind` is the known one.
-3. **Fix greenhouse `diagnostics` directory mode** (gap 2 above) before the next wave; three of
-   three agents tripped on it.
+3. Greenhouse `diagnostics` directory mode is **fixed** (gap 2). Remaining known gap worth doing:
+   `explore`'s fixed source-truncation cap with no way to raise it (gap 3).
 
 The write path currently exists **only in tests** — `IfcPatcher.Append/Remove` splice lines
 before `ENDSEC` and have a proven byte-identical round trip
