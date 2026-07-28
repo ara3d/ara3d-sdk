@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>ara3d-ifc-mcp</AssemblyName>
+    <RootNamespace>Ara3D.Ifc.Mcp</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ara3D.MCP\Ara3D.MCP.csproj" />
+    <ProjectReference Include="..\..\ext\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
+  </ItemGroup>
+
+</Project>
