@@ -126,24 +126,24 @@ the hardcoded protocol version is never negotiated; no `notifications/initialize
 `tools/list_changed`; parse errors return HTTP 400 rather than JSON-RPC `-32700`; `tools/call`
 blocks the listener thread via `.GetAwaiter().GetResult()`.
 
-## Defects found building the data tools
+## Defects found building the data tools — both FIXED upstream (user authorized the edits)
 
-Both are in code the repo rules forbid editing, so `wip/Ara3D.Ifc.Mcp` works around them and
-documents them in its README. Fixing either upstream lets the workaround go.
-
-1. **`IfcPropData.ParseElementQuantity` reads the wrong attributes**
+1. **`IfcPropData.ParseElementQuantity` read the wrong attributes**
    (`ext/Ara3D.IfcLoader/IfcPropData.cs:125`) — name from attribute 0, members from attribute 3,
    but `IFCELEMENTQUANTITY` is `(GlobalId, OwnerHistory, Name, Description, MethodOfMeasurement,
-   Quantities)`. So every quantity set in every model reads back named after its GlobalId GUID and
-   empty: 64 missing quantities on one FZK-Haus wall. Worked around by `IfcPropertySets`, which
-   reads the entity directly (name at 2, members at 5). `ObjectToPropSets` is correct and reused.
+   Quantities)`. Every quantity set in every model read back named after its GlobalId GUID and
+   empty: 64 missing quantities on one FZK-Haus wall. Fixed: name at 2, members at 5.
 2. **A typed property value is unreachable through the attribute list.** For
    `IFCPROPERTYSINGLEVALUE('ConstructionMode',$,IFCLABEL('Massivhaus'),$)` attribute 2 is the bare
    token `IFCLABEL`; `StepTokenExtensions.AsList` steps over the `('Massivhaus')` payload to keep
-   arity right, so the value never appears. It is still one position along in `doc.Tokens`.
-   `IfcPropertyText` unwraps it. Untreated, every property reports its own measure type as its
-   value. Note a real fix inside `AsList` would shift attribute indices for every positional
-   consumer (`IfcRelations`, `IfcPropData`) — do not attempt it casually.
+   arity right. That skip is load-bearing — changing `AsList` would shift attribute indices for
+   every positional consumer (`IfcRelations`, `IfcPropData`) — so the fix is
+   `ext/Ara3D.IfcLoader/IfcPropValueExtensions.cs` (`GetMeasureType` / `GetValueText`), which
+   unwraps the payload from the token stream. The wip workarounds (`IfcPropertySets`,
+   `IfcPropertyText`) are deleted.
+
+Note `ext/Ara3D.IfcLoader` stays on the never-edit list by default; these two edits were
+explicitly authorized by the user on 2026-07-27. Do not treat that as a standing permission.
 
 Greenhouse answered every code question in this round; no fallbacks to grep for code structure.
 The one thing it could not settle was IFC *attribute order* inside a specific model, which is a
@@ -173,10 +173,7 @@ Run it: `dotnet run --project wip/Ara3D.Ifc.Mcp` (stdio; `--http [port]` to list
    (`ifc_mesh`, `ifc_bounds`, `ifc_volume`, `ifc_export_glb`, `ifc_meshing_diagnostics` —
    these carry the native DLL dependency), **then write** (`ifc_append_pset`,
    `ifc_remove_patch`, `ifc_diff`).
-2. **Decide the two upstream defects above.** Both are one-line-ish fixes in `ext/Ara3D.IfcLoader`
-   / `src/Ara3D.IO.StepParser`, but the former is on the never-edit list and the latter is
-   index-shifting. Needs the user's call, not an agent's.
-3. **Worth considering:** the schema builder still has no arrays or enums (`McpSchema.cs`), so
+2. **Worth considering:** the schema builder still has no arrays or enums (`McpSchema.cs`), so
    tools like `ifc_relations` take a `kind` string that a client cannot validate. And
    `McpJsonRpcHandler` still ignores `notifications/initialized` and never negotiates the protocol
    version — harmless with current clients, but now that stdio is the default it is the surface

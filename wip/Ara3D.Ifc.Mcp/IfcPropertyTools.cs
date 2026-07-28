@@ -42,19 +42,27 @@ public static class IfcPropertyTools
     private static object Properties(IfcSession session, int id, bool quantities, int skip, int take)
     {
         var entity = IfcEntityTools.Resolve(session, id);
-        var values = session.Properties.PropValues;
+        var data = session.Properties;
         var document = session.File.Document;
         var result = new List<IfcProperty>();
 
-        foreach (var set in IfcPropertySets.ForElement(session, id))
-            foreach (var memberId in set.MemberIds)
+        foreach (var propSet in data.GetPropSets(id))
+            foreach (var value in data.GetProperties(propSet))
             {
-                if (!values.TryGetValue(memberId, out var value))
-                    continue;
                 if ((value.Kind == IfcPropKind.Quantity) != quantities)
                     continue;
-                var (measure, text) = IfcPropertyText.Read(value, document);
-                result.Add(new IfcProperty(set.Name, value.Name, value.Kind.ToString(), measure, text));
+
+                // A quantity holds a bare number, so its own entity name is the only measure type.
+                var measure = value.GetMeasureType();
+                if (measure.Length == 0)
+                    measure = value.EntityName;
+
+                result.Add(new IfcProperty(
+                    propSet.Name,
+                    value.Name,
+                    value.Kind.ToString(),
+                    measure,
+                    value.GetValueText(document)));
             }
 
         return new
@@ -67,14 +75,14 @@ public static class IfcPropertyTools
     private static object PropertySets(IfcSession session, int id)
     {
         var entity = IfcEntityTools.Resolve(session, id);
-        var sets = IfcPropertySets
-            .ForElement(session, id)
+        var sets = session.Properties
+            .GetPropSets(id)
             .Select(set => new
             {
                 id = set.Id,
                 name = set.Name,
-                isQuantitySet = set.IsQuantitySet,
-                memberCount = set.MemberIds.Count,
+                isQuantitySet = IsQuantitySet(session, set),
+                memberCount = set.Ids.Length,
             })
             .ToList();
 
@@ -84,4 +92,8 @@ public static class IfcPropertyTools
             propertySets = sets,
         };
     }
+
+    private static bool IsQuantitySet(IfcSession session, IfcPropSet set)
+        => session.Resolver.GetEntityOrDefault(set.Id)?.GetEntityName()
+            .Equals("IFCELEMENTQUANTITY", StringComparison.OrdinalIgnoreCase) ?? false;
 }

@@ -63,21 +63,21 @@ use and kept for the life of the session.
 **Lifetime.** Every `IfcEntity` points into the file's pinned buffer. Nothing derived from a session
 may outlive it, which is why tools serialize their answers before returning.
 
-## Two upstream defects worked around here
+## Two upstream defects found (and since fixed) here
 
-Both live in code this project may not edit. Fixing them upstream would let the workarounds go.
+Both were found by driving these tools against the FZK-Haus sample, and both are now fixed
+upstream in `ext/Ara3D.IfcLoader`; the workarounds this project briefly carried are gone.
 
-1. **`IfcPropData.ParseElementQuantity` reads the wrong attributes**
-   (`ext/Ara3D.IfcLoader/IfcPropData.cs:125`). It takes the name from attribute 0 and the members
-   from attribute 3, but `IFCELEMENTQUANTITY` is
-   `(GlobalId, OwnerHistory, Name, Description, MethodOfMeasurement, Quantities)` — name at 2,
-   members at 5. Every quantity set in every model therefore reads back named after its GlobalId
-   GUID and containing nothing. On one FZK-Haus wall that is 64 missing quantities.
-   `IfcPropertySets` reads the entity directly instead.
+1. **`IfcPropData.ParseElementQuantity` read the wrong attributes** — name from attribute 0 and
+   members from attribute 3, but `IFCELEMENTQUANTITY` is
+   `(GlobalId, OwnerHistory, Name, Description, MethodOfMeasurement, Quantities)`. Every quantity
+   set in every model read back named after its GlobalId GUID and containing nothing — 64 missing
+   quantities on one FZK-Haus wall. Fixed to read name at 2, members at 5.
 
 2. **A typed property value is not reachable through the attribute list.** For
    `IFCPROPERTYSINGLEVALUE('ConstructionMode',$,IFCLABEL('Massivhaus'),$)` the attribute at index 2
    is the bare token `IFCLABEL`; `StepTokenExtensions.AsList` steps over the `('Massivhaus')`
-   payload to keep the arity right, so the value is absent from the list. It is still in the token
-   stream, one position along. `IfcPropertyText` unwraps it. Without that, every property reads
-   back as the name of its own measure type.
+   payload to keep the arity right, so the value is absent from the list. That skip is load-bearing
+   (changing it would shift attribute indices for every positional consumer), so the fix is
+   `IfcPropValueExtensions.GetMeasureType/GetValueText`, which unwrap the payload from the token
+   stream. Without them, every property reads back as the name of its own measure type.

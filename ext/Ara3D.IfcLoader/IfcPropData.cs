@@ -124,9 +124,9 @@ public sealed class IfcPropData
 
     public void ParseElementQuantity(IfcEntity e)
     {
-        // (Name, Desc, MethodOfMeasurement, Quantities)
-        var name = e.GetString(0).StripQuotes();
-        var qtyIds = e.GetIdList(3);
+        // (GlobalId, OwnerHistory, Name, Description, MethodOfMeasurement, Quantities)
+        var name = e.GetString(2).StripQuotes();
+        var qtyIds = e.GetIdList(5);
 
         // Treat as a property set (very convenient downstream)
         PropSets[e.Id] = new IfcPropSet(e.Id, name, qtyIds);
