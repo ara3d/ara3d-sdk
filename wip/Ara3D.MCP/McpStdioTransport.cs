@@ -4,18 +4,19 @@ namespace Ara3D.MCP;
 
 /// <summary>Line-delimited JSON-RPC over a reader/writer pair — the transport a client uses when
 /// it launches the server as a child process. One message per input line, one response line per
-/// message that produces a body; notifications (HTTP 202) and unparseable input write nothing.
+/// message that produces a body; notifications (HTTP 202) write nothing, unparseable input gets a
+/// JSON-RPC parse error.
 /// The pump ends when the reader hits EOF, which is how a client signals shutdown.</summary>
 internal sealed class McpStdioTransport : IDisposable
 {
-    private readonly Func<string, McpHttpResult> _handle;
+    private readonly Func<string, Task<McpHttpResult>> _handle;
     private readonly TextReader _input;
     private readonly TextWriter _output;
     private readonly Thread _thread;
     private readonly ManualResetEventSlim _finished = new(false);
     private readonly CancellationTokenSource _cts = new();
 
-    public McpStdioTransport(Func<string, McpHttpResult> handle, TextReader input, TextWriter output)
+    public McpStdioTransport(Func<string, Task<McpHttpResult>> handle, TextReader input, TextWriter output)
     {
         _handle = handle ?? throw new ArgumentNullException(nameof(handle));
         _input = input ?? throw new ArgumentNullException(nameof(input));
@@ -44,6 +45,9 @@ internal sealed class McpStdioTransport : IDisposable
         => _cts.Cancel();
 
     private void Pump()
+        => PumpAsync().GetAwaiter().GetResult();
+
+    private async Task PumpAsync()
     {
         try
         {
@@ -55,7 +59,7 @@ internal sealed class McpStdioTransport : IDisposable
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
 
-                HandleLine(line);
+                await HandleLineAsync(line).ConfigureAwait(false);
             }
         }
         catch (Exception ex)
@@ -68,9 +72,9 @@ internal sealed class McpStdioTransport : IDisposable
         }
     }
 
-    private void HandleLine(string line)
+    private async Task HandleLineAsync(string line)
     {
-        var result = _handle(line);
+        var result = await _handle(line).ConfigureAwait(false);
         if (result.JsonBody == null)
             return;
 

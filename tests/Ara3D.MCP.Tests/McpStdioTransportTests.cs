@@ -32,15 +32,31 @@ public sealed class McpStdioTransportTests
     }
 
     [Test]
-    public void Stdio_UnparseableAndBlankLines_AreSkipped()
+    public void Stdio_BlankLinesAreSkippedAndUnparseableLinesReportParseError()
     {
         var lines = Exchange(
             "",
             "not json at all",
             """{"jsonrpc":"2.0","id":7,"method":"ping","params":{}}""");
 
-        Assert.That(lines, Has.Count.EqualTo(1));
-        Assert.That(JsonNode.Parse(lines[0])!["id"]!.GetValue<int>(), Is.EqualTo(7));
+        Assert.That(lines, Has.Count.EqualTo(2));
+        Assert.That(JsonNode.Parse(lines[0])!["error"]!["code"]!.GetValue<int>(), Is.EqualTo(-32700));
+        Assert.That(JsonNode.Parse(lines[1])!["id"]!.GetValue<int>(), Is.EqualTo(7));
+    }
+
+    [Test]
+    public void Stdio_InitializedNotification_CompletesTheHandshake()
+    {
+        using var mcp = new McpServer(transport: McpTransport.Stdio);
+        var output = new StringWriter();
+        using (var input = new StringReader("""{"jsonrpc":"2.0","method":"notifications/initialized"}"""))
+        {
+            mcp.StartStdio(input, output);
+            mcp.WaitForShutdown();
+        }
+
+        Assert.That(output.ToString(), Is.Empty);
+        Assert.That(mcp.ClientInitialized, Is.True);
     }
 
     [Test]

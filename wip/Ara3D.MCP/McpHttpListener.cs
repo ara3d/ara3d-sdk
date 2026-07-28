@@ -62,7 +62,8 @@ internal sealed class McpHttpListener : IDisposable
         {
             try
             {
-                HandleContext(_listener.GetContext());
+                var context = _listener.GetContext();
+                _ = Task.Run(() => HandleContextAsync(context));
             }
             catch (HttpListenerException)
             {
@@ -79,7 +80,9 @@ internal sealed class McpHttpListener : IDisposable
         }
     }
 
-    private void HandleContext(HttpListenerContext context)
+    /// <summary>Runs off the accept loop, so a slow tool call never stops the listener from
+    /// accepting the next request.</summary>
+    private async Task HandleContextAsync(HttpListenerContext context)
     {
         try
         {
@@ -113,15 +116,15 @@ internal sealed class McpHttpListener : IDisposable
 
             string body;
             using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
-                body = reader.ReadToEnd();
+                body = await reader.ReadToEndAsync().ConfigureAwait(false);
 
-            var result = _handler.HandlePost(body);
+            var result = await _handler.HandlePostAsync(body).ConfigureAwait(false);
             response.StatusCode = result.StatusCode;
 
             if (result.JsonBody == null)
                 return;
 
-            WriteJson(response, result.JsonBody);
+            await WriteJsonAsync(response, result.JsonBody).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -161,12 +164,12 @@ internal sealed class McpHttpListener : IDisposable
         return uri.Host is "localhost" or "127.0.0.1";
     }
 
-    private static void WriteJson(HttpListenerResponse response, string json)
+    private static async Task WriteJsonAsync(HttpListenerResponse response, string json)
     {
         var bytes = Encoding.UTF8.GetBytes(json);
         response.ContentType = "application/json; charset=utf-8";
         response.ContentLength64 = bytes.Length;
-        response.OutputStream.Write(bytes, 0, bytes.Length);
+        await response.OutputStream.WriteAsync(bytes).ConfigureAwait(false);
     }
 
     public void Dispose()

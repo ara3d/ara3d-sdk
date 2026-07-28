@@ -5,6 +5,8 @@ namespace Ara3D.MCP;
 
 internal sealed class McpJsonRpcHandler
 {
+    public const string InitializedNotification = "notifications/initialized";
+
     private readonly McpToolRegistry _registry;
     private readonly string _protocolVersion;
     private readonly string _serverName;
@@ -20,47 +22,55 @@ internal sealed class McpJsonRpcHandler
         _protocolVersion = protocolVersion;
         _serverName = serverName;
         _serverVersion = serverVersion;
+        NegotiatedProtocolVersion = protocolVersion;
     }
 
-    public McpHttpResult HandlePost(string body)
+    /// <summary>True once the client has completed the handshake with notifications/initialized.</summary>
+    public bool ClientInitialized { get; private set; }
+
+    /// <summary>The version agreed during initialize; the server's own until a client asks.</summary>
+    public string NegotiatedProtocolVersion { get; private set; }
+
+    public async Task<McpHttpResult> HandlePostAsync(string body)
     {
         if (string.IsNullOrWhiteSpace(body))
-            return McpHttpResult.BadRequest();
+            return ParseError("empty request body");
 
         JsonNode? message;
         try
         {
             message = JsonNode.Parse(body);
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
-            return McpHttpResult.BadRequest();
+            return ParseError(ex.Message);
         }
 
         if (message is JsonArray batch)
-            return HandleBatch(batch);
+            return await HandleBatchAsync(batch).ConfigureAwait(false);
 
         if (message is JsonObject obj)
-            return HandleMessage(obj);
+            return await HandleMessageAsync(obj).ConfigureAwait(false);
 
-        return McpHttpResult.BadRequest();
+        return McpHttpResult.Json(ErrorObject(null, -32600, "Invalid request: expected a JSON-RPC object or batch."));
     }
 
-    private McpHttpResult HandleBatch(JsonArray batch)
+    private async Task<McpHttpResult> HandleBatchAsync(JsonArray batch)
     {
-        var requests = batch
-            .OfType<JsonObject>()
-            .Where(IsRequest)
-            .ToList();
+        var responses = new List<JsonObject>();
 
-        if (requests.Count == 0)
-            return McpHttpResult.Accepted();
+        foreach (var item in batch.OfType<JsonObject>())
+        {
+            if (!IsRequest(item))
+            {
+                HandleNotification(MethodOf(item));
+                continue;
+            }
 
-        var responses = requests
-            .Select(HandleRequestObject)
-            .Where(response => response != null)
-            .Cast<JsonObject>()
-            .ToList();
+            var response = await HandleRequestObjectAsync(item).ConfigureAwait(false);
+            if (response != null)
+                responses.Add(response);
+        }
 
         if (responses.Count == 0)
             return McpHttpResult.Accepted();
@@ -70,40 +80,52 @@ internal sealed class McpJsonRpcHandler
             : McpHttpResult.Json(new JsonArray(responses.Select(item => (JsonNode?)item).ToArray()));
     }
 
-    private McpHttpResult HandleMessage(JsonObject message)
+    private async Task<McpHttpResult> HandleMessageAsync(JsonObject message)
     {
         if (!IsRequest(message))
+        {
+            HandleNotification(MethodOf(message));
             return McpHttpResult.Accepted();
+        }
 
-        var response = HandleRequestObject(message);
+        var response = await HandleRequestObjectAsync(message).ConfigureAwait(false);
         return response == null
             ? McpHttpResult.Accepted()
             : McpHttpResult.Json(response);
     }
 
-    private JsonObject? HandleRequestObject(JsonObject request)
+    /// <summary>Notifications never get a response. The initialized notification completes the
+    /// handshake; any other notification is accepted and ignored, as JSON-RPC requires.</summary>
+    private void HandleNotification(string method)
+    {
+        if (method == InitializedNotification)
+            ClientInitialized = true;
+    }
+
+    private async Task<JsonObject?> HandleRequestObjectAsync(JsonObject request)
     {
         var id = request["id"];
-        var method = request["method"]?.GetValue<string>() ?? "";
+        var method = MethodOf(request);
 
         try
         {
             var result = method switch
             {
-                "initialize" => HandleInitialize(),
+                "initialize" => HandleInitialize(request["params"] as JsonObject),
                 "tools/list" => HandleToolsList(),
-                "tools/call" => HandleToolsCall(request["params"] as JsonObject),
+                "tools/call" => await HandleToolsCallAsync(request["params"] as JsonObject).ConfigureAwait(false),
                 "ping" => new JsonObject(),
+                InitializedNotification => HandleInitializedAsRequest(),
                 _ => throw new McpProtocolException(-32601, $"Method not found: {method}"),
             };
 
-            if (id == null || id.GetValueKind() == JsonValueKind.Null)
+            if (IsNull(id))
                 return null;
 
             return new JsonObject
             {
                 ["jsonrpc"] = "2.0",
-                ["id"] = id.DeepClone(),
+                ["id"] = id!.DeepClone(),
                 ["result"] = result,
             };
         }
@@ -118,29 +140,48 @@ internal sealed class McpJsonRpcHandler
     }
 
     private static JsonObject? CreateError(JsonNode? id, int code, string message)
-    {
-        if (id == null || id.GetValueKind() == JsonValueKind.Null)
-            return null;
+        => IsNull(id) ? null : ErrorObject(id, code, message);
 
-        return new JsonObject
+    private static JsonObject ErrorObject(JsonNode? id, int code, string message)
+        => new()
         {
             ["jsonrpc"] = "2.0",
-            ["id"] = id.DeepClone(),
+            ["id"] = IsNull(id) ? null : id!.DeepClone(),
             ["error"] = new JsonObject
             {
                 ["code"] = code,
                 ["message"] = message,
             },
         };
-    }
+
+    private static McpHttpResult ParseError(string detail)
+        => McpHttpResult.Json(ErrorObject(null, -32700, $"Parse error: {detail}"));
+
+    private static bool IsNull(JsonNode? node)
+        => node == null || node.GetValueKind() == JsonValueKind.Null;
 
     private static bool IsRequest(JsonObject message)
         => message["method"] != null && message["id"] != null;
 
-    private JsonObject HandleInitialize()
-        => new()
+    private static string MethodOf(JsonObject message)
+        => AsString(message["method"]) ?? "";
+
+    private static string? AsString(JsonNode? node)
+        => node is JsonValue value && value.TryGetValue<string>(out var text) ? text : null;
+
+    private JsonObject HandleInitializedAsRequest()
+    {
+        ClientInitialized = true;
+        return new JsonObject();
+    }
+
+    private JsonObject HandleInitialize(JsonObject? parameters)
+    {
+        NegotiatedProtocolVersion = Negotiate(AsString(parameters?["protocolVersion"]));
+
+        return new JsonObject
         {
-            ["protocolVersion"] = _protocolVersion,
+            ["protocolVersion"] = NegotiatedProtocolVersion,
             ["capabilities"] = new JsonObject
             {
                 ["tools"] = new JsonObject(),
@@ -151,6 +192,14 @@ internal sealed class McpJsonRpcHandler
                 ["version"] = _serverVersion,
             },
         };
+    }
+
+    /// <summary>Echoes the client's requested version when the server speaks it, otherwise answers
+    /// with the server's own version and leaves the client to decide whether to continue.</summary>
+    private string Negotiate(string? requested)
+        => requested != null && McpServer.SupportedProtocolVersions.Contains(requested)
+            ? requested
+            : _protocolVersion;
 
     private JsonObject HandleToolsList()
         => new()
@@ -158,11 +207,11 @@ internal sealed class McpJsonRpcHandler
             ["tools"] = new JsonArray(_registry.ListTools().Select(tool => (JsonNode?)tool).ToArray()),
         };
 
-    private JsonObject HandleToolsCall(JsonObject? parameters)
+    private async Task<JsonObject> HandleToolsCallAsync(JsonObject? parameters)
     {
-        var name = parameters?["name"]?.GetValue<string>();
+        var name = AsString(parameters?["name"]);
         var arguments = parameters?["arguments"] as JsonObject ?? new JsonObject();
-        var text = _registry.CallAsync(name, arguments, CancellationToken.None).GetAwaiter().GetResult();
+        var text = await _registry.CallAsync(name, arguments, CancellationToken.None).ConfigureAwait(false);
         return ToolResult(text, ReportsFailure(text));
     }
 

@@ -11,6 +11,11 @@ public sealed class McpServer : IDisposable
     public const string McpPath = "/mcp";
     public const string ProtocolVersion = "2025-03-26";
 
+    /// <summary>Versions the server can speak, newest first. A client asking for one of these gets
+    /// it back from initialize; anything else is answered with <see cref="ProtocolVersion"/>.</summary>
+    public static readonly IReadOnlyList<string> SupportedProtocolVersions =
+        ["2025-06-18", "2025-03-26", "2024-11-05"];
+
     private readonly McpToolRegistry _registry = new();
     private readonly McpJsonRpcHandler _jsonRpc;
     private readonly int _port;
@@ -68,8 +73,19 @@ public sealed class McpServer : IDisposable
     public bool RemoveTool(string name)
         => _registry.Remove(name);
 
+    /// <summary>True once a client has sent notifications/initialized.</summary>
+    public bool ClientInitialized => _jsonRpc.ClientInitialized;
+
+    /// <summary>The protocol version agreed with the client during initialize.</summary>
+    public string NegotiatedProtocolVersion => _jsonRpc.NegotiatedProtocolVersion;
+
+    public Task<McpHttpResult> HandlePostAsync(string body)
+        => _jsonRpc.HandlePostAsync(body);
+
+    /// <summary>Blocking convenience for callers that are not async; the transports use
+    /// <see cref="HandlePostAsync"/> so no listener thread waits on a tool.</summary>
     public McpHttpResult HandlePost(string body)
-        => _jsonRpc.HandlePost(body);
+        => _jsonRpc.HandlePostAsync(body).GetAwaiter().GetResult();
 
     public void Start()
     {
@@ -95,7 +111,7 @@ public sealed class McpServer : IDisposable
             return;
 
         _stdio?.Dispose();
-        _stdio = new McpStdioTransport(HandlePost, input, output);
+        _stdio = new McpStdioTransport(HandlePostAsync, input, output);
         _stdio.Start();
     }
 
