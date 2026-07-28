@@ -1,7 +1,9 @@
 # IFC MCP server — handoff
 
-Status as of 2026-07-27. Nothing of the IFC server is built yet; setup and reconnaissance
-are done, and two greenhouse defects found along the way are fixed and shipped.
+Status as of 2026-07-27. Steps 1–4 of "Pick up here" are **done and pushed**: stdio transport
+(`6f7dc35`) and `wip/Ara3D.Ifc.Mcp` with the whole data tool surface (`fc635ca`). Analytics,
+geometry, and write tools are still unbuilt. Two more upstream defects were found while building
+the data tools — see "Defects found building the data tools" below.
 
 ## Goal
 
@@ -124,28 +126,61 @@ the hardcoded protocol version is never negotiated; no `notifications/initialize
 `tools/list_changed`; parse errors return HTTP 400 rather than JSON-RPC `-32700`; `tools/call`
 blocks the listener thread via `.GetAwaiter().GetResult()`.
 
+## Defects found building the data tools
+
+Both are in code the repo rules forbid editing, so `wip/Ara3D.Ifc.Mcp` works around them and
+documents them in its README. Fixing either upstream lets the workaround go.
+
+1. **`IfcPropData.ParseElementQuantity` reads the wrong attributes**
+   (`ext/Ara3D.IfcLoader/IfcPropData.cs:125`) — name from attribute 0, members from attribute 3,
+   but `IFCELEMENTQUANTITY` is `(GlobalId, OwnerHistory, Name, Description, MethodOfMeasurement,
+   Quantities)`. So every quantity set in every model reads back named after its GlobalId GUID and
+   empty: 64 missing quantities on one FZK-Haus wall. Worked around by `IfcPropertySets`, which
+   reads the entity directly (name at 2, members at 5). `ObjectToPropSets` is correct and reused.
+2. **A typed property value is unreachable through the attribute list.** For
+   `IFCPROPERTYSINGLEVALUE('ConstructionMode',$,IFCLABEL('Massivhaus'),$)` attribute 2 is the bare
+   token `IFCLABEL`; `StepTokenExtensions.AsList` steps over the `('Massivhaus')` payload to keep
+   arity right, so the value never appears. It is still one position along in `doc.Tokens`.
+   `IfcPropertyText` unwraps it. Untreated, every property reports its own measure type as its
+   value. Note a real fix inside `AsList` would shift attribute indices for every positional
+   consumer (`IfcRelations`, `IfcPropData`) — do not attempt it casually.
+
+Greenhouse answered every code question in this round; no fallbacks to grep for code structure.
+The one thing it could not settle was IFC *attribute order* inside a specific model, which is a
+data question, not a code question — reading the raw `.ifc` line was correct there.
+
+## Done
+
+1. **stdio transport in `wip/Ara3D.MCP`** (`6f7dc35`). `McpStdioTransport` pumps line-delimited
+   JSON through the existing `McpServer.HandlePost`; `McpJsonRpcHandler` untouched. Transport is
+   chosen at construction (`McpTransport.Http|Stdio`); `Url` is null under stdio;
+   `WaitForShutdown()` blocks a console host until its client closes stdin. `StartStdio(reader,
+   writer)` makes the pump testable without console handles. 4 tests; suite 24/24.
+2. **`wip/Ara3D.Ifc.Mcp`** (`fc635ca`), net8.0-windows — forced by `Ara3D.IfcLoader`, not by
+   choice. 16 tools: `ifc_open`, `ifc_close`, `ifc_models`, `ifc_header`, `ifc_type_counts`,
+   `ifc_search`, `ifc_entity`, `ifc_entities_of_type`, `ifc_attributes`, `ifc_properties`,
+   `ifc_quantities`, `ifc_property_sets`, `ifc_relations`, `ifc_spatial_tree`,
+   `ifc_spatial_contents`, `ifc_element_containment`. `IfcSessionCache` keeps 3 models open (LRU);
+   relation and property indexes are lazy per session. Every list tool pages and reports the
+   unpaged total. `tests/Ara3D.Ifc.Mcp.Tests` 17/17 against the checked-in FZK-Haus sample.
+   Neither project is in `Ara3D.SDK.sln`.
+
+Run it: `dotnet run --project wip/Ara3D.Ifc.Mcp` (stdio; `--http [port]` to listen instead).
+
 ## Pick up here
 
-1. **Restart the session first** so the fixed greenhouse MCP server loads. Confirm with a cheap
-   call such as `greenhouse_project` on `ext/Ara3D.IfcLoader`; it should answer in well under a
-   second. If a greenhouse MCP call ever hangs again, do not wait it out — the timeout is long.
-2. **Add stdio transport to `wip/Ara3D.MCP`.** Roughly 100 lines, no changes to
-   `McpJsonRpcHandler`: read line-delimited JSON from stdin, pass each line to
-   `McpServer.HandlePost`, write `JsonBody` to stdout when `StatusCode != 202`. Note
-   `McpJsonRpcHandler` is `internal`, so the class either lives in that assembly or goes
-   through `McpServer.HandlePost`; `Start/Stop/Active/Url` are hardcoded to HTTP and need a
-   transport switch. **Apply the lesson from the greenhouse outage: any child process this
-   server ever spawns must not inherit stdin.**
-3. **Create `wip/Ara3D.Ifc.Mcp`** (net8.0 where possible), referencing `wip/Ara3D.MCP` and
-   `ext/Ara3D.IfcLoader`. Per repo rule, do **not** add new projects to `Ara3D.SDK.sln`.
-4. **Implement the data tools first** — they are pure C# with `includeGeometry: false`:
-   `ifc_open`, `ifc_header`, `ifc_entity`, `ifc_entities_of_type`, `ifc_type_counts`,
-   `ifc_attributes`, `ifc_properties`, `ifc_quantities`, `ifc_relations`, `ifc_spatial_tree`,
-   `ifc_element_containment`, `ifc_search`.
-5. **Then analytics** (`ifc_to_bos`, `ifc_sql`, `ifc_table`, exports), **then geometry**
+1. **Analytics** (`ifc_to_bos`, `ifc_sql`, `ifc_table`, exports), **then geometry**
    (`ifc_mesh`, `ifc_bounds`, `ifc_volume`, `ifc_export_glb`, `ifc_meshing_diagnostics` —
    these carry the native DLL dependency), **then write** (`ifc_append_pset`,
    `ifc_remove_patch`, `ifc_diff`).
+2. **Decide the two upstream defects above.** Both are one-line-ish fixes in `ext/Ara3D.IfcLoader`
+   / `src/Ara3D.IO.StepParser`, but the former is on the never-edit list and the latter is
+   index-shifting. Needs the user's call, not an agent's.
+3. **Worth considering:** the schema builder still has no arrays or enums (`McpSchema.cs`), so
+   tools like `ifc_relations` take a `kind` string that a client cannot validate. And
+   `McpJsonRpcHandler` still ignores `notifications/initialized` and never negotiates the protocol
+   version — harmless with current clients, but now that stdio is the default it is the surface
+   real MCP clients exercise hardest.
 
 The write path currently exists **only in tests** — `IfcPatcher.Append/Remove` splice lines
 before `ENDSEC` and have a proven byte-identical round trip
