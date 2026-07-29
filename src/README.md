@@ -80,7 +80,8 @@ Domo-backed model/repository helpers live in [`../wip/Ara3D.Domo`](../wip/Ara3D.
 
 | Project | Description |
 | --- | --- |
-| [Ara3D.Studio.API](Ara3D.Studio.API) | Flow graph, assets, and modifier pipeline types |
+| [Ara3D.Flow](Ara3D.Flow) | Host-free evaluation pipeline (`FlowObject`, generators/modifiers, eval). Namespace stays `Ara3D.Studio.API`. Built with Studio; not yet listed in `build/packages.txt` / not a separate NuGet package. |
+| [Ara3D.Studio.API](Ara3D.Studio.API) | Host-facing Studio contracts (tools, exporters, host interfaces) layered on Flow |
 | [Ara3D.Utils.Roslyn](Ara3D.Utils.Roslyn) | Roslyn compilation helpers (used by Bowerbird) |
 | [Ara3D.Utils](Ara3D.Utils) | Paths, zip, profiling, and general utilities |
 
