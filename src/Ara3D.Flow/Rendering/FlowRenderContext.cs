@@ -7,9 +7,9 @@ namespace Ara3D.Studio.API;
 /// (tracker studio-166). These are VIEW-time settings — how finely to sample a curve/surface/
 /// grid, and what box to sample an unbounded type (like an infinite <c>Sdf3D</c>) over — kept
 /// out of the flowing data so the same value can be previewed coarse while scrubbing and fine
-/// at rest. The publish seam builds one from the EvalContext's <see cref="RenderSettings"/>
-/// (host-global today; per-pipeline overrides are a later refinement); <see cref="Default"/>
-/// is the fallback for callers with no settings in hand.
+/// at rest. The publish seam builds one from per-object <see cref="FlowPresentation.RenderSettings"/>
+/// when present, else the host-global <see cref="EvalContext.RenderSettings"/>;
+/// <see cref="Default"/> is the fallback for callers with no settings in hand.
 /// </summary>
 public sealed class FlowRenderContext
 {

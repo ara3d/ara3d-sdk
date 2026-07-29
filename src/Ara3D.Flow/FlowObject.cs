@@ -49,7 +49,7 @@ public sealed class FlowObject : ITransformable3D<FlowObject>
     }
 
     public FlowObject WithNewPresentation(FlowPresentation presentation)
-        => new(Content, Presentation, Attributes, Attachments);
+        => new(Content, presentation, Attributes, Attachments);
 
     public FlowObject WithNewAttributes(IReadOnlyList<FlowAttribute> attributes)
         => new(Content, Presentation, attributes, Attachments);
@@ -62,7 +62,14 @@ public sealed class FlowObject : ITransformable3D<FlowObject>
 
     public FlowObject WithNewMaterial(Material material)
         => WithNewPresentation(Presentation with { Material = material });
-    
+
+    /// <summary>
+    /// Per-object <see cref="FlowPresentation.RenderSettings"/> when stamped; otherwise the
+    /// host-global fallback (e.g. from <see cref="EvalContext.RenderSettings"/>).
+    /// </summary>
+    public RenderSettings EffectiveRenderSettings(RenderSettings global)
+        => Presentation.RenderSettings ?? global;
+
     public bool HasObject
         => Content != null;
 

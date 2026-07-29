@@ -19,16 +19,17 @@ public class SetMaterial : IModifier
 }
 
 [Category(Cat.Display)]
-[Description("Overrides render state such as wireframe, shading, vertex colors, and visibility.")]
+[Description("Per-object render overrides: wireframe, shading, visibility, vertex colors, and preview resolution.")]
 public class SetRenderSettings : IModifier
 {
     public bool Wireframe { get; set; }
     public bool VertexColors { get; set; }
-    public bool Shaded { get; set; }
-    public bool Visible { get; set; }
+    public bool Shaded { get; set; } = true;
+    public bool Visible { get; set; } = true;
+    [Range(2, 256)] public int Resolution { get; set; } = 32;
 
-    public RenderSettings GetRenderSettings() 
-        => new(VertexColors, Wireframe, Shaded, Visible);
+    public RenderSettings GetRenderSettings()
+        => new(VertexColors, Wireframe, Visible, Shaded) { Resolution = Resolution };
 
     public FlowObject Eval(FlowObject input)
         => input.WithNewRenderSettings(GetRenderSettings());
