@@ -1,0 +1,65 @@
+{
+  "description": "Machine-readable door clearance provisions. Citations are illustrative paraphrases in the style of NBC 2020 3.8.3.12 accessible door requirements; they are NOT legal text.",
+  "rules": [
+    {
+      "id": "DC-W1",
+      "citation": {
+        "code": "NBC 2020",
+        "clause": "3.8.3.12 (illustrative, not legal text)",
+        "text": "Doorways in an accessible path of travel shall provide a clear width of not less than 850 mm when the door is in the open position."
+      },
+      "applicability": { "entityType": "IFCDOOR", "storey": null },
+      "requirement": {
+        "kind": "property-threshold",
+        "source": "attribute:OverallWidth",
+        "minWidthMm": 850
+      },
+      "verdictSemantics": "pass when the declared OverallWidth attribute meets the minimum; fail when below; inconclusive when the attribute is unset."
+    },
+    {
+      "id": "DC-W2",
+      "citation": {
+        "code": "NBC 2020",
+        "clause": "3.8.3.12 (illustrative, not legal text)",
+        "text": "The clear width of an accessible doorway shall be measured between the face of the open door leaf and the opposite stop."
+      },
+      "applicability": { "entityType": "IFCDOOR", "storey": null },
+      "requirement": {
+        "kind": "property-threshold",
+        "source": "pset:Pset_DoorCommon.ClearWidth",
+        "minWidthMm": 850
+      },
+      "verdictSemantics": "pass/fail against the authored clear-width property; inconclusive when the model does not carry Pset_DoorCommon.ClearWidth (the checker refuses to guess a true clear width from leaf width)."
+    },
+    {
+      "id": "DC-M1",
+      "citation": {
+        "code": "NBC 2020",
+        "clause": "3.8.3.12 / model integrity (illustrative, not legal text)",
+        "text": "Declared door dimensions relied on for compliance shall agree with the constructed (measured) door size."
+      },
+      "applicability": { "entityType": "IFCDOOR", "storey": null },
+      "requirement": {
+        "kind": "measured-vs-declared",
+        "source": "objectType-leaf-size vs attribute:OverallWidth",
+        "toleranceMm": 25
+      },
+      "verdictSemantics": "pass when the measured leaf width agrees with the declared OverallWidth within tolerance; fail on disagreement; inconclusive when either value is unavailable."
+    },
+    {
+      "id": "DC-Z1",
+      "citation": {
+        "code": "NBC 2020",
+        "clause": "3.8.3.12(3) (illustrative, not legal text)",
+        "text": "A clear and level area shall be provided on the latch side and in front of an accessible door, unobstructed by fixed furnishings, sufficient for a wheelchair to approach and operate the door."
+      },
+      "applicability": { "entityType": "IFCDOOR", "storey": "Level 1" },
+      "requirement": {
+        "kind": "zone-unobstructed",
+        "source": "placement-chain AABB vs IFCFURNISHINGELEMENT placements",
+        "zoneDepthFactor": 1.0
+      },
+      "verdictSemantics": "pass when no furnishing element origin falls inside the clearance zone box (door footprint expanded by one door width); fail when one does; not_applicable outside the storey filter; inconclusive when the door placement cannot be resolved."
+    }
+  ]
+}
