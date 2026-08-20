@@ -1,0 +1,23 @@
+{
+  "name": "carbon-walls",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 80 },
+    { "id": "n2", "kind": "select.byType", "params": { "type": "IfcWallStandardCase" }, "x": 280, "y": 80 },
+    { "id": "n3", "kind": "data.csv", "params": { "url": "/api/file?path=carbon.csv" }, "x": 60, "y": 280 },
+    { "id": "n4", "kind": "attach.column", "params": { "keyColumn": "GlobalId", "valueColumn": "operational_carbon" }, "x": 500, "y": 140 },
+    { "id": "n5", "kind": "viz.colormap", "params": { "ramp": "viridis", "auto": false, "min": 200, "max": 420 }, "x": 500, "y": 320 },
+    { "id": "n6", "kind": "viz.colorBy", "params": { "channel": "operational_carbon", "ghostOthers": true }, "x": 740, "y": 180 },
+    { "id": "n7", "kind": "table.fromScene", "params": {}, "x": 740, "y": 360 },
+    { "id": "n8", "kind": "sink.table", "params": {}, "x": 940, "y": 360 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n4", "slot": "scene" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "table" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n6", "slot": "scene" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "colormap" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n8", "slot": "in" } }
+  ],
+  "display": "n6"
+}

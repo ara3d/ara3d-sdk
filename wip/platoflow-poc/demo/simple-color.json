@@ -1,0 +1,15 @@
+{
+  "name": "simple-color",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 140 },
+    { "id": "n2", "kind": "data.csv", "params": { "url": "/api/file?path=carbon.csv" }, "x": 60, "y": 320 },
+    { "id": "n3", "kind": "attach.column", "params": { "keyColumn": "GlobalId", "valueColumn": "operational_carbon" }, "x": 320, "y": 220 },
+    { "id": "n4", "kind": "viz.colorBy", "params": { "channel": "operational_carbon", "mode": "auto", "ramp": "heat", "auto": true, "ghostOthers": true }, "x": 580, "y": 220 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n3", "slot": "scene" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "table" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "scene" } }
+  ],
+  "display": "n4"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "massing-boxes",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 220 },
+    { "id": "n2", "kind": "group.by", "params": { "by": "Type" }, "x": 280, "y": 220 },
+    { "id": "n3", "kind": "viz.colorBy", "params": {}, "x": 520, "y": 120 },
+    { "id": "n4", "kind": "viz.boxes", "params": {}, "x": 760, "y": 120 },
+    { "id": "n5", "kind": "viz.colorBy", "params": {}, "x": 520, "y": 300 },
+    { "id": "n6", "kind": "table.fromScene", "params": {}, "x": 520, "y": 460 },
+    { "id": "n7", "kind": "table.aggregate", "params": { "groupBy": "Type", "agg": "count" }, "x": 760, "y": 460 },
+    { "id": "n8", "kind": "sink.table", "params": {}, "x": 1000, "y": 460 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "scene" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n5", "slot": "scene" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n8", "slot": "in" } }
+  ],
+  "display": "n4"
+}

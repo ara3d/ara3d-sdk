@@ -1,0 +1,13 @@
+{
+  "name": "sql-explore",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 120 },
+    { "id": "n2", "kind": "table.sql", "params": { "sql": "SELECT Category, COUNT(*) AS count FROM EntityText GROUP BY Category ORDER BY count DESC LIMIT 25" }, "x": 300, "y": 120 },
+    { "id": "n3", "kind": "sink.table", "params": {}, "x": 560, "y": 120 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "in" } }
+  ],
+  "display": "n1"
+}

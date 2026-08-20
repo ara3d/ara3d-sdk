@@ -1,0 +1,25 @@
+{
+  "name": "disciplines",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "snowdon" }, "x": 60, "y": 60 },
+    { "id": "n2", "kind": "load.model", "params": { "model": "snowdon-hvac" }, "x": 60, "y": 320 },
+    { "id": "n3", "kind": "load.model", "params": { "model": "snowdon-struct" }, "x": 60, "y": 580 },
+    { "id": "n4", "kind": "table.sql", "params": { "sql": "SELECT Category, COUNT(*) AS count FROM EntityText WHERE Category LIKE 'IFC%' GROUP BY Category ORDER BY count DESC LIMIT 12" }, "x": 300, "y": 60 },
+    { "id": "n5", "kind": "table.sql", "params": { "sql": "SELECT Category, COUNT(*) AS count FROM EntityText WHERE Category LIKE 'IFC%' GROUP BY Category ORDER BY count DESC LIMIT 12" }, "x": 300, "y": 320 },
+    { "id": "n6", "kind": "table.sql", "params": { "sql": "SELECT Category, COUNT(*) AS count FROM EntityText WHERE Category LIKE 'IFC%' GROUP BY Category ORDER BY count DESC LIMIT 12" }, "x": 300, "y": 580 },
+    { "id": "n7", "kind": "chart.bar", "params": {}, "x": 560, "y": 60 },
+    { "id": "n8", "kind": "chart.bar", "params": {}, "x": 560, "y": 320 },
+    { "id": "n9", "kind": "chart.bar", "params": {}, "x": 560, "y": 580 },
+    { "id": "n10", "kind": "sink.table", "params": {}, "x": 800, "y": 320 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n8", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n9", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n10", "slot": "in" } }
+  ],
+  "display": "n2"
+}

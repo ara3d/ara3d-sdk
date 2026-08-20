@@ -1,0 +1,15 @@
+{
+  "name": "group-color",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 180 },
+    { "id": "n2", "kind": "group.by", "params": { "by": "Level" }, "x": 300, "y": 180 },
+    { "id": "n3", "kind": "viz.colormap", "params": {}, "x": 300, "y": 360 },
+    { "id": "n4", "kind": "viz.colorBy", "params": { "mode": "auto" }, "x": 560, "y": 240 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n4", "slot": "scene" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "colormap" } }
+  ],
+  "display": "n4"
+}

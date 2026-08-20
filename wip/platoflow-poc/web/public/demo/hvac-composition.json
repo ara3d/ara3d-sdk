@@ -1,0 +1,19 @@
+{
+  "name": "hvac-composition",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "snowdon-hvac" }, "x": 60, "y": 220 },
+    { "id": "n2", "kind": "group.by", "params": { "by": "Type" }, "x": 300, "y": 140 },
+    { "id": "n3", "kind": "viz.colorBy", "params": {}, "x": 560, "y": 140 },
+    { "id": "n4", "kind": "table.sql", "params": { "sql": "SELECT Category, COUNT(*) AS n FROM EntityText WHERE GlobalId <> '' GROUP BY Category ORDER BY n DESC" }, "x": 300, "y": 360 },
+    { "id": "n5", "kind": "chart.bar", "params": {}, "x": 580, "y": 360 },
+    { "id": "n6", "kind": "sink.table", "params": {}, "x": 840, "y": 360 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "scene" } },
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n6", "slot": "in" } }
+  ],
+  "display": "n3"
+}

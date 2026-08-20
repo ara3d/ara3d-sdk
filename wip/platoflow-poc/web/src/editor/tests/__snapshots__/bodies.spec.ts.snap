@@ -1,0 +1,42 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`chart.bar body geometry (pure) > barRects: one bar per value, all inside the body, golden 1`] = `
+[
+  {
+    "h": 69,
+    "w": 35.67,
+    "x": 608,
+    "y": 450,
+  },
+  {
+    "h": 21.44,
+    "w": 35.67,
+    "x": 645.67,
+    "y": 497.56,
+  },
+  {
+    "h": 16.08,
+    "w": 35.67,
+    "x": 683.33,
+    "y": 502.92,
+  },
+  {
+    "h": 43.54,
+    "w": 35.67,
+    "x": 721,
+    "y": 475.46,
+  },
+  {
+    "h": 7.37,
+    "w": 35.67,
+    "x": 758.67,
+    "y": 511.63,
+  },
+  {
+    "h": 30.15,
+    "w": 35.67,
+    "x": 796.33,
+    "y": 488.85,
+  },
+]
+`;

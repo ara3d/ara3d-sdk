@@ -1,0 +1,24 @@
+{
+  "name": "set-algebra",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 220 },
+    { "id": "n2", "kind": "select.byType", "params": { "type": "IfcWall" }, "x": 300, "y": 120 },
+    { "id": "n3", "kind": "select.byType", "params": { "type": "IfcDoor" }, "x": 300, "y": 320 },
+    { "id": "n4", "kind": "select.union", "params": {}, "x": 540, "y": 220 },
+    { "id": "n5", "kind": "select.invert", "params": {}, "x": 760, "y": 220 },
+    { "id": "n6", "kind": "view.scene", "params": {}, "x": 990, "y": 140 },
+    { "id": "n7", "kind": "table.count", "params": {}, "x": 990, "y": 320 },
+    { "id": "n8", "kind": "sink.table", "params": {}, "x": 1220, "y": 320 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n3", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n4", "slot": "a" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "b" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n8", "slot": "in" } }
+  ],
+  "display": "n6"
+}

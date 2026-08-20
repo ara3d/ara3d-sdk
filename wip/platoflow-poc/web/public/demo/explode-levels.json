@@ -1,0 +1,25 @@
+{
+  "name": "explode-levels",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "snowdon" }, "x": 60, "y": 240 },
+    { "id": "n2", "kind": "group.by", "params": { "by": "Level" }, "x": 280, "y": 240 },
+    { "id": "n3", "kind": "viz.colorBy", "params": {}, "x": 520, "y": 160 },
+    { "id": "n4", "kind": "viz.explode", "params": { "spacing": 20, "hide": "IFCCOVERING" }, "x": 760, "y": 160 },
+    { "id": "n5", "kind": "table.fromScene", "params": {}, "x": 520, "y": 380 },
+    { "id": "n6", "kind": "table.aggregate", "params": { "groupBy": "Level", "agg": "count" }, "x": 760, "y": 380 },
+    { "id": "n7", "kind": "table.sort", "params": { "column": "count", "descending": true }, "x": 1000, "y": 380 },
+    { "id": "n8", "kind": "chart.bar", "params": { "labelColumn": "Level", "valueColumn": "count" }, "x": 1240, "y": 300 },
+    { "id": "n9", "kind": "sink.table", "params": {}, "x": 1240, "y": 480 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "scene" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n8", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n9", "slot": "in" } }
+  ],
+  "display": "n4"
+}

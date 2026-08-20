@@ -1,0 +1,25 @@
+{
+  "name": "cost-estimate",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "snowdon" }, "x": 60, "y": 140 },
+    { "id": "n2", "kind": "data.csv", "params": { "url": "/api/file?path=unit-costs.csv" }, "x": 60, "y": 340 },
+    { "id": "n3", "kind": "attach.column", "params": { "keyColumn": "GlobalId", "valueColumn": "cost" }, "x": 300, "y": 200 },
+    { "id": "n4", "kind": "viz.colormap", "params": { "ramp": "heat", "auto": true, "min": 0, "max": 100 }, "x": 300, "y": 420 },
+    { "id": "n5", "kind": "viz.colorBy", "params": { "channel": "cost", "ghostOthers": true }, "x": 560, "y": 320 },
+    { "id": "n6", "kind": "table.fromScene", "params": {}, "x": 560, "y": 80 },
+    { "id": "n7", "kind": "table.aggregate", "params": { "groupBy": "Level", "value": "cost", "agg": "sum" }, "x": 800, "y": 80 },
+    { "id": "n8", "kind": "chart.bar", "params": { "labelColumn": "Level", "valueColumn": "sum_cost" }, "x": 1040, "y": 40 },
+    { "id": "n9", "kind": "sink.table", "params": {}, "x": 1040, "y": 240 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n3", "slot": "scene" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "table" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n5", "slot": "scene" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "colormap" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n8", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n9", "slot": "in" } }
+  ],
+  "display": "n5"
+}

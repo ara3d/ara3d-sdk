@@ -1,0 +1,21 @@
+{
+  "name": "wall-stats-explore",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "snowdon" }, "x": 60, "y": 200 },
+    { "id": "n2", "kind": "table.sql", "params": { "sql": "SELECT e.GlobalId, e.Name, MAX(CASE WHEN p.Name = 'Area' THEN TRY_CAST(p.Value AS DOUBLE) END) AS Area, MAX(CASE WHEN p.Name = 'Volume' THEN TRY_CAST(p.Value AS DOUBLE) END) AS Volume, MAX(CASE WHEN p.Name = 'Length' THEN TRY_CAST(p.Value AS DOUBLE) END) AS Length, MAX(CASE WHEN p.Name = 'Width' THEN TRY_CAST(p.Value AS DOUBLE) END) AS Width FROM EntityText e JOIN ParameterText p ON p.EntityIndex = e.EntityIndex WHERE e.Category = 'IFCWALL' GROUP BY e.GlobalId, e.Name" }, "x": 300, "y": 200 },
+    { "id": "n3", "kind": "view.table", "params": {}, "x": 560, "y": 100 },
+    { "id": "n4", "kind": "table.columns", "params": { "columns": "GlobalId, Name", "mode": "drop" }, "x": 560, "y": 300 },
+    { "id": "n5", "kind": "table.stats", "params": {}, "x": 800, "y": 300 },
+    { "id": "n6", "kind": "sink.table", "params": {}, "x": 1060, "y": 380 },
+    { "id": "n7", "kind": "chart.bar", "params": {}, "x": 1060, "y": 220 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n7", "slot": "in" } }
+  ],
+  "display": "n1"
+}

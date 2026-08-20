@@ -1,0 +1,3285 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > attach.column help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 94,
+  "footerTop": 94,
+  "h": 114,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "keyColumn",
+      "top": 62,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "valueColumn",
+      "top": 78,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > attach.column help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 94,
+  "footerTop": 94,
+  "h": 114,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "keyColumn",
+      "top": 62,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "valueColumn",
+      "top": 78,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > attach.column help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 234,
+  "footerTop": 234,
+  "h": 254,
+  "helpH": 140,
+  "helpLineCount": 10,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "keyColumn",
+      "top": 202,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "valueColumn",
+      "top": 218,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 202,
+  "socketsTop": 166,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > attach.column help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 182,
+  "footerTop": 182,
+  "h": 202,
+  "helpH": 88,
+  "helpLineCount": 6,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "keyColumn",
+      "top": 150,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "valueColumn",
+      "top": 166,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 150,
+  "socketsTop": 114,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > chart.bar help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 96,
+  "bodyTop": 76,
+  "footerTop": 172,
+  "h": 192,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "labelColumn",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "valueColumn",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > chart.bar help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 96,
+  "bodyTop": 76,
+  "footerTop": 172,
+  "h": 192,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "labelColumn",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "valueColumn",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > chart.bar help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 96,
+  "bodyTop": 203,
+  "footerTop": 299,
+  "h": 319,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "labelColumn",
+      "top": 171,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "valueColumn",
+      "top": 187,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > chart.bar help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 96,
+  "bodyTop": 151,
+  "footerTop": 247,
+  "h": 267,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "labelColumn",
+      "top": 119,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "valueColumn",
+      "top": 135,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > check.rule help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 92,
+  "footerTop": 180,
+  "h": 200,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 60,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 76,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > check.rule help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 92,
+  "footerTop": 180,
+  "h": 200,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 60,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 76,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > check.rule help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 245,
+  "footerTop": 333,
+  "h": 353,
+  "helpH": 153,
+  "helpLineCount": 11,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 197,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 213,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 229,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 197,
+  "socketsTop": 179,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > check.rule help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 193,
+  "footerTop": 281,
+  "h": 301,
+  "helpH": 101,
+  "helpLineCount": 7,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 145,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 161,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 177,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 145,
+  "socketsTop": 127,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > compute.expr help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 76,
+  "footerTop": 76,
+  "h": 96,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "channel",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "expr",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > compute.expr help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 76,
+  "footerTop": 76,
+  "h": 96,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "channel",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "expr",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > compute.expr help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 229,
+  "footerTop": 229,
+  "h": 249,
+  "helpH": 153,
+  "helpLineCount": 11,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "channel",
+      "top": 197,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "expr",
+      "top": 213,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 197,
+  "socketsTop": 179,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > compute.expr help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 177,
+  "footerTop": 177,
+  "h": 197,
+  "helpH": 101,
+  "helpLineCount": 7,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "channel",
+      "top": 145,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "expr",
+      "top": 161,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 145,
+  "socketsTop": 127,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > data.csv help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "url",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > data.csv help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "url",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > data.csv help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 187,
+  "footerTop": 187,
+  "h": 207,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "url",
+      "top": 171,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > data.csv help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 135,
+  "footerTop": 135,
+  "h": 155,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "url",
+      "top": 119,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > graph.sub help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "label",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > graph.sub help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "label",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > graph.sub help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 213,
+  "footerTop": 213,
+  "h": 233,
+  "helpH": 153,
+  "helpLineCount": 11,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "label",
+      "top": 197,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 197,
+  "socketsTop": 179,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > graph.sub help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 161,
+  "footerTop": 161,
+  "h": 181,
+  "helpH": 101,
+  "helpLineCount": 7,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "label",
+      "top": 145,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 145,
+  "socketsTop": 127,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > group.by help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "by",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > group.by help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "by",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > group.by help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 226,
+  "footerTop": 226,
+  "h": 246,
+  "helpH": 166,
+  "helpLineCount": 12,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "by",
+      "top": 210,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 210,
+  "socketsTop": 192,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > group.by help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 174,
+  "footerTop": 174,
+  "h": 194,
+  "helpH": 114,
+  "helpLineCount": 8,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "by",
+      "top": 158,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 158,
+  "socketsTop": 140,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > load.model help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "model",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > load.model help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "model",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > load.model help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 187,
+  "footerTop": 187,
+  "h": 207,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "model",
+      "top": 171,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > load.model help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 135,
+  "footerTop": 135,
+  "h": 155,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "model",
+      "top": 119,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byLevel help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "level",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byLevel help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "level",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byLevel help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 148,
+  "footerTop": 148,
+  "h": 168,
+  "helpH": 88,
+  "helpLineCount": 6,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "level",
+      "top": 132,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 132,
+  "socketsTop": 114,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byLevel help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 96,
+  "footerTop": 96,
+  "h": 116,
+  "helpH": 36,
+  "helpLineCount": 2,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "level",
+      "top": 80,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 80,
+  "socketsTop": 62,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byParameter help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 92,
+  "footerTop": 92,
+  "h": 112,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "parameter",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 60,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 76,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byParameter help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 92,
+  "footerTop": 92,
+  "h": 112,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "parameter",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 60,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 76,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byParameter help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 232,
+  "footerTop": 232,
+  "h": 252,
+  "helpH": 140,
+  "helpLineCount": 10,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "parameter",
+      "top": 184,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 200,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 216,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 184,
+  "socketsTop": 166,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byParameter help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 180,
+  "footerTop": 180,
+  "h": 200,
+  "helpH": 88,
+  "helpLineCount": 6,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "parameter",
+      "top": 132,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 148,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 164,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 132,
+  "socketsTop": 114,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byType help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "type",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byType help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "type",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byType help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 174,
+  "footerTop": 174,
+  "h": 194,
+  "helpH": 114,
+  "helpLineCount": 8,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "type",
+      "top": 158,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 158,
+  "socketsTop": 140,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.byType help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 122,
+  "footerTop": 122,
+  "h": 142,
+  "helpH": 62,
+  "helpLineCount": 4,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "type",
+      "top": 106,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 106,
+  "socketsTop": 88,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.checklist help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 120,
+  "bodyTop": 76,
+  "footerTop": 196,
+  "h": 216,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "source",
+      "top": 44,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "excluded",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.checklist help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 120,
+  "bodyTop": 76,
+  "footerTop": 196,
+  "h": 216,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "source",
+      "top": 44,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "excluded",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.checklist help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 120,
+  "bodyTop": 242,
+  "footerTop": 362,
+  "h": 382,
+  "helpH": 166,
+  "helpLineCount": 12,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "source",
+      "top": 210,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "excluded",
+      "top": 226,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 210,
+  "socketsTop": 192,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.checklist help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 120,
+  "bodyTop": 190,
+  "footerTop": 310,
+  "h": 330,
+  "helpH": 114,
+  "helpLineCount": 8,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "source",
+      "top": 158,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "excluded",
+      "top": 174,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 158,
+  "socketsTop": 140,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.intersect help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 62,
+  "footerTop": 62,
+  "h": 82,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.intersect help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 62,
+  "footerTop": 62,
+  "h": 82,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.intersect help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 189,
+  "footerTop": 189,
+  "h": 209,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [],
+  "paramsTop": 189,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.intersect help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 137,
+  "footerTop": 137,
+  "h": 157,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [],
+  "paramsTop": 137,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.invert help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.invert help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.invert help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 171,
+  "footerTop": 171,
+  "h": 191,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.invert help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 119,
+  "footerTop": 119,
+  "h": 139,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.subtract help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 62,
+  "footerTop": 62,
+  "h": 82,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.subtract help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 62,
+  "footerTop": 62,
+  "h": 82,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.subtract help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 176,
+  "footerTop": 176,
+  "h": 196,
+  "helpH": 114,
+  "helpLineCount": 8,
+  "paramRows": [],
+  "paramsTop": 176,
+  "socketsTop": 140,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.subtract help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 124,
+  "footerTop": 124,
+  "h": 144,
+  "helpH": 62,
+  "helpLineCount": 4,
+  "paramRows": [],
+  "paramsTop": 124,
+  "socketsTop": 88,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.union help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 62,
+  "footerTop": 62,
+  "h": 82,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.union help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 62,
+  "footerTop": 62,
+  "h": 82,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.union help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 202,
+  "footerTop": 202,
+  "h": 222,
+  "helpH": 140,
+  "helpLineCount": 10,
+  "paramRows": [],
+  "paramsTop": 202,
+  "socketsTop": 166,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > select.union help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 150,
+  "footerTop": 150,
+  "h": 170,
+  "helpH": 88,
+  "helpLineCount": 6,
+  "paramRows": [],
+  "paramsTop": 150,
+  "socketsTop": 114,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.exportCsv help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "filename",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.exportCsv help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 60,
+  "footerTop": 60,
+  "h": 80,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "filename",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.exportCsv help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 187,
+  "footerTop": 187,
+  "h": 207,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "filename",
+      "top": 171,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.exportCsv help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 135,
+  "footerTop": 135,
+  "h": 155,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "filename",
+      "top": 119,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.table help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.table help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.table help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 171,
+  "footerTop": 171,
+  "h": 191,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.table help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 119,
+  "footerTop": 119,
+  "h": 139,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.writePset help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 76,
+  "footerTop": 76,
+  "h": 96,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "psetName",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "channels",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.writePset help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 76,
+  "footerTop": 76,
+  "h": 96,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "psetName",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "channels",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.writePset help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 216,
+  "footerTop": 216,
+  "h": 236,
+  "helpH": 140,
+  "helpLineCount": 10,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "psetName",
+      "top": 184,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "channels",
+      "top": 200,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 184,
+  "socketsTop": 166,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > sink.writePset help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 164,
+  "footerTop": 164,
+  "h": 184,
+  "helpH": 88,
+  "helpLineCount": 6,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "psetName",
+      "top": 132,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "channels",
+      "top": 148,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 132,
+  "socketsTop": 114,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.aggregate help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 92,
+  "footerTop": 180,
+  "h": 200,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "groupBy",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 60,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "agg",
+      "top": 76,
+      "widget": "chips",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.aggregate help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 92,
+  "footerTop": 180,
+  "h": 200,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "groupBy",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 60,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "agg",
+      "top": 76,
+      "widget": "chips",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.aggregate help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 245,
+  "footerTop": 333,
+  "h": 353,
+  "helpH": 153,
+  "helpLineCount": 11,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "groupBy",
+      "top": 197,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 213,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "agg",
+      "top": 229,
+      "widget": "chips",
+    },
+  ],
+  "paramsTop": 197,
+  "socketsTop": 179,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.aggregate help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 193,
+  "footerTop": 281,
+  "h": 301,
+  "helpH": 101,
+  "helpLineCount": 7,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "groupBy",
+      "top": 145,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 161,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "agg",
+      "top": 177,
+      "widget": "chips",
+    },
+  ],
+  "paramsTop": 145,
+  "socketsTop": 127,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.ask help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 60,
+  "footerTop": 148,
+  "h": 168,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "question",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.ask help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 60,
+  "footerTop": 148,
+  "h": 168,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "question",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.ask help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 226,
+  "footerTop": 314,
+  "h": 334,
+  "helpH": 166,
+  "helpLineCount": 12,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "question",
+      "top": 210,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 210,
+  "socketsTop": 192,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.ask help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 174,
+  "footerTop": 262,
+  "h": 282,
+  "helpH": 114,
+  "helpLineCount": 8,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "question",
+      "top": 158,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 158,
+  "socketsTop": 140,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.columns help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 76,
+  "footerTop": 76,
+  "h": 96,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "columns",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "mode",
+      "top": 60,
+      "widget": "chips",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.columns help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 76,
+  "footerTop": 76,
+  "h": 96,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "columns",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "mode",
+      "top": 60,
+      "widget": "chips",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.columns help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 203,
+  "footerTop": 203,
+  "h": 223,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "columns",
+      "top": 171,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "mode",
+      "top": 187,
+      "widget": "chips",
+    },
+  ],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.columns help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 151,
+  "footerTop": 151,
+  "h": 171,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "columns",
+      "top": 119,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "mode",
+      "top": 135,
+      "widget": "chips",
+    },
+  ],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.count help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 44,
+  "footerTop": 132,
+  "h": 152,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.count help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 44,
+  "footerTop": 132,
+  "h": 152,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.count help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 158,
+  "footerTop": 246,
+  "h": 266,
+  "helpH": 114,
+  "helpLineCount": 8,
+  "paramRows": [],
+  "paramsTop": 158,
+  "socketsTop": 140,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.count help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 106,
+  "footerTop": 194,
+  "h": 214,
+  "helpH": 62,
+  "helpLineCount": 4,
+  "paramRows": [],
+  "paramsTop": 106,
+  "socketsTop": 88,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.filter help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 92,
+  "footerTop": 180,
+  "h": 200,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 60,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 76,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.filter help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 92,
+  "footerTop": 180,
+  "h": 200,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 60,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 76,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.filter help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 206,
+  "footerTop": 294,
+  "h": 314,
+  "helpH": 114,
+  "helpLineCount": 8,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 158,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 174,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 190,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 158,
+  "socketsTop": 140,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.filter help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 154,
+  "footerTop": 242,
+  "h": 262,
+  "helpH": 62,
+  "helpLineCount": 4,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 106,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "op",
+      "top": 122,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "value",
+      "top": 138,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 106,
+  "socketsTop": 88,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.fromScene help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 44,
+  "footerTop": 132,
+  "h": 152,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.fromScene help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 44,
+  "footerTop": 132,
+  "h": 152,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.fromScene help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 158,
+  "footerTop": 246,
+  "h": 266,
+  "helpH": 114,
+  "helpLineCount": 8,
+  "paramRows": [],
+  "paramsTop": 158,
+  "socketsTop": 140,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.fromScene help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 106,
+  "footerTop": 194,
+  "h": 214,
+  "helpH": 62,
+  "helpLineCount": 4,
+  "paramRows": [],
+  "paramsTop": 106,
+  "socketsTop": 88,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.sort help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 76,
+  "footerTop": 164,
+  "h": 184,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "descending",
+      "top": 60,
+      "widget": "toggle",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.sort help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 76,
+  "footerTop": 164,
+  "h": 184,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 44,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "descending",
+      "top": 60,
+      "widget": "toggle",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.sort help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 177,
+  "footerTop": 265,
+  "h": 285,
+  "helpH": 101,
+  "helpLineCount": 7,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 145,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "descending",
+      "top": 161,
+      "widget": "toggle",
+    },
+  ],
+  "paramsTop": 145,
+  "socketsTop": 127,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.sort help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 125,
+  "footerTop": 213,
+  "h": 233,
+  "helpH": 49,
+  "helpLineCount": 3,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "column",
+      "top": 93,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "descending",
+      "top": 109,
+      "widget": "toggle",
+    },
+  ],
+  "paramsTop": 93,
+  "socketsTop": 75,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.sql help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 60,
+  "footerTop": 148,
+  "h": 168,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "sql",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.sql help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 60,
+  "footerTop": 148,
+  "h": 168,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "sql",
+      "top": 44,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.sql help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 213,
+  "footerTop": 301,
+  "h": 321,
+  "helpH": 153,
+  "helpLineCount": 11,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "sql",
+      "top": 197,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 197,
+  "socketsTop": 179,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.sql help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 161,
+  "footerTop": 249,
+  "h": 269,
+  "helpH": 101,
+  "helpLineCount": 7,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "sql",
+      "top": 145,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 145,
+  "socketsTop": 127,
+  "w": 240,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.stats help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 44,
+  "footerTop": 132,
+  "h": 152,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.stats help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 44,
+  "footerTop": 132,
+  "h": 152,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.stats help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 184,
+  "footerTop": 272,
+  "h": 292,
+  "helpH": 140,
+  "helpLineCount": 10,
+  "paramRows": [],
+  "paramsTop": 184,
+  "socketsTop": 166,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > table.stats help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 88,
+  "bodyTop": 132,
+  "footerTop": 220,
+  "h": 240,
+  "helpH": 88,
+  "helpLineCount": 6,
+  "paramRows": [],
+  "paramsTop": 132,
+  "socketsTop": 114,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > view.scene help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > view.scene help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > view.scene help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 197,
+  "footerTop": 197,
+  "h": 217,
+  "helpH": 153,
+  "helpLineCount": 11,
+  "paramRows": [],
+  "paramsTop": 197,
+  "socketsTop": 179,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > view.scene help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 145,
+  "footerTop": 145,
+  "h": 165,
+  "helpH": 101,
+  "helpLineCount": 7,
+  "paramRows": [],
+  "paramsTop": 145,
+  "socketsTop": 127,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > view.table help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > view.table help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > view.table help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 171,
+  "footerTop": 171,
+  "h": 191,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > view.table help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 119,
+  "footerTop": 119,
+  "h": 139,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.boxes help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.boxes help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 44,
+  "footerTop": 44,
+  "h": 64,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.boxes help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 171,
+  "footerTop": 171,
+  "h": 191,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.boxes help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 119,
+  "footerTop": 119,
+  "h": 139,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.colorBy help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 40,
+  "bodyTop": 174,
+  "footerTop": 214,
+  "h": 234,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "channel",
+      "top": 62,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "mode",
+      "top": 78,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "ramp",
+      "top": 94,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "auto",
+      "top": 110,
+      "widget": "toggle",
+    },
+    {
+      "h": 16,
+      "name": "min",
+      "top": 126,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "max",
+      "top": 142,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "ghostOthers",
+      "top": 158,
+      "widget": "toggle",
+    },
+  ],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.colorBy help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 40,
+  "bodyTop": 174,
+  "footerTop": 214,
+  "h": 234,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "channel",
+      "top": 62,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "mode",
+      "top": 78,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "ramp",
+      "top": 94,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "auto",
+      "top": 110,
+      "widget": "toggle",
+    },
+    {
+      "h": 16,
+      "name": "min",
+      "top": 126,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "max",
+      "top": 142,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "ghostOthers",
+      "top": 158,
+      "widget": "toggle",
+    },
+  ],
+  "paramsTop": 62,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.colorBy help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 40,
+  "bodyTop": 366,
+  "footerTop": 406,
+  "h": 426,
+  "helpH": 192,
+  "helpLineCount": 14,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "channel",
+      "top": 254,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "mode",
+      "top": 270,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "ramp",
+      "top": 286,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "auto",
+      "top": 302,
+      "widget": "toggle",
+    },
+    {
+      "h": 16,
+      "name": "min",
+      "top": 318,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "max",
+      "top": 334,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "ghostOthers",
+      "top": 350,
+      "widget": "toggle",
+    },
+  ],
+  "paramsTop": 254,
+  "socketsTop": 218,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.colorBy help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 40,
+  "bodyTop": 314,
+  "footerTop": 354,
+  "h": 374,
+  "helpH": 140,
+  "helpLineCount": 10,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "channel",
+      "top": 202,
+      "widget": "row",
+    },
+    {
+      "h": 16,
+      "name": "mode",
+      "top": 218,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "ramp",
+      "top": 234,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "auto",
+      "top": 250,
+      "widget": "toggle",
+    },
+    {
+      "h": 16,
+      "name": "min",
+      "top": 266,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "max",
+      "top": 282,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "ghostOthers",
+      "top": 298,
+      "widget": "toggle",
+    },
+  ],
+  "paramsTop": 202,
+  "socketsTop": 166,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.colormap help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 40,
+  "bodyTop": 108,
+  "footerTop": 148,
+  "h": 168,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "ramp",
+      "top": 44,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "auto",
+      "top": 60,
+      "widget": "toggle",
+    },
+    {
+      "h": 16,
+      "name": "min",
+      "top": 76,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "max",
+      "top": 92,
+      "widget": "scrub",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.colormap help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 40,
+  "bodyTop": 108,
+  "footerTop": 148,
+  "h": 168,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "ramp",
+      "top": 44,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "auto",
+      "top": 60,
+      "widget": "toggle",
+    },
+    {
+      "h": 16,
+      "name": "min",
+      "top": 76,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "max",
+      "top": 92,
+      "widget": "scrub",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.colormap help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 40,
+  "bodyTop": 235,
+  "footerTop": 275,
+  "h": 295,
+  "helpH": 127,
+  "helpLineCount": 9,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "ramp",
+      "top": 171,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "auto",
+      "top": 187,
+      "widget": "toggle",
+    },
+    {
+      "h": 16,
+      "name": "min",
+      "top": 203,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "max",
+      "top": 219,
+      "widget": "scrub",
+    },
+  ],
+  "paramsTop": 171,
+  "socketsTop": 153,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.colormap help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 40,
+  "bodyTop": 183,
+  "footerTop": 223,
+  "h": 243,
+  "helpH": 75,
+  "helpLineCount": 5,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "ramp",
+      "top": 119,
+      "widget": "chips",
+    },
+    {
+      "h": 16,
+      "name": "auto",
+      "top": 135,
+      "widget": "toggle",
+    },
+    {
+      "h": 16,
+      "name": "min",
+      "top": 151,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "max",
+      "top": 167,
+      "widget": "scrub",
+    },
+  ],
+  "paramsTop": 119,
+  "socketsTop": 101,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.explode help=false chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 76,
+  "footerTop": 76,
+  "h": 96,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "spacing",
+      "top": 44,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "hide",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.explode help=false no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 76,
+  "footerTop": 76,
+  "h": 96,
+  "helpH": 0,
+  "helpLineCount": 0,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "spacing",
+      "top": 44,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "hide",
+      "top": 60,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 44,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.explode help=true chart-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 229,
+  "footerTop": 229,
+  "h": 249,
+  "helpH": 153,
+  "helpLineCount": 11,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "spacing",
+      "top": 197,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "hide",
+      "top": 213,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 197,
+  "socketsTop": 179,
+  "w": 188,
+}
+`;
+
+exports[`nodeLayout goldens: every kind × helpOpen × status > viz.explode help=true no-status: row table + offsets 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 177,
+  "footerTop": 177,
+  "h": 197,
+  "helpH": 101,
+  "helpLineCount": 7,
+  "paramRows": [
+    {
+      "h": 16,
+      "name": "spacing",
+      "top": 145,
+      "widget": "scrub",
+    },
+    {
+      "h": 16,
+      "name": "hide",
+      "top": 161,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 145,
+  "socketsTop": 127,
+  "w": 188,
+}
+`;

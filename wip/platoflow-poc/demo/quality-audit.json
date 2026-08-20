@@ -1,0 +1,23 @@
+{
+  "name": "quality-audit",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "snowdon" }, "x": 60, "y": 240 },
+    { "id": "n2", "kind": "table.sql", "params": { "sql": "WITH elems AS (SELECT EntityIndex, Category FROM EntityText WHERE Category IN ('IFCWALL','IFCSLAB','IFCMEMBER','IFCPLATE','IFCCOLUMN','IFCDOOR','IFCWINDOW','IFCCOVERING','IFCBUILDINGELEMENTPROXY','IFCFURNITURE','IFCLIGHTFIXTURE','IFCRAILING','IFCSTAIR','IFCROOF')), placed AS (SELECT DISTINCT EntityIndexA FROM RelationText WHERE RelationType = 'ContainedIn') SELECT e.Category, ROUND(100.0 * SUM(CASE WHEN p.EntityIndexA IS NOT NULL THEN 1 ELSE 0 END) / COUNT(*), 1) AS placed_pct, COUNT(*) AS total, SUM(CASE WHEN p.EntityIndexA IS NULL THEN 1 ELSE 0 END) AS unplaced FROM elems e LEFT JOIN placed p ON p.EntityIndexA = e.EntityIndex GROUP BY e.Category ORDER BY placed_pct ASC" }, "x": 300, "y": 120 },
+    { "id": "n3", "kind": "view.table", "params": {}, "x": 560, "y": 120 },
+    { "id": "n4", "kind": "chart.bar", "params": {}, "x": 800, "y": 40 },
+    { "id": "n5", "kind": "sink.table", "params": {}, "x": 800, "y": 240 },
+    { "id": "n6", "kind": "table.sql", "params": { "sql": "WITH elems AS (SELECT EntityIndex, Category, Type FROM EntityText WHERE Category IN ('IFCWALL','IFCSLAB','IFCMEMBER','IFCPLATE','IFCCOLUMN','IFCDOOR','IFCWINDOW','IFCCOVERING','IFCBUILDINGELEMENTPROXY','IFCRAILING','IFCSTAIR','IFCROOF')), vol AS (SELECT DISTINCT EntityIndex FROM ParameterText WHERE Name = 'Volume' AND ValueType = 'Number') SELECT e.Category, SUM(CASE WHEN v.EntityIndex IS NULL THEN 1 ELSE 0 END) AS missing_volume, SUM(CASE WHEN e.Type IS NULL OR e.Type = '' THEN 1 ELSE 0 END) AS untyped, COUNT(*) AS total FROM elems e LEFT JOIN vol v ON v.EntityIndex = e.EntityIndex GROUP BY e.Category HAVING SUM(CASE WHEN v.EntityIndex IS NULL THEN 1 ELSE 0 END) > 0 OR SUM(CASE WHEN e.Type IS NULL OR e.Type = '' THEN 1 ELSE 0 END) > 0 ORDER BY missing_volume DESC" }, "x": 300, "y": 400 },
+    { "id": "n7", "kind": "chart.bar", "params": {}, "x": 560, "y": 400 },
+    { "id": "n8", "kind": "sink.table", "params": {}, "x": 800, "y": 480 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "in" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n8", "slot": "in" } }
+  ],
+  "display": "n1"
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PlatoFlow PoC — viewer harness</title>
+  <style>
+    /* Branding vars — twin of index.html / src/theme.ts (approximate targets). */
+    :root {
+      --pf-bg: #F7F6F3; --pf-canvas: #EFEDE8; --pf-surface: #FFFFFF;
+      --pf-border: #E5E3DE; --pf-border-strong: #D6D3CC;
+      --pf-text: #1A1A18; --pf-dim: #8A8880; --pf-faint: #A6A49C;
+      --pf-input: #F1EFEA; --pf-hover: #ECEAE4; --pf-active: #E8E6E1;
+      --pf-green: #3BA55D; --pf-danger: #C0392B; --pf-viewport: #0D0D0D;
+      --pf-font: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    html, body { margin: 0; height: 100%; background: var(--pf-bg); color: var(--pf-text); font: 13px var(--pf-font); }
+    #wrap { display: grid; grid-template-rows: 1fr 220px; height: 100vh; }
+    #viewer { position: relative; background: var(--pf-viewport); }
+    #viewer canvas { display: block; width: 100%; height: 100%; }
+    #bottom { border-top: 1px solid var(--pf-border); overflow: auto; display: flex; background: var(--pf-surface); }
+    #grid { flex: 1; overflow: auto; }
+    #legend { width: 140px; border-left: 1px solid var(--pf-border); padding: 6px; }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <div id="viewer"></div>
+    <div id="bottom"><div id="grid"></div><div id="legend"></div></div>
+  </div>
+  <!-- Track B owns this entry: load a real .bos via /api, demo applyView/highlight/panes -->
+  <script type="module" src="/src/viewer/harness.ts"></script>
+</body>
+</html>

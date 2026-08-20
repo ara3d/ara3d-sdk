@@ -1,0 +1,23 @@
+{
+  "name": "filter-sort",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 140 },
+    { "id": "n2", "kind": "data.csv", "params": { "url": "/api/file?path=carbon.csv" }, "x": 60, "y": 340 },
+    { "id": "n3", "kind": "attach.column", "params": { "keyColumn": "GlobalId", "valueColumn": "operational_carbon" }, "x": 300, "y": 200 },
+    { "id": "n4", "kind": "table.fromScene", "params": {}, "x": 540, "y": 200 },
+    { "id": "n5", "kind": "table.filter", "params": { "column": "operational_carbon", "op": ">", "value": "100" }, "x": 760, "y": 200 },
+    { "id": "n6", "kind": "table.sort", "params": { "column": "operational_carbon", "descending": true }, "x": 980, "y": 200 },
+    { "id": "n7", "kind": "view.table", "params": {}, "x": 1200, "y": 200 },
+    { "id": "n8", "kind": "sink.table", "params": {}, "x": 1400, "y": 200 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n3", "slot": "scene" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "table" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n8", "slot": "in" } }
+  ],
+  "display": "n1"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "inspect-flow",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 140 },
+    { "id": "n2", "kind": "select.byType", "params": { "type": "IfcWallStandardCase" }, "x": 280, "y": 140 },
+    { "id": "n3", "kind": "view.scene", "params": {}, "x": 500, "y": 140 },
+    { "id": "n4", "kind": "data.csv", "params": { "url": "/api/file?path=carbon.csv" }, "x": 500, "y": 340 },
+    { "id": "n5", "kind": "attach.column", "params": { "keyColumn": "GlobalId", "valueColumn": "operational_carbon" }, "x": 720, "y": 200 },
+    { "id": "n6", "kind": "view.scene", "params": {}, "x": 940, "y": 200 },
+    { "id": "n7", "kind": "viz.colormap", "params": { "ramp": "viridis", "auto": true, "min": 0, "max": 100 }, "x": 940, "y": 400 },
+    { "id": "n8", "kind": "viz.colorBy", "params": { "channel": "operational_carbon", "ghostOthers": true }, "x": 1180, "y": 280 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "in" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n5", "slot": "scene" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "table" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n8", "slot": "scene" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n8", "slot": "colormap" } }
+  ],
+  "display": "n8"
+}

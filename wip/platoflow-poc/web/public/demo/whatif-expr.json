@@ -1,0 +1,25 @@
+{
+  "name": "whatif-expr",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 120 },
+    { "id": "n2", "kind": "data.csv", "params": { "url": "/api/file?path=carbon.csv" }, "x": 60, "y": 320 },
+    { "id": "n3", "kind": "attach.column", "params": { "keyColumn": "GlobalId", "valueColumn": "operational_carbon" }, "x": 300, "y": 180 },
+    { "id": "n4", "kind": "compute.expr", "params": { "channel": "carbon_intensity", "expr": "ch('operational_carbon') / (param('Area') || 1)" }, "x": 540, "y": 180 },
+    { "id": "n5", "kind": "viz.colormap", "params": { "ramp": "greenred", "auto": true, "min": 0, "max": 100 }, "x": 540, "y": 380 },
+    { "id": "n6", "kind": "viz.colorBy", "params": { "channel": "carbon_intensity", "ghostOthers": false }, "x": 800, "y": 240 },
+    { "id": "n7", "kind": "table.fromScene", "params": {}, "x": 800, "y": 60 },
+    { "id": "n8", "kind": "view.table", "params": {}, "x": 1020, "y": 60 },
+    { "id": "n9", "kind": "sink.table", "params": {}, "x": 1220, "y": 60 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n3", "slot": "scene" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "table" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n6", "slot": "scene" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "colormap" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n8", "slot": "in" } },
+    { "from": { "node": "n8", "slot": "out" }, "to": { "node": "n9", "slot": "in" } }
+  ],
+  "display": "n6"
+}

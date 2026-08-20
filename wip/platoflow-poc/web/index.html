@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Studio Graph</title>
+  <style>
+    /* Branding (2026-08-19): warm-neutral cream, flat, Notion/Linear-adjacent.
+       Canvas-side twin of these values lives in src/theme.ts (gratify tokens).
+       Hex values are approximate targets from a screenshot spec. */
+    :root {
+      --pf-bg: #F7F6F3;            /* app chrome background */
+      --pf-canvas: #EFEDE8;        /* node-editor canvas */
+      --pf-surface: #FFFFFF;       /* cards, panels, popovers */
+      --pf-border: #E5E3DE;        /* hairline borders */
+      --pf-border-strong: #D6D3CC;
+      --pf-text: #1A1A18;          /* near-black warm charcoal */
+      --pf-dim: #8A8880;           /* secondary text, labels, counts */
+      --pf-faint: #A6A49C;
+      --pf-input: #F1EFEA;         /* input field fill */
+      --pf-hover: #ECEAE4;
+      --pf-active: #E8E6E1;        /* active pill */
+      --pf-green: #3BA55D;         /* the one tiny green accent */
+      --pf-danger: #C0392B;
+      --pf-viewport: #0D0D0D;      /* 3D viewport stays near-black */
+      --pf-font: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    html, body { margin: 0; height: 100%; background: var(--pf-bg); color: var(--pf-text); font: 13px var(--pf-font); }
+    /* T19: right-column width / bottom-row height are draggable (splitter.ts
+       rewrites --pf-right / --pf-bottom); the 6px tracks are the handles. */
+    #app { display: grid; height: 100vh;
+      grid-template-columns: minmax(0, 1fr) 6px var(--pf-right, 480px);
+      grid-template-rows: minmax(0, 1fr) 6px var(--pf-bottom, 220px); }
+    #graph { grid-column: 1; grid-row: 1 / 4; position: relative; }
+    #graph canvas { display: block; width: 100%; height: 100%; }
+    #viewer { grid-column: 3; grid-row: 1; position: relative; background: var(--pf-viewport); }
+    #viewer canvas { display: block; width: 100%; height: 100%; }
+    #bottom { grid-column: 3; grid-row: 3; overflow: auto; display: flex; min-height: 0; background: var(--pf-surface); }
+    #grid { flex: 1; overflow: auto; min-width: 0; }
+    #legend { width: 120px; flex: none; box-sizing: border-box; border-left: 1px solid var(--pf-border); padding: 6px; overflow: auto; }
+    #status { position: fixed; left: 8px; bottom: 6px; color: var(--pf-dim); pointer-events: none;
+      max-width: 55vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* splitter handles */
+    .split { position: relative; background: var(--pf-bg); touch-action: none; user-select: none; z-index: 5; }
+    .split:hover, .split.drag { background: var(--pf-active); }
+    .split::after { content: ""; position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%); background: var(--pf-border-strong); border-radius: 2px; }
+    .split:hover::after, .split.drag::after { background: var(--pf-dim); }
+    #vsplit { grid-column: 2; grid-row: 1 / 4; cursor: col-resize; border-left: 1px solid var(--pf-border); border-right: 1px solid var(--pf-border); }
+    #vsplit::after { width: 2px; height: 28px; }
+    #hsplit { grid-column: 3; grid-row: 2; cursor: row-resize; border-top: 1px solid var(--pf-border); border-bottom: 1px solid var(--pf-border); }
+    #hsplit::after { height: 2px; width: 28px; }
+    /* while dragging, pin the resize cursor on everything so it never flickers */
+    html.pf-drag-col, html.pf-drag-col * { cursor: col-resize !important; }
+    html.pf-drag-row, html.pf-drag-row * { cursor: row-resize !important; }
+    /* node-card resize drags (editor/index.ts pins these per axis) */
+    html.pf-drag-ew, html.pf-drag-ew * { cursor: ew-resize !important; }
+    html.pf-drag-ns, html.pf-drag-ns * { cursor: ns-resize !important; }
+    html.pf-drag-nwse, html.pf-drag-nwse * { cursor: nwse-resize !important; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="graph"><canvas id="graph-canvas"></canvas></div>
+    <div id="vsplit" class="split" title="drag to resize — double-click to reset"></div>
+    <div id="viewer"></div>
+    <div id="hsplit" class="split" title="drag to resize — double-click to reset"></div>
+    <div id="bottom"><div id="grid"></div><div id="legend"></div></div>
+  </div>
+  <div id="status">loading…</div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

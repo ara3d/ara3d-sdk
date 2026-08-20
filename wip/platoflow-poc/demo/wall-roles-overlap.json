@@ -1,0 +1,35 @@
+{
+  "name": "wall-roles-overlap",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 260 },
+    { "id": "n2", "kind": "select.byType", "params": { "type": "IfcWallStandardCase" }, "x": 280, "y": 260 },
+    { "id": "n3", "kind": "compute.expr", "params": { "channel": "is_external", "expr": "param('IsExternal')" }, "x": 500, "y": 260 },
+    { "id": "n4", "kind": "compute.expr", "params": { "channel": "load_bearing", "expr": "param('LoadBearing')" }, "x": 720, "y": 260 },
+    { "id": "n5", "kind": "select.byParameter", "params": { "parameter": "is_external", "op": "==", "value": ".T." }, "x": 950, "y": 150 },
+    { "id": "n6", "kind": "select.byParameter", "params": { "parameter": "load_bearing", "op": "==", "value": ".T." }, "x": 950, "y": 370 },
+    { "id": "n7", "kind": "select.intersect", "params": {}, "x": 1190, "y": 210 },
+    { "id": "n8", "kind": "select.subtract", "params": {}, "x": 1190, "y": 430 },
+    { "id": "n9", "kind": "view.scene", "params": {}, "x": 1430, "y": 110 },
+    { "id": "n10", "kind": "table.count", "params": {}, "x": 1430, "y": 270 },
+    { "id": "n11", "kind": "sink.table", "params": {}, "x": 1670, "y": 270 },
+    { "id": "n12", "kind": "table.count", "params": {}, "x": 1430, "y": 470 },
+    { "id": "n13", "kind": "sink.table", "params": {}, "x": 1670, "y": 470 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "in" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n7", "slot": "a" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n7", "slot": "b" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n8", "slot": "a" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n8", "slot": "b" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n9", "slot": "in" } },
+    { "from": { "node": "n7", "slot": "out" }, "to": { "node": "n10", "slot": "in" } },
+    { "from": { "node": "n10", "slot": "out" }, "to": { "node": "n11", "slot": "in" } },
+    { "from": { "node": "n8", "slot": "out" }, "to": { "node": "n12", "slot": "in" } },
+    { "from": { "node": "n12", "slot": "out" }, "to": { "node": "n13", "slot": "in" } }
+  ],
+  "display": "n9"
+}

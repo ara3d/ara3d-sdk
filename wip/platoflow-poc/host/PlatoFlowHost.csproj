@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>platoflow-host</AssemblyName>
+    <RootNamespace>PlatoFlow.Host</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- IfcDuck.cs talks to DuckDB.NET.Data directly; pin it here (this project is outside
+         ara3d-sdk, so its Directory.Build.props version variables are not in scope). -->
+    <PackageReference Include="DuckDB.NET.Data.Full" Version="1.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Referenced, never edited. IfcLoader carries the native web-ifc DLL to our output. -->
+    <ProjectReference Include="..\..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
+    <ProjectReference Include="..\..\..\src\Ara3D.BimOpenSchema.IO\Ara3D.BimOpenSchema.IO.csproj" />
+    <ProjectReference Include="..\..\..\ext\Ara3D.IfcLoader\Ara3D.IfcLoader.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Source-linked from ara3d-sdk (copy of nothing, edit of nothing): the BOS/DuckDB views and
+         the byte-exact IFC patch/diff machinery. Same technique as tests/Ara3D.DoorClearance.Tests. -->
+    <Compile Include="..\..\..\wip\Ara3D.Ifc.Mcp\IfcDuck.cs" Link="Linked\IfcDuck.cs" />
+    <Compile Include="..\..\..\tests\Ara3D.Ifc.Tests\IfcSourceFile.cs" Link="Linked\IfcSourceFile.cs" />
+    <Compile Include="..\..\..\tests\Ara3D.Ifc.Tests\IfcEntitySpan.cs" Link="Linked\IfcEntitySpan.cs" />
+    <Compile Include="..\..\..\tests\Ara3D.Ifc.Tests\IfcDiff.cs" Link="Linked\IfcDiff.cs" />
+    <Compile Include="..\..\..\tests\Ara3D.Ifc.Tests\IfcPatcher.cs" Link="Linked\IfcPatcher.cs" />
+    <Compile Include="..\..\..\tests\Ara3D.Ifc.Tests\IfcPropertySetBuilder.cs" Link="Linked\IfcPropertySetBuilder.cs" />
+    <Compile Include="..\..\..\tests\Ara3D.Ifc.Tests\IfcPropertyValue.cs" Link="Linked\IfcPropertyValue.cs" />
+    <Compile Include="..\..\..\tests\Ara3D.Ifc.Tests\IfcStepText.cs" Link="Linked\IfcStepText.cs" />
+    <Compile Include="..\..\..\tests\Ara3D.Ifc.Tests\IfcGuid.cs" Link="Linked\IfcGuid.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="kinds.default.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

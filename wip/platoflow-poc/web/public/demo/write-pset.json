@@ -1,0 +1,17 @@
+{
+  "name": "write-pset",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 100 },
+    { "id": "n2", "kind": "select.byType", "params": { "type": "IfcWallStandardCase" }, "x": 280, "y": 100 },
+    { "id": "n3", "kind": "data.csv", "params": { "url": "/api/file?path=carbon.csv" }, "x": 60, "y": 280 },
+    { "id": "n4", "kind": "attach.column", "params": { "keyColumn": "GlobalId", "valueColumn": "operational_carbon" }, "x": 500, "y": 160 },
+    { "id": "n5", "kind": "sink.writePset", "params": { "psetName": "Ara3D_Analytics", "channels": "operational_carbon" }, "x": 740, "y": 160 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n4", "slot": "scene" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "table" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "in" } }
+  ],
+  "display": "n2"
+}

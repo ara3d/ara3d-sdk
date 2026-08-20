@@ -1,0 +1,91 @@
+[
+  {
+    "kind": "load.model", "label": "Load Model", "category": "source",
+    "inputs": [], "outputs": [{ "name": "out", "type": "scene" }],
+    "params": { "model": { "kind": "modelPick" } }
+  },
+  {
+    "kind": "select.byType", "label": "By Type", "category": "select",
+    "inputs": [{ "name": "in", "type": "scene" }], "outputs": [{ "name": "out", "type": "scene" }],
+    "params": { "type": { "kind": "dynamicEnum", "source": "types" } }
+  },
+  {
+    "kind": "select.byLevel", "label": "By Level", "category": "select",
+    "inputs": [{ "name": "in", "type": "scene" }], "outputs": [{ "name": "out", "type": "scene" }],
+    "params": { "level": { "kind": "dynamicEnum", "source": "levels" } }
+  },
+  {
+    "kind": "select.byParameter", "label": "By Parameter", "category": "select",
+    "inputs": [{ "name": "in", "type": "scene" }], "outputs": [{ "name": "out", "type": "scene" }],
+    "params": {
+      "parameter": { "kind": "dynamicEnum", "source": "parameters" },
+      "op": { "kind": "enum", "options": ["==", "!=", ">", ">=", "<", "<=", "contains", "exists"], "default": ">" },
+      "value": { "kind": "string", "default": "" }
+    }
+  },
+  {
+    "kind": "data.csv", "label": "Load CSV", "category": "data",
+    "inputs": [], "outputs": [{ "name": "out", "type": "table" }],
+    "params": { "url": { "kind": "string", "placeholder": "/api/file?path=carbon.csv" } }
+  },
+  {
+    "kind": "table.sql", "label": "SQL Query", "category": "table",
+    "inputs": [{ "name": "in", "type": "scene" }], "outputs": [{ "name": "out", "type": "table" }],
+    "params": { "sql": { "kind": "text", "default": "SELECT * FROM EntityText LIMIT 100" } }
+  },
+  {
+    "kind": "attach.column", "label": "Attach Column", "category": "data",
+    "inputs": [{ "name": "scene", "type": "scene" }, { "name": "table", "type": "table" }],
+    "outputs": [{ "name": "out", "type": "scene" }],
+    "params": {
+      "keyColumn": { "kind": "dynamicEnum", "source": "columns", "default": "GlobalId" },
+      "valueColumn": { "kind": "dynamicEnum", "source": "columns" }
+    }
+  },
+  {
+    "kind": "table.fromScene", "label": "To Table", "category": "table",
+    "inputs": [{ "name": "in", "type": "scene" }], "outputs": [{ "name": "out", "type": "table" }],
+    "params": {}
+  },
+  {
+    "kind": "table.aggregate", "label": "Aggregate", "category": "table",
+    "inputs": [{ "name": "in", "type": "table" }], "outputs": [{ "name": "out", "type": "table" }],
+    "params": {
+      "groupBy": { "kind": "dynamicEnum", "source": "columns" },
+      "value": { "kind": "dynamicEnum", "source": "columns" },
+      "agg": { "kind": "enum", "options": ["sum", "avg", "min", "max", "count"], "default": "sum" }
+    }
+  },
+  {
+    "kind": "viz.colormap", "label": "Colormap", "category": "viz",
+    "inputs": [], "outputs": [{ "name": "out", "type": "colormap" }],
+    "params": {
+      "ramp": { "kind": "enum", "options": ["viridis", "heat", "greenred"], "default": "viridis" },
+      "min": { "kind": "number", "default": 0 },
+      "max": { "kind": "number", "default": 100 }
+    }
+  },
+  {
+    "kind": "viz.colorBy", "label": "Color By", "category": "viz",
+    "inputs": [{ "name": "scene", "type": "scene" }, { "name": "colormap", "type": "colormap" }],
+    "outputs": [{ "name": "out", "type": "view" }],
+    "params": {
+      "channel": { "kind": "dynamicEnum", "source": "channels" },
+      "ghostOthers": { "kind": "boolean", "default": true }
+    }
+  },
+  {
+    "kind": "sink.table", "label": "Data Grid", "category": "sink",
+    "inputs": [{ "name": "in", "type": "table" }], "outputs": [],
+    "params": {}
+  },
+  {
+    "kind": "sink.writePset", "label": "Write Pset", "category": "sink",
+    "inputs": [{ "name": "in", "type": "scene" }], "outputs": [],
+    "params": {
+      "psetName": { "kind": "string", "default": "Ara3D_Analytics" },
+      "channels": { "kind": "string", "placeholder": "comma-separated channel names" }
+    },
+    "effect": "write"
+  }
+]

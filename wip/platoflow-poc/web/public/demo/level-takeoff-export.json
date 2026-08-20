@@ -1,0 +1,21 @@
+{
+  "name": "level-takeoff-export",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "duplex" }, "x": 60, "y": 220 },
+    { "id": "n2", "kind": "table.fromScene", "params": {}, "x": 280, "y": 220 },
+    { "id": "n3", "kind": "table.aggregate", "params": { "groupBy": "Level", "agg": "count" }, "x": 520, "y": 220 },
+    { "id": "n4", "kind": "table.sort", "params": { "column": "count", "descending": true }, "x": 760, "y": 220 },
+    { "id": "n5", "kind": "chart.bar", "params": { "labelColumn": "Level", "valueColumn": "count" }, "x": 1020, "y": 80 },
+    { "id": "n6", "kind": "sink.table", "params": {}, "x": 1020, "y": 260 },
+    { "id": "n7", "kind": "sink.exportCsv", "params": { "filename": "level-takeoff.csv" }, "x": 1020, "y": 420 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "in" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n7", "slot": "in" } }
+  ],
+  "display": "n1"
+}

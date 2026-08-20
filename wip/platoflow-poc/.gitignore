@@ -1,0 +1,8 @@
+node_modules/
+dist/
+bin/
+obj/
+data/*
+!data/models.json
+web/public/*.bos
+*.log

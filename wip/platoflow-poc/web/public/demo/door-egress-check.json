@@ -1,0 +1,30 @@
+{
+  "name": "door-egress-check",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "snowdon" }, "x": 60, "y": 240 },
+    { "id": "n2", "kind": "select.byType", "params": { "type": "IfcDoor" }, "x": 280, "y": 240 },
+    { "id": "n3", "kind": "compute.expr", "params": { "channel": "width_ft", "expr": "param('Width')" }, "x": 500, "y": 240 },
+    { "id": "n4", "kind": "table.fromScene", "params": {}, "x": 720, "y": 300 },
+    { "id": "n5", "kind": "check.rule", "params": { "column": "width_ft", "op": ">=", "value": "3" }, "x": 940, "y": 300 },
+    { "id": "n6", "kind": "sink.table", "params": {}, "x": 1180, "y": 400 },
+    { "id": "n7", "kind": "chart.bar", "params": { "labelColumn": "Name", "valueColumn": "width_ft" }, "x": 1180, "y": 240 },
+    { "id": "n8", "kind": "attach.column", "params": { "keyColumn": "GlobalId", "valueColumn": "width_ft" }, "x": 1180, "y": 80 },
+    { "id": "n9", "kind": "viz.colorBy", "params": { "channel": "width_ft", "mode": "numeric", "ramp": "heat", "auto": true, "ghostOthers": true }, "x": 1440, "y": 80 },
+    { "id": "n10", "kind": "table.sql", "params": { "sql": "SELECT e.GlobalId, e.Name, MIN(TRY_CAST(p.Value AS DOUBLE)) AS width_ft FROM EntityText e JOIN ParameterText p ON p.EntityIndex = e.EntityIndex WHERE e.Category = 'IFCDOOR' AND p.Name = 'Width' GROUP BY e.GlobalId, e.Name HAVING MIN(TRY_CAST(p.Value AS DOUBLE)) < 3 ORDER BY width_ft" }, "x": 280, "y": 40 },
+    { "id": "n11", "kind": "sink.table", "params": {}, "x": 560, "y": 40 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "in" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "in" } },
+    { "from": { "node": "n4", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n8", "slot": "scene" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n8", "slot": "table" } },
+    { "from": { "node": "n8", "slot": "out" }, "to": { "node": "n9", "slot": "scene" } },
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n10", "slot": "in" } },
+    { "from": { "node": "n10", "slot": "out" }, "to": { "node": "n11", "slot": "in" } }
+  ],
+  "display": "n9"
+}

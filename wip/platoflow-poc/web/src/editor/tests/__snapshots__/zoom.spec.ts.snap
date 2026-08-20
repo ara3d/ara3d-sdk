@@ -1,0 +1,47 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`T10 semantic zoom: chip-mode layout > goldens: one wide kind + one normal kind at low zoom 1`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 26,
+  "chip": true,
+  "footerTop": 26,
+  "h": 36,
+  "helpH": 0,
+  "kind": "table.sql",
+  "paramRows": [
+    {
+      "h": 0,
+      "name": "sql",
+      "top": 26,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 26,
+  "socketsTop": 26,
+  "w": 240,
+}
+`;
+
+exports[`T10 semantic zoom: chip-mode layout > goldens: one wide kind + one normal kind at low zoom 2`] = `
+{
+  "bodyH": 0,
+  "bodyTop": 26,
+  "chip": true,
+  "footerTop": 26,
+  "h": 36,
+  "helpH": 0,
+  "kind": "load.model",
+  "paramRows": [
+    {
+      "h": 0,
+      "name": "model",
+      "top": 26,
+      "widget": "row",
+    },
+  ],
+  "paramsTop": 26,
+  "socketsTop": 26,
+  "w": 188,
+}
+`;

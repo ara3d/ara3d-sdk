@@ -1,0 +1,23 @@
+{
+  "name": "checklist-live",
+  "nodes": [
+    { "id": "n1", "kind": "load.model", "params": { "model": "rac_basic" }, "x": 60, "y": 220 },
+    { "id": "n2", "kind": "select.checklist", "params": { "source": "types", "excluded": "(none),Materials,Views,Work Plane Grid,Curtain Wall Mullions" }, "x": 280, "y": 180, "bh": 190 },
+    { "id": "n3", "kind": "group.by", "params": { "by": "Type" }, "x": 580, "y": 120 },
+    { "id": "n4", "kind": "viz.colorBy", "params": {}, "x": 820, "y": 120 },
+    { "id": "n5", "kind": "table.fromScene", "params": {}, "x": 580, "y": 340 },
+    { "id": "n6", "kind": "table.aggregate", "params": { "groupBy": "Type", "agg": "count" }, "x": 820, "y": 340 },
+    { "id": "n7", "kind": "chart.bar", "params": { "labelColumn": "Type", "valueColumn": "count" }, "x": 1080, "y": 300 },
+    { "id": "n8", "kind": "sink.table", "params": {}, "x": 1080, "y": 480 }
+  ],
+  "edges": [
+    { "from": { "node": "n1", "slot": "out" }, "to": { "node": "n2", "slot": "in" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n3", "slot": "in" } },
+    { "from": { "node": "n3", "slot": "out" }, "to": { "node": "n4", "slot": "scene" } },
+    { "from": { "node": "n2", "slot": "out" }, "to": { "node": "n5", "slot": "in" } },
+    { "from": { "node": "n5", "slot": "out" }, "to": { "node": "n6", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n7", "slot": "in" } },
+    { "from": { "node": "n6", "slot": "out" }, "to": { "node": "n8", "slot": "in" } }
+  ],
+  "display": "n4"
+}
