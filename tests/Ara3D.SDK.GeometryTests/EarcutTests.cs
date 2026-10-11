@@ -58,7 +58,16 @@ public class EarcutTests
             Assert.That(triangles, Has.Count.EqualTo(points.Count - 2 + 2 * holes.Count), "n - 2, plus 2 per hole for its bridge");
             Assert.That(areas.Sum(), Is.EqualTo(expected).Within(1e-6).Percent);
             Assert.That(areas, Is.All.GreaterThan(0), "every triangle winds counter-clockwise");
+            Assert.That(Earcut.Deviation(outer, holes, triangles), Is.LessThan(1e-9));
         });
+    }
+
+    [Test]
+    public void RingCrossingItself_DeviatesFromItsArea()
+    {
+        // A bow tie: two lobes of opposite winding whose signed areas cancel.
+        var bowTie = Ring((0, 0), (2, 2), (2, 0), (0, 2));
+        Assert.That(Earcut.Deviation(bowTie, [], Earcut.Triangulate(bowTie, [])), Is.GreaterThan(0.5));
     }
 
     [Test]

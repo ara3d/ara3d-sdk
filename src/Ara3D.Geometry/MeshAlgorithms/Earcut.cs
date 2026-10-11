@@ -31,6 +31,65 @@ public static class Earcut
     /// index counts through the outer ring first, then each hole in order.</summary>
     public static List<Integer3> Triangulate(IReadOnlyList<Vector2> outer, IReadOnlyList<IReadOnlyList<Vector2>> holes)
     {
+        var (data, holeStarts) = Flatten(outer, holes);
+        var indices = Triangulate(data, holeStarts);
+        var triangles = new List<Integer3>(indices.Count / 3);
+        for (var t = 0; t + 2 < indices.Count; t += 3)
+            triangles.Add(new Integer3(indices[t], indices[t + 1], indices[t + 2]));
+        return triangles;
+    }
+
+    /// <summary>How far the area of <paramref name="triangles"/> is from the area of the polygon,
+    /// as a fraction of the polygon's: 0 when they cover it exactly. Earcut's check for input it
+    /// cannot triangulate faithfully, such as a ring that doubles back on itself, where its
+    /// triangles overlap and cover more than the polygon.</summary>
+    public static double Deviation(IReadOnlyList<Vector2> outer, IReadOnlyList<IReadOnlyList<Vector2>> holes, IReadOnlyList<Integer3> triangles)
+    {
+        var (data, holeStarts) = Flatten(outer, holes);
+        var indices = new List<int>(3 * triangles.Count);
+        foreach (var t in triangles)
+        {
+            indices.Add(t.A);
+            indices.Add(t.B);
+            indices.Add(t.C);
+        }
+        return Deviation(data, holeStarts, indices);
+    }
+
+    /// <summary><see cref="Deviation(IReadOnlyList{Vector2}, IReadOnlyList{IReadOnlyList{Vector2}}, IReadOnlyList{Integer3})"/>
+    /// over the flat input and output of <see cref="Triangulate(IReadOnlyList{double}, IReadOnlyList{int})"/>.</summary>
+    public static double Deviation(IReadOnlyList<double> data, IReadOnlyList<int> holeIndices, IReadOnlyList<int> triangles)
+    {
+        const int dim = 2;
+        var hasHoles = holeIndices.Count > 0;
+        var outerLen = hasHoles ? holeIndices[0] * dim : data.Count;
+
+        var polygonArea = Math.Abs(SignedArea(data, 0, outerLen));
+        for (var i = 0; i < holeIndices.Count; i++)
+        {
+            var start = holeIndices[i] * dim;
+            var end = i < holeIndices.Count - 1 ? holeIndices[i + 1] * dim : data.Count;
+            polygonArea -= Math.Abs(SignedArea(data, start, end));
+        }
+
+        double trianglesArea = 0;
+        for (var i = 0; i + 2 < triangles.Count; i += 3)
+        {
+            var a = triangles[i] * dim;
+            var b = triangles[i + 1] * dim;
+            var c = triangles[i + 2] * dim;
+            trianglesArea += Math.Abs(
+                (data[a] - data[c]) * (data[b + 1] - data[a + 1]) -
+                (data[a] - data[b]) * (data[c + 1] - data[a + 1]));
+        }
+
+        return polygonArea == 0 && trianglesArea == 0 ? 0 : Math.Abs((trianglesArea - polygonArea) / polygonArea);
+    }
+
+    /// <summary>The rings as x0, y0, x1, y1, ..., outer first, and the vertex index where each
+    /// hole starts.</summary>
+    private static (List<double> Data, List<int> HoleStarts) Flatten(IReadOnlyList<Vector2> outer, IReadOnlyList<IReadOnlyList<Vector2>> holes)
+    {
         var data = new List<double>(2 * (outer.Count + holes.Sum(h => h.Count)));
         var holeStarts = new List<int>(holes.Count);
         for (var r = 0; r <= holes.Count; r++)
@@ -43,12 +102,7 @@ public static class Earcut
                 data.Add(p.Y.Value);
             }
         }
-
-        var indices = Triangulate(data, holeStarts);
-        var triangles = new List<Integer3>(indices.Count / 3);
-        for (var t = 0; t + 2 < indices.Count; t += 3)
-            triangles.Add(new Integer3(indices[t], indices[t + 1], indices[t + 2]));
-        return triangles;
+        return (data, holeStarts);
     }
 
     private sealed class Node(int i, double x, double y)
