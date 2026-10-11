@@ -20,7 +20,7 @@ Part of the [Ara3D.SDK](https://www.nuget.org/packages/Ara3D.SDK) meta-package.
 - `Topology`, `TopoFace`, `TopoHalfEdge` — half-edge mesh topology
 - `AABBTree` — axis-aligned bounding box tree for spatial queries
 - `MarchingCubes`, `Sdf3D`, `VoxelizedField` — implicit surfaces and voxel grids
-- `PolygonTriangulator`, `DelaunayTriangulator` — 2D/3D tessellation
+- `Earcut`, `ShellMesher`, `DelaunayTriangulator` — 2D/3D tessellation (polygons with holes, planar faces)
 - `StlExporter`, `ObjExporter` — common mesh export formats
 - `IsotropicRemesher`, `VertexWelder`, `MeshModifiers` — mesh processing
 
@@ -34,7 +34,7 @@ the flat `Ara3D.Geometry` namespace, so folder placement is API-neutral).
 | `Primitives/` | Foundational standalone shapes (platonic solids, sphere, cylinder, box, frustum) |
 | `ParametricGeometry/` | Curves & surfaces defined as functions; discretization to mesh |
 | `MeshConstruction/` | Triangle/quad mesh builders and topology-safe modifiers |
-| `MeshAlgorithms/` | Mesh-to-mesh algorithms (Delaunay, ear-clip, weld, marching cubes, remesh) |
+| `MeshAlgorithms/` | Mesh-to-mesh algorithms (Delaunay, earcut, weld, marching cubes, remesh) |
 | `Topology/` | Half-edge connectivity data structure and view objects |
 | `MeshAnalysis/` | Attribute/statistics computation, PCA, linear-algebra primitives |
 | `SpatialQueries/` | AABB tree, intersection, clipping, fitting |
