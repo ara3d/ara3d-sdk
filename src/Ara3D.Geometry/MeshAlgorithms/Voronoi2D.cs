@@ -81,7 +81,7 @@ public static class Voronoi2D
             if (cell.Polygon.Count < 3 || (pinned != null && pinned.Contains(cell.Site)))
                 continue;
 
-            var c = PolygonTriangulator.Centroid(cell.Polygon);
+            var c = cell.Polygon.Average();
             result[cell.Site] = new Vector2(
                 Math.Clamp((float)c.X, (float)min.X, (float)max.X),
                 Math.Clamp((float)c.Y, (float)min.Y, (float)max.Y));

@@ -56,7 +56,7 @@ public class Voronoi2DTests
         foreach (var cell in cells)
         {
             total += PolyArea(cell.Polygon);
-            Assert.That(PolygonTriangulator.PointInPolygon(cell.Polygon, cell.Center), Is.True,
+            Assert.That(cell.Polygon.ToSimplePolygon().Contains(cell.Center), Is.True,
                 "a site must lie inside its own cell");
         }
 
@@ -97,7 +97,7 @@ public class Voronoi2DTests
                 (float)min.Y + r.NextSingle() * ((float)max.Y - (float)min.Y));
 
             var nearest = NearestSite(sites, p);
-            Assert.That(PolygonTriangulator.PointInPolygon(cells[nearest].Polygon, p), Is.True,
+            Assert.That(cells[nearest].Polygon.ToSimplePolygon().Contains(p), Is.True,
                 "a point must lie in the cell of its nearest site (the defining Voronoi property)");
         }
     }
@@ -118,7 +118,7 @@ public class Voronoi2DTests
             if (cell.Polygon.Count < 3)
                 continue;
 
-            var c = PolygonTriangulator.Centroid(cell.Polygon);
+            var c = cell.Polygon.Average();
             float dx = (float)c.X - (float)cell.Center.X, dy = (float)c.Y - (float)cell.Center.Y;
             maxDrift = MathF.Max(maxDrift, MathF.Sqrt(dx * dx + dy * dy));
         }
