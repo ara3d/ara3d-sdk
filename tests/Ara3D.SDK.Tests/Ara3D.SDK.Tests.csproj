@@ -33,6 +33,7 @@
     <ProjectReference Include="..\..\src\Ara3D.Logging\Ara3D.Logging.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.IO.BFAST\Ara3D.IO.BFAST.csproj" />
+    <ProjectReference Include="..\..\src\Ara3D.IO.StepParser\Ara3D.IO.StepParser.csproj" />
     <ProjectReference Include="..\..\src\Ara3D.Utils\Ara3D.Utils.csproj" />
   </ItemGroup>
 

@@ -242,6 +242,21 @@ public static unsafe class StepTokenizer
         return type == StepTokenType.Whitespace || type == StepTokenType.Comment;
     }
 
+    /// <summary>Parses tokens until one that is not white space or a comment and returns its type;
+    /// <paramref name="begin"/> is left at its first byte. Returns None at the end of the data.</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static StepTokenType AdvancePastWhiteSpace(ref byte* cur, byte* end, ref byte* begin)
+    {
+        while (cur < end)
+        {
+            begin = cur;
+            var r = ParseToken(ref cur, end);
+            if (!IsWhiteSpace(r))
+                return r;
+        }
+        return StepTokenType.None;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool AdvancePast(ref byte* cur, byte* end, StepTokenType type)
     {
@@ -369,12 +384,22 @@ public static unsafe class StepTokenizer
             return false;
         }
 
-        AdvanceTo(ref cur, end, out nameToken, StepTokenType.Identifier, tokens);
+        // A simple instance is NAME(attributes); a complex instance is (A(attributes)B(attributes)...)
+        // and keeps an empty name token, its list holding each partial entity's name and attribute list.
+        var nameBegin = cur;
+        var type = AdvancePastWhiteSpace(ref cur, end, ref nameBegin);
+        if (type == StepTokenType.Identifier)
+        {
+            nameToken = new StepToken(nameBegin, cur, tokens.Count);
+            if (!AdvancePast(ref cur, end, StepTokenType.BeginGroup))
+                throw new Exception("Expected the beginning of a group");
+        }
+        else if (type != StepTokenType.BeginGroup)
+        {
+            throw new Exception($"Expected an entity name or a complex instance in definition #{id}");
+        }
 
         var n = tokens.Count;
-
-        if (!AdvancePast(ref cur, end, StepTokenType.BeginGroup))
-            throw new Exception("Expected the beginning of a group");
 
         ParseList(ref cur, end, tokens);
 
