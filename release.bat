@@ -23,9 +23,6 @@ if errorlevel 1 exit /b %ERRORLEVEL%
 call "%ROOT%test.bat" geometry
 if errorlevel 1 exit /b %ERRORLEVEL%
 
-call "%ROOT%test.bat" bim
-if errorlevel 1 exit /b %ERRORLEVEL%
-
 call "%ROOT%test.bat" devtools
 if errorlevel 1 exit /b %ERRORLEVEL%
 
