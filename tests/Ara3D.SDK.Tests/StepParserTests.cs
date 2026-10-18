@@ -42,6 +42,7 @@ public static class StepParserTests
     {
         using var doc = Parse();
         Assert.That(doc.Definitions.Select(d => d.Id), Is.EqualTo(new[] { 1, 2, 3, 4 }));
+        Assert.That(doc.Diagnostics, Is.Empty);
         Assert.That(doc.Definitions[0].IsComplex(), Is.False);
         Assert.That(Names(doc, 0), Is.EqualTo(new[] { "CARTESIAN_POINT" }));
         Assert.That(Attributes(doc, 0, 0), Is.EqualTo("('', (0., 0., 0.))"));

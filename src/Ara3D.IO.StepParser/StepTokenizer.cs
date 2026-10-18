@@ -8,7 +8,7 @@ namespace Ara3D.IO.StepParser;
 /// <summary>
 /// Technically this is more a parser because it is recursive. 
 /// </summary>
-public static unsafe class StepTokenizer
+public static unsafe partial class StepTokenizer
 {
     public static readonly StepTokenType[] TokenLookup =
         StepTokenizerLookupHelpers.CreateTokenLookup();
@@ -316,104 +316,23 @@ public static unsafe class StepTokenizer
         return false;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    /// <summary>Throws where <see cref="TryParseList"/> reports a fault.</summary>
     public static void ParseList(ref byte* cur, byte* end, UnmanagedList<StepToken> tokens)
     {
-        var startTokenIndex = tokens.Count;
-        var begin = cur - 1;
-
-        Debug.Assert(*begin == '(');
-        var token = StepToken.CreateListToken(begin, startTokenIndex);
-        tokens.Add(token);
-
-        Debug.Assert(tokens.Count == startTokenIndex + 1);
-
-        while (cur < end)
-        {
-            var prev = cur;
-            var type = ParseToken(ref cur, end);
-
-            if (type == StepTokenType.EndGroup)
-            {
-                // This is the raw number of tokens (it includes nested lists)
-                var numTokensInList = tokens.Count - startTokenIndex - 1;
-                Debug.Assert(numTokensInList >= 0);
-                
-                // Patch the list token with correct number of tokens
-                tokens[startTokenIndex].Length = numTokensInList;
-
-                Debug.Assert(tokens[startTokenIndex].Length >= 0);
-
-                return;
-            }
-
-            if (type == StepTokenType.BeginGroup)
-                ParseList(ref cur, end, tokens);
-
-            if (type == StepTokenType.Semicolon)
-                throw new Exception("Unexpected end of definition");
-
-            if (ShouldStoreType(type))
-                tokens.Add(new StepToken(prev, cur, tokens.Count));
-        }
-
-        throw new Exception("Missing end of list");
+        if (!TryParseList(ref cur, end, tokens, out _))
+            throw new Exception("Missing end of list");
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    /// <summary>Throws where <see cref="ReadDefinition"/> reports a fault inside an instance; returns false at the
+    /// end of the section or at anything that does not start an instance.</summary>
     public static bool AdvanceToAndTokenizeDefinition(ref byte* cur, byte* end, out int id, out StepToken nameToken, out StepToken attrToken, UnmanagedList<StepToken> tokens)
     {
-        id = 0;
-        nameToken = default;
-        attrToken = default;
-
-        if (!AdvanceTo(ref cur, end, out var idToken, StepTokenType.Id, tokens))
-        {
-            if (idToken.Match("ENDSEC"u8))
-            {
-                throw new Exception($"Expected `ENDSEC` but was {idToken}");
-            }
-            return false;
-        }
-
-
-        id = idToken.AsId();
-
-        if (!AdvancePast(ref cur, end, StepTokenType.Definition))
-        {
-            return false;
-        }
-
-        // A simple instance is NAME(attributes); a complex instance is (A(attributes)B(attributes)...)
-        // and keeps an empty name token, its list holding each partial entity's name and attribute list.
-        var nameBegin = cur;
-        var type = AdvancePastWhiteSpace(ref cur, end, ref nameBegin);
-        if (type == StepTokenType.Identifier)
-        {
-            nameToken = new StepToken(nameBegin, cur, tokens.Count);
-            if (!AdvancePast(ref cur, end, StepTokenType.BeginGroup))
-                throw new Exception("Expected the beginning of a group");
-        }
-        else if (type != StepTokenType.BeginGroup)
-        {
-            throw new Exception($"Expected an entity name or a complex instance in definition #{id}");
-        }
-
-        var n = tokens.Count;
-
-        ParseList(ref cur, end, tokens);
-
-        if (!AdvancePast(ref cur, end, StepTokenType.Semicolon))
-        {
-            throw new Exception("Expected a semicolon");
-        }
-
-        cur++;
-
-        attrToken = tokens[n];
-        Debug.Assert(attrToken.IsList);
-        Debug.Assert(attrToken.Length >= 0);
-
-        return true;
+        var result = ReadDefinition(ref cur, end, tokens, out var definition, out var fault);
+        id = definition.Id;
+        nameToken = definition.NameToken;
+        attrToken = definition.AttributesToken;
+        if (result == StepReadResult.Fault && fault.DefinitionId != 0)
+            throw new Exception($"Expected {fault.Expected} in definition #{fault.DefinitionId}");
+        return result == StepReadResult.Definition;
     }
 }

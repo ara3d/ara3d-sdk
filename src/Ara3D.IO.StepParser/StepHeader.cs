@@ -1,206 +1,177 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using Ara3D.Memory;
 
 namespace Ara3D.IO.StepParser;
 
-
+/// <summary>The header section's FILE_DESCRIPTION, FILE_NAME and FILE_SCHEMA fields as written: each string is the
+/// text between its quotes with every escape (<c>''</c>, <c>\X2\...\X0\</c>) left in place, an unset field (<c>$</c>)
+/// or an absent entity is empty. <see cref="FileDescription"/>, <see cref="FileName"/> and <see cref="FileSchema"/>
+/// are the older summaries, with <c>''</c> unescaped and the schema shortened to IFC2X3, IFC4 or IFC4X3.</summary>
 public unsafe class StepHeader
 {
-    public string FileDescription { get; set; }
-    public string FileName { get; set; }
-    public string FileSchema { get; set; }
+    public IReadOnlyList<string> Description { get; init; } = [];
+    public string ImplementationLevel { get; init; } = "";
+    public string Name { get; init; } = "";
+    public string TimeStamp { get; init; } = "";
+    public IReadOnlyList<string> Author { get; init; } = [];
+    public IReadOnlyList<string> Organization { get; init; } = [];
+    public string PreprocessorVersion { get; init; } = "";
+    public string OriginatingSystem { get; init; } = "";
+    public string Authorization { get; init; } = "";
+    public IReadOnlyList<string> SchemaIdentifiers { get; init; } = [];
 
-    // --- Header parsing ---
+    /// <summary>Every string of FILE_DESCRIPTION joined with " | ".</summary>
+    public string FileDescription { get; set; } = "";
 
+    public string FileName { get; set; } = "";
+
+    public string FileSchema { get; set; } = "";
+
+    /// <summary>Throws on the first error <see cref="Parse(ref byte*, byte*, byte*, List{StepDiagnostic})"/> reports.</summary>
     public static StepHeader Parse(ref byte* ptr, byte* dataEnd)
     {
-        var r = new StepHeader();
+        var diagnostics = new List<StepDiagnostic>();
+        var header = Parse(ref ptr, dataEnd, ptr, diagnostics);
+        var error = diagnostics.FirstOrDefault(d => d.Severity == StepSeverity.Error);
+        if (error.Expected != null)
+            throw new Exception(error.ToString());
+        return header;
+    }
 
-        // STEP file preamble + header section
-        _assertStatementEquals(ref ptr, dataEnd, "ISO-10303-21");
-        _assertStatementEquals(ref ptr, dataEnd, "HEADER");
+    /// <summary>Reads from the start of the file through the header's ENDSEC, leaving <paramref name="cur"/> after
+    /// it. A fault adds an error to <paramref name="diagnostics"/>, with offsets from <paramref name="origin"/>, and
+    /// returns the fields read before it; a missing entity adds a warning.</summary>
+    public static StepHeader Parse(ref byte* cur, byte* end, byte* origin, List<StepDiagnostic> diagnostics)
+    {
+        using var tokens = new UnmanagedList<StepToken>();
+        var entities = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+        var error = ReadSection(ref cur, end, tokens, entities, out var fault);
+        if (error != null)
+            diagnostics.Add(new StepDiagnostic(StepSeverity.Error, error.Value, StepTokenizer.Offset(fault.At, origin, end), fault.Expected));
+        else
+            foreach (var name in RequiredEntities.Where(name => !entities.ContainsKey(name)))
+                diagnostics.Add(new StepDiagnostic(StepSeverity.Warning, StepDiagnosticCode.HeaderIncomplete, cur - origin, $"{name} in the header"));
+
+        var description = Attributes(tokens, entities, "FILE_DESCRIPTION");
+        var fileName = Attributes(tokens, entities, "FILE_NAME");
+        var schema = Attributes(tokens, entities, "FILE_SCHEMA");
+        var schemaIdentifiers = Strings(tokens, schema, 0);
+        return new StepHeader
+        {
+            Description = Strings(tokens, description, 0),
+            ImplementationLevel = String(description, 1),
+            Name = String(fileName, 0),
+            TimeStamp = String(fileName, 1),
+            Author = Strings(tokens, fileName, 2),
+            Organization = Strings(tokens, fileName, 3),
+            PreprocessorVersion = String(fileName, 4),
+            OriginatingSystem = String(fileName, 5),
+            Authorization = String(fileName, 6),
+            SchemaIdentifiers = schemaIdentifiers,
+            FileDescription = string.Join(" | ", AllStrings(tokens, description).Select(Unescape)),
+            FileName = Unescape(String(fileName, 0)),
+            FileSchema = NormalizeIfcSchema(schemaIdentifiers.Count == 0 ? "" : Unescape(schemaIdentifiers[0])),
+        };
+    }
+
+    public static readonly IReadOnlyList<string> RequiredEntities = ["FILE_DESCRIPTION", "FILE_NAME", "FILE_SCHEMA"];
+
+    private static StepDiagnosticCode? ReadSection(ref byte* cur, byte* end, UnmanagedList<StepToken> tokens,
+        Dictionary<string, int> entities, out StepFault fault)
+    {
+        fault = default;
+        if (end - cur >= 3 && cur[0] == 0xEF && cur[1] == 0xBB && cur[2] == 0xBF)
+            cur += 3;
+
+        var begin = cur;
+        StepTokenizer.AdvancePastWhiteSpace(ref cur, end, ref begin);
+        if (end - begin < 12 || !StepTokenizer.Span(begin, begin + 12).SequenceEqual("ISO-10303-21"u8))
+            return Fail(out fault, begin, "ISO-10303-21; opening the file", StepDiagnosticCode.NotStepFile);
+        cur = begin + 12;
+        if (!StepTokenizer.Expect(ref cur, end, StepTokenType.Semicolon, out var at))
+            return Fail(out fault, at, "';' after ISO-10303-21", StepDiagnosticCode.NotStepFile);
+        if (!ExpectKeyword(ref cur, end, "HEADER"u8, out at) || !StepTokenizer.Expect(ref cur, end, StepTokenType.Semicolon, out at))
+            return Fail(out fault, at, "HEADER;");
 
         while (true)
         {
-            var stmt = _parseStatement(ref ptr, dataEnd);
-            if (stmt == null)
-                throw new Exception("Unexpected EOF while parsing HEADER (missing ENDSEC).");
+            begin = cur;
+            var type = StepTokenizer.AdvancePastWhiteSpace(ref cur, end, ref begin);
+            if (type != StepTokenType.Identifier)
+                return Fail(out fault, type == StepTokenType.None ? cur : begin, "a header entity or ENDSEC closing the HEADER section");
 
-            if (stmt.StartsWith("ENDSEC", StringComparison.OrdinalIgnoreCase))
-                break;
+            var name = StepTokenizer.Span(begin, cur);
+            if (name.SequenceEqual("ENDSEC"u8))
+                return StepTokenizer.Expect(ref cur, end, StepTokenType.Semicolon, out at) ? null : Fail(out fault, at, "';' after ENDSEC");
 
-            // Ignore empty/noise statements defensively
-            if (stmt.Length == 0)
-                continue;
-
-            if (stmt.StartsWith("FILE_DESCRIPTION", StringComparison.OrdinalIgnoreCase))
-            {
-                // Typical: FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;1')
-                // We'll store the description strings joined.
-                var quoted = _extractQuotedStrings(stmt);
-                r.FileDescription = quoted.Count == 0 ? stmt : string.Join(" | ", quoted);
-            }
-            else if (stmt.StartsWith("FILE_NAME", StringComparison.OrdinalIgnoreCase))
-            {
-                // Typical: FILE_NAME('name.ifc','2024-..',('author'),('org'),'preproc','system','auth')
-                // We'll store the first quoted string if present (file name), otherwise the raw stmt.
-                var quoted = _extractQuotedStrings(stmt);
-                r.FileName = quoted.Count == 0 ? stmt : quoted[0];
-            }
-            else if (stmt.StartsWith("FILE_SCHEMA", StringComparison.OrdinalIgnoreCase))
-            {
-                // Typical: FILE_SCHEMA(('IFC4')) or FILE_SCHEMA(('IFC4X3_ADD2'))
-                // We'll store the first schema token and normalize to IFC2X3 / IFC4 / IFC4X3 if possible.
-                var quoted = _extractQuotedStrings(stmt);
-                var rawSchema = quoted.Count == 0 ? "" : quoted[0];
-                r.FileSchema = _normalizeIfcSchemaToken(rawSchema);
-                if (string.IsNullOrWhiteSpace(r.FileSchema))
-                    r.FileSchema = stmt; // fall back to raw
-            }
-
-            // else: ignore other header statements (e.g., FILE_POPULATION, etc.)
+            var listIndex = tokens.Count;
+            if (!StepTokenizer.Expect(ref cur, end, StepTokenType.BeginGroup, out at))
+                return Fail(out fault, at, "'(' after the header entity name");
+            if (!StepTokenizer.TryParseList(ref cur, end, tokens, out at))
+                return Fail(out fault, at, "')' closing the list");
+            if (!StepTokenizer.Expect(ref cur, end, StepTokenType.Semicolon, out at))
+                return Fail(out fault, at, "';' ending the header entity");
+            entities.TryAdd(System.Text.Encoding.ASCII.GetString(name), listIndex);
         }
+    }
 
-        // After ENDSEC; typically comes DATA; but we just return the pointer at current position
+    private static bool ExpectKeyword(ref byte* cur, byte* end, ReadOnlySpan<byte> keyword, out byte* at)
+        => StepTokenizer.Expect(ref cur, end, StepTokenType.Identifier, out at) && StepTokenizer.Span(at, cur).SequenceEqual(keyword);
+
+    private static StepDiagnosticCode? Fail(out StepFault fault, byte* at, string expected, StepDiagnosticCode code = StepDiagnosticCode.Syntax)
+    {
+        fault = new StepFault(at, expected);
+        return code;
+    }
+
+    private static IReadOnlyList<StepToken> Attributes(UnmanagedList<StepToken> tokens, Dictionary<string, int> entities, string name)
+        => entities.TryGetValue(name, out var listIndex) ? Children(tokens, listIndex) : [];
+
+    /// <summary>The elements of the list at <paramref name="listIndex"/>; a typed parameter <c>NAME(...)</c> counts as
+    /// its name token.</summary>
+    private static IReadOnlyList<StepToken> Children(UnmanagedList<StepToken> tokens, int listIndex)
+    {
+        var r = new List<StepToken>();
+        var last = listIndex + tokens[listIndex].Length;
+        for (var i = listIndex + 1; i <= last; i++)
+        {
+            var token = tokens[i];
+            r.Add(token);
+            if (token.IsEntity && i < last && tokens[i + 1].IsList)
+                i++;
+            if (tokens[i].IsList)
+                i += tokens[i].Length;
+        }
         return r;
     }
 
-    private static void _assertStatementEquals(ref byte* ptr, byte* dataEnd, string expected)
+    private static string String(IReadOnlyList<StepToken> attributes, int index)
+        => index < attributes.Count && attributes[index].IsString ? attributes[index].AsString() : "";
+
+    private static IReadOnlyList<string> Strings(UnmanagedList<StepToken> tokens, IReadOnlyList<StepToken> attributes, int index)
+        => index < attributes.Count && attributes[index].IsList
+            ? Children(tokens, attributes[index].Index).Where(t => t.IsString).Select(t => t.AsString()).ToList()
+            : [];
+
+    private static IEnumerable<string> AllStrings(UnmanagedList<StepToken> tokens, IReadOnlyList<StepToken> attributes)
+        => attributes.SelectMany(t => t.IsList ? Children(tokens, t.Index).Where(c => c.IsString) : [t]).Where(t => t.IsString).Select(t => t.AsString());
+
+    private static string Unescape(string text)
+        => text.Replace("''", "'");
+
+    /// <summary>IFC4X3_ADD2 becomes IFC4X3, IFC2X3 and IFC4 stay; any other name is kept, trimmed.</summary>
+    private static string NormalizeIfcSchema(string schema)
     {
-        var stmt = _parseStatement(ref ptr, dataEnd);
-        if (stmt == null)
-            throw new Exception($"Unexpected EOF; expected '{expected}'.");
-
-        if (!string.Equals(stmt, expected, StringComparison.OrdinalIgnoreCase))
-            throw new Exception($"Expected '{expected}' but was '{stmt}'.");
-    }
-
-    /// <summary>
-    /// Parses the next STEP statement (terminated by ';') as ASCII text, trimming whitespace.
-    /// Returns null on EOF (no more non-whitespace).
-    /// </summary>
-    private static string _parseStatement(ref byte* ptr, byte* dataEnd)
-    {
-        // Skip UTF-8 BOM if present at start
-        if (*ptr == 0xEF && *(ptr + 1) == 0xBB && *(ptr + 2) == 0xBF)
-            ptr += 3;
-
-        // Skip whitespace/newlines
-        while (ptr < dataEnd)
-        {
-            var b = *ptr;
-            if (b == (byte)' ' || b == (byte)'\t' || b == (byte)'\r' || b == (byte)'\n')
-                ptr++;
-            else
-                break;
-        }
-
-        if (ptr >= dataEnd)
-            return null;
-
-        // Read until ';' (STEP statement terminator)
-        var start = ptr;
-        while (ptr < dataEnd && *ptr != (byte)';')
-            ptr++;
-
-        if (ptr >= dataEnd)
-            throw new Exception("Unexpected EOF while reading STEP statement (missing ';').");
-
-        var end = ptr;      // points at ';'
-        ptr++;              // consume ';'
-
-        // Trim trailing whitespace inside statement region
-        while (end > start)
-        {
-            var b = *(end - 1);
-            if (b == (byte)' ' || b == (byte)'\t' || b == (byte)'\r' || b == (byte)'\n')
-                end--;
-            else
-                break;
-        }
-
-        // Convert [start, end) to string (ASCII)
-        var len = (int)(end - start);
-        return len <= 0 ? "" : Encoding.ASCII.GetString(start, len);
-    }
-
-    // --- Small helper parsers ---
-
-    /// <summary>
-    /// Extracts all STEP single-quoted strings from a statement.
-    /// Handles doubled quotes inside strings: '' -> '.
-    /// Example: "ABC''DEF" becomes "ABC'DEF".
-    /// </summary>
-    private static List<string> _extractQuotedStrings(string stmt)
-    {
-        var r = new List<string>(8);
-        var i = 0;
-        while (i < stmt.Length)
-        {
-            if (stmt[i] != '\'')
-            {
-                i++;
-                continue;
-            }
-
-            i++; // skip opening quote
-            var sb = new System.Text.StringBuilder();
-
-            while (i < stmt.Length)
-            {
-                var c = stmt[i];
-                if (c == '\'')
-                {
-                    // Escaped quote: ''
-                    if (i + 1 < stmt.Length && stmt[i + 1] == '\'')
-                    {
-                        sb.Append('\'');
-                        i += 2;
-                        continue;
-                    }
-
-                    // End of string
-                    i++;
-                    break;
-                }
-
-                sb.Append(c);
-                i++;
-            }
-
-            r.Add(sb.ToString());
-        }
-
-        return r;
-    }
-
-    /// <summary>
-    /// Normalizes typical IFC schema tokens to IFC2X3 / IFC4 / IFC4X3 where possible.
-    /// Keeps unknown tokens as-is (trimmed).
-    /// Examples:
-    ///  - IFC2X3 -> IFC2X3
-    ///  - IFC4X3_ADD2 -> IFC4X3
-    ///  - IFC4 -> IFC4
-    /// </summary>
-    private static string _normalizeIfcSchemaToken(string token)
-    {
-        if (string.IsNullOrWhiteSpace(token))
-            return "";
-
-        var t = token.Trim();
-
-        // Common variants / extensions
-        // IFC4X3_* should map to IFC4X3 for your enum use-case
+        var t = schema.Trim();
         if (t.StartsWith("IFC4X3", StringComparison.OrdinalIgnoreCase))
             return "IFC4X3";
-
         if (t.StartsWith("IFC2X3", StringComparison.OrdinalIgnoreCase))
             return "IFC2X3";
-
         if (t.StartsWith("IFC4", StringComparison.OrdinalIgnoreCase))
             return "IFC4";
-
         return t;
     }
 }

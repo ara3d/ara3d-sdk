@@ -38,6 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="StepFixtures\*.stp" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
