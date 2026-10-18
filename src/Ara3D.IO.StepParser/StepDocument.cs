@@ -103,6 +103,7 @@ public sealed unsafe class StepDocument : IDisposable
         Trace.WriteLine($"Disposing data");
         if (Data is IDisposable d)
             d.Dispose();
+        Tokens.Dispose();
     }
 
     public static StepDocument Create(FilePath fp) 
